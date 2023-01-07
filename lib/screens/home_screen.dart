@@ -10,7 +10,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int? totalAmount = 100000;
-  var blueclr = const Color(0xFF470FFF);
+  var blueclr = const Color(0xFF2E49FB);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,163 +35,180 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Stack(
-              children: [
-                Container(
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF470FFF),
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(50),
-                      bottomRight: Radius.circular(50),
-                    ),
+      body: Column(
+        children: [
+          Stack(
+            children: [
+              Container(
+                decoration: const BoxDecoration(
+                  color: Color(0xFF2E49FB),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(50),
+                    bottomRight: Radius.circular(50),
                   ),
-                  width: double.infinity,
-                  height: 140,
                 ),
-                Container(
-                  color: Colors.transparent,
-                  // height: 100,
-                  width: double.infinity,
-                  height: 345,
-                  child: Stack(
-                    children: [
-                      Image.asset(
-                        'assets/images/Rectangle 24.png',
-                        fit: BoxFit.cover,
-                        width: 500,
+                width: double.infinity,
+                height: 140,
+              ),
+              Container(
+                color: Colors.transparent,
+                // height: 100,
+                width: double.infinity,
+                height: 345,
+                child: Stack(
+                  children: [
+                    Image.asset(
+                      'assets/images/Rectangle 24.png',
+                      fit: BoxFit.cover,
+                      width: 500,
 
-                        // width: ,
-                        // height: 500,
+                      // width: ,
+                      // height: 500,
+                    ),
+                    Positioned(
+                      left: 70,
+                      right: 70,
+                      top: 50,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                '$totalAmount',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              const Text(
+                                'Total',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 25,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                children: [
+                                  Text(
+                                    '$totalAmount',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  const Text(
+                                    'Total',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 25,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              Column(
+                                children: [
+                                  Text(
+                                    '$totalAmount',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  const Text(
+                                    'Total',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 25,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )
+                        ],
                       ),
-                      Positioned(
-                        left: 70,
-                        right: 70,
-                        top: 50,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Column(
-                              children: [
-                                Text(
-                                  '$totalAmount',
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                const Text(
-                                  'Total',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 25,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 30,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  children: [
-                                    Text(
-                                      '$totalAmount',
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 25,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    const Text(
-                                      'Total',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 25,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  width: 20,
-                                ),
-                                Column(
-                                  children: [
-                                    Text(
-                                      '$totalAmount',
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 25,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    const Text(
-                                      'Total',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 25,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            )
-                          ],
+                    )
+                  ],
+                ),
+              ),
+              // ),
+              Positioned(
+                top: 300,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "Recent Transactions",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 80,
+                      ),
+                      TextButton.icon(
+                        label: const Text(
+                          'View all',
+                        ),
+                        onPressed: (() {
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(builder: ((context) {
+                            return const TransactionListAll();
+                          })));
+                        }),
+                        icon: const Icon(
+                          Icons.remove_red_eye_outlined,
+                          color: Color(
+                            0xFF470FFF,
+                          ),
                         ),
                       )
                     ],
                   ),
                 ),
-                // ),
-                Positioned(
-                  top: 300,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          "Recent Transactions",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 125,
-                        ),
-                        IconButton(
-                          onPressed: (() {}),
-                          icon: const Icon(
-                            Icons.remove_red_eye_outlined,
-                            color: Color(
-                              0xFF470FFF,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+              ),
+            ],
+          ),
+          Expanded(
+            child: Container(
+              width: double.infinity,
+              child: TransactionList(),
             ),
-            const TransactionListAll()
-          ],
-        ),
+          )
+          // Container(
+          //   width: double.infinity,
+          //   child: ListView(
+          //     children: [TransactionListAll()],
+          //   ),
+          // ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (() {}),
@@ -202,7 +219,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: 0,
-        items: [
+        items: const [
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.home,

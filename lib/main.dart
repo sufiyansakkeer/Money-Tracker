@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:money_track/profile/profile_page.dart';
 import 'package:money_track/screens/home_screen.dart';
 
 void main() {
@@ -33,9 +34,10 @@ class MoneyTrack extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: createMaterialColor(
-          const Color(0xFF470FFF),
+          const Color(0xFF2E49FB),
         ),
       ),
       home: const HomeScreen(),
