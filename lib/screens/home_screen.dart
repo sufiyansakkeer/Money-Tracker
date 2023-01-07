@@ -1,4 +1,6 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:money_track/widgets/floating_action_button.dart';
 import 'package:money_track/widgets/transaction_list.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -9,6 +11,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final transitionType = ContainerTransitionType.fade;
   int? totalAmount = 100000;
   var blueclr = const Color(0xFF2E49FB);
   @override
@@ -68,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Positioned(
                       left: 70,
                       right: 70,
-                      top: 50,
+                      top: 70,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -89,7 +92,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 'Total',
                                 style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 25,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ],
@@ -114,10 +118,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                     height: 5,
                                   ),
                                   const Text(
-                                    'Total',
+                                    'Expense',
                                     style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 25,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ],
@@ -139,10 +144,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                     height: 5,
                                   ),
                                   const Text(
-                                    'Total',
+                                    'Income',
                                     style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 25,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ],
@@ -178,10 +184,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           'View all',
                         ),
                         onPressed: (() {
-                          Navigator.of(context)
-                              .push(MaterialPageRoute(builder: ((context) {
-                            return const TransactionListAll();
-                          })));
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: ((context) {
+                                return const TransactionListAll();
+                              }),
+                            ),
+                          );
                         }),
                         icon: const Icon(
                           Icons.remove_red_eye_outlined,
@@ -196,8 +205,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ],
           ),
-          Expanded(
-            child: Container(
+          const Expanded(
+            child: SizedBox(
               width: double.infinity,
               child: TransactionList(),
             ),
@@ -210,13 +219,7 @@ class _HomeScreenState extends State<HomeScreen> {
           // ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: (() {}),
-        tooltip: 'Increment',
-        child: const Icon(
-          Icons.add,
-        ),
-      ),
+      floatingActionButton: CustomFABWidget(),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: 0,
         items: const [
