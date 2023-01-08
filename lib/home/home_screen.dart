@@ -1,7 +1,12 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'package:money_track/widgets/floating_action_button.dart';
-import 'package:money_track/widgets/transaction_list.dart';
+import 'package:money_track/home/widgets/navigation_drawer.dart';
+import 'package:money_track/home/widgets/floating_action_button.dart';
+import 'package:money_track/widgets/show_custom_dailogue.dart';
+import 'package:money_track/home/widgets/transaction_list.dart';
+import 'package:rive/rive.dart';
+
+import '../widgets/animated_button.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -11,15 +16,16 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final transitionType = ContainerTransitionType.fade;
+  var scaffoldKey = GlobalKey<ScaffoldState>();
   int? totalAmount = 100000;
-  var blueclr = const Color(0xFF2E49FB);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: (() {}),
+          onPressed: (() {
+            scaffoldKey.currentState?.openDrawer();
+          }),
           icon: const Icon(
             Icons.menu_open,
           ),
@@ -38,6 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
+      drawer: NavigationDrawer(),
       body: Column(
         children: [
           Stack(
@@ -210,7 +217,30 @@ class _HomeScreenState extends State<HomeScreen> {
               width: double.infinity,
               child: TransactionList(),
             ),
-          )
+          ),
+          // AnimatedBtn(
+          //   btnAnimationController: _btnAnimationController,
+          //   press: () {
+          //     _btnAnimationController.isActive = true;
+
+          //     Future.delayed(
+          //       const Duration(milliseconds: 800),
+          //       () {
+          //         setState(() {
+          //           isShowSignInDialog = true;
+          //         });
+          //         showCustomDialog(
+          //           context,
+          //           onValue: (_) {
+          //             setState(() {
+          //               isShowSignInDialog = false;
+          //             });
+          //           },
+          //         );
+          //       },
+          //     );
+          //   },
+          // ),
           // Container(
           //   width: double.infinity,
           //   child: ListView(
@@ -220,30 +250,6 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       floatingActionButton: CustomFABWidget(),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 0,
-        items: const [
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
-              ),
-              label: 'Home',
-              backgroundColor: Colors.white),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.category_outlined,
-            ),
-            label: 'Categories',
-            backgroundColor: Color(0xFF470FFF),
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.auto_graph_outlined,
-              ),
-              label: 'Graph',
-              backgroundColor: Colors.white),
-        ],
-      ),
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_track/profile/profile_page.dart';
-import 'package:money_track/screens/home_screen.dart';
+import 'package:money_track/home/home_screen.dart';
+import 'package:money_track/screens/root_page.dart';
 
 void main() {
   runApp(
@@ -40,7 +41,7 @@ class MoneyTrack extends StatelessWidget {
           const Color(0xFF2E49FB),
         ),
       ),
-      home: const HomeScreen(),
+      home: const RootPage(),
     );
   }
 }

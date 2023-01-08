@@ -15,11 +15,21 @@ class _TransactionListAllState extends State<TransactionListAll> {
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               SliverAppBar(
+                leading: IconButton(
+                    onPressed: (() {
+                      Navigator.of(context).pop();
+                    }),
+                    icon: const Icon(
+                      Icons.arrow_back_ios_new,
+                      color: Color(0xFF2E49FB),
+                    )),
+                backgroundColor: Colors.transparent,
                 actions: [
                   IconButton(
                     onPressed: (() {}),
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.search,
+                      color: Color(0xFF2E49FB),
                     ),
                   ),
                 ],
@@ -27,28 +37,30 @@ class _TransactionListAllState extends State<TransactionListAll> {
                 floating: false,
                 pinned: true,
                 flexibleSpace: FlexibleSpaceBar(
-                    centerTitle: true,
-                    title: Text(
-                      "My Transaction's",
-                      style: TextStyle(
-                        color: Colors.white,
+                  centerTitle: true,
+                  title: const Text(
+                    "Transactions",
+                    style: TextStyle(
+                        color: Color(0xFF2E49FB),
                         fontSize: 16.0,
-                      ),
-                    ),
-                    background: Image.network(
-                      "https://images.pexels.com/photos/396547/pexels-photo-396547.jpeg?auto=compress&cs=tinysrgb&h=350",
-                      fit: BoxFit.cover,
-                    )),
+                        fontWeight: FontWeight.bold),
+                  ),
+                  background: Image.asset(
+                    "assets/images/lf30_editor_bwrnwosd.gif",
+                    fit: BoxFit.fitHeight,
+                  ),
+                ),
               ),
             ];
           },
           body: ListView.separated(
             separatorBuilder: ((context, index) {
-              return Divider();
+              return const Divider();
             }),
             itemCount: 40,
             itemBuilder: (context, index) {
               return const ListTile(
+                leading: Icon(Icons.home_work),
                 title: Text(
                   ' 1lk kj ',
                   style: TextStyle(

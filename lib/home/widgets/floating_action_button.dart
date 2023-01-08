@@ -1,7 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'package:money_track/screens/splash_screen.dart';
-import 'package:money_track/widgets/add_screen.dart';
+
+import 'package:money_track/home/widgets/add_screen.dart';
 
 const double fabSize = 56;
 
@@ -12,7 +12,7 @@ class CustomFABWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => OpenContainer(
-        transitionDuration: const Duration(milliseconds: 700),
+        transitionDuration: const Duration(milliseconds: 500),
         openBuilder: (context, _) => AddTransaction(),
         closedShape: const CircleBorder(),
         closedColor: Theme.of(context).primaryColor,
