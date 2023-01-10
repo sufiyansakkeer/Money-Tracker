@@ -21,30 +21,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: (() {
-            scaffoldKey.currentState?.openDrawer();
-          }),
-          icon: const Icon(
-            Icons.menu_open,
-          ),
-        ),
-        elevation: 0,
-        centerTitle: true,
-        title: const Text(
-          'Home',
-        ),
-        actions: [
-          IconButton(
-            onPressed: (() {}),
-            icon: const Icon(
-              Icons.search,
-            ),
-          ),
-        ],
-      ),
-      drawer: NavigationDrawer(),
       body: Column(
         children: [
           Stack(
@@ -249,7 +225,40 @@ class _HomeScreenState extends State<HomeScreen> {
           // ),
         ],
       ),
-      floatingActionButton: CustomFABWidget(),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: (() {
+          showGeneralDialog(
+            context: context,
+            pageBuilder: (ctx, a1, a2) {
+              return Container();
+            },
+            transitionBuilder: (ctx, a1, a2, child) {
+              var curve = Curves.easeInOut.transform(a1.value);
+              return Transform.scale(
+                scale: curve,
+                child: _dialog(ctx),
+              );
+            },
+            transitionDuration: const Duration(milliseconds: 300),
+          );
+        }),
+      ),
+      // CustomFABWidget(),
+    );
+  }
+
+  Widget _dialog(BuildContext context) {
+    return AlertDialog(
+      title: const Text("Dialog title"),
+      content: const Text("Simple Dialog content"),
+      actions: <Widget>[
+        TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text("Okay"))
+      ],
     );
   }
 }

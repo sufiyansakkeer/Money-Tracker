@@ -12,64 +12,49 @@ class _TransactionListAllState extends State<TransactionListAll> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: NestedScrollView(
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            return <Widget>[
-              SliverAppBar(
-                leading: IconButton(
-                    onPressed: (() {
-                      Navigator.of(context).pop();
-                    }),
-                    icon: const Icon(
-                      Icons.arrow_back_ios_new,
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            SliverAppBar(
+              leading: IconButton(
+                  onPressed: (() {
+                    Navigator.of(context).pop();
+                  }),
+                  icon: const Icon(
+                    Icons.arrow_back_ios_new,
+                    color: Color(0xFF2E49FB),
+                  )),
+              backgroundColor: Colors.transparent,
+              actions: [
+                IconButton(
+                  onPressed: (() {}),
+                  icon: const Icon(
+                    Icons.search,
+                    color: Color(0xFF2E49FB),
+                  ),
+                ),
+              ],
+              expandedHeight: 200.0,
+              floating: false,
+              pinned: true,
+              flexibleSpace: FlexibleSpaceBar(
+                centerTitle: true,
+                title: const Text(
+                  "Transactions",
+                  style: TextStyle(
                       color: Color(0xFF2E49FB),
-                    )),
-                backgroundColor: Colors.transparent,
-                actions: [
-                  IconButton(
-                    onPressed: (() {}),
-                    icon: const Icon(
-                      Icons.search,
-                      color: Color(0xFF2E49FB),
-                    ),
-                  ),
-                ],
-                expandedHeight: 200.0,
-                floating: false,
-                pinned: true,
-                flexibleSpace: FlexibleSpaceBar(
-                  centerTitle: true,
-                  title: const Text(
-                    "Transactions",
-                    style: TextStyle(
-                        color: Color(0xFF2E49FB),
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  background: Image.asset(
-                    "assets/images/lf30_editor_bwrnwosd.gif",
-                    fit: BoxFit.fitHeight,
-                  ),
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold),
+                ),
+                background: Image.asset(
+                  "assets/images/lf30_editor_bwrnwosd.gif",
+                  fit: BoxFit.cover,
                 ),
               ),
-            ];
-          },
-          body: ListView.separated(
-            separatorBuilder: ((context, index) {
-              return const Divider();
-            }),
-            itemCount: 40,
-            itemBuilder: (context, index) {
-              return const ListTile(
-                leading: Icon(Icons.home_work),
-                title: Text(
-                  ' 1lk kj ',
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
-                ),
-              );
-            },
-          )),
+            ),
+          ];
+        },
+        body: const TransactionList(),
+      ),
     );
   }
 }
@@ -86,15 +71,22 @@ class _TransactionListState extends State<TransactionList> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: ListView.separated(
+      padding: EdgeInsets.only(
+        left: 15,
+        right: 15,
+      ),
       separatorBuilder: ((context, index) {
         return const Divider();
       }),
       itemCount: 40,
       itemBuilder: (context, index) {
-        return const ListTile(
-          title: Text(
-            ' 1lk kj ',
-            style: TextStyle(color: Colors.black),
+        return const Card(
+          child: ListTile(
+            leading: Icon(Icons.home_work),
+            title: Text(
+              ' 1lk kj ',
+              style: TextStyle(color: Colors.black),
+            ),
           ),
         );
       },

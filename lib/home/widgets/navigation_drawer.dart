@@ -7,14 +7,21 @@ class NavigationDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        decoration: const BoxDecoration(
+        height: 1000,
+        decoration: BoxDecoration(
           // color: Color(0xFF2E49FB),
+
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(50),
             bottomRight: Radius.circular(50),
           ),
         ),
         child: Drawer(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topRight: Radius.circular(15),
+                bottomRight: Radius.circular(15)),
+          ),
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[

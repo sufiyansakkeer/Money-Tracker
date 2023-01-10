@@ -13,7 +13,7 @@ class CustomFABWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => OpenContainer(
         transitionDuration: const Duration(milliseconds: 500),
-        openBuilder: (context, _) => AddTransaction(),
+        openBuilder: (context, _) => const AddTransaction(),
         closedShape: const CircleBorder(),
         closedColor: Theme.of(context).primaryColor,
         closedBuilder: (context, openContainer) => Container(
