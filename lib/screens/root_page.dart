@@ -1,5 +1,5 @@
 import 'package:animations/animations.dart';
-import 'package:dot_navigation_bar/dot_navigation_bar.dart';
+
 import 'package:flutter/material.dart';
 import 'package:money_track/Insights/transaction_graph.dart';
 import 'package:money_track/categories/transaction_categories.dart';
@@ -48,105 +48,105 @@ class _RootPageState extends State<RootPage> {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text(
+          title: const Text(
             'Money Tracker',
           ),
           elevation: 0,
-          actions: [
-            IconButton(
-              onPressed: (() {}),
-              icon: Icon(
-                Icons.search,
-              ),
-            )
-          ],
         ),
         body: ValueListenableBuilder(
           valueListenable: currentIndexNotifier,
-          builder: ((context, updatedIndex, child) {
+          builder: ((
+            context,
+            updatedIndex,
+            child,
+          ) {
             return _pages[updatedIndex];
           }),
         ),
-        bottomNavigationBar:
-
-            // SafeArea(
-            //   child: Container(
-            //     padding: EdgeInsets.all(10),
-            //     decoration: BoxDecoration(
-            //       color: Color(0xFF2E49FB).withOpacity(1),
-            //       borderRadius: BorderRadius.all(
-            //         Radius.circular(
-            //           24,
-            //         ),
-            //       ),
-            //     ),
-            //     child: Row(
-            //       children: [
-            //         SizedBox(
-            //           height: 36,
-            //           width: 36,
-            //           child: RiveAnimation.asset("assets/rive/button.riv"),
-            //         )
-            //       ],
-            //     ),
-            //   ),
-            // ),
-            ValueListenableBuilder(
+        bottomNavigationBar: ValueListenableBuilder(
           valueListenable: currentIndexNotifier,
           builder: (
             BuildContext context,
             updatedIndex,
             Widget? child,
           ) {
-            return DotNavigationBar(
-              paddingR: const EdgeInsets.only(
-                bottom: 5,
-                top: 5,
-              ),
-              enableFloatingNavBar: true,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.transparent,
-                )
+            return BottomNavigationBar(
+              iconSize: 35,
+              elevation: 0,
+              currentIndex: updatedIndex,
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.home,
+                  ),
+                  label: 'Home',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.category_outlined,
+                  ),
+                  label: 'Category',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.insights_outlined,
+                  ),
+                  label: 'Insights',
+                ),
               ],
-              // List<BoxShadow> boxShadow =  [BoxShadow(color: Colors.transparent, spreadRadius: 0, blurRadius: 0, offset: Offset(0, 0))],
-              backgroundColor: const Color(0xFF2E49FB),
               onTap: (newIndex) {
                 currentIndexNotifier.value = newIndex;
               },
-              currentIndex: updatedIndex,
-              items: [
-                DotNavigationBarItem(
-                  icon: const Icon(
-                    Icons.home,
-                  ),
-                  // label: 'Home',
-                  selectedColor: const Color.fromARGB(
-                    255,
-                    255,
-                    255,
-                    255,
-                  ),
-                ),
-                DotNavigationBarItem(
-                  icon: const Icon(
-                    Icons.category_outlined,
-                  ),
-                  // label: 'Categories',
-                  selectedColor: Colors.white,
-                ),
-                DotNavigationBarItem(
-                  icon: const Icon(
-                    Icons.auto_graph_outlined,
-                  ),
-                  // label: 'Graph',
-                  selectedColor: Colors.white,
-                ),
-              ],
             );
+            // DotNavigationBar(
+            //   paddingR: const EdgeInsets.only(
+            //     bottom: 5,
+            //     top: 5,
+            //   ),
+            //   enableFloatingNavBar: true,
+            //   boxShadow: [
+            //     BoxShadow(
+            //       color: Colors.transparent,
+            //     )
+            //   ],
+            //   // List<BoxShadow> boxShadow =  [BoxShadow(color: Colors.transparent, spreadRadius: 0, blurRadius: 0, offset: Offset(0, 0))],
+            //   backgroundColor: const Color(0xFF2E49FB),
+            //   onTap: (newIndex) {
+            //     currentIndexNotifier.value = newIndex;
+            //   },
+            //   currentIndex: updatedIndex,
+            //   items: [
+            //     DotNavigationBarItem(
+            //       icon: const Icon(
+            //         Icons.home,
+            //       ),
+            //       // label: 'Home',
+            //       selectedColor: const Color.fromARGB(
+            //         255,
+            //         255,
+            //         255,
+            //         255,
+            //       ),
+            //     ),
+            //     DotNavigationBarItem(
+            //       icon: const Icon(
+            //         Icons.category_outlined,
+            //       ),
+            //       // label: 'Categories',
+            //       selectedColor: Colors.white,
+            //     ),
+            //     DotNavigationBarItem(
+            //       icon: const Icon(
+            //         Icons.auto_graph_outlined,
+            //       ),
+            //       // label: 'Graph',
+            //       selectedColor: Colors.white,
+            //     ),
+            //   ],
+            // );
           },
         ),
-        drawer: NavigationDrawer(),
+        drawer: const NavigationDrawer(),
       ),
     );
   }

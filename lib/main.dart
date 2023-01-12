@@ -1,9 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:money_track/profile/profile_page.dart';
-import 'package:money_track/home/home_screen.dart';
-import 'package:money_track/screens/root_page.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:money_track/models/categories_model/category_model.dart';
 
-void main() {
+import 'package:money_track/screens/splash_screen.dart';
+
+//here main function became future because the init flutter function is a future method
+Future<void> main() async {
+  //here it will ensure that the app will connect with platform channels or not,
+  // all plugins are connected with platform channels or not before app starting
+  WidgetsFlutterBinding.ensureInitialized();
+  //here it will initialize the hive database
+  await Hive.initFlutter();
+
+  //here it will register the category type adapter if it is not registered ,
+  //without adapter we can't read or write to data base,
+  // it act as a bridge between database and app
+  if (!Hive.isAdapterRegistered(CategoryTypeAdapter().typeId)) {
+    Hive.registerAdapter(CategoryTypeAdapter());
+  }
+
+  //here we register the category name adapter if it is not registered
+
+  if (!Hive.isAdapterRegistered(CategoryNameAdapter().typeId)) {
+    Hive.registerAdapter(CategoryNameAdapter());
+  }
   runApp(
     const MoneyTrack(),
   );
@@ -41,7 +61,7 @@ class MoneyTrack extends StatelessWidget {
           const Color(0xFF2E49FB),
         ),
       ),
-      home: const RootPage(),
+      home: const SplashScreen(),
     );
   }
 }

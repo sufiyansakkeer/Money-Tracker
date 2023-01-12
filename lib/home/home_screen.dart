@@ -1,12 +1,7 @@
-import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'package:money_track/home/widgets/navigation_drawer.dart';
 import 'package:money_track/home/widgets/floating_action_button.dart';
-import 'package:money_track/widgets/show_custom_dailogue.dart';
-import 'package:money_track/home/widgets/transaction_list.dart';
-import 'package:rive/rive.dart';
 
-import '../widgets/animated_button.dart';
+import 'package:money_track/home/widgets/transaction_list.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -45,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     Image.asset(
                       'assets/images/Rectangle 24.png',
-                      fit: BoxFit.cover,
+                      fit: BoxFit.fill,
                       width: 500,
 
                       // width: ,
@@ -60,9 +55,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           Column(
                             children: [
-                              Text(
-                                '$totalAmount',
-                                style: const TextStyle(
+                              const Text(
+                                'Total',
+                                style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 25,
                                   fontWeight: FontWeight.bold,
@@ -71,27 +66,27 @@ class _HomeScreenState extends State<HomeScreen> {
                               const SizedBox(
                                 height: 5,
                               ),
-                              const Text(
-                                'Total',
-                                style: TextStyle(
+                              Text(
+                                '$totalAmount',
+                                style: const TextStyle(
                                   color: Colors.white,
-                                  fontSize: 20,
+                                  fontSize: 25,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ],
                           ),
                           const SizedBox(
-                            height: 30,
+                            height: 40,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Column(
                                 children: [
-                                  Text(
-                                    '$totalAmount',
-                                    style: const TextStyle(
+                                  const Text(
+                                    'Expense',
+                                    style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 25,
                                       fontWeight: FontWeight.bold,
@@ -100,11 +95,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                   const SizedBox(
                                     height: 5,
                                   ),
-                                  const Text(
-                                    'Expense',
-                                    style: TextStyle(
+                                  Text(
+                                    '$totalAmount',
+                                    style: const TextStyle(
                                       color: Colors.white,
-                                      fontSize: 20,
+                                      fontSize: 25,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -115,9 +110,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               Column(
                                 children: [
-                                  Text(
-                                    '$totalAmount',
-                                    style: const TextStyle(
+                                  const Text(
+                                    'Income',
+                                    style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 25,
                                       fontWeight: FontWeight.bold,
@@ -126,11 +121,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                   const SizedBox(
                                     height: 5,
                                   ),
-                                  const Text(
-                                    'Income',
-                                    style: TextStyle(
+                                  Text(
+                                    '$totalAmount',
+                                    style: const TextStyle(
                                       color: Colors.white,
-                                      fontSize: 20,
+                                      fontSize: 25,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -150,7 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Row(
-                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
                         "Recent Transactions",
@@ -160,12 +155,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       const SizedBox(
-                        width: 80,
+                        width: 100,
                       ),
-                      TextButton.icon(
-                        label: const Text(
-                          'View all',
-                        ),
+                      TextButton(
                         onPressed: (() {
                           Navigator.of(context).push(
                             MaterialPageRoute(
@@ -175,11 +167,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           );
                         }),
-                        icon: const Icon(
-                          Icons.remove_red_eye_outlined,
-                          color: Color(
-                            0xFF470FFF,
-                          ),
+                        child: const Text(
+                          'View all',
                         ),
                       )
                     ],
@@ -225,40 +214,42 @@ class _HomeScreenState extends State<HomeScreen> {
           // ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: (() {
-          showGeneralDialog(
-            context: context,
-            pageBuilder: (ctx, a1, a2) {
-              return Container();
-            },
-            transitionBuilder: (ctx, a1, a2, child) {
-              var curve = Curves.easeInOut.transform(a1.value);
-              return Transform.scale(
-                scale: curve,
-                child: _dialog(ctx),
-              );
-            },
-            transitionDuration: const Duration(milliseconds: 300),
-          );
-        }),
-      ),
+      floatingActionButton: const CustomAddWidget(),
+
+      //  FloatingActionButton(
+      //   child: Icon(Icons.add),
+      //   onPressed: (() {
+      //     showGeneralDialog(
+      //       context: context,
+      //       pageBuilder: (ctx, a1, a2) {
+      //         return Container();
+      //       },
+      //       transitionBuilder: (ctx, a1, a2, child) {
+      //         var curve = Curves.easeInOut.transform(a1.value);
+      //         return Transform.scale(
+      //           scale: curve,
+      //           child: _dialog(ctx),
+      //         );
+      //       },
+      //       transitionDuration: const Duration(milliseconds: 300),
+      //     );
+      //   }),
+      // ),
       // CustomFABWidget(),
     );
   }
-
-  Widget _dialog(BuildContext context) {
-    return AlertDialog(
-      title: const Text("Dialog title"),
-      content: const Text("Simple Dialog content"),
-      actions: <Widget>[
-        TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: const Text("Okay"))
-      ],
-    );
-  }
+//popping alert box
+  // Widget _dialog(BuildContext context) {
+  //   return AlertDialog(
+  //     title: const Text("Dialog title"),
+  //     content: const Text("Simple Dialog content"),
+  //     actions: <Widget>[
+  //       TextButton(
+  //           onPressed: () {
+  //             Navigator.of(context).pop();
+  //           },
+  //           child: const Text("Okay"))
+  //     ],
+  //   );
+  // }
 }

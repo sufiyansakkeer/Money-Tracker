@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+class OnBoardingTwo extends StatelessWidget {
+  const OnBoardingTwo({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -9,7 +9,7 @@ class ProfilePage extends StatelessWidget {
       constraints: const BoxConstraints.expand(),
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image: AssetImage("assets/images/iPhone 8 - 2.png"),
+          image: AssetImage("assets/images/onBoarding 2.png"),
           fit: BoxFit.cover,
         ),
       ),

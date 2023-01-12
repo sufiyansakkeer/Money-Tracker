@@ -1,12 +1,12 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 
-import 'package:money_track/home/widgets/add_screen.dart';
+import 'package:money_track/home/widgets/add_transaction.dart';
 
 const double fabSize = 56;
 
-class CustomFABWidget extends StatelessWidget {
-  const CustomFABWidget({super.key});
+class CustomAddWidget extends StatelessWidget {
+  const CustomAddWidget({super.key});
 
   // final ContainerTransitionType transitionType;
 
