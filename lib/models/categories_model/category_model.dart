@@ -10,7 +10,7 @@ enum CategoryType {
 }
 
 @HiveType(typeId: 1)
-class CategoryName {
+class CategoryModel {
   @HiveField(0)
   final String id;
   @HiveField(1)
@@ -20,7 +20,7 @@ class CategoryName {
   @HiveField(3)
   final bool isDeleted;
 
-  CategoryName({
+  CategoryModel({
     required this.id,
     required this.categoryName,
     required this.type,

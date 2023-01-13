@@ -71,13 +71,14 @@ class _RootPageState extends State<RootPage> {
             Widget? child,
           ) {
             return BottomNavigationBar(
+              unselectedItemColor: Colors.black,
               iconSize: 35,
               elevation: 0,
               currentIndex: updatedIndex,
               items: const [
                 BottomNavigationBarItem(
                   icon: Icon(
-                    Icons.home,
+                    Icons.home_outlined,
                   ),
                   label: 'Home',
                 ),

@@ -1,7 +1,16 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:money_track/db/category/db_category.dart';
+
+import '../models/categories_model/category_model.dart';
 
 const double fabSize = 56;
+
+//every changes that happen in the radio icon (that is the circle ),
+//that will store in this selected Category notifier,
+// using value listenable builder we can change the state of the widget (her it is row)
+ValueNotifier<CategoryType> selectedCategoryNotifier =
+    ValueNotifier(CategoryType.income);
 
 class CustomCategoriesWidget extends StatelessWidget {
   const CustomCategoriesWidget({super.key});
@@ -11,33 +20,33 @@ class CustomCategoriesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => OpenContainer(
         transitionDuration: const Duration(milliseconds: 500),
-        openBuilder: (context, _) => AddCategory(),
+        openBuilder: (context, _) => const AddCategory(),
         closedShape: const CircleBorder(),
         closedColor: Theme.of(context).primaryColor,
         closedBuilder: (context, openContainer) => Container(
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: Theme.of(context).primaryColor,
+            color: Colors.white,
           ),
           height: fabSize,
           width: fabSize,
           child: const Icon(
             Icons.add,
-            color: Colors.white,
+            color: Color(0xFF2E49FB),
           ),
         ),
       );
 }
 
 class AddCategory extends StatefulWidget {
-  AddCategory({super.key});
+  const AddCategory({super.key});
 
   @override
   State<AddCategory> createState() => _AddCategoryState();
 }
 
 class _AddCategoryState extends State<AddCategory> {
-  String? _chosenValue;
+  final _nameEditingCategory = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,9 +95,47 @@ class _AddCategoryState extends State<AddCategory> {
             //     });
             //   },
             // ),
-            TextFormField(),
+            Row(
+              children: const [
+                RadioButton(
+                  'Income',
+                  CategoryType.income,
+                ),
+                RadioButton(
+                  'Expense',
+                  CategoryType.expense,
+                ),
+              ],
+            ),
+
+            TextFormField(
+              //here name editing category will hold the data in the text form field
+              controller: _nameEditingCategory,
+            ),
             ElevatedButton(
-              onPressed: (() {}),
+              onPressed: (() {
+                //her we convert the text in the text form field into the variable as string format
+                final name = _nameEditingCategory.text;
+                if (name.isEmpty) {
+                  return;
+                }
+                //here we assigning the bool value in the selected category notifier ,
+                //because it hold the category type which income or expense
+                final categoryType = selectedCategoryNotifier;
+                //Category Name is the class we created for the model, in that 3 required parameters is passing ,
+                //here we are creating an object for the category name
+                final categoryModel = CategoryModel(
+                  categoryName: name,
+                  id: DateTime.fromMicrosecondsSinceEpoch.toString(),
+                  type: categoryType.value,
+                );
+                //here we created an object for the category model
+                //and we inserted the object into the category database through insertCategory function
+                CategoryDB().insertCategory(categoryModel);
+                // CategoryDB().refreshUI();
+                // print(_categoryModel);
+                Navigator.of(context).pop();
+              }),
               child: const Text(
                 'submit',
               ),
@@ -99,11 +146,50 @@ class _AddCategoryState extends State<AddCategory> {
     );
   }
 
-  void dropDownCallBack(String? selectedValue) {
-    if (selectedValue is String) {
-      setState(() {
-        var _dropDownValue = selectedValue;
-      });
-    }
+  // void dropDownCallBack(String? selectedValue) {
+  //   if (selectedValue is String) {
+  //     setState(() {
+  //       var _dropDownValue = selectedValue;
+  //     });
+  //   }
+  // }
+}
+
+class RadioButton extends StatelessWidget {
+  final String title;
+  final CategoryType type;
+
+  const RadioButton(this.title, this.type, {super.key});
+
+  @override
+  Widget build(Object context) {
+    return Row(
+      children: [
+        //here we use value listenable builder to the radio button only,
+        // because we only need to change the button only not the text that next to the radio button,
+        // using value listener we can select which listener should we access
+        ValueListenableBuilder(
+          //each time the value listenable change ,it will build new radio button
+          builder: (BuildContext context, newCategory, Widget? child) {
+            return Radio(
+              value: type,
+              //here group value will decide what category value should hold
+              groupValue: newCategory,
+              onChanged: ((value) {
+                if (value == null) {
+                  return;
+                }
+                selectedCategoryNotifier.value = value;
+                selectedCategoryNotifier.notifyListeners();
+              }),
+            );
+          },
+          valueListenable: selectedCategoryNotifier,
+        ),
+        Text(
+          title,
+        ),
+      ],
+    );
   }
 }

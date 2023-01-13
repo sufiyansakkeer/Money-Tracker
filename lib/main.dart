@@ -15,9 +15,9 @@ Future<void> main() async {
   //here it will register the category type adapter if it is not registered ,
   //without adapter we can't read or write to data base,
   // it act as a bridge between database and app
-  if (!Hive.isAdapterRegistered(CategoryTypeAdapter().typeId)) {
-    Hive.registerAdapter(CategoryTypeAdapter());
-  }
+  Hive.registerAdapter(CategoryTypeAdapter());
+  // if (!Hive.isAdapterRegistered(CategoryTypeAdapter().typeId)) {
+  // }
 
   //here we register the category name adapter if it is not registered
 

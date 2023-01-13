@@ -1,11 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:money_track/categories/expense_category.dart';
 import 'package:money_track/categories/income_category.dart';
+import 'package:money_track/db/category/db_category.dart';
 
 import 'add_category.dart';
 
-class TransactionCategories extends StatelessWidget {
+class TransactionCategories extends StatefulWidget {
   const TransactionCategories({super.key});
+
+  @override
+  State<TransactionCategories> createState() => _TransactionCategoriesState();
+}
+
+class _TransactionCategoriesState extends State<TransactionCategories> {
+  @override
+  void initState() {
+    CategoryDB().refreshUI();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +82,7 @@ class TransactionCategories extends StatelessWidget {
             ExpenseTransaction(),
           ],
         ),
-        floatingActionButton: const CustomCategoriesWidget(),
+        floatingActionButton: CustomCategoriesWidget(),
       ),
     );
   }
