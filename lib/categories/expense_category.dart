@@ -9,7 +9,7 @@ class ExpenseTransaction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color(0xFF2E49FB),
+      color: const Color(0xFF2E49FB),
       child: ValueListenableBuilder(
         valueListenable: CategoryDB().expenseCategoryNotifierListener,
         builder: ((BuildContext ctx, List<CategoryModel> newList, Widget? _) {
@@ -39,7 +39,7 @@ class ExpenseTransaction extends StatelessWidget {
                     //set border radius more than 50% of height and width to make circle
                   ),
                   child: Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       image: DecorationImage(
                         image: AssetImage("assets/images/expense-card.png"),
                         fit: BoxFit.fill,
@@ -53,7 +53,9 @@ class ExpenseTransaction extends StatelessWidget {
                             Icons.close,
                             size: 20,
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            CategoryDB().deleteCategory(category.id);
+                          },
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,

@@ -53,7 +53,11 @@ class IncomeTransaction extends StatelessWidget {
                             Icons.close,
                             size: 20,
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            CategoryDB().deleteCategory(
+                              category.id,
+                            );
+                          },
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
