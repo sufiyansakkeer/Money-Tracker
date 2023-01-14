@@ -9,12 +9,12 @@ class IncomeTransaction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-      valueListenable: CategoryDB().incomeCategoryNotifierListener,
-      builder: ((BuildContext ctx, List<CategoryModel> newList, Widget? _) {
+      valueListenable: CategoryDb().incomeCategoryListListener,
+      builder: ((BuildContext ctx, List<CategoryModel> newlIst, Widget? _) {
         return Container(
           color: Color(0xFF2E49FB),
           child: GridView.builder(
-            itemCount: newList.length,
+            itemCount: newlIst.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               crossAxisSpacing: 0,
@@ -25,7 +25,7 @@ class IncomeTransaction extends StatelessWidget {
               context,
               index,
             ) {
-              final category = newList[index];
+              final category = newlIst[index];
               return Padding(
                 padding: const EdgeInsets.only(
                   left: 5,
@@ -54,7 +54,7 @@ class IncomeTransaction extends StatelessWidget {
                             size: 20,
                           ),
                           onPressed: () {
-                            CategoryDB().deleteCategory(
+                            CategoryDb().deleteCategory(
                               category.id,
                             );
                           },

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:money_track/categories/category_app_popup.dart';
 import 'package:money_track/categories/expense_category.dart';
 import 'package:money_track/categories/income_category.dart';
 import 'package:money_track/db/category/db_category.dart';
@@ -15,7 +16,7 @@ class TransactionCategories extends StatefulWidget {
 class _TransactionCategoriesState extends State<TransactionCategories> {
   @override
   void initState() {
-    CategoryDB().refreshUI();
+    CategoryDb().refreshUI();
     super.initState();
   }
 
@@ -82,7 +83,40 @@ class _TransactionCategoriesState extends State<TransactionCategories> {
             ExpenseTransaction(),
           ],
         ),
-        floatingActionButton: CustomCategoriesWidget(),
+        floatingActionButton: FloatingActionButton(
+          //  FloatingActionButton(
+          //   child: Icon(Icons.add),
+          //   onPressed: (() {
+          //     showGeneralDialog(
+          //       context: context,
+          //       pageBuilder: (ctx, a1, a2) {
+          //         return Container();
+          //       },
+          //       transitionBuilder: (ctx, a1, a2, child) {
+          //         var curve = Curves.easeInOut.transform(a1.value);
+          //         return Transform.scale(
+          //           scale: curve,
+          //           child: _dialog(ctx),
+          //         );
+          //       },
+          //       transitionDuration: const Duration(milliseconds: 300),
+          //     );
+          //   }),
+          // ),
+          onPressed: () {
+            //  print('ia, category');
+            showCategoryAddPopup(context);
+          },
+          // ignore: sort_child_properties_last
+          child: const Icon(
+            Icons.add,
+            color: Color(0xFF2E49FB),
+          ),
+          backgroundColor: Colors.white,
+          // foregroundColor: const Color.fromARGB(255, 10, 10, 10),
+          // splashColor: const Color.fromARGB(255, 245, 245, 245),
+        ),
+        // CustomCategoriesWidget(),
       ),
     );
   }

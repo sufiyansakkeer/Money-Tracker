@@ -11,7 +11,7 @@ class ExpenseTransaction extends StatelessWidget {
     return Container(
       color: const Color(0xFF2E49FB),
       child: ValueListenableBuilder(
-        valueListenable: CategoryDB().expenseCategoryNotifierListener,
+        valueListenable: CategoryDb().expenseCategoryListListener,
         builder: ((BuildContext ctx, List<CategoryModel> newList, Widget? _) {
           return GridView.builder(
             itemCount: newList.length,
@@ -54,7 +54,7 @@ class ExpenseTransaction extends StatelessWidget {
                             size: 20,
                           ),
                           onPressed: () {
-                            CategoryDB().deleteCategory(category.id);
+                            CategoryDb().deleteCategory(category.id);
                           },
                         ),
                         Row(

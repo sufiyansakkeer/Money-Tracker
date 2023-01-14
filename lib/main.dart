@@ -11,7 +11,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //here it will initialize the hive database
   await Hive.initFlutter();
-
+  Hive.openBox<CategoryModel>('categoryDBName');
   //here it will register the category type adapter if it is not registered ,
   //without adapter we can't read or write to data base,
   // it act as a bridge between database and app
@@ -19,11 +19,11 @@ Future<void> main() async {
   // if (!Hive.isAdapterRegistered(CategoryTypeAdapter().typeId)) {
   // }
 
-  //here we register the category name adapter if it is not registered
+  // //here we register the category name adapter if it is not registered
 
-  if (!Hive.isAdapterRegistered(CategoryNameAdapter().typeId)) {
-    Hive.registerAdapter(CategoryNameAdapter());
-  }
+  Hive.registerAdapter(CategoryModelAdapter());
+  // if (!Hive.isAdapterRegistered(CategoryModelAdapter().typeId)) {
+  // }
   runApp(
     const MoneyTrack(),
   );

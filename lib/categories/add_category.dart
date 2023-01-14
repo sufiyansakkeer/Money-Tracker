@@ -24,7 +24,7 @@ class CustomCategoriesWidget extends StatelessWidget {
         closedShape: const CircleBorder(),
         closedColor: Theme.of(context).primaryColor,
         closedBuilder: (context, openContainer) => Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             shape: BoxShape.circle,
             color: Colors.white,
           ),
@@ -115,7 +115,7 @@ class _AddCategoryState extends State<AddCategory> {
             ElevatedButton(
               onPressed: (() {
                 //her we convert the text in the text form field into the variable as string format
-                final name = _nameEditingCategory.text;
+                final name = _nameEditingCategory.text.trim();
                 if (name.isEmpty) {
                   return;
                 }
@@ -131,7 +131,7 @@ class _AddCategoryState extends State<AddCategory> {
                 );
                 //here we created an object for the category model
                 //and we inserted the object into the category database through insertCategory function
-                CategoryDB().insertCategory(categoryModel);
+                CategoryDb.instance.insertCategory(categoryModel);
                 // CategoryDB().refreshUI();
                 // print(_categoryModel);
                 Navigator.of(context).pop();
