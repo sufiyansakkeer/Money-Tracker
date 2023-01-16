@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:money_track/db/transaction/db_transaction_function.dart';
 import 'package:money_track/models/categories_model/category_model.dart';
 import 'package:money_track/models/transaction_model/transaction_model.dart';
+import 'package:money_track/search/search_widget.dart';
 
 class TransactionListAll extends StatefulWidget {
   const TransactionListAll({super.key});
@@ -31,7 +32,12 @@ class _TransactionListAllState extends State<TransactionListAll> {
               backgroundColor: Colors.transparent,
               actions: [
                 IconButton(
-                  onPressed: (() {}),
+                  onPressed: (() {
+                    showSearch(
+                      context: context,
+                      delegate: SearchTransaction(),
+                    );
+                  }),
                   icon: const Icon(
                     Icons.search,
                     color: Color(0xFF2E49FB),

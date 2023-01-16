@@ -3,7 +3,7 @@ import 'package:money_track/db/category/db_category.dart';
 import 'package:money_track/db/transaction/db_transaction_function.dart';
 import 'package:money_track/home/widgets/floating_action_button.dart';
 
-import 'package:money_track/home/widgets/transaction_list.dart';
+import 'package:money_track/Transaction/transaction_list.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

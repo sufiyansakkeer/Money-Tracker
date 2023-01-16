@@ -19,7 +19,7 @@ class IncomeTransaction extends StatelessWidget {
               crossAxisCount: 2,
               crossAxisSpacing: 0,
               mainAxisSpacing: 10.0,
-              childAspectRatio: (2 / 1.2),
+              childAspectRatio: (2 / 1.38),
             ),
             itemBuilder: ((
               context,
@@ -96,7 +96,7 @@ class IncomeTransaction extends StatelessWidget {
                           children: [
                             Text(
                               category.categoryName,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 20,
                               ),
                             ),

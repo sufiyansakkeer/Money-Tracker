@@ -19,7 +19,7 @@ class ExpenseTransaction extends StatelessWidget {
               crossAxisCount: 2,
               crossAxisSpacing: 0,
               mainAxisSpacing: 10.0,
-              childAspectRatio: (2 / 1.2),
+              childAspectRatio: (2 / 1.38),
             ),
             itemBuilder: ((
               context,
@@ -54,13 +54,49 @@ class ExpenseTransaction extends StatelessWidget {
                             size: 20,
                           ),
                           onPressed: () {
-                            CategoryDb().deleteCategory(category.id);
+                            showDialog(
+                              context: context,
+                              builder: ((context) {
+                                return AlertDialog(
+                                  title: const Text(
+                                    'alert! ',
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                  content: const Text('Do you want to Delete.'),
+                                  actions: [
+                                    TextButton(
+                                        onPressed: (() {
+                                          CategoryDb().deleteCategory(
+                                            category.id,
+                                          );
+                                          Navigator.of(context).pop();
+                                        }),
+                                        child: const Text(
+                                          'yes',
+                                          style: TextStyle(color: Colors.black),
+                                        )),
+                                    TextButton(
+                                        onPressed: (() {
+                                          Navigator.of(context).pop();
+                                        }),
+                                        child: const Text('no',
+                                            style:
+                                                TextStyle(color: Colors.black)))
+                                  ],
+                                );
+                              }),
+                            );
                           },
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(category.categoryName),
+                            Text(
+                              category.categoryName,
+                              style: const TextStyle(
+                                fontSize: 20,
+                              ),
+                            ),
                           ],
                         ),
                       ],
