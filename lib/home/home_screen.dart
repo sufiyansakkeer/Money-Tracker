@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:money_track/db/category/db_category.dart';
+import 'package:money_track/db/transaction/db_transaction_function.dart';
 import 'package:money_track/home/widgets/floating_action_button.dart';
 
 import 'package:money_track/home/widgets/transaction_list.dart';
@@ -15,6 +17,8 @@ class _HomeScreenState extends State<HomeScreen> {
   int? totalAmount = 100000;
   @override
   Widget build(BuildContext context) {
+    CategoryDb.instance.refreshUI();
+    TransactionDB.instance.refreshUi();
     return Scaffold(
       body: Column(
         children: [

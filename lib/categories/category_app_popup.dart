@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:money_track/db/category/db_category.dart';
 import 'package:money_track/models/categories_model/category_model.dart';
 
-ValueNotifier<CategoryType> selectCategoryNotifire =
+ValueNotifier<CategoryType> selectCategoryNotifier =
     ValueNotifier(CategoryType.income);
 
 Future<void> showCategoryAddPopup(
@@ -104,14 +104,14 @@ Future<void> showCategoryAddPopup(
                     if (name.isEmpty) {
                       return;
                     }
-                    final type = selectCategoryNotifire.value;
+                    final type = selectCategoryNotifier.value;
                     final category = CategoryModel(
                       id: DateTime.now().millisecondsSinceEpoch.toString(),
                       type: type,
                       categoryName: name,
                     );
 
-                    CategoryDb().insertCategory(category);
+                    CategoryDb.instance.insertCategory(category);
                     Navigator.of(ctx).pop();
                     // final snackBar = SnackBar(
                     //   elevation: 0,
@@ -159,21 +159,21 @@ class RadioButton extends StatelessWidget {
     return Row(
       children: [
         ValueListenableBuilder(
-            valueListenable: selectCategoryNotifire,
+            valueListenable: selectCategoryNotifier,
             builder: (BuildContext ctx, CategoryType newCategory, Widget? _) {
               return Radio<CategoryType>(
                 fillColor: MaterialStateColor.resolveWith(
-                    (states) => Color(0xFF2E49FB)),
+                    (states) => const Color(0xFF2E49FB)),
                 focusColor: MaterialStateColor.resolveWith(
-                    (states) => Color.fromARGB(255, 255, 0, 0)),
+                    (states) => const Color.fromARGB(255, 255, 0, 0)),
                 value: type,
                 groupValue: newCategory,
                 onChanged: (value) {
                   if (value == null) {
                     return;
                   }
-                  selectCategoryNotifire.value = value;
-                  selectCategoryNotifire.notifyListeners();
+                  selectCategoryNotifier.value = value;
+                  selectCategoryNotifier.notifyListeners();
                 },
               );
             }),

@@ -10,11 +10,11 @@ class IncomeTransaction extends StatelessWidget {
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
       valueListenable: CategoryDb().incomeCategoryListListener,
-      builder: ((BuildContext ctx, List<CategoryModel> newlIst, Widget? _) {
+      builder: ((BuildContext ctx, List<CategoryModel> newList, Widget? _) {
         return Container(
-          color: Color(0xFF2E49FB),
+          color: const Color(0xFF2E49FB),
           child: GridView.builder(
-            itemCount: newlIst.length,
+            itemCount: newList.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               crossAxisSpacing: 0,
@@ -25,7 +25,7 @@ class IncomeTransaction extends StatelessWidget {
               context,
               index,
             ) {
-              final category = newlIst[index];
+              final category = newList[index];
               return Padding(
                 padding: const EdgeInsets.only(
                   left: 5,
@@ -39,13 +39,14 @@ class IncomeTransaction extends StatelessWidget {
                     //set border radius more than 50% of height and width to make circle
                   ),
                   child: Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       image: DecorationImage(
                         image: AssetImage("assets/images/income-card.png"),
                         fit: BoxFit.fill,
                       ),
                     ),
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         IconButton(
@@ -54,15 +55,51 @@ class IncomeTransaction extends StatelessWidget {
                             size: 20,
                           ),
                           onPressed: () {
-                            CategoryDb().deleteCategory(
-                              category.id,
-                            );
+                            showDialog(
+                                context: context,
+                                builder: ((context) {
+                                  return AlertDialog(
+                                    title: const Text(
+                                      'alert! ',
+                                      style: TextStyle(color: Colors.red),
+                                    ),
+                                    content:
+                                        const Text('Do you want to Delete.'),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: (() {
+                                            CategoryDb().deleteCategory(
+                                              category.id,
+                                            );
+                                            Navigator.of(context).pop();
+                                          }),
+                                          child: const Text(
+                                            'yes',
+                                            style:
+                                                TextStyle(color: Colors.black),
+                                          )),
+                                      TextButton(
+                                          onPressed: (() {
+                                            Navigator.of(context).pop();
+                                          }),
+                                          child: const Text('no',
+                                              style: TextStyle(
+                                                  color: Colors.black)))
+                                    ],
+                                  );
+                                }));
                           },
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(category.categoryName),
+                            Text(
+                              category.categoryName,
+                              style: TextStyle(
+                                fontSize: 20,
+                              ),
+                            ),
                           ],
                         ),
                       ],
