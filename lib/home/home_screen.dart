@@ -4,6 +4,7 @@ import 'package:money_track/db/transaction/db_transaction_function.dart';
 import 'package:money_track/home/widgets/floating_action_button.dart';
 
 import 'package:money_track/Transaction/transaction_list.dart';
+import 'package:money_track/models/transaction_model/transaction_model.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,164 +23,163 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: Column(
         children: [
-          Stack(
-            children: [
-              Container(
-                decoration: const BoxDecoration(
-                  color: Color(0xFF2E49FB),
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(50),
-                    bottomRight: Radius.circular(50),
-                  ),
-                ),
-                width: double.infinity,
-                height: 140,
-              ),
-              Container(
-                color: Colors.transparent,
-                // height: 100,
-                width: double.infinity,
-                height: 345,
-                child: Stack(
-                  children: [
-                    Image.asset(
-                      'assets/images/Rectangle 24.png',
-                      fit: BoxFit.fill,
-                      width: 500,
-
-                      // width: ,
-                      // height: 500,
+          Container(
+            width: double.infinity,
+            height: 280,
+            child: Stack(
+              children: [
+                Container(
+                  decoration: const BoxDecoration(
+                    color: Color(0xFF2E49FB),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(50),
+                      bottomRight: Radius.circular(50),
                     ),
-                    Positioned(
-                      left: 70,
-                      right: 70,
-                      top: 70,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Column(
-                            children: [
-                              const Text(
-                                'Total',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                '$totalAmount',
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 40,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                children: [
-                                  const Text(
-                                    'Expense',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  Text(
-                                    '$totalAmount',
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                width: 20,
-                              ),
-                              Column(
-                                children: [
-                                  const Text(
-                                    'Income',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  Text(
-                                    '$totalAmount',
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    )
-                  ],
+                  ),
+                  width: double.infinity,
+                  height: 140,
                 ),
-              ),
-              // ),
-              Positioned(
-                top: 300,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "Recent Transactions",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                Positioned(
+                  top: 20,
+                  left: 30,
+                  right: 30,
+                  child: Container(
+                    height: 250,
+                    width: 300,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(30),
+                      ),
+                      border: Border.all(color: Colors.transparent),
+                      image: const DecorationImage(
+                        image: AssetImage(
+                            "assets/images/WhatsApp Image 2023-01-17 at 12.06.12.jpg"),
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ValueListenableBuilder(
+                          valueListenable:
+                              TransactionDB.instance.transactionListNotifier,
+                          builder: (BuildContext context,
+                              List<TransactionModel> newList, Widget? child) {
+                            return Column(
+                              children: [
+                                const Text(
+                                  'Total',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  '$totalAmount',
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
                         ),
-                      ),
-                      const SizedBox(
-                        width: 100,
-                      ),
-                      TextButton(
-                        onPressed: (() {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: ((context) {
-                                return const TransactionListAll();
-                              }),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Column(
+                              children: [
+                                const Text(
+                                  'Expense',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  '$totalAmount',
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
                             ),
-                          );
-                        }),
-                        child: const Text(
-                          'View all',
-                        ),
-                      )
-                    ],
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            Column(
+                              children: [
+                                const Text(
+                                  'Income',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  '$totalAmount',
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+                // ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  "Recent Transactions",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                TextButton(
+                  onPressed: (() {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: ((context) {
+                          return const TransactionListAll();
+                        }),
+                      ),
+                    );
+                  }),
+                  child: const Text(
+                    'View all',
+                  ),
+                )
+              ],
+            ),
           ),
           const Expanded(
             child: SizedBox(
@@ -242,18 +242,9 @@ class _HomeScreenState extends State<HomeScreen> {
       // CustomFABWidget(),
     );
   }
-//popping alert box
-  // Widget _dialog(BuildContext context) {
-  //   return AlertDialog(
-  //     title: const Text("Dialog title"),
-  //     content: const Text("Simple Dialog content"),
-  //     actions: <Widget>[
-  //       TextButton(
-  //           onPressed: () {
-  //             Navigator.of(context).pop();
-  //           },
-  //           child: const Text("Okay"))
-  //     ],
-  //   );
+
+  // Future<void> transactionUi(TransactionDB obj) {
+  //   final totalExpense;
+  //   final totalIncome;
   // }
 }

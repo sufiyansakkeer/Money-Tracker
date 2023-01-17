@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 import 'package:money_track/db/transaction/db_transaction_function.dart';
 import 'package:money_track/models/categories_model/category_model.dart';
 import 'package:money_track/models/transaction_model/transaction_model.dart';
@@ -47,19 +47,19 @@ class _TransactionListAllState extends State<TransactionListAll> {
               expandedHeight: 200.0,
               floating: false,
               pinned: true,
-              flexibleSpace: FlexibleSpaceBar(
+              flexibleSpace: const FlexibleSpaceBar(
                 centerTitle: true,
-                title: const Text(
+                title: Text(
                   "Transactions",
                   style: TextStyle(
                       color: Color(0xFF2E49FB),
                       fontSize: 16.0,
                       fontWeight: FontWeight.bold),
                 ),
-                background: Image.asset(
-                  "assets/images/lf30_editor_bwrnwosd.gif",
-                  fit: BoxFit.cover,
-                ),
+                // background: Image.asset(
+                //   "assets/images/lf30_editor_bwrnwosd.gif",
+                //   fit: BoxFit.cover,
+                // ),
               ),
             ),
           ];
@@ -85,93 +85,102 @@ class _TransactionListState extends State<TransactionList> {
       valueListenable: TransactionDB.instance.transactionListNotifier,
       builder:
           (BuildContext context, List<TransactionModel> newList, Widget? _) {
-        return ListView.separated(
-          padding: const EdgeInsets.only(
-            left: 15,
-            right: 15,
-          ),
-          separatorBuilder: ((context, index) {
-            return const Divider();
-          }),
-          itemCount: newList.length,
-          itemBuilder: (context, index) {
-            final transaction = newList[index];
-            return Card(
-              child: ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: Colors.transparent,
-                  child: Icon(
-                    transaction.type == CategoryType.income
-                        ? Icons.arrow_upward_outlined
-                        : Icons.arrow_downward_outlined,
-                    color: transaction.type == CategoryType.income
-                        ? const Color(0xFF68AFF6)
-                        : const Color(0xFFDE45FE),
+        return newList.isEmpty
+            ? Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(50.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Image.asset(
+                        "assets/images/man-waiving-hand.gif",
+                        height: 150,
+                      ),
+                      const Text(
+                        'No Transaction Found',
+                        style: TextStyle(
+                          fontSize: 15,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                title: Text(
-                  '₹ ${transaction.amount}',
-                  style: const TextStyle(color: Colors.black),
+              )
+            : ListView.separated(
+                padding: const EdgeInsets.only(
+                  left: 15,
+                  right: 15,
                 ),
-                subtitle: Text(
-                  transaction.categoryModel.categoryName,
-                ),
-                trailing: Text(parseDateTime(transaction.date)),
-                // onLongPress: () {
-                // showDialog(
-                //     context: context,
-                //     builder: ((context) {
-                //       return AlertDialog(
-                //         title: const Text(
-                //           'alert! ',
-                //           style: TextStyle(color: Colors.red),
-                //         ),
-                //         content: const Text('Do you want to Delete.'),
-                //         actions: [
-                //           TextButton(
-                //               onPressed: (() {
-                //                 TransactionDB.instance
-                //                     .deleteTransaction(transaction);
-                //                 // CategoryDb().deleteCategory(
-                //                 //   category.id,
-                //                 // );
-                //                 Navigator.of(context).pop();
-                //               }),
-                //               child: const Text(
-                //                 'yes',
-                //                 style: TextStyle(color: Colors.black),
-                //               )),
-                //           TextButton(
-                //               onPressed: (() {
-                //                 Navigator.of(context).pop();
-                //               }),
-                //               child: const Text('no',
-                //                   style: TextStyle(color: Colors.black)))
-                //         ],
-                //       );
-                //     }));
-                // TransactionDB.instance.deleteTransaction(transaction);
-                // },
-              ),
-            );
-          },
-        );
+                separatorBuilder: ((context, index) {
+                  return const Divider();
+                }),
+                itemCount: newList.length,
+                itemBuilder: (context, index) {
+                  final transaction = newList[index];
+
+                  return Card(
+                    child: ListTile(
+                      onLongPress: () {
+                        showDialog(
+                            context: context,
+                            builder: ((context) {
+                              return AlertDialog(
+                                content: const Text(
+                                  'Do you want to Delete.',
+                                ),
+                                actions: [
+                                  TextButton(
+                                      onPressed: (() {
+                                        TransactionDB.instance
+                                            .deleteTransaction(transaction);
+                                        Navigator.of(context).pop();
+                                      }),
+                                      child: const Text(
+                                        'yes',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                        ),
+                                      )),
+                                  TextButton(
+                                    onPressed: (() {
+                                      Navigator.of(context).pop();
+                                    }),
+                                    child: const Text(
+                                      'no',
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            }));
+                      },
+                      leading: CircleAvatar(
+                        backgroundColor: Colors.transparent,
+                        child: Icon(
+                          transaction.type == CategoryType.income
+                              ? Icons.arrow_upward_outlined
+                              : Icons.arrow_downward_outlined,
+                          color: transaction.type == CategoryType.income
+                              ? const Color(0xFF68AFF6)
+                              : const Color(0xFFDE45FE),
+                        ),
+                      ),
+                      title: Text(
+                        '₹ ${transaction.amount}',
+                        style: const TextStyle(color: Colors.black),
+                      ),
+                      subtitle: Text(
+                        transaction.categoryModel.categoryName,
+                      ),
+                      trailing: Text(
+                        parseDateTime(transaction.date),
+                      ),
+                    ),
+                  );
+                },
+              );
       },
     );
-    // return ListView.separated(
-    //   separatorBuilder: ((context, index) {
-    //     return Divider();
-    //   }),
-    //   itemCount: 40,
-    //   itemBuilder: (context, index) {
-    //     return ListTile(
-    //       title: Text(
-    //         ' 1lk kj ',
-    //         style: TextStyle(color: Colors.black),
-    //       ),
-    //     );
-    //   },
-    // );
   }
 
   String parseDateTime(DateTime date) {

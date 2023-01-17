@@ -26,7 +26,7 @@ class SearchTransaction extends SearchDelegate {
   @override
   Widget? buildLeading(BuildContext context) {
     return IconButton(
-      icon: const Icon(Icons.arrow_back),
+      icon: const Icon(Icons.arrow_back_ios_new),
       onPressed: () {
         close(context, null); // for closing the search page and going back
       },

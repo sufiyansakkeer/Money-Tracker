@@ -183,6 +183,7 @@ class _AddTransactionState extends State<AddTransaction> {
               ElevatedButton(
                 onPressed: (() {
                   addTransaction();
+
                   // if (_formKey.currentState!.validate()) {
                   //   // If the form is valid, display a snackbar. In the real world,
                   //   // you'd often call a server or save the information in a database.
@@ -244,7 +245,14 @@ class _AddTransactionState extends State<AddTransaction> {
 
     TransactionDB.instance.addTransaction(modal);
     Navigator.of(context).pop();
-
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text(
+          'Transaction Added',
+        ),
+        backgroundColor: Color(0xFF2E49FB),
+      ),
+    );
     // final snackBar = SnackBar(
     //   elevation: 0,
     //   behavior: SnackBarBehavior.floating,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:money_track/db/category/db_category.dart';
 import 'package:money_track/models/categories_model/category_model.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 ValueNotifier<CategoryType> selectCategoryNotifier =
     ValueNotifier(CategoryType.income);
@@ -90,7 +92,7 @@ Future<void> showCategoryAddPopup(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       // If the form is valid, display a snackbar. In the real world,
-                      // you'd often call a server or save the information in a database.
+
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text(
@@ -99,6 +101,18 @@ Future<void> showCategoryAddPopup(
                           backgroundColor: Color(0xFF2E49FB),
                         ),
                       );
+
+                      // showTopSnackBar(
+                      //   Overlay.of(context),
+                      //   CustomSnackBar.success(
+                      //     message:
+                      //         "Good job, your release is successful. Have a nice day",
+                      //   ),
+                      // );
+                      // showTopSnackBar(Overlay., const CustomSnackBar.success(
+                      //     message:
+                      //         "Good job, your release is successful. Have a nice day",
+                      //   ),);
                     }
                     final name = nameEditingController.text;
                     if (name.isEmpty) {
