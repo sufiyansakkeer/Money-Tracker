@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:money_track/Transaction/transaction_list.dart';
+import 'package:money_track/db/category/db_category.dart';
 import 'package:money_track/db/transaction/db_transaction_function.dart';
+import 'package:money_track/models/categories_model/category_model.dart';
 import 'package:money_track/models/transaction_model/transaction_model.dart';
 
 class SearchTransaction extends SearchDelegate {
   @override
   ThemeData appBarTheme(BuildContext context) {
-    assert(context != null);
     final ThemeData theme = Theme.of(context);
-    assert(theme != null);
     return theme;
   }
 
@@ -35,6 +36,8 @@ class SearchTransaction extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
+    TransactionDB.instance.refreshUi();
+    CategoryDb.instance.refreshUI();
     return ValueListenableBuilder(
       valueListenable: TransactionDB.instance.transactionListNotifier,
       builder:
@@ -42,14 +45,15 @@ class SearchTransaction extends SearchDelegate {
         return ListView.builder(
             itemBuilder: ((context, index) {
               final transaction = newList[index];
-              if (transaction.notes
+              if (transaction.categoryModel.categoryName
                   .toLowerCase()
                   .contains(query.toLowerCase())) {
                 return Column(
                   children: [
                     ListTile(
                       title: Text(transaction.amount.toString()),
-                      subtitle: Text(transaction.notes),
+                      subtitle: Text(
+                          transaction.categoryModel.categoryName.toString()),
                     ),
                   ],
                 );
@@ -64,6 +68,8 @@ class SearchTransaction extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
+    TransactionDB.instance.refreshUi();
+    CategoryDb.instance.refreshUI();
     return ValueListenableBuilder(
       valueListenable: TransactionDB.instance.transactionListNotifier,
       builder:
@@ -71,12 +77,26 @@ class SearchTransaction extends SearchDelegate {
         return ListView.builder(
             itemBuilder: ((context, index) {
               final transaction = newList[index];
-              if (transaction.notes
+              if (transaction.categoryModel.categoryName
                   .toLowerCase()
                   .contains(query.toLowerCase())) {
                 return Column(
-                  children: const [
-                    ListTile(),
+                  children: [
+                    ListTile(
+                      leading: CircleAvatar(
+                        child: Icon(
+                          transaction.type == CategoryType.income
+                              ? Icons.arrow_upward_outlined
+                              : Icons.arrow_downward_outlined,
+                          color: transaction.type == CategoryType.income
+                              ? const Color(0xFF68AFF6)
+                              : const Color(0xFFDE45FE),
+                        ),
+                      ),
+                      title: Text(transaction.amount.toString()),
+                      subtitle: Text(
+                          transaction.categoryModel.categoryName.toString()),
+                    ),
                   ],
                 );
               } else {

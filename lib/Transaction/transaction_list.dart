@@ -17,54 +17,43 @@ class _TransactionListAllState extends State<TransactionListAll> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: NestedScrollView(
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return <Widget>[
-            SliverAppBar(
-              leading: IconButton(
-                  onPressed: (() {
-                    Navigator.of(context).pop();
-                  }),
-                  icon: const Icon(
-                    Icons.arrow_back_ios_new,
-                    color: Color(0xFF2E49FB),
-                  )),
-              backgroundColor: Colors.transparent,
-              actions: [
-                IconButton(
-                  onPressed: (() {
-                    showSearch(
-                      context: context,
-                      delegate: SearchTransaction(),
-                    );
-                  }),
-                  icon: const Icon(
-                    Icons.search,
-                    color: Color(0xFF2E49FB),
-                  ),
-                ),
-              ],
-              expandedHeight: 200.0,
-              floating: false,
-              pinned: true,
-              flexibleSpace: const FlexibleSpaceBar(
-                centerTitle: true,
-                title: Text(
-                  "Transactions",
-                  style: TextStyle(
-                      color: Color(0xFF2E49FB),
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold),
-                ),
-                // background: Image.asset(
-                //   "assets/images/lf30_editor_bwrnwosd.gif",
-                //   fit: BoxFit.cover,
-                // ),
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text(
+          'All Transactions',
+        ),
+        actions: [
+          IconButton(
+            onPressed: (() {}),
+            icon: Icon(Icons.filter_list),
+          ),
+          IconButton(
+            onPressed: (() {}),
+            icon: Icon(Icons.more_vert_outlined),
+          ),
+        ],
+      ),
+      body: Scaffold(
+        appBar: AppBar(
+          title: Text('Search'),
+          actions: [
+            IconButton(
+                onPressed: (() {
+                  showSearch(context: context, delegate: SearchTransaction());
+                }),
+                icon: Icon(Icons.search))
+          ],
+        ),
+        body: Column(
+          children: [
+            const Expanded(
+              child: SizedBox(
+                width: double.infinity,
+                child: TransactionList(),
               ),
             ),
-          ];
-        },
-        body: const TransactionList(),
+          ],
+        ),
       ),
     );
   }
@@ -106,80 +95,78 @@ class _TransactionListState extends State<TransactionList> {
                   ),
                 ),
               )
-            : Scrollbar(
-                child: ListView.separated(
-                  padding: const EdgeInsets.only(
-                    left: 15,
-                    right: 15,
-                  ),
-                  separatorBuilder: ((context, index) {
-                    return const Divider();
-                  }),
-                  itemCount: newList.length,
-                  itemBuilder: (context, index) {
-                    final transaction = newList[index];
+            : ListView.separated(
+                padding: const EdgeInsets.only(
+                  left: 15,
+                  right: 15,
+                ),
+                separatorBuilder: ((context, index) {
+                  return const Divider();
+                }),
+                itemCount: newList.length,
+                itemBuilder: (context, index) {
+                  final transaction = newList[index];
 
-                    return Card(
-                      child: ListTile(
-                        onLongPress: () {
-                          showDialog(
-                              context: context,
-                              builder: ((context) {
-                                return AlertDialog(
-                                  content: const Text(
-                                    'Do you want to Delete.',
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                        onPressed: (() {
-                                          TransactionDB.instance
-                                              .deleteTransaction(transaction);
-                                          Navigator.of(context).pop();
-                                        }),
-                                        child: const Text(
-                                          'yes',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                          ),
-                                        )),
-                                    TextButton(
+                  return Card(
+                    child: ListTile(
+                      onLongPress: () {
+                        showDialog(
+                            context: context,
+                            builder: ((context) {
+                              return AlertDialog(
+                                content: const Text(
+                                  'Do you want to Delete.',
+                                ),
+                                actions: [
+                                  TextButton(
                                       onPressed: (() {
+                                        TransactionDB.instance
+                                            .deleteTransaction(transaction);
                                         Navigator.of(context).pop();
                                       }),
                                       child: const Text(
-                                        'no',
-                                        style: TextStyle(color: Colors.black),
-                                      ),
+                                        'yes',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                        ),
+                                      )),
+                                  TextButton(
+                                    onPressed: (() {
+                                      Navigator.of(context).pop();
+                                    }),
+                                    child: const Text(
+                                      'no',
+                                      style: TextStyle(color: Colors.black),
                                     ),
-                                  ],
-                                );
-                              }));
-                        },
-                        leading: CircleAvatar(
-                          backgroundColor: Colors.transparent,
-                          child: Icon(
-                            transaction.type == CategoryType.income
-                                ? Icons.arrow_upward_outlined
-                                : Icons.arrow_downward_outlined,
-                            color: transaction.type == CategoryType.income
-                                ? const Color(0xFF68AFF6)
-                                : const Color(0xFFDE45FE),
-                          ),
-                        ),
-                        title: Text(
-                          '₹ ${transaction.amount}',
-                          style: const TextStyle(color: Colors.black),
-                        ),
-                        subtitle: Text(
-                          transaction.categoryModel.categoryName,
-                        ),
-                        trailing: Text(
-                          parseDateTime(transaction.date),
+                                  ),
+                                ],
+                              );
+                            }));
+                      },
+                      leading: CircleAvatar(
+                        backgroundColor: Colors.transparent,
+                        child: Icon(
+                          transaction.type == CategoryType.income
+                              ? Icons.arrow_upward_outlined
+                              : Icons.arrow_downward_outlined,
+                          color: transaction.type == CategoryType.income
+                              ? const Color(0xFF68AFF6)
+                              : const Color(0xFFDE45FE),
                         ),
                       ),
-                    );
-                  },
-                ),
+                      title: Text(
+                        '₹ ${transaction.amount}',
+                        style: const TextStyle(color: Colors.black),
+                      ),
+                      subtitle: Text(
+                        transaction.categoryModel.categoryName,
+                      ),
+                      trailing: Text(
+                        parseDateTime(transaction.date),
+                      ),
+                    ),
+                  );
+                },
               );
       },
     );
