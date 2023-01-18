@@ -30,14 +30,17 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   animated_bottom_navigation_bar: 1.1.0+1
+  animated_custom_dropdown: ^1.2.2
+  animated_snack_bar: ^0.3.0
   animations: 2.0.7
+  auto_animated: ^3.1.0
   cupertino_icons: 1.0.2
   decorated_dropdownbutton: 0.0.3
   flutter:
     sdk: flutter
   hive: 2.2.3
   hive_flutter: 1.1.0
-  intl: 0.18.0
+  intl: ^0.18.0
   shared_preferences: 2.0.16
   top_snackbar_flutter: 3.0.0+1
 

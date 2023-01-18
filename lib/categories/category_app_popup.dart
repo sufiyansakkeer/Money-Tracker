@@ -101,18 +101,6 @@ Future<void> showCategoryAddPopup(
                           backgroundColor: Color(0xFF2E49FB),
                         ),
                       );
-
-                      // showTopSnackBar(
-                      //   Overlay.of(context),
-                      //   CustomSnackBar.success(
-                      //     message:
-                      //         "Good job, your release is successful. Have a nice day",
-                      //   ),
-                      // );
-                      // showTopSnackBar(Overlay., const CustomSnackBar.success(
-                      //     message:
-                      //         "Good job, your release is successful. Have a nice day",
-                      //   ),);
                     }
                     final name = nameEditingController.text;
                     if (name.isEmpty) {
@@ -127,20 +115,6 @@ Future<void> showCategoryAddPopup(
 
                     CategoryDb.instance.insertCategory(category);
                     Navigator.of(ctx).pop();
-                    // final snackBar = SnackBar(
-                    //   elevation: 0,
-                    //   behavior: SnackBarBehavior.floating,
-                    //   backgroundColor: Colors.transparent,
-                    //   content: AwesomeSnackbarContent(
-                    //     title: 'On Snap!',
-                    //     message: 'Category Add Successfully !',
-                    //     contentType: ContentType.success,
-                    //   ),
-                    // );
-
-                    // ScaffoldMessenger.of(context)
-                    //   ..hideCurrentSnackBar()
-                    //   ..showSnackBar(snackBar);
                   },
                   child: const Text(
                     'Add',

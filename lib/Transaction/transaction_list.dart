@@ -106,78 +106,80 @@ class _TransactionListState extends State<TransactionList> {
                   ),
                 ),
               )
-            : ListView.separated(
-                padding: const EdgeInsets.only(
-                  left: 15,
-                  right: 15,
-                ),
-                separatorBuilder: ((context, index) {
-                  return const Divider();
-                }),
-                itemCount: newList.length,
-                itemBuilder: (context, index) {
-                  final transaction = newList[index];
+            : Scrollbar(
+                child: ListView.separated(
+                  padding: const EdgeInsets.only(
+                    left: 15,
+                    right: 15,
+                  ),
+                  separatorBuilder: ((context, index) {
+                    return const Divider();
+                  }),
+                  itemCount: newList.length,
+                  itemBuilder: (context, index) {
+                    final transaction = newList[index];
 
-                  return Card(
-                    child: ListTile(
-                      onLongPress: () {
-                        showDialog(
-                            context: context,
-                            builder: ((context) {
-                              return AlertDialog(
-                                content: const Text(
-                                  'Do you want to Delete.',
-                                ),
-                                actions: [
-                                  TextButton(
+                    return Card(
+                      child: ListTile(
+                        onLongPress: () {
+                          showDialog(
+                              context: context,
+                              builder: ((context) {
+                                return AlertDialog(
+                                  content: const Text(
+                                    'Do you want to Delete.',
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                        onPressed: (() {
+                                          TransactionDB.instance
+                                              .deleteTransaction(transaction);
+                                          Navigator.of(context).pop();
+                                        }),
+                                        child: const Text(
+                                          'yes',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                          ),
+                                        )),
+                                    TextButton(
                                       onPressed: (() {
-                                        TransactionDB.instance
-                                            .deleteTransaction(transaction);
                                         Navigator.of(context).pop();
                                       }),
                                       child: const Text(
-                                        'yes',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                        ),
-                                      )),
-                                  TextButton(
-                                    onPressed: (() {
-                                      Navigator.of(context).pop();
-                                    }),
-                                    child: const Text(
-                                      'no',
-                                      style: TextStyle(color: Colors.black),
+                                        'no',
+                                        style: TextStyle(color: Colors.black),
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              );
-                            }));
-                      },
-                      leading: CircleAvatar(
-                        backgroundColor: Colors.transparent,
-                        child: Icon(
-                          transaction.type == CategoryType.income
-                              ? Icons.arrow_upward_outlined
-                              : Icons.arrow_downward_outlined,
-                          color: transaction.type == CategoryType.income
-                              ? const Color(0xFF68AFF6)
-                              : const Color(0xFFDE45FE),
+                                  ],
+                                );
+                              }));
+                        },
+                        leading: CircleAvatar(
+                          backgroundColor: Colors.transparent,
+                          child: Icon(
+                            transaction.type == CategoryType.income
+                                ? Icons.arrow_upward_outlined
+                                : Icons.arrow_downward_outlined,
+                            color: transaction.type == CategoryType.income
+                                ? const Color(0xFF68AFF6)
+                                : const Color(0xFFDE45FE),
+                          ),
+                        ),
+                        title: Text(
+                          '₹ ${transaction.amount}',
+                          style: const TextStyle(color: Colors.black),
+                        ),
+                        subtitle: Text(
+                          transaction.categoryModel.categoryName,
+                        ),
+                        trailing: Text(
+                          parseDateTime(transaction.date),
                         ),
                       ),
-                      title: Text(
-                        '₹ ${transaction.amount}',
-                        style: const TextStyle(color: Colors.black),
-                      ),
-                      subtitle: Text(
-                        transaction.categoryModel.categoryName,
-                      ),
-                      trailing: Text(
-                        parseDateTime(transaction.date),
-                      ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               );
       },
     );

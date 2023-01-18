@@ -1,3 +1,4 @@
+import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:money_track/categories/category_app_popup.dart';
@@ -18,6 +19,7 @@ class AddTransaction extends StatefulWidget {
 class _AddTransactionState extends State<AddTransaction> {
   final _notesTextEditingController = TextEditingController();
   final _amountTextEditingController = TextEditingController();
+  // final DatePickerController _controller = DatePickerController();
 
   DateTime? _selectedDateTime;
   CategoryType? _selectedCategoryType;
@@ -26,6 +28,7 @@ class _AddTransactionState extends State<AddTransaction> {
   final _formKey = GlobalKey<FormState>();
   String _categoryItemValidationText = '';
   String _dateValidationText = '';
+  int _value = 0;
 
   @override
   void initState() {
@@ -50,21 +53,28 @@ class _AddTransactionState extends State<AddTransaction> {
             key: _formKey,
             child: Column(
               children: [
+                //income expense category selection is here
                 selectCategoryType(),
+
                 //category drop down button and add category button
                 selectCategoryItem(context),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      _categoryItemValidationText,
-                      style: const TextStyle(
-                        color: Color.fromARGB(255, 192, 29, 17),
-                        fontSize: 12,
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        _categoryItemValidationText,
+                        style: const TextStyle(
+                          color: Color.fromARGB(255, 192, 29, 17),
+                          fontSize: 12,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
+
                 TextFormField(
                   controller: _amountTextEditingController,
                   validator: (value) {
@@ -108,19 +118,19 @@ class _AddTransactionState extends State<AddTransaction> {
                   minLines: 5, // <-- SEE HERE
                   maxLines: 5,
                 ),
-                //date of the transaction
+
                 TextButton.icon(
                   onPressed: (() async {
                     final selectedTempDate = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime.now().subtract(
-                        const Duration(
-                          days: 30,
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime.now().subtract(
+                          const Duration(
+                            days: 30,
+                          ),
                         ),
-                      ),
-                      lastDate: DateTime.now(),
-                    );
+                        lastDate: DateTime.now(),
+                        helpText: 'select a Date');
                     if (selectedTempDate == null) {
                       return;
                     } else {
@@ -163,7 +173,8 @@ class _AddTransactionState extends State<AddTransaction> {
                     }
                     if (_categoryId == null) {
                       setState(() {
-                        _categoryItemValidationText = 'Please Select Category';
+                        _categoryItemValidationText =
+                            '    Please Select Category';
                       });
                     } else {
                       _categoryItemValidationText = '';
@@ -190,6 +201,7 @@ class _AddTransactionState extends State<AddTransaction> {
       children: [
         DecoratedBox(
           decoration: BoxDecoration(
+            color: const Color(0xFFE9E8E8),
             border: Border.all(
               // color: Colors.black38,
               width: 1,
@@ -198,9 +210,15 @@ class _AddTransactionState extends State<AddTransaction> {
           ),
           child: Padding(
             padding: const EdgeInsets.only(left: 5, top: 5, bottom: 5),
+            // CustomDropdown(
+            //       hintText: 'Select job role',
+            //       items: list,
+            //       controller: jobRoleFormDropdownCtrl,
+            //       excludeSelected: false,
+            //     ),
             child: DropdownButton(
-              dropdownColor: Colors.amber,
-              elevation: 0,
+              // dropdownColor: Colors.amber,
+              elevation: 9,
 
               // border: Border.all(color: Colors.redAccent, width: 2),
               hint: const Text('select category'),
@@ -214,10 +232,10 @@ class _AddTransactionState extends State<AddTransaction> {
                   value: e.id,
                   child: Container(
                     decoration: BoxDecoration(
-                      border: Border.all(
-                        // color: Colors.black38,
-                        width: 1,
-                      ),
+                      // border: Border.all(
+                      //   // color: Colors.black38,
+                      //   width: 1,
+                      // ),
                       borderRadius: BorderRadius.circular(5),
                     ),
                     width: 270,
@@ -256,60 +274,39 @@ class _AddTransactionState extends State<AddTransaction> {
 
   Row selectCategoryType() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        Row(
-          children: [
-            //   OutlineButton(
-            //   onPressed: () {
-            //     setState(() {
-            //       value = index;
-            //     });
-            //   },
-            //   child: Text(
-            //     text,
-            //     style: TextStyle(
-            //       color: (value == index) ? Colors.green : Colors.black,
-            //     ),
-            //   ),
-            //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            //   borderSide:
-            //       BorderSide(color: (value == index) ? Colors.green : Colors.black),
-            // );// RadioButton('Income', CategoryType.income),
-            Radio(
-              // value is what the radio button is holding
-              value: CategoryType.income,
-              //user selected value is group value ,
-              groupValue: _selectedCategoryType,
-              onChanged: ((value) {
-                setState(() {
-                  _selectedCategoryType = CategoryType.income;
-                  _categoryId = null;
-                });
-              }),
-            ),
-            const Text(
-              'Income',
-            ),
-          ],
+        ChoiceChip(
+          padding: const EdgeInsets.all(8),
+          label: const Text('Income'),
+          // color of selected chip
+          selectedColor: const Color(0xFF68AFF6),
+          // selected chip value
+          selected: _value == 0,
+          // onSelected method
+          onSelected: (bool selected) {
+            setState(() {
+              _value = 0;
+              _selectedCategoryType = CategoryType.income;
+              _categoryId = null;
+            });
+          },
         ),
-        Row(
-          children: [
-            // RadioButton('Expense', CategoryType.expense),
-            Radio(
-              value: CategoryType.expense,
-              groupValue: _selectedCategoryType,
-              onChanged: ((value) {
-                setState(() {
-                  _selectedCategoryType = CategoryType.expense;
-                  _categoryId = null;
-                });
-              }),
-            ),
-            const Text(
-              'Expense',
-            ),
-          ],
+        ChoiceChip(
+          padding: const EdgeInsets.all(8),
+          label: const Text('Expense'),
+          // color of selected chip
+          selectedColor: const Color(0xFFDE45FE),
+          // selected chip value
+          selected: _value == 1,
+          // onSelected method
+          onSelected: (bool selected) {
+            setState(() {
+              _value = 1;
+              _selectedCategoryType = CategoryType.expense;
+              _categoryId = null;
+            });
+          },
         ),
       ],
     );
@@ -352,13 +349,25 @@ class _AddTransactionState extends State<AddTransaction> {
 
     TransactionDB.instance.addTransaction(modal);
     Navigator.of(context).pop();
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text(
-          'Transaction Added',
-        ),
-        backgroundColor: Color(0xFF2E49FB),
-      ),
+    // ScaffoldMessenger.of(context).showSnackBar(
+    //   SnackBar(
+    //     elevation: 0,
+    //     behavior: SnackBarBehavior.floating,
+    //     backgroundColor: Colors.transparent,
+    //     content: AwesomeSnackbarContent(
+    //       title: 'On Snap!',
+    //       message: 'Category Add Successfully !',
+    //       contentType: ContentType.success,
+    //     ),
+    //   ),
+    // );
+    AnimatedSnackBar.rectangle(
+      'Success',
+      'Transaction Added Successfully',
+      type: AnimatedSnackBarType.success,
+      brightness: Brightness.light,
+    ).show(
+      context,
     );
     // final snackBar = SnackBar(
     //   elevation: 0,
@@ -383,4 +392,12 @@ class _AddTransactionState extends State<AddTransaction> {
     //here _splitedDate.last is second word that is month name and other one is the first word
     return "${splitedDate.last}  ${splitedDate.first} ";
   }
+  // Call when you want to show the time picker
+// final DateTime? newDate = await showDatePicker(
+//                     context: context,
+//                     initialDate: DateTime(2020, 11, 17),
+//                     firstDate: DateTime(2017, 1),
+//                     lastDate: DateTime(2022, 7),
+//                     helpText: 'Select a date',
+//                   );
 }
