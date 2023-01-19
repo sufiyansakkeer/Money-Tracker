@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 
 import 'package:money_track/db/transaction/db_transaction_function.dart';
@@ -24,36 +25,33 @@ class _TransactionListAllState extends State<TransactionListAll> {
         ),
         actions: [
           IconButton(
-            onPressed: (() {}),
-            icon: Icon(Icons.filter_list),
+            onPressed: (() {
+              showSearch(
+                context: context,
+                delegate: SearchTransaction(),
+              );
+            }),
+            icon: const Icon(Icons.search),
           ),
           IconButton(
             onPressed: (() {}),
-            icon: Icon(Icons.more_vert_outlined),
+            icon: const Icon(Icons.filter_list),
+          ),
+          IconButton(
+            onPressed: (() {}),
+            icon: const Icon(Icons.more_vert_outlined),
           ),
         ],
       ),
-      body: Scaffold(
-        appBar: AppBar(
-          title: Text('Search'),
-          actions: [
-            IconButton(
-                onPressed: (() {
-                  showSearch(context: context, delegate: SearchTransaction());
-                }),
-                icon: Icon(Icons.search))
-          ],
-        ),
-        body: Column(
-          children: [
-            const Expanded(
-              child: SizedBox(
-                width: double.infinity,
-                child: TransactionList(),
-              ),
+      body: Column(
+        children: const [
+          Expanded(
+            child: SizedBox(
+              width: double.infinity,
+              child: TransactionList(),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -107,68 +105,84 @@ class _TransactionListState extends State<TransactionList> {
                 itemBuilder: (context, index) {
                   final transaction = newList[index];
 
-                  return Card(
-                    child: ListTile(
-                      onLongPress: () {
-                        showDialog(
-                            context: context,
-                            builder: ((context) {
-                              return AlertDialog(
-                                content: const Text(
-                                  'Do you want to Delete.',
-                                ),
-                                actions: [
-                                  TextButton(
-                                      onPressed: (() {
-                                        TransactionDB.instance
-                                            .deleteTransaction(transaction);
-                                        Navigator.of(context).pop();
-                                      }),
-                                      child: const Text(
-                                        'yes',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                        ),
-                                      )),
-                                  TextButton(
-                                    onPressed: (() {
-                                      Navigator.of(context).pop();
-                                    }),
-                                    child: const Text(
-                                      'no',
-                                      style: TextStyle(color: Colors.black),
-                                    ),
-                                  ),
-                                ],
-                              );
-                            }));
-                      },
-                      leading: CircleAvatar(
-                        backgroundColor: Colors.transparent,
-                        child: Icon(
-                          transaction.type == CategoryType.income
-                              ? Icons.arrow_upward_outlined
-                              : Icons.arrow_downward_outlined,
-                          color: transaction.type == CategoryType.income
-                              ? const Color(0xFF68AFF6)
-                              : const Color(0xFFDE45FE),
-                        ),
-                      ),
-                      title: Text(
-                        '₹ ${transaction.amount}',
-                        style: const TextStyle(color: Colors.black),
-                      ),
-                      subtitle: Text(
-                        transaction.categoryModel.categoryName,
-                      ),
-                      trailing: Text(
-                        parseDateTime(transaction.date),
-                      ),
-                    ),
-                  );
+                  return slidableListWidget(transaction);
                 },
               );
       },
+    );
+  }
+
+  Slidable slidableListWidget(TransactionModel transaction) {
+    return Slidable(
+      endActionPane: ActionPane(motion: const StretchMotion(), children: [
+        SlidableAction(
+          onPressed: ((context) {}),
+          icon: Icons.edit,
+        ),
+        SlidableAction(
+          onPressed: ((context) {
+            showDialog(
+                context: context,
+                builder: ((context) {
+                  return AlertDialog(
+                    content: const Text(
+                      'Do you want to Delete.',
+                    ),
+                    actions: [
+                      TextButton(
+                          onPressed: (() {
+                            TransactionDB.instance
+                                .deleteTransaction(transaction);
+                            Navigator.of(context).pop();
+                          }),
+                          child: const Text(
+                            'yes',
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                          )),
+                      TextButton(
+                        onPressed: (() {
+                          Navigator.of(context).pop();
+                        }),
+                        child: const Text(
+                          'no',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ),
+                    ],
+                  );
+                }));
+          }),
+          icon: Icons.delete,
+        ),
+      ]),
+      child: Card(
+        child: ListTile(
+          onLongPress: () {},
+          leading: CircleAvatar(
+            backgroundColor: Colors.transparent,
+            child: Icon(
+              transaction.type == CategoryType.income
+                  ? Icons.arrow_upward_outlined
+                  : Icons.arrow_downward_outlined,
+              color: transaction.type == CategoryType.income
+                  ? const Color(0xFF68AFF6)
+                  : const Color(0xFFDE45FE),
+            ),
+          ),
+          title: Text(
+            '₹ ${transaction.amount}',
+            style: const TextStyle(color: Colors.black),
+          ),
+          subtitle: Text(
+            transaction.categoryModel.categoryName,
+          ),
+          trailing: Text(
+            parseDateTime(transaction.date),
+          ),
+        ),
+      ),
     );
   }
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:money_track/Transaction/transaction_list.dart';
+
 import 'package:money_track/db/category/db_category.dart';
 import 'package:money_track/db/transaction/db_transaction_function.dart';
 import 'package:money_track/models/categories_model/category_model.dart';
@@ -16,7 +16,7 @@ class SearchTransaction extends SearchDelegate {
   List<Widget>? buildActions(BuildContext context) {
     return [
       IconButton(
-        icon: const Icon(Icons.clear),
+        icon: Icon(Icons.clear),
         onPressed: () {
           query = '';
         },
@@ -27,7 +27,7 @@ class SearchTransaction extends SearchDelegate {
   @override
   Widget? buildLeading(BuildContext context) {
     return IconButton(
-      icon: const Icon(Icons.arrow_back_ios_new),
+      icon: Icon(Icons.adaptive.arrow_back),
       onPressed: () {
         close(context, null); // for closing the search page and going back
       },
@@ -51,14 +51,32 @@ class SearchTransaction extends SearchDelegate {
                 return Column(
                   children: [
                     ListTile(
-                      title: Text(transaction.amount.toString()),
+                      leading: CircleAvatar(
+                        backgroundColor: Colors.transparent,
+                        child: Icon(
+                          transaction.type == CategoryType.income
+                              ? Icons.arrow_upward_outlined
+                              : Icons.arrow_downward_outlined,
+                          color: transaction.type == CategoryType.income
+                              ? const Color(0xFF68AFF6)
+                              : const Color(0xFFDE45FE),
+                        ),
+                      ),
+                      title: Text(
+                        transaction.amount.toString(),
+                        style: const TextStyle(color: Colors.black),
+                      ),
                       subtitle: Text(
                           transaction.categoryModel.categoryName.toString()),
                     ),
                   ],
                 );
               } else {
-                return Container();
+                return const Center(
+                  child: Text(
+                    'No data found',
+                  ),
+                );
               }
             }),
             itemCount: newList.length);
@@ -77,31 +95,50 @@ class SearchTransaction extends SearchDelegate {
         return ListView.builder(
             itemBuilder: ((context, index) {
               final transaction = newList[index];
-              if (transaction.categoryModel.categoryName
-                  .toLowerCase()
-                  .contains(query.toLowerCase())) {
-                return Column(
-                  children: [
-                    ListTile(
-                      leading: CircleAvatar(
-                        child: Icon(
-                          transaction.type == CategoryType.income
-                              ? Icons.arrow_upward_outlined
-                              : Icons.arrow_downward_outlined,
-                          color: transaction.type == CategoryType.income
-                              ? const Color(0xFF68AFF6)
-                              : const Color(0xFFDE45FE),
+
+              return transaction.categoryModel.categoryName
+                      .toLowerCase()
+                      .contains(query.toLowerCase())
+                  ? Column(
+                      children: [
+                        Card(
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              backgroundColor: Colors.transparent,
+                              child: Icon(
+                                transaction.type == CategoryType.income
+                                    ? Icons.arrow_upward_outlined
+                                    : Icons.arrow_downward_outlined,
+                                color: transaction.type == CategoryType.income
+                                    ? const Color(0xFF68AFF6)
+                                    : const Color(0xFFDE45FE),
+                              ),
+                            ),
+                            title: Text(
+                              transaction.amount.toString(),
+                              style: const TextStyle(color: Colors.black),
+                            ),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  transaction.categoryModel.categoryName
+                                      .toString(),
+                                ),
+                                // Text(
+                                //   transaction.notes.toString(),
+                                // ),
+                              ],
+                            ),
+                          ),
                         ),
+                      ],
+                    )
+                  : const Center(
+                      child: Text(
+                        'No data found',
                       ),
-                      title: Text(transaction.amount.toString()),
-                      subtitle: Text(
-                          transaction.categoryModel.categoryName.toString()),
-                    ),
-                  ],
-                );
-              } else {
-                return Container();
-              }
+                    );
             }),
             itemCount: newList.length);
       },

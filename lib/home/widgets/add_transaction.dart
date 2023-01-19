@@ -20,7 +20,8 @@ class _AddTransactionState extends State<AddTransaction> {
   final _notesTextEditingController = TextEditingController();
   final _amountTextEditingController = TextEditingController();
   // final DatePickerController _controller = DatePickerController();
-
+  bool _isVisibleCategoryId = false;
+  bool _isVisibleDate = false;
   DateTime? _selectedDateTime;
   CategoryType? _selectedCategoryType;
   CategoryModel? _selectedCategoryModel;
@@ -58,21 +59,29 @@ class _AddTransactionState extends State<AddTransaction> {
 
                 //category drop down button and add category button
                 selectCategoryItem(context),
-
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        _categoryItemValidationText,
-                        style: const TextStyle(
-                          color: Color.fromARGB(255, 192, 29, 17),
-                          fontSize: 12,
+                const SizedBox(
+                  height: 5,
+                ),
+                Visibility(
+                  visible: _isVisibleCategoryId,
+                  child: Padding(
+                    padding: const EdgeInsets.all(3.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          '    Please Select Category',
+                          style: const TextStyle(
+                            color: Color.fromARGB(255, 192, 29, 17),
+                            fontSize: 12,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
+                ),
+                const SizedBox(
+                  height: 5,
                 ),
 
                 TextFormField(
@@ -148,15 +157,24 @@ class _AddTransactionState extends State<AddTransaction> {
                         : parseDateTime(_selectedDateTime!),
                   ),
                 ),
-                Text(
-                  _dateValidationText,
-                  style: const TextStyle(
-                    color: Color.fromARGB(255, 192, 29, 17),
-                    fontSize: 12,
+                const SizedBox(
+                  height: 5,
+                ),
+                Visibility(
+                  visible: _isVisibleDate,
+                  child: const Padding(
+                    padding: EdgeInsets.all(3.0),
+                    child: Text(
+                      'please Select Date',
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 192, 29, 17),
+                        fontSize: 12,
+                      ),
+                    ),
                   ),
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 5,
                 ),
 
                 // submit button
@@ -164,20 +182,23 @@ class _AddTransactionState extends State<AddTransaction> {
                   onPressed: (() {
                     if (_selectedDateTime == null) {
                       setState(() {
-                        _dateValidationText = 'please Select Date';
+                        _isVisibleDate = true;
                       });
                     } else {
                       setState(() {
-                        _dateValidationText = '';
+                        _isVisibleDate = false;
                       });
                     }
                     if (_categoryId == null) {
                       setState(() {
-                        _categoryItemValidationText =
-                            '    Please Select Category';
+                        // _categoryItemValidationText =
+                        //     '    Please Select Category';
+                        _isVisibleCategoryId = true;
                       });
                     } else {
-                      _categoryItemValidationText = '';
+                      setState(() {
+                        _isVisibleCategoryId = false;
+                      });
                     }
 
                     if (_formKey.currentState!.validate()) {}

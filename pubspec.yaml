@@ -38,6 +38,7 @@ dependencies:
   decorated_dropdownbutton: 0.0.3
   flutter:
     sdk: flutter
+  flutter_slidable: ^2.0.0
   hive: 2.2.3
   hive_flutter: 1.1.0
   intl: ^0.18.0
