@@ -27,8 +27,7 @@ class _AddTransactionState extends State<AddTransaction> {
   CategoryModel? _selectedCategoryModel;
   String? _categoryId;
   final _formKey = GlobalKey<FormState>();
-  String _categoryItemValidationText = '';
-  String _dateValidationText = '';
+
   int _value = 0;
 
   @override
@@ -59,29 +58,27 @@ class _AddTransactionState extends State<AddTransaction> {
 
                 //category drop down button and add category button
                 selectCategoryItem(context),
-                const SizedBox(
-                  height: 5,
-                ),
-                Visibility(
-                  visible: _isVisibleCategoryId,
-                  child: Padding(
-                    padding: const EdgeInsets.all(3.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          '    Please Select Category',
-                          style: const TextStyle(
-                            color: Color.fromARGB(255, 192, 29, 17),
-                            fontSize: 12,
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  child: Visibility(
+                    visible: _isVisibleCategoryId,
+                    child: Padding(
+                      padding: const EdgeInsets.all(3.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: const [
+                          Text(
+                            '    Please Select Category',
+                            style: TextStyle(
+                              color: Color.fromARGB(255, 192, 29, 17),
+                              fontSize: 12,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 5,
                 ),
 
                 TextFormField(
@@ -157,24 +154,22 @@ class _AddTransactionState extends State<AddTransaction> {
                         : parseDateTime(_selectedDateTime!),
                   ),
                 ),
-                const SizedBox(
-                  height: 5,
-                ),
-                Visibility(
-                  visible: _isVisibleDate,
-                  child: const Padding(
-                    padding: EdgeInsets.all(3.0),
-                    child: Text(
-                      'please Select Date',
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 192, 29, 17),
-                        fontSize: 12,
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  child: Visibility(
+                    visible: _isVisibleDate,
+                    child: const Padding(
+                      padding: EdgeInsets.all(3.0),
+                      child: Text(
+                        'please Select Date',
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 192, 29, 17),
+                          fontSize: 12,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 5,
                 ),
 
                 // submit button
@@ -201,8 +196,9 @@ class _AddTransactionState extends State<AddTransaction> {
                       });
                     }
 
-                    if (_formKey.currentState!.validate()) {}
-                    addTransaction();
+                    if (_formKey.currentState!.validate()) {
+                      addTransaction();
+                    }
                   }),
                   child: const Text(
                     'Submit',
@@ -361,6 +357,7 @@ class _AddTransactionState extends State<AddTransaction> {
     // _categoryId;
     // _selectedCategoryType;
     final modal = TransactionModel(
+      id: DateTime.now().microsecondsSinceEpoch.toString(),
       categoryModel: _selectedCategoryModel!,
       amount: parsedAmount,
       notes: notesText,
@@ -370,18 +367,7 @@ class _AddTransactionState extends State<AddTransaction> {
 
     TransactionDB.instance.addTransaction(modal);
     Navigator.of(context).pop();
-    // ScaffoldMessenger.of(context).showSnackBar(
-    //   SnackBar(
-    //     elevation: 0,
-    //     behavior: SnackBarBehavior.floating,
-    //     backgroundColor: Colors.transparent,
-    //     content: AwesomeSnackbarContent(
-    //       title: 'On Snap!',
-    //       message: 'Category Add Successfully !',
-    //       contentType: ContentType.success,
-    //     ),
-    //   ),
-    // );
+
     AnimatedSnackBar.rectangle(
       'Success',
       'Transaction Added Successfully',
@@ -390,20 +376,6 @@ class _AddTransactionState extends State<AddTransaction> {
     ).show(
       context,
     );
-    // final snackBar = SnackBar(
-    //   elevation: 0,
-    //   behavior: SnackBarBehavior.floating,
-    //   backgroundColor: Colors.transparent,
-    //   content: AwesomeSnackbarContent(
-    //     title: 'On Snap!',
-    //     message: 'Category Add Successfully !',
-    //     contentType: ContentType.success,
-    //   ),
-    // );
-
-    // ScaffoldMessenger.of(context)
-    //   ..hideCurrentSnackBar()
-    //   ..showSnackBar(snackBar);
   }
 
   String parseDateTime(DateTime date) {
@@ -413,12 +385,4 @@ class _AddTransactionState extends State<AddTransaction> {
     //here _splitedDate.last is second word that is month name and other one is the first word
     return "${splitedDate.last}  ${splitedDate.first} ";
   }
-  // Call when you want to show the time picker
-// final DateTime? newDate = await showDatePicker(
-//                     context: context,
-//                     initialDate: DateTime(2020, 11, 17),
-//                     firstDate: DateTime(2017, 1),
-//                     lastDate: DateTime(2022, 7),
-//                     helpText: 'Select a date',
-//                   );
 }

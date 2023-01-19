@@ -2,16 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:money_track/models/transaction_model/transaction_model.dart';
 
-const transactionDbName = 'Transaction-database';
-
 abstract class TransactionDBFunction {
   Future<void> addTransaction(TransactionModel obj);
   Future<List<TransactionModel>> getAllTransaction();
-  Future<void> editTransaction(TransactionModel obj);
+  Future<void> editTransaction(TransactionModel value);
   Future<void> deleteTransaction(TransactionModel obj);
 }
 
 class TransactionDB implements TransactionDBFunction {
+  String transactionDbName = 'Transaction-database';
   //it is a named constructor we created,which is private
   TransactionDB._internal();
   //using the above constructor we creating the object,
@@ -63,9 +62,10 @@ class TransactionDB implements TransactionDBFunction {
   }
 
   @override
-  Future<void> editTransaction(TransactionModel obj) async {
+  Future<void> editTransaction(TransactionModel value) async {
     final transactionDb =
         await Hive.openBox<TransactionModel>(transactionDbName);
+    await transactionDb.put(value.id, value);
 
     refreshUi();
   }

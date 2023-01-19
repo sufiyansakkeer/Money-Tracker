@@ -23,7 +23,6 @@ class TransactionModel {
     required this.notes,
     required this.date,
     required this.type,
-  }) {
-    id = DateTime.now().microsecondsSinceEpoch.toString();
-  }
+    required this.id,
+  });
 }

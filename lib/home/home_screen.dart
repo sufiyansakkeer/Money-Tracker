@@ -53,7 +53,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       border: Border.all(color: Colors.transparent),
                       image: const DecorationImage(
                         image: AssetImage(
-                            "assets/images/WhatsApp Image 2023-01-17 at 12.06.12.jpg"),
+                          "assets/images/WhatsApp Image 2023-01-17 at 12.06.12.jpg",
+                        ),
                         fit: BoxFit.fill,
                       ),
                     ),
