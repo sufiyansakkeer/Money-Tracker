@@ -113,14 +113,19 @@ class _TransactionListState extends State<TransactionList> {
                         ActionPane(motion: const StretchMotion(), children: [
                       SlidableAction(
                         onPressed: ((context) {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: ((context) {
-                            return EditTransaction(
-                              obj: transaction,
-                            );
-                          })));
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: ((context) {
+                                return EditTransaction(
+                                  obj: transaction,
+                                );
+                              }),
+                            ),
+                          );
                         }),
                         icon: Icons.edit,
+                        foregroundColor: const Color(0xFF2E49FB),
                       ),
                       SlidableAction(
                         onPressed: ((context) {
@@ -158,6 +163,7 @@ class _TransactionListState extends State<TransactionList> {
                               }));
                         }),
                         icon: Icons.delete,
+                        foregroundColor: Colors.red,
                       ),
                     ]),
                     child: Card(

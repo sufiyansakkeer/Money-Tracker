@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:money_track/db/category/db_category.dart';
 import 'package:money_track/db/transaction/db_transaction_function.dart';
+import 'package:money_track/db/transaction/income_and_expense.dart';
 import 'package:money_track/home/widgets/floating_action_button.dart';
 
-import 'package:money_track/Transaction/transaction_list.dart';
+import 'package:money_track/models/categories_model/category_model.dart';
 import 'package:money_track/models/transaction_model/transaction_model.dart';
+import 'package:money_track/Transaction/transaction_list.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,12 +16,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  var scaffoldKey = GlobalKey<ScaffoldState>();
-  int? totalAmount = 100000;
   @override
   Widget build(BuildContext context) {
     CategoryDb.instance.refreshUI();
     TransactionDB.instance.refreshUi();
+    incomeAndExpense();
     return Scaffold(
       body: Column(
         children: [
@@ -62,15 +63,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         ValueListenableBuilder(
-                          valueListenable:
-                              TransactionDB.instance.transactionListNotifier,
-                          builder: (BuildContext context,
-                              List<TransactionModel> newList, Widget? child) {
+                          valueListenable: totalBalance,
+                          builder: (BuildContext context, dynamic value,
+                              Widget? child) {
                             return Column(
                               children: [
-                                const Text(
-                                  'Total',
-                                  style: TextStyle(
+                                Text(
+                                  totalBalance.value < 0 ? 'Damn' : 'Total',
+                                  style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
@@ -80,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   height: 5,
                                 ),
                                 Text(
-                                  '$totalAmount',
+                                  totalBalance.value.toString(),
                                   style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 25,
@@ -94,54 +94,66 @@ class _HomeScreenState extends State<HomeScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Column(
-                              children: [
-                                const Text(
-                                  'Expense',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                Text(
-                                  '$totalAmount',
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
+                            ValueListenableBuilder(
+                              valueListenable: expenseTotal,
+                              builder: (BuildContext context, dynamic value,
+                                  Widget? child) {
+                                return Column(
+                                  children: [
+                                    const Text(
+                                      'Expense',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      expenseTotal.value.toString(),
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
                             ),
                             const SizedBox(
                               width: 20,
                             ),
-                            Column(
-                              children: [
-                                const Text(
-                                  'Income',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                Text(
-                                  '$totalAmount',
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
+                            ValueListenableBuilder(
+                              valueListenable: incomeTotal,
+                              builder: (BuildContext context, dynamic value,
+                                  Widget? child) {
+                                return Column(
+                                  children: [
+                                    const Text(
+                                      'Income',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      '${incomeTotal.value}',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
                             ),
                           ],
                         )
@@ -220,32 +232,6 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       floatingActionButton: const CustomAddWidget(),
-
-      //  FloatingActionButton(
-      //   child: Icon(Icons.add),
-      //   onPressed: (() {
-      //     showGeneralDialog(
-      //       context: context,
-      //       pageBuilder: (ctx, a1, a2) {
-      //         return Container();
-      //       },
-      //       transitionBuilder: (ctx, a1, a2, child) {
-      //         var curve = Curves.easeInOut.transform(a1.value);
-      //         return Transform.scale(
-      //           scale: curve,
-      //           child: _dialog(ctx),
-      //         );
-      //       },
-      //       transitionDuration: const Duration(milliseconds: 300),
-      //     );
-      //   }),
-      // ),
-      // CustomFABWidget(),
     );
   }
-
-  // Future<void> transactionUi(TransactionDB obj) {
-  //   final totalExpense;
-  //   final totalIncome;
-  // }
 }

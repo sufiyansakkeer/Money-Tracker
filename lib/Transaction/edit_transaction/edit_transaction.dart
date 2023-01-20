@@ -2,7 +2,7 @@
 
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:intl/intl.dart';
 
 import 'package:money_track/db/category/db_category.dart';
@@ -11,29 +11,28 @@ import 'package:money_track/models/categories_model/category_model.dart';
 import 'package:money_track/models/transaction_model/transaction_model.dart';
 
 class EditTransaction extends StatefulWidget {
-  TransactionModel obj;
-
-  String? id;
   EditTransaction({
     Key? key,
     required this.obj,
     this.id,
   }) : super(key: key);
 
+  String? id;
+  TransactionModel obj;
+
   @override
   State<EditTransaction> createState() => _EditTransactionState();
 }
 
 class _EditTransactionState extends State<EditTransaction> {
-  TextEditingController _notesTextEditingController = TextEditingController();
   TextEditingController _amountTextEditingController = TextEditingController();
-  bool _isVisibleCategoryId = false;
-
-  DateTime? _selectedDateTime;
-  CategoryType? _selectedCategoryType;
-  CategoryModel? _selectedCategoryModel;
   String? _categoryId;
   final _formKey = GlobalKey<FormState>();
+  bool _isVisibleCategoryId = false;
+  TextEditingController _notesTextEditingController = TextEditingController();
+  CategoryModel? _selectedCategoryModel;
+  CategoryType? _selectedCategoryType;
+  DateTime? _selectedDateTime;
   int _value = 0;
 
   @override
@@ -44,6 +43,79 @@ class _EditTransactionState extends State<EditTransaction> {
     _notesTextEditingController = TextEditingController(text: widget.obj.notes);
     _selectedDateTime = widget.obj.date;
     _selectedCategoryType = CategoryType.income;
+  }
+
+  Future<void> editTransaction() async {
+    final amountText = _amountTextEditingController.text;
+    final notesText = _notesTextEditingController.text;
+    if (amountText.isEmpty) {
+      return;
+    }
+    //here we convert the amount text to double because amount should be number ,
+    // using try parse if it is alphabets it will return null value
+    final parsedAmount = double.tryParse(amountText);
+    //to check the parsed amount is null or not
+    if (parsedAmount == null) {
+      return;
+    }
+    //to check the notes is null or not
+    if (notesText.isEmpty) {
+      return;
+    }
+    //here we checked category id because at initial category id is null
+    if (_categoryId == null) {
+      return;
+    }
+    // to check the selected date in null of not
+    if (_selectedDateTime == null) {
+      return;
+    }
+
+    // if (_selectedCategoryType == null) {
+    //   return;
+    // }
+    // _categoryId;
+    // _selectedCategoryType;
+    final modal = TransactionModel(
+      categoryModel: _selectedCategoryModel!,
+      amount: parsedAmount,
+      notes: notesText,
+      date: _selectedDateTime!,
+      type: _selectedCategoryType!,
+      id: widget.obj.id,
+    );
+
+    TransactionDB.instance.editTransaction(modal);
+    Navigator.of(context).pop();
+    TransactionDB.instance.refreshUi();
+    // ScaffoldMessenger.of(context).showSnackBar(
+    //   SnackBar(
+    //     elevation: 0,
+    //     behavior: SnackBarBehavior.floating,
+    //     backgroundColor: Colors.transparent,
+    //     content: AwesomeSnackbarContent(
+    //       title: 'On Snap!',
+    //       message: 'Category Add Successfully !',
+    //       contentType: ContentType.success,
+    //     ),
+    //   ),
+    // );
+    AnimatedSnackBar.rectangle(
+      'Success',
+      'Updated Successfully',
+      type: AnimatedSnackBarType.success,
+      brightness: Brightness.light,
+    ).show(
+      context,
+    );
+  }
+
+  String parseDateTime(DateTime date) {
+    final dateFormatted = DateFormat.MMMMd().format(date);
+    //using split we split the date into two parts
+    final splitedDate = dateFormatted.split(' ');
+    //here _splitedDate.last is second word that is month name and other one is the first word
+    return "${splitedDate.last}  ${splitedDate.first} ";
   }
 
   @override
@@ -100,7 +172,7 @@ class _EditTransactionState extends State<EditTransaction> {
                 ),
               ),
               DropdownButtonFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(
                   borderSide: BorderSide(
                     width: 1,
@@ -269,78 +341,5 @@ class _EditTransactionState extends State<EditTransaction> {
         ),
       )),
     );
-  }
-
-  Future<void> editTransaction() async {
-    final amountText = _amountTextEditingController.text;
-    final notesText = _notesTextEditingController.text;
-    if (amountText.isEmpty) {
-      return;
-    }
-    //here we convert the amount text to double because amount should be number ,
-    // using try parse if it is alphabets it will return null value
-    final parsedAmount = double.tryParse(amountText);
-    //to check the parsed amount is null or not
-    if (parsedAmount == null) {
-      return;
-    }
-    //to check the notes is null or not
-    if (notesText.isEmpty) {
-      return;
-    }
-    //here we checked category id because at initial category id is null
-    if (_categoryId == null) {
-      return;
-    }
-    // to check the selected date in null of not
-    if (_selectedDateTime == null) {
-      return;
-    }
-
-    // if (_selectedCategoryType == null) {
-    //   return;
-    // }
-    // _categoryId;
-    // _selectedCategoryType;
-    final modal = TransactionModel(
-      categoryModel: _selectedCategoryModel!,
-      amount: parsedAmount,
-      notes: notesText,
-      date: _selectedDateTime!,
-      type: _selectedCategoryType!,
-      id: widget.obj.id,
-    );
-
-    TransactionDB.instance.editTransaction(modal);
-    Navigator.of(context).pop();
-    TransactionDB.instance.refreshUi();
-    // ScaffoldMessenger.of(context).showSnackBar(
-    //   SnackBar(
-    //     elevation: 0,
-    //     behavior: SnackBarBehavior.floating,
-    //     backgroundColor: Colors.transparent,
-    //     content: AwesomeSnackbarContent(
-    //       title: 'On Snap!',
-    //       message: 'Category Add Successfully !',
-    //       contentType: ContentType.success,
-    //     ),
-    //   ),
-    // );
-    AnimatedSnackBar.rectangle(
-      'Success',
-      'Updated Successfully',
-      type: AnimatedSnackBarType.success,
-      brightness: Brightness.light,
-    ).show(
-      context,
-    );
-  }
-
-  String parseDateTime(DateTime date) {
-    final dateFormatted = DateFormat.MMMMd().format(date);
-    //using split we split the date into two parts
-    final splitedDate = dateFormatted.split(' ');
-    //here _splitedDate.last is second word that is month name and other one is the first word
-    return "${splitedDate.last}  ${splitedDate.first} ";
   }
 }

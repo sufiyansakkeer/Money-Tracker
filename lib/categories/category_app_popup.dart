@@ -1,8 +1,7 @@
+import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:money_track/db/category/db_category.dart';
 import 'package:money_track/models/categories_model/category_model.dart';
-import 'package:top_snackbar_flutter/custom_snack_bar.dart';
-import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 ValueNotifier<CategoryType> selectCategoryNotifier =
     ValueNotifier(CategoryType.income);
@@ -10,7 +9,7 @@ ValueNotifier<CategoryType> selectCategoryNotifier =
 Future<void> showCategoryAddPopup(
   BuildContext context,
 ) async {
-  final _formKey = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
   final nameEditingController = TextEditingController();
   showDialog(
     context: context,
@@ -35,7 +34,7 @@ Future<void> showCategoryAddPopup(
       //   }),
       // ),
       return Form(
-        key: _formKey,
+        key: formKey,
         child: SimpleDialog(
           backgroundColor: Colors.white,
           shape: RoundedRectangleBorder(
@@ -90,16 +89,16 @@ Future<void> showCategoryAddPopup(
                     shape: const StadiumBorder(),
                   ),
                   onPressed: () {
-                    if (_formKey.currentState!.validate()) {
+                    if (formKey.currentState!.validate()) {
                       // If the form is valid, display a snackbar. In the real world,
 
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text(
-                            'Category Added',
-                          ),
-                          backgroundColor: Color(0xFF2E49FB),
-                        ),
+                      AnimatedSnackBar.rectangle(
+                        'Success',
+                        'Category Added Successfully',
+                        type: AnimatedSnackBarType.success,
+                        brightness: Brightness.light,
+                      ).show(
+                        context,
                       );
                     }
                     final name = nameEditingController.text;

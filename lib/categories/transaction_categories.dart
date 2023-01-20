@@ -31,11 +31,11 @@ class _TransactionCategoriesState extends State<TransactionCategories> {
             backgroundColor: const Color(0xFF2E49FB),
             elevation: 0,
             bottom: TabBar(
-              unselectedLabelColor: const Color(0xFFFFFFFF),
+              // unselectedLabelColor: const Color(0xFFFFFFFF),
               indicatorSize: TabBarIndicatorSize.label,
               indicator: BoxDecoration(
-                borderRadius: BorderRadius.circular(40),
-                color: const Color.fromARGB(255, 255, 255, 255),
+                borderRadius: BorderRadius.circular(110),
+                color: Colors.transparent,
               ),
               tabs: [
                 Tab(
@@ -53,6 +53,7 @@ class _TransactionCategoriesState extends State<TransactionCategories> {
                       alignment: Alignment.center,
                       child: Text(
                         "Income",
+                        style: TextStyle(fontSize: 17),
                       ),
                     ),
                   ),
@@ -69,7 +70,10 @@ class _TransactionCategoriesState extends State<TransactionCategories> {
                     ),
                     child: const Align(
                       alignment: Alignment.center,
-                      child: Text("Expense"),
+                      child: Text(
+                        "Expense",
+                        style: TextStyle(fontSize: 17),
+                      ),
                     ),
                   ),
                 ),

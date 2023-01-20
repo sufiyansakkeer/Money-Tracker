@@ -9,31 +9,206 @@ import 'package:money_track/models/categories_model/category_model.dart';
 import 'package:money_track/models/transaction_model/transaction_model.dart';
 
 class AddTransaction extends StatefulWidget {
-  static const routeName = 'add-transaction';
   const AddTransaction({super.key});
+
+  static const routeName = 'add-transaction';
 
   @override
   State<AddTransaction> createState() => _AddTransactionState();
 }
 
 class _AddTransactionState extends State<AddTransaction> {
-  final _notesTextEditingController = TextEditingController();
   final _amountTextEditingController = TextEditingController();
-  // final DatePickerController _controller = DatePickerController();
-  bool _isVisibleCategoryId = false;
-  bool _isVisibleDate = false;
-  DateTime? _selectedDateTime;
-  CategoryType? _selectedCategoryType;
-  CategoryModel? _selectedCategoryModel;
   String? _categoryId;
   final _formKey = GlobalKey<FormState>();
+  // final DatePickerController _controller = DatePickerController();
+  bool _isVisibleCategoryId = false;
 
+  bool _isVisibleDate = false;
+  final _notesTextEditingController = TextEditingController();
+  CategoryModel? _selectedCategoryModel;
+  CategoryType? _selectedCategoryType;
+  DateTime? _selectedDateTime;
   int _value = 0;
 
   @override
   void initState() {
     _selectedCategoryType = CategoryType.income;
     super.initState();
+  }
+
+  Row selectCategoryItem(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        DecoratedBox(
+          decoration: BoxDecoration(
+            color: const Color(0xFFE9E8E8),
+            border: Border.all(
+              // color: Colors.black38,
+              width: 1,
+            ),
+            borderRadius: BorderRadius.circular(5),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 5, top: 5, bottom: 5),
+            // CustomDropdown(
+            //       hintText: 'Select job role',
+            //       items: list,
+            //       controller: jobRoleFormDropdownCtrl,
+            //       excludeSelected: false,
+            //     ),
+            child: DropdownButton(
+              // dropdownColor: Colors.amber,
+              elevation: 9,
+
+              // border: Border.all(color: Colors.redAccent, width: 2),
+              hint: const Text('select category'),
+              value: _categoryId,
+              items: (_selectedCategoryType == CategoryType.income
+                      ? CategoryDb.instance.incomeCategoryListListener
+                      : CategoryDb.instance.expenseCategoryListListener)
+                  .value
+                  .map((e) {
+                return DropdownMenuItem(
+                  value: e.id,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      // border: Border.all(
+                      //   // color: Colors.black38,
+                      //   width: 1,
+                      // ),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    width: 270,
+                    child: Text(
+                      e.categoryName,
+                    ),
+                  ),
+                  onTap: () {
+                    setState(() {
+                      _selectedCategoryModel = e;
+                    });
+                  },
+                );
+              }).toList(),
+              onChanged: ((selectedValue) {
+                // print(selectedValue);
+                setState(() {
+                  _categoryId = selectedValue;
+                });
+              }),
+            ),
+          ),
+        ),
+        IconButton(
+          onPressed: (() {
+            showCategoryAddPopup(context);
+          }),
+          icon: const Icon(
+            Icons.add_circle_outline,
+            color: Color(0xFF2E49FB),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row selectCategoryType() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        ChoiceChip(
+          padding: const EdgeInsets.all(8),
+          label: const Text('Income'),
+          // color of selected chip
+          selectedColor: const Color(0xFF68AFF6),
+          // selected chip value
+          selected: _value == 0,
+          // onSelected method
+          onSelected: (bool selected) {
+            setState(() {
+              _value = 0;
+              _selectedCategoryType = CategoryType.income;
+              _categoryId = null;
+            });
+          },
+        ),
+        ChoiceChip(
+          padding: const EdgeInsets.all(8),
+          label: const Text('Expense'),
+          // color of selected chip
+          selectedColor: const Color(0xFFDE45FE),
+          // selected chip value
+          selected: _value == 1,
+          // onSelected method
+          onSelected: (bool selected) {
+            setState(() {
+              _value = 1;
+              _selectedCategoryType = CategoryType.expense;
+              _categoryId = null;
+            });
+          },
+        ),
+      ],
+    );
+  }
+
+  Future addTransaction() async {
+    final amountText = _amountTextEditingController.text;
+    final notesText = _notesTextEditingController.text;
+    if (amountText.isEmpty) {
+      return;
+    }
+    //here we convert the amount text to double because amount should be number ,
+    // using try parse if it is alphabets it will return null value
+    final parsedAmount = double.tryParse(amountText);
+    //to check the parsed amount is null or not
+    if (parsedAmount == null) {
+      return;
+    }
+    //to check the notes is null or not
+    if (notesText.isEmpty) {
+      return;
+    }
+    //here we checked category id because at initial category id is null
+    if (_categoryId == null) {
+      return;
+    }
+    // to check the selected date in null of not
+    if (_selectedDateTime == null) {
+      return;
+    }
+    // _categoryId;
+    // _selectedCategoryType;
+    final modal = TransactionModel(
+      id: DateTime.now().microsecondsSinceEpoch.toString(),
+      categoryModel: _selectedCategoryModel!,
+      amount: parsedAmount,
+      notes: notesText,
+      date: _selectedDateTime!,
+      type: _selectedCategoryType!,
+    );
+
+    TransactionDB.instance.addTransaction(modal);
+    Navigator.of(context).pop();
+
+    AnimatedSnackBar.rectangle(
+      'Success',
+      'Transaction Added Successfully',
+      type: AnimatedSnackBarType.success,
+      brightness: Brightness.light,
+    ).show(
+      context,
+    );
+  }
+
+  String parseDateTime(DateTime date) {
+    final dateFormatted = DateFormat.MMMMd().format(date);
+    //using split we split the date into two parts
+    final splitedDate = dateFormatted.split(' ');
+    //here _splitedDate.last is second word that is month name and other one is the first word
+    return "${splitedDate.last}  ${splitedDate.first} ";
   }
 
   //key for the form
@@ -210,179 +385,5 @@ class _AddTransactionState extends State<AddTransaction> {
         ),
       ),
     );
-  }
-
-  Row selectCategoryItem(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        DecoratedBox(
-          decoration: BoxDecoration(
-            color: const Color(0xFFE9E8E8),
-            border: Border.all(
-              // color: Colors.black38,
-              width: 1,
-            ),
-            borderRadius: BorderRadius.circular(5),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 5, top: 5, bottom: 5),
-            // CustomDropdown(
-            //       hintText: 'Select job role',
-            //       items: list,
-            //       controller: jobRoleFormDropdownCtrl,
-            //       excludeSelected: false,
-            //     ),
-            child: DropdownButton(
-              // dropdownColor: Colors.amber,
-              elevation: 9,
-
-              // border: Border.all(color: Colors.redAccent, width: 2),
-              hint: const Text('select category'),
-              value: _categoryId,
-              items: (_selectedCategoryType == CategoryType.income
-                      ? CategoryDb.instance.incomeCategoryListListener
-                      : CategoryDb.instance.expenseCategoryListListener)
-                  .value
-                  .map((e) {
-                return DropdownMenuItem(
-                  value: e.id,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      // border: Border.all(
-                      //   // color: Colors.black38,
-                      //   width: 1,
-                      // ),
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    width: 270,
-                    child: Text(
-                      e.categoryName,
-                    ),
-                  ),
-                  onTap: () {
-                    setState(() {
-                      _selectedCategoryModel = e;
-                    });
-                  },
-                );
-              }).toList(),
-              onChanged: ((selectedValue) {
-                // print(selectedValue);
-                setState(() {
-                  _categoryId = selectedValue;
-                });
-              }),
-            ),
-          ),
-        ),
-        IconButton(
-          onPressed: (() {
-            showCategoryAddPopup(context);
-          }),
-          icon: const Icon(
-            Icons.add_circle_outline,
-            color: Color(0xFF2E49FB),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Row selectCategoryType() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        ChoiceChip(
-          padding: const EdgeInsets.all(8),
-          label: const Text('Income'),
-          // color of selected chip
-          selectedColor: const Color(0xFF68AFF6),
-          // selected chip value
-          selected: _value == 0,
-          // onSelected method
-          onSelected: (bool selected) {
-            setState(() {
-              _value = 0;
-              _selectedCategoryType = CategoryType.income;
-              _categoryId = null;
-            });
-          },
-        ),
-        ChoiceChip(
-          padding: const EdgeInsets.all(8),
-          label: const Text('Expense'),
-          // color of selected chip
-          selectedColor: const Color(0xFFDE45FE),
-          // selected chip value
-          selected: _value == 1,
-          // onSelected method
-          onSelected: (bool selected) {
-            setState(() {
-              _value = 1;
-              _selectedCategoryType = CategoryType.expense;
-              _categoryId = null;
-            });
-          },
-        ),
-      ],
-    );
-  }
-
-  Future addTransaction() async {
-    final amountText = _amountTextEditingController.text;
-    final notesText = _notesTextEditingController.text;
-    if (amountText.isEmpty) {
-      return;
-    }
-    //here we convert the amount text to double because amount should be number ,
-    // using try parse if it is alphabets it will return null value
-    final parsedAmount = double.tryParse(amountText);
-    //to check the parsed amount is null or not
-    if (parsedAmount == null) {
-      return;
-    }
-    //to check the notes is null or not
-    if (notesText.isEmpty) {
-      return;
-    }
-    //here we checked category id because at initial category id is null
-    if (_categoryId == null) {
-      return;
-    }
-    // to check the selected date in null of not
-    if (_selectedDateTime == null) {
-      return;
-    }
-    // _categoryId;
-    // _selectedCategoryType;
-    final modal = TransactionModel(
-      id: DateTime.now().microsecondsSinceEpoch.toString(),
-      categoryModel: _selectedCategoryModel!,
-      amount: parsedAmount,
-      notes: notesText,
-      date: _selectedDateTime!,
-      type: _selectedCategoryType!,
-    );
-
-    TransactionDB.instance.addTransaction(modal);
-    Navigator.of(context).pop();
-
-    AnimatedSnackBar.rectangle(
-      'Success',
-      'Transaction Added Successfully',
-      type: AnimatedSnackBarType.success,
-      brightness: Brightness.light,
-    ).show(
-      context,
-    );
-  }
-
-  String parseDateTime(DateTime date) {
-    final dateFormatted = DateFormat.MMMMd().format(date);
-    //using split we split the date into two parts
-    final splitedDate = dateFormatted.split(' ');
-    //here _splitedDate.last is second word that is month name and other one is the first word
-    return "${splitedDate.last}  ${splitedDate.first} ";
   }
 }
