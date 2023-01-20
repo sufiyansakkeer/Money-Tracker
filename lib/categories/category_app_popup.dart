@@ -6,33 +6,12 @@ import 'package:money_track/models/categories_model/category_model.dart';
 ValueNotifier<CategoryType> selectCategoryNotifier =
     ValueNotifier(CategoryType.income);
 
-Future<void> showCategoryAddPopup(
-  BuildContext context,
-) async {
+Future<void> showCategoryAddPopup(BuildContext context) async {
   final formKey = GlobalKey<FormState>();
   final nameEditingController = TextEditingController();
   showDialog(
     context: context,
     builder: (ctx) {
-      //  FloatingActionButton(
-      //   child: Icon(Icons.add),
-      //   onPressed: (() {
-      //     showGeneralDialog(
-      //       context: context,
-      //       pageBuilder: (ctx, a1, a2) {
-      //         return Container();
-      //       },
-      //       transitionBuilder: (ctx, a1, a2, child) {
-      //         var curve = Curves.easeInOut.transform(a1.value);
-      //         return Transform.scale(
-      //           scale: curve,
-      //           child: _dialog(ctx),
-      //         );
-      //       },
-      //       transitionDuration: const Duration(milliseconds: 300),
-      //     );
-      //   }),
-      // ),
       return Form(
         key: formKey,
         child: SimpleDialog(
@@ -124,7 +103,7 @@ Future<void> showCategoryAddPopup(
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       );
@@ -133,13 +112,14 @@ Future<void> showCategoryAddPopup(
 }
 
 class RadioButton extends StatelessWidget {
-  final String title;
-  final CategoryType type;
   const RadioButton({
     super.key,
     required this.title,
     required this.type,
   });
+
+  final String title;
+  final CategoryType type;
 
   @override
   Widget build(BuildContext context) {

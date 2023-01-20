@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money_track/categories/category_app_popup.dart';
+import 'package:money_track/categories/category_bottom_sheet.dart';
 import 'package:money_track/categories/expense_category.dart';
 import 'package:money_track/categories/income_category.dart';
 import 'package:money_track/db/category/db_category.dart';
@@ -109,7 +110,8 @@ class _TransactionCategoriesState extends State<TransactionCategories> {
           // ),
           onPressed: () {
             //  print('ia, category');
-            showCategoryAddPopup(context);
+            // showCategoryAddPopup(context);
+            categoryShowBottomSheetApp(context);
           },
           // ignore: sort_child_properties_last
           child: const Icon(
