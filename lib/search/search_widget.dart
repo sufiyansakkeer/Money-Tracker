@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:money_track/Transaction/edit_transaction/edit_transaction.dart';
+import 'package:money_track/Transaction/slidable/slidable_transaction.dart';
 
 import 'package:money_track/db/category/db_category.dart';
 import 'package:money_track/db/transaction/db_transaction_function.dart';
@@ -42,44 +45,20 @@ class SearchTransaction extends SearchDelegate {
       valueListenable: TransactionDB.instance.transactionListNotifier,
       builder:
           (BuildContext context, List<TransactionModel> newList, Widget? _) {
-        return ListView.builder(
-            itemBuilder: ((context, index) {
-              final transaction = newList[index];
-              if (transaction.categoryModel.categoryName
-                  .toLowerCase()
-                  .contains(query.toLowerCase())) {
-                return Column(
-                  children: [
-                    ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: Colors.transparent,
-                        child: Icon(
-                          transaction.type == CategoryType.income
-                              ? Icons.arrow_upward_outlined
-                              : Icons.arrow_downward_outlined,
-                          color: transaction.type == CategoryType.income
-                              ? const Color(0xFF68AFF6)
-                              : const Color(0xFFDE45FE),
-                        ),
-                      ),
-                      title: Text(
-                        transaction.amount.toString(),
-                        style: const TextStyle(color: Colors.black),
-                      ),
-                      subtitle: Text(
-                          transaction.categoryModel.categoryName.toString()),
-                    ),
-                  ],
-                );
-              } else {
-                return const Center(
-                  child: Text(
-                    'No data found',
-                  ),
-                );
-              }
-            }),
-            itemCount: newList.length);
+        List<TransactionModel> transaction = [];
+        transaction = newList
+            .where((element) => element.categoryModel.categoryName
+                .toLowerCase()
+                .contains(query.toLowerCase()))
+            .toList();
+        return transaction.isEmpty
+            ? const Center(child: Text('no data found'))
+            : ListView.builder(
+                itemBuilder: ((context, index) {
+                  return SlidableTransaction(transaction: transaction[index]);
+                }),
+                itemCount: transaction.length,
+              );
       },
     );
   }
@@ -92,55 +71,20 @@ class SearchTransaction extends SearchDelegate {
       valueListenable: TransactionDB.instance.transactionListNotifier,
       builder:
           (BuildContext context, List<TransactionModel> newList, Widget? _) {
-        return ListView.builder(
-            itemBuilder: ((context, index) {
-              final transaction = newList[index];
-
-              return transaction.categoryModel.categoryName
-                      .toLowerCase()
-                      .contains(query.toLowerCase())
-                  ? Column(
-                      children: [
-                        Card(
-                          child: ListTile(
-                            leading: CircleAvatar(
-                              backgroundColor: Colors.transparent,
-                              child: Icon(
-                                transaction.type == CategoryType.income
-                                    ? Icons.arrow_upward_outlined
-                                    : Icons.arrow_downward_outlined,
-                                color: transaction.type == CategoryType.income
-                                    ? const Color(0xFF68AFF6)
-                                    : const Color(0xFFDE45FE),
-                              ),
-                            ),
-                            title: Text(
-                              transaction.amount.toString(),
-                              style: const TextStyle(color: Colors.black),
-                            ),
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  transaction.categoryModel.categoryName
-                                      .toString(),
-                                ),
-                                // Text(
-                                //   transaction.notes.toString(),
-                                // ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
-                  : const Center(
-                      child: Text(
-                        'No data found',
-                      ),
-                    );
-            }),
-            itemCount: newList.length);
+        List<TransactionModel> transaction = [];
+        transaction = newList
+            .where((element) => element.categoryModel.categoryName
+                .toLowerCase()
+                .contains(query.toLowerCase()))
+            .toList();
+        return transaction.isEmpty
+            ? Text('no data found')
+            : ListView.builder(
+                itemBuilder: ((context, index) {
+                  return SlidableTransaction(transaction: transaction[index]);
+                }),
+                itemCount: transaction.length,
+              );
       },
     );
   }

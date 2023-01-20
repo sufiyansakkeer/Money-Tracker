@@ -56,6 +56,7 @@ class TransactionDB implements TransactionDBFunction {
     return transactionDb.values.toList().reversed.toList();
   }
 
+  @override
   Future<void> addTransaction(TransactionModel obj) async {
     //to get anything in hive we need to open the hive , so here i am opening the hive database
     final transactionDb =
@@ -74,6 +75,20 @@ class TransactionDB implements TransactionDBFunction {
     transactionListNotifier.value.clear();
     transactionListNotifier.value.addAll(list);
     incomeAndExpense();
+    // recentTransactionList();
     transactionListNotifier.notifyListeners();
   }
+
+  // recentTransactionList() async {
+  //   final list = await getAllTransaction();
+  //   ValueNotifier<List<TransactionModel>> recentTransactionItems =
+  //       ValueNotifier([]);
+
+  //   final List<TransactionModel> value =
+  //       TransactionDB.instance.transactionListNotifier.value;
+  //   for (var i = value.length - 5; i < value.length; i++) {
+  //     recentTransactionItems.value.add(value[i]);
+  //   }
+  //   recentTransactionItems.notifyListeners();
+  // }
 }
