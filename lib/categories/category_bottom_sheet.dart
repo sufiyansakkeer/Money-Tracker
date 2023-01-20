@@ -16,6 +16,8 @@ categoryShowBottomSheetApp(BuildContext context) async {
           key: formKey,
           child: SingleChildScrollView(
             child: SizedBox(
+              height: 700,
+              // width: 200,
               child: Column(
                 children: [
                   const Padding(

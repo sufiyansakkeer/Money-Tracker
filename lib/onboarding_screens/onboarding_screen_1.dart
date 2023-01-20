@@ -13,22 +13,6 @@ class OnBoardingOne extends StatelessWidget {
           fit: BoxFit.cover,
         ),
       ),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: const Color(0x00000000),
-          leading: IconButton(
-            onPressed: (() {}),
-            icon: const Icon(
-              Icons.arrow_back_ios_new,
-            ),
-          ),
-        ),
-        body: SafeArea(
-          child: Column(),
-        ),
-      ),
     );
   }
 }

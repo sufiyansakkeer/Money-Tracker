@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:money_track/onboarding_screens/onboard_screen.dart';
 import 'package:money_track/screens/root_page.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -32,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(const Duration(seconds: 3));
 
     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: ((ctx) {
-      return const RootPage();
+      return const OnBoardingScreens();
     })));
   }
 }
