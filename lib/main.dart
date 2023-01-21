@@ -1,9 +1,13 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
+
 import 'package:money_track/Transaction/add_transaction.dart/add_transaction.dart';
 import 'package:money_track/models/categories_model/category_model.dart';
+
 import 'package:money_track/screens/splash_screen.dart';
+
 import 'models/transaction_model/transaction_model.dart';
 
 //here main function became future because the init flutter function is a future method
@@ -17,6 +21,7 @@ Future<void> main() async {
   //here it will ensure that the app will connect with platform channels or not,
   // all plugins are connected with platform channels or not before app starting
   WidgetsFlutterBinding.ensureInitialized();
+
   //here it will initialize the hive database
   await Hive.initFlutter();
   Hive.openBox<CategoryModel>('categoryDBName');
@@ -37,7 +42,7 @@ Future<void> main() async {
   // if (!Hive.isAdapterRegistered(CategoryModelAdapter().typeId)) {
   // }
   runApp(
-    const MoneyTrack(),
+    MoneyTrack(),
   );
 }
 
@@ -62,7 +67,9 @@ MaterialColor createMaterialColor(Color color) {
 }
 
 class MoneyTrack extends StatelessWidget {
-  const MoneyTrack({super.key});
+  const MoneyTrack({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -47,6 +47,18 @@ class _RootPageState extends State<RootPage> {
       },
       child: Scaffold(
         appBar: AppBar(
+          leading: Builder(
+            builder: (BuildContext context) {
+              return ElevatedButton(
+                onPressed: (() {
+                  Scaffold.of(context).openDrawer();
+                }),
+                child: Icon(
+                  Icons.menu_open_rounded,
+                ),
+              );
+            },
+          ),
           centerTitle: true,
           title: const Text(
             'Money Tracker',
@@ -99,52 +111,6 @@ class _RootPageState extends State<RootPage> {
                 currentIndexNotifier.value = newIndex;
               },
             );
-            // DotNavigationBar(
-            //   paddingR: const EdgeInsets.only(
-            //     bottom: 5,
-            //     top: 5,
-            //   ),
-            //   enableFloatingNavBar: true,
-            //   boxShadow: [
-            //     BoxShadow(
-            //       color: Colors.transparent,
-            //     )
-            //   ],
-            //   // List<BoxShadow> boxShadow =  [BoxShadow(color: Colors.transparent, spreadRadius: 0, blurRadius: 0, offset: Offset(0, 0))],
-            //   backgroundColor: const Color(0xFF2E49FB),
-            //   onTap: (newIndex) {
-            //     currentIndexNotifier.value = newIndex;
-            //   },
-            //   currentIndex: updatedIndex,
-            //   items: [
-            //     DotNavigationBarItem(
-            //       icon: const Icon(
-            //         Icons.home,
-            //       ),
-            //       // label: 'Home',
-            //       selectedColor: const Color.fromARGB(
-            //         255,
-            //         255,
-            //         255,
-            //         255,
-            //       ),
-            //     ),
-            //     DotNavigationBarItem(
-            //       icon: const Icon(
-            //         Icons.category_outlined,
-            //       ),
-            //       // label: 'Categories',
-            //       selectedColor: Colors.white,
-            //     ),
-            //     DotNavigationBarItem(
-            //       icon: const Icon(
-            //         Icons.auto_graph_outlined,
-            //       ),
-            //       // label: 'Graph',
-            //       selectedColor: Colors.white,
-            //     ),
-            //   ],
-            // );
           },
         ),
         drawer: const NavigationDrawer(),

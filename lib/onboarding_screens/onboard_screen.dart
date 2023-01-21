@@ -3,6 +3,7 @@ import 'package:money_track/onboarding_screens/onboarding_screen_1.dart';
 import 'package:money_track/onboarding_screens/onboarding_screen_2.dart';
 import 'package:money_track/onboarding_screens/onboarding_screen_3.dart';
 import 'package:money_track/screens/root_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnBoardingScreens extends StatefulWidget {
@@ -88,14 +89,22 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SmoothPageIndicator(
+                      onDotClicked: (index) => _pageController.animateToPage(
+                        index,
+                        duration: Duration(milliseconds: 500),
+                        curve: Curves.easeIn,
+                      ),
                       effect: const ExpandingDotsEffect(),
                       controller: _pageController,
                       count: 3,
                     ),
                     isLastPage
                         ? GestureDetector(
-                            onTap: (() {
-                              Navigator.of(context).push(
+                            onTap: (() async {
+                              final pref =
+                                  await SharedPreferences.getInstance();
+                              pref.setBool('Root page', true);
+                              Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
                                   builder: ((context) {
                                     return const RootPage();

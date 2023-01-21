@@ -8,7 +8,7 @@ class NavigationDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
         height: 1000,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           // color: Color(0xFF2E49FB),
 
           borderRadius: BorderRadius.only(
@@ -22,29 +22,30 @@ class NavigationDrawer extends StatelessWidget {
                 topRight: Radius.circular(15),
                 bottomRight: Radius.circular(15)),
           ),
-          child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                buildHeader(
-                  context,
-                ),
-                buildMenuItems(
-                  context,
-                ),
-              ],
-            ),
+          child: Column(
+            children: <Widget>[
+              DrawerHeader(
+                decoration: BoxDecoration(color: Colors.amberAccent),
+                child: Center(child: Text('Hi $nameOfTheUser')),
+              ),
+              // buildHeader(
+              //   context,
+              // ),
+              buildMenuItems(
+                context,
+              ),
+            ],
           ),
         ),
       );
-  Widget buildHeader(
-    BuildContext context,
-  ) =>
-      SafeArea(
+  Widget buildHeader(BuildContext context) => SafeArea(
         child: Column(
           children: [
             ListTile(
-              title: Text(
-                '$nameOfTheUser',
+              title: Center(
+                child: Text(
+                  '$nameOfTheUser',
+                ),
               ),
             )
           ],

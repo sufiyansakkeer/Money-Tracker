@@ -6,8 +6,6 @@ import 'package:money_track/db/transaction/db_transaction_function.dart';
 import 'package:money_track/db/transaction/income_and_expense.dart';
 import 'package:money_track/home/widgets/floating_action_button.dart';
 
-import 'package:money_track/Transaction/transaction_list.dart';
-
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -200,35 +198,6 @@ class _HomeScreenState extends State<HomeScreen> {
               child: RecentTransactionList(),
             ),
           ),
-          // AnimatedBtn(
-          //   btnAnimationController: _btnAnimationController,
-          //   press: () {
-          //     _btnAnimationController.isActive = true;
-
-          //     Future.delayed(
-          //       const Duration(milliseconds: 800),
-          //       () {
-          //         setState(() {
-          //           isShowSignInDialog = true;
-          //         });
-          //         showCustomDialog(
-          //           context,
-          //           onValue: (_) {
-          //             setState(() {
-          //               isShowSignInDialog = false;
-          //             });
-          //           },
-          //         );
-          //       },
-          //     );
-          //   },
-          // ),
-          // Container(
-          //   width: double.infinity,
-          //   child: ListView(
-          //     children: [TransactionListAll()],
-          //   ),
-          // ),
         ],
       ),
       floatingActionButton: const CustomAddWidget(),
