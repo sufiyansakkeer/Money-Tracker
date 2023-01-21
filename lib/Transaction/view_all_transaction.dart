@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:money_track/Transaction/filter/date_filter/date_filter_transacton.dart';
+
 import 'package:money_track/Transaction/transaction_list.dart';
+import 'package:money_track/Transaction/filter/type_filter_transaction/type_filter_transaction.dart';
 import 'package:money_track/search/search_widget.dart';
+
+ValueNotifier showCategory = ValueNotifier('All');
 
 class TransactionListAll extends StatefulWidget {
   const TransactionListAll({super.key});
@@ -11,8 +15,9 @@ class TransactionListAll extends StatefulWidget {
 }
 
 class _TransactionListAllState extends State<TransactionListAll> {
-  double incomeTotal = 0;
   double expenseTotal = 0;
+  double incomeTotal = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,14 +36,8 @@ class _TransactionListAllState extends State<TransactionListAll> {
             }),
             icon: const Icon(Icons.search),
           ),
-          IconButton(
-            onPressed: (() {}),
-            icon: const Icon(Icons.filter_list),
-          ),
-          IconButton(
-            onPressed: (() {}),
-            icon: const Icon(Icons.more_vert_outlined),
-          ),
+          const DateFilterClass(),
+          const TypeFilterClass(),
         ],
       ),
       body: Column(

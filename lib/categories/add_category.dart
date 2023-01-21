@@ -64,37 +64,6 @@ class _AddCategoryState extends State<AddCategory> {
         ),
         child: Column(
           children: [
-            // DropdownButton<String>(
-            //   focusColor: Colors.white,
-            //   value: _chosenValue,
-            //   //elevation: 5,
-            //   style: const TextStyle(color: Color.fromARGB(255, 64, 55, 245)),
-            //   iconEnabledColor: Colors.black,
-            //   items: <String>[
-            //     'Income',
-            //     'Expense',
-            //   ].map<DropdownMenuItem<String>>((String value) {
-            //     return DropdownMenuItem<String>(
-            //       value: value,
-            //       child: Text(
-            //         value,
-            //         style: const TextStyle(color: Colors.black),
-            //       ),
-            //     );
-            //   }).toList(),
-            //   hint: const Text(
-            //     "Please Select the Category",
-            //     style: TextStyle(
-            //         color: Colors.black,
-            //         fontSize: 14,
-            //         fontWeight: FontWeight.w500),
-            //   ),
-            //   onChanged: (String? value) {
-            //     setState(() {
-            //       _chosenValue = value;
-            //     });
-            //   },
-            // ),
             Row(
               children: const [
                 RadioButton(
@@ -107,7 +76,6 @@ class _AddCategoryState extends State<AddCategory> {
                 ),
               ],
             ),
-
             TextFormField(
               //here name editing category will hold the data in the text form field
               controller: _nameEditingCategory,
@@ -145,14 +113,6 @@ class _AddCategoryState extends State<AddCategory> {
       ),
     );
   }
-
-  // void dropDownCallBack(String? selectedValue) {
-  //   if (selectedValue is String) {
-  //     setState(() {
-  //       var _dropDownValue = selectedValue;
-  //     });
-  //   }
-  // }
 }
 
 class RadioButton extends StatelessWidget {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:money_track/widgets/colors.dart';
 
 import '../db/category/db_category.dart';
 import '../models/categories_model/category_model.dart';
@@ -12,7 +13,7 @@ class IncomeTransaction extends StatelessWidget {
       valueListenable: CategoryDb().incomeCategoryListListener,
       builder: ((BuildContext ctx, List<CategoryModel> newList, Widget? _) {
         return Container(
-          color: const Color(0xFF2E49FB),
+          color: themeDarkBlue,
           child: Scrollbar(
             child: GridView.builder(
               itemCount: newList.length,
@@ -34,7 +35,7 @@ class IncomeTransaction extends StatelessWidget {
                     right: 5,
                   ),
                   child: Card(
-                    color: const Color(0xFF68AFF6),
+                    color: incomeColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                       //set border radius more than 50% of height and width to make circle

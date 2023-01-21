@@ -7,6 +7,7 @@ import 'package:money_track/Transaction/add_transaction.dart/add_transaction.dar
 import 'package:money_track/models/categories_model/category_model.dart';
 
 import 'package:money_track/screens/splash_screen.dart';
+import 'package:money_track/widgets/colors.dart';
 
 import 'models/transaction_model/transaction_model.dart';
 
@@ -77,7 +78,7 @@ class MoneyTrack extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: createMaterialColor(
-          const Color(0xFF2E49FB),
+          themeDarkBlue,
         ),
       ),
       home: const SplashScreen(),

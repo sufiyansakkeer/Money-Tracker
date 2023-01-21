@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money_track/db/category/db_category.dart';
+import 'package:money_track/widgets/colors.dart';
 
 import '../models/categories_model/category_model.dart';
 
@@ -9,7 +10,7 @@ class ExpenseTransaction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color(0xFF2E49FB),
+      color: themeDarkBlue,
       child: ValueListenableBuilder(
         valueListenable: CategoryDb().expenseCategoryListListener,
         builder: ((BuildContext ctx, List<CategoryModel> newList, Widget? _) {
@@ -33,7 +34,7 @@ class ExpenseTransaction extends StatelessWidget {
                   right: 5,
                 ),
                 child: Card(
-                  color: const Color(0xFFDE45FE),
+                  color: expenseColor,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                     //set border radius more than 50% of height and width to make circle
