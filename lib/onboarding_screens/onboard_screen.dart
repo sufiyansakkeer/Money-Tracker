@@ -13,10 +13,13 @@ class OnBoardingScreens extends StatefulWidget {
 }
 
 class _OnBoardingScreensState extends State<OnBoardingScreens> {
-  final PageController _pageController = PageController();
   //here we declared a function to ensure the page is last
   bool isLastPage = false;
+
   bool isVisible = true;
+
+  final PageController _pageController = PageController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,51 +40,143 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
               OnBoardingScreenThree(),
             ],
           ),
-          Container(
-            alignment: const Alignment(0, 0.75),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          Padding(
+            padding:
+                const EdgeInsets.only(left: 30, right: 30, top: 40, bottom: 40),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Visibility(
-                  visible: isVisible,
-                  child: GestureDetector(
-                    onTap: () {
-                      _pageController.jumpToPage(2);
-                    },
-                    child: const Text(
-                      'Skip',
-                    ),
-                  ),
-                ),
-                SmoothPageIndicator(
-                  controller: _pageController,
-                  count: 3,
-                ),
-                isLastPage
-                    ? GestureDetector(
-                        onTap: (() {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: ((context) {
-                                return const RootPage();
-                              }),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Visibility(
+                      visible: isVisible,
+                      child: GestureDetector(
+                        onTap: () {
+                          _pageController.jumpToPage(2);
+                        },
+                        child: Container(
+                          height: 30,
+                          width: 70,
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(15),
                             ),
-                          );
-                        }),
-                        child: const Text(
-                          'Done',
+                            color: Color(0x992E49FB),
+                          ),
+                          child: Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Text(
+                                  'Skip',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                Icon(
+                                  Icons.skip_next_rounded,
+                                  color: Colors.white,
+                                )
+                              ],
+                            ),
+                          ),
                         ),
-                      )
-                    : GestureDetector(
-                        onTap: (() {
-                          _pageController.nextPage(
-                              duration: const Duration(milliseconds: 500),
-                              curve: Curves.easeIn);
-                        }),
-                        child: const Text(
-                          'Next',
-                        ),
-                      )
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SmoothPageIndicator(
+                      effect: const ExpandingDotsEffect(),
+                      controller: _pageController,
+                      count: 3,
+                    ),
+                    isLastPage
+                        ? GestureDetector(
+                            onTap: (() {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: ((context) {
+                                    return const RootPage();
+                                  }),
+                                ),
+                              );
+                            }),
+                            child: Container(
+                              height: 50,
+                              width: 140,
+                              decoration: const BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15)),
+                                color: Colors.transparent,
+                                image: DecorationImage(
+                                  image: AssetImage(
+                                    "assets/images/gradienta-background.jpg",
+                                  ),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              child: Center(
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    const Text(
+                                      'Get Started',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.adaptive.arrow_forward,
+                                      color: Colors.white,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          )
+                        : GestureDetector(
+                            onTap: (() {
+                              _pageController.nextPage(
+                                  duration: const Duration(milliseconds: 500),
+                                  curve: Curves.easeIn);
+                            }),
+                            child: Container(
+                              height: 50,
+                              width: 140,
+                              decoration: const BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15)),
+                                color: Colors.transparent,
+                                image: DecorationImage(
+                                    image: AssetImage(
+                                        "assets/images/gradienta-background.jpg"),
+                                    fit: BoxFit.cover),
+                              ),
+                              child: Center(
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    const Text(
+                                      'Next',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.adaptive.arrow_forward,
+                                      color: Colors.white,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          )
+                  ],
+                ),
               ],
             ),
           ),
