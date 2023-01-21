@@ -197,7 +197,7 @@ class _HomeScreenState extends State<HomeScreen> {
           const Expanded(
             child: SizedBox(
               width: double.infinity,
-              child: TransactionList(),
+              child: RecentTransactionList(),
             ),
           ),
           // AnimatedBtn(
