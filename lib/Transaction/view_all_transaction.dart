@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:money_track/Transaction/filter/date_filter/date_filter_transacton.dart';
+
+import 'package:money_track/Transaction/filter/date_filter/date_filter_transaction.dart';
 
 import 'package:money_track/Transaction/transaction_list.dart';
 import 'package:money_track/Transaction/filter/type_filter_transaction/type_filter_transaction.dart';
+
 import 'package:money_track/search/search_widget.dart';
 
 ValueNotifier showCategory = ValueNotifier('All');
+ValueNotifier showDateNotifier = ValueNotifier("All");
 
 class TransactionListAll extends StatefulWidget {
   const TransactionListAll({super.key});
@@ -36,7 +39,7 @@ class _TransactionListAllState extends State<TransactionListAll> {
             }),
             icon: const Icon(Icons.search),
           ),
-          const DateFilterClass(),
+          const DAteFilterTransaction(),
           const TypeFilterClass(),
         ],
       ),

@@ -7,6 +7,11 @@ class TypeFilterClass extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(
+        shape: ContinuousRectangleBorder(
+          borderRadius: BorderRadius.circular(
+            20,
+          ),
+        ),
         itemBuilder: ((context) => [
               PopupMenuItem(
                 value: 1,
