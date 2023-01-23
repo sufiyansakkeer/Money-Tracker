@@ -19,7 +19,7 @@ Future<void> showCategoryAddPopup(BuildContext context) async {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-          title: const Text('Add Category'),
+          title: const Center(child: Text('Add Category')),
           children: [
             Padding(
               padding: const EdgeInsets.all(10.0),
@@ -76,6 +76,9 @@ Future<void> showCategoryAddPopup(BuildContext context) async {
                         'Category Added Successfully',
                         type: AnimatedSnackBarType.success,
                         brightness: Brightness.light,
+                        duration: const Duration(
+                          seconds: 3,
+                        ),
                       ).show(
                         context,
                       );
@@ -97,7 +100,7 @@ Future<void> showCategoryAddPopup(BuildContext context) async {
                   child: const Text(
                     'Add',
                     style: TextStyle(
-                      color: Colors.black,
+                      color: Color(0xFFFFFFFF),
                       fontWeight: FontWeight.bold,
                     ),
                   ),

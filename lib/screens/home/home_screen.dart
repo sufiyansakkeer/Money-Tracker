@@ -4,7 +4,8 @@ import 'package:money_track/Transaction/view_all_transaction.dart';
 import 'package:money_track/db/category/db_category.dart';
 import 'package:money_track/db/transaction/db_transaction_function.dart';
 import 'package:money_track/db/transaction/income_and_expense.dart';
-import 'package:money_track/home/widgets/floating_action_button.dart';
+import 'package:money_track/screens/home/widgets/floating_action_button.dart';
+import 'package:money_track/widgets/colors.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -81,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   totalBalance.value.toString(),
                                   style: const TextStyle(
                                     color: Colors.white,
-                                    fontSize: 25,
+                                    fontSize: 28,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -113,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       expenseTotal.value.toString(),
                                       style: const TextStyle(
                                         color: Colors.white,
-                                        fontSize: 25,
+                                        fontSize: 28,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -145,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       '${incomeTotal.value}',
                                       style: const TextStyle(
                                         color: Colors.white,
-                                        fontSize: 25,
+                                        fontSize: 28,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -175,7 +176,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                TextButton(
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: secondaryThemeBlue,
+                    elevation: 0,
+                    shape: const StadiumBorder(),
+                  ),
                   onPressed: (() {
                     Navigator.of(context).push(
                       MaterialPageRoute(
@@ -187,6 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   }),
                   child: const Text(
                     'View all',
+                    style: TextStyle(color: themeDarkBlue),
                   ),
                 )
               ],

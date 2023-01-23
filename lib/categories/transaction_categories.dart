@@ -89,25 +89,6 @@ class _TransactionCategoriesState extends State<TransactionCategories> {
           ],
         ),
         floatingActionButton: FloatingActionButton(
-          //  FloatingActionButton(
-          //   child: Icon(Icons.add),
-          //   onPressed: (() {
-          //     showGeneralDialog(
-          //       context: context,
-          //       pageBuilder: (ctx, a1, a2) {
-          //         return Container();
-          //       },
-          //       transitionBuilder: (ctx, a1, a2, child) {
-          //         var curve = Curves.easeInOut.transform(a1.value);
-          //         return Transform.scale(
-          //           scale: curve,
-          //           child: _dialog(ctx),
-          //         );
-          //       },
-          //       transitionDuration: const Duration(milliseconds: 300),
-          //     );
-          //   }),
-          // ),
           onPressed: () {
             //  print('ia, category');
             // showCategoryAddPopup(context);

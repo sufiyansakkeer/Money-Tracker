@@ -41,63 +41,65 @@ class _AddTransactionState extends State<AddTransaction> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        DecoratedBox(
-          decoration: BoxDecoration(
-            color: const Color(0xFFE9E8E8),
-            border: Border.all(
-              // color: Colors.black38,
-              width: 1,
+        Expanded(
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: const Color(0xFFE9E8E8),
+              border: Border.all(
+                // color: Colors.black38,
+                width: 1,
+              ),
+              borderRadius: BorderRadius.circular(5),
             ),
-            borderRadius: BorderRadius.circular(5),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 5, top: 5, bottom: 5),
-            // CustomDropdown(
-            //       hintText: 'Select job role',
-            //       items: list,
-            //       controller: jobRoleFormDropdownCtrl,
-            //       excludeSelected: false,
-            //     ),
-            child: DropdownButton(
-              // dropdownColor: Colors.amber,
-              elevation: 9,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 5, top: 5, bottom: 5),
+              // CustomDropdown(
+              //       hintText: 'Select job role',
+              //       items: list,
+              //       controller: jobRoleFormDropdownCtrl,
+              //       excludeSelected: false,
+              //     ),
+              child: DropdownButton(
+                // dropdownColor: Colors.amber,
+                elevation: 9,
 
-              // border: Border.all(color: Colors.redAccent, width: 2),
-              hint: const Text('select category'),
-              value: _categoryId,
-              items: (_selectedCategoryType == CategoryType.income
-                      ? CategoryDb.instance.incomeCategoryListListener
-                      : CategoryDb.instance.expenseCategoryListListener)
-                  .value
-                  .map((e) {
-                return DropdownMenuItem(
-                  value: e.id,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      // border: Border.all(
-                      //   // color: Colors.black38,
-                      //   width: 1,
-                      // ),
-                      borderRadius: BorderRadius.circular(5),
+                // border: Border.all(color: Colors.redAccent, width: 2),
+                hint: const Text('select category'),
+                value: _categoryId,
+                items: (_selectedCategoryType == CategoryType.income
+                        ? CategoryDb.instance.incomeCategoryListListener
+                        : CategoryDb.instance.expenseCategoryListListener)
+                    .value
+                    .map((e) {
+                  return DropdownMenuItem(
+                    value: e.id,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        // border: Border.all(
+                        //   // color: Colors.black38,
+                        //   width: 1,
+                        // ),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      // width: 270,
+                      child: Text(
+                        e.categoryName,
+                      ),
                     ),
-                    width: 270,
-                    child: Text(
-                      e.categoryName,
-                    ),
-                  ),
-                  onTap: () {
-                    setState(() {
-                      _selectedCategoryModel = e;
-                    });
-                  },
-                );
-              }).toList(),
-              onChanged: ((selectedValue) {
-                // print(selectedValue);
-                setState(() {
-                  _categoryId = selectedValue;
-                });
-              }),
+                    onTap: () {
+                      setState(() {
+                        _selectedCategoryModel = e;
+                      });
+                    },
+                  );
+                }).toList(),
+                onChanged: ((selectedValue) {
+                  // print(selectedValue);
+                  setState(() {
+                    _categoryId = selectedValue;
+                  });
+                }),
+              ),
             ),
           ),
         ),
@@ -198,6 +200,9 @@ class _AddTransactionState extends State<AddTransaction> {
       'Transaction Added Successfully',
       type: AnimatedSnackBarType.success,
       brightness: Brightness.light,
+      duration: const Duration(
+        seconds: 3,
+      ),
     ).show(
       context,
     );
@@ -313,7 +318,9 @@ class _AddTransactionState extends State<AddTransaction> {
                         lastDate: DateTime.now(),
                         helpText: 'select a Date');
                     if (selectedTempDate == null) {
-                      return;
+                      setState(() {
+                        _selectedDateTime = DateTime.now();
+                      });
                     } else {
                       setState(() {
                         _selectedDateTime = selectedTempDate;
@@ -325,7 +332,8 @@ class _AddTransactionState extends State<AddTransaction> {
                   ),
                   label: Text(
                     _selectedDateTime == null
-                        ? 'Select Your Date'
+                        // ? 'Select Date'
+                        ? parseDateTime(DateTime.now())
                         : parseDateTime(_selectedDateTime!),
                   ),
                 ),
@@ -352,7 +360,7 @@ class _AddTransactionState extends State<AddTransaction> {
                   onPressed: (() {
                     if (_selectedDateTime == null) {
                       setState(() {
-                        _isVisibleDate = true;
+                        _selectedDateTime = DateTime.now();
                       });
                     } else {
                       setState(() {

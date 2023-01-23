@@ -11,6 +11,7 @@ categoryShowBottomSheetApp(BuildContext context) async {
   final formKey = GlobalKey<FormState>();
   final nameEditingController = TextEditingController();
   showModalBottomSheet(
+      // backgroundColor: Colors.transparent,
       context: context,
       builder: ((context) {
         return Form(
@@ -86,6 +87,9 @@ categoryShowBottomSheetApp(BuildContext context) async {
                               'Category Added Successfully',
                               type: AnimatedSnackBarType.success,
                               brightness: Brightness.light,
+                              duration: const Duration(
+                                seconds: 3,
+                              ),
                             ).show(
                               context,
                             );
@@ -106,11 +110,14 @@ categoryShowBottomSheetApp(BuildContext context) async {
                           CategoryDb.instance.insertCategory(category);
                           Navigator.of(context).pop();
                         },
-                        child: const Text(
-                          'Add',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
+                        child: const Hero(
+                          tag: 'CategoryAppBottomSheet',
+                          child: Text(
+                            'Add',
+                            style: TextStyle(
+                              // color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),

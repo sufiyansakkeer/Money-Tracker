@@ -6,6 +6,7 @@ import 'package:money_track/Transaction/edit_transaction/edit_transaction.dart';
 import 'package:money_track/db/transaction/db_transaction_function.dart';
 import 'package:money_track/models/categories_model/category_model.dart';
 import 'package:money_track/models/transaction_model/transaction_model.dart';
+import 'package:quickalert/quickalert.dart';
 
 class SlidableTransaction extends StatelessWidget {
   const SlidableTransaction({super.key, required this.transaction});
@@ -74,12 +75,41 @@ class SlidableTransaction extends StatelessWidget {
                     ],
                   );
                 }));
+            // QuickAlert.show(
+            //   context: context,
+            //   type: QuickAlertType.confirm,
+            //   title: 'Warning!',
+            //   text: 'Are you sure you want to Delete?',
+            //   onConfirmBtnTap: () {
+            //     // TransactionDB.instance.deleteTransaction(transaction);
+            //     // Navigator.of(context).pop();
+            //     // Navigator.pop(context);
+            //   },
+            //   // onCancelBtnTap: () {
+            //   //   // Navigator.of(context).pop();
+            //   // },
+            //   // widget: TextButton(
+            //   //   onPressed: ((() {
+            //   //     TransactionDB.instance.deleteTransaction(transaction);
+            //   //     Navigator.of(context).pop();
+            //   //   })),
+            //   //   child: Text(
+            //   //     'Yes',
+            //   //   ),
+            //   // ),
+            // );
           }),
           icon: Icons.delete,
           foregroundColor: Colors.red,
         ),
       ]),
       child: Card(
+        elevation: 3,
+        shape: RoundedRectangleBorder(
+          //<-- SEE HERE
+          // side: BorderSide(width: 1),
+          borderRadius: BorderRadius.circular(20),
+        ),
         child: ListTile(
           onLongPress: () {},
           leading: CircleAvatar(

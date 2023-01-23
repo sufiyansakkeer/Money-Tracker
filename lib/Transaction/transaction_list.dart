@@ -18,7 +18,8 @@ class TransactionList extends StatelessWidget {
   Widget build(BuildContext context) {
     TransactionDB.instance.refreshUi();
     return ValueListenableBuilder(
-      //here transaction list notifier used to notify the db transaction actions.
+      //here transaction list notifier used to notify the db transaction actions
+      //,according to the date .,overview List notifier is used for the date filter
       valueListenable: overViewListNotifier,
       builder: (BuildContext context, newList, Widget? _) {
         //we need to filter the transaction according to the transaction type ,
@@ -48,7 +49,8 @@ class TransactionList extends StatelessWidget {
               } else {
                 displayList = newList;
               }
-              //here i am checking whether the list is empty or not ,if it is empty i would sent a lottie to it
+              //here i am checking whether the list is empty or not ,
+              //if it is empty i would sent a lottie to it
               return displayList.isEmpty
                   ? Center(
                       child: Padding(

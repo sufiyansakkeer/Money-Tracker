@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:money_track/Insights/transaction_graph.dart';
 import 'package:money_track/categories/transaction_categories.dart';
 
-import 'package:money_track/home/home_screen.dart';
-import 'package:money_track/home/widgets/navigation_drawer.dart';
+import 'package:money_track/screens/home/home_screen.dart';
+import 'package:money_track/screens/home/widgets/navigation_drawer.dart';
 
 class RootPage extends StatefulWidget {
   const RootPage({super.key});
@@ -16,7 +16,7 @@ class RootPage extends StatefulWidget {
 
 class _RootPageState extends State<RootPage> {
   static ValueNotifier<int> currentIndexNotifier = ValueNotifier(0);
-  var nameOfTheUser = 'Sufiyan';
+  // var nameOfTheUser = 'Sufiyan';
   // late RiveAnimationController _btnAnimationController;
 
   bool isShowSignInDialog = false;
@@ -47,18 +47,18 @@ class _RootPageState extends State<RootPage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          leading: Builder(
-            builder: (BuildContext context) {
-              return ElevatedButton(
-                onPressed: (() {
-                  Scaffold.of(context).openDrawer();
-                }),
-                child: Icon(
-                  Icons.menu_open_rounded,
-                ),
-              );
-            },
-          ),
+          // leading: Builder(
+          //   builder: (BuildContext context) {
+          //     return ElevatedButton(
+          //       onPressed: (() {
+          //         Scaffold.of(context).openDrawer();
+          //       }),
+          //       child: const Icon(
+          //         Icons.menu_open_rounded,
+          //       ),
+          //     );
+          //   },
+          // ),
           centerTitle: true,
           title: const Text(
             'Money Tracker',
