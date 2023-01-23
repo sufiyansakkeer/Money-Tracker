@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:money_track/screens/onboarding_screens/onboarding_screen_1.dart';
 import 'package:money_track/screens/onboarding_screens/onboarding_screen_2.dart';
 import 'package:money_track/screens/onboarding_screens/onboarding_screen_3.dart';
@@ -91,7 +92,7 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
                     SmoothPageIndicator(
                       onDotClicked: (index) => _pageController.animateToPage(
                         index,
-                        duration: Duration(milliseconds: 500),
+                        duration: const Duration(milliseconds: 500),
                         curve: Curves.easeIn,
                       ),
                       effect: const ExpandingDotsEffect(),
@@ -103,15 +104,21 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
                             onTap: (() async {
                               final pref =
                                   await SharedPreferences.getInstance();
-                              pref.setBool('Root page', true);
-                              Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                  builder: ((context) {
-                                    return const RootPage();
-                                  }),
-                                ),
-                              );
+                              pref.setBool('seen', true);
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: ((context) => const RootPage())),
+                                  (route) => false);
                             }),
+                            // child: Container(
+                            //   decoration: BoxDecoration(
+
+                            //   ),
+                            //   height: 50,
+
+                            //   child:
+                            //       Lottie.asset('assets/images/getStarted.json'),
+                            // ),
                             child: Container(
                               height: 50,
                               width: 140,
