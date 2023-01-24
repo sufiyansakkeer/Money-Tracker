@@ -38,6 +38,8 @@ class _EditTransactionState extends State<EditTransaction> {
   @override
   void initState() {
     super.initState();
+    _value = widget.obj.type.index;
+    _categoryId = widget.obj.categoryModel.id;
     _amountTextEditingController =
         TextEditingController(text: widget.obj.amount.toString());
     _notesTextEditingController = TextEditingController(text: widget.obj.notes);
@@ -47,6 +49,7 @@ class _EditTransactionState extends State<EditTransaction> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
