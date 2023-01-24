@@ -38,6 +38,7 @@ class _EditTransactionState extends State<EditTransaction> {
   @override
   void initState() {
     super.initState();
+
     _value = widget.obj.type.index;
     _categoryId = widget.obj.categoryModel.id;
     _amountTextEditingController =
@@ -45,6 +46,7 @@ class _EditTransactionState extends State<EditTransaction> {
     _notesTextEditingController = TextEditingController(text: widget.obj.notes);
     _selectedDateTime = widget.obj.date;
     _selectedCategoryType = widget.obj.type;
+    _selectedCategoryModel = widget.obj.categoryModel;
   }
 
   @override
@@ -301,9 +303,9 @@ class _EditTransactionState extends State<EditTransaction> {
       return;
     }
 
-    // if (_selectedCategoryType == null) {
-    //   return;
-    // }
+    if (_selectedCategoryType == null) {
+      return;
+    }
     // _categoryId;
     // _selectedCategoryType;
     final modal = TransactionModel(
