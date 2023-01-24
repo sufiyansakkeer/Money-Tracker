@@ -17,12 +17,12 @@ class TransactionModelAdapter extends TypeAdapter<TransactionModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return TransactionModel(
-      categoryModel: fields[4] as CategoryModel,
       amount: fields[0] as double,
-      notes: fields[1] as String,
       date: fields[2] as DateTime,
       type: fields[3] as CategoryType,
+      categoryModel: fields[4] as CategoryModel,
       id: fields[5] as String?,
+      notes: fields[1] as String?,
     );
   }
 

@@ -156,7 +156,7 @@ class _EditTransactionState extends State<EditTransaction> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: const [
                         Text(
-                          '    Please Select Category',
+                          '  Please Select Category',
                           style: TextStyle(
                             color: Color.fromARGB(255, 192, 29, 17),
                             fontSize: 12,
@@ -261,7 +261,7 @@ class _EditTransactionState extends State<EditTransaction> {
                   }
                 }),
                 child: const Text(
-                  'Submit',
+                  'Update',
                 ),
               ),
             ],

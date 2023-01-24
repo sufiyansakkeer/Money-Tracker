@@ -41,7 +41,6 @@ class NavigationDrawer extends StatelessWidget {
           runSpacing: 10,
           children: [
             Card(
-              color: secondaryThemeBlue,
               shape: RoundedRectangleBorder(
                 //<-- SEE HERE
                 // side: BorderSide(width: 1),
@@ -64,7 +63,6 @@ class NavigationDrawer extends StatelessWidget {
               ),
             ),
             Card(
-              color: secondaryThemeBlue,
               shape: RoundedRectangleBorder(
                 //<-- SEE HERE
                 // side: BorderSide(width: 1),
@@ -76,6 +74,7 @@ class NavigationDrawer extends StatelessWidget {
                   'Share',
                   style: TextStyle(
                     fontSize: 16,
+                    color: themeDarkBlue,
                   ),
                 ),
                 leading: Icon(
@@ -85,7 +84,6 @@ class NavigationDrawer extends StatelessWidget {
               ),
             ),
             Card(
-              color: secondaryThemeBlue,
               shape: RoundedRectangleBorder(
                 //<-- SEE HERE
                 // side: BorderSide(width: 1),
@@ -97,6 +95,7 @@ class NavigationDrawer extends StatelessWidget {
                   'Privacy Policy',
                   style: TextStyle(
                     fontSize: 16,
+                    color: themeDarkBlue,
                   ),
                 ),
                 leading: const Icon(
@@ -106,7 +105,6 @@ class NavigationDrawer extends StatelessWidget {
               ),
             ),
             Card(
-              color: secondaryThemeBlue,
               shape: RoundedRectangleBorder(
                 //<-- SEE HERE
                 // side: BorderSide(width: 1),
@@ -118,6 +116,7 @@ class NavigationDrawer extends StatelessWidget {
                   'About',
                   style: TextStyle(
                     fontSize: 16,
+                    color: themeDarkBlue,
                   ),
                 ),
                 leading: const Icon(

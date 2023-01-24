@@ -30,21 +30,22 @@ class _TransactionListAllState extends State<TransactionListAll> {
           'All Transactions',
         ),
         actions: [
-          IconButton(
-            onPressed: (() {
-              showSearch(
-                context: context,
-                delegate: SearchTransaction(),
-              );
-            }),
-            icon: const Icon(Icons.search),
-          ),
+          // IconButton(
+          //   onPressed: (() {
+          //     showSearch(
+          //       context: context,
+          //       delegate: SearchTransaction(),
+          //     );
+          //   }),
+          //   icon: const Icon(Icons.search),
+          // ),
           const DAteFilterTransaction(),
           const TypeFilterClass(),
         ],
       ),
       body: Column(
-        children: const [
+        children: [
+          TextFormField(),
           Expanded(
             child: SizedBox(
               width: double.infinity,

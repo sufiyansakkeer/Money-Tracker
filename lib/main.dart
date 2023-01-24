@@ -39,6 +39,7 @@ Future<void> main() async {
 //category model adapter registration
   Hive.registerAdapter(CategoryModelAdapter());
 //transaction model adapter registration
+
   Hive.registerAdapter(TransactionModelAdapter());
   // if (!Hive.isAdapterRegistered(CategoryModelAdapter().typeId)) {
   // }

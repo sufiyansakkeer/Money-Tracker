@@ -32,7 +32,7 @@ class _TransactionCategoriesState extends State<TransactionCategories> {
             backgroundColor: const Color(0xFF2E49FB),
             elevation: 0,
             bottom: TabBar(
-              // unselectedLabelColor: const Color(0xFFFFFFFF),
+              unselectedLabelColor: const Color(0xFFFFFFFF),
               indicatorSize: TabBarIndicatorSize.label,
               indicator: BoxDecoration(
                 borderRadius: BorderRadius.circular(110),

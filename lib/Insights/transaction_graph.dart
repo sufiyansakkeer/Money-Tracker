@@ -5,11 +5,9 @@ class TransactionInsights extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'graph',
-        ),
+    return const SafeArea(
+      child: Scaffold(
+        body: Text('coming soon'),
       ),
     );
   }

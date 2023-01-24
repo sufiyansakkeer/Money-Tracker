@@ -28,6 +28,11 @@ class TypeFilterClass extends StatelessWidget {
                 onTap: () => showCategory.value = "Expense",
                 child: const Text("Expense"),
               ),
-            ]));
+            ]),
+        child: const Icon(
+          Icons.filter_list_rounded,
+          size: 30,
+          // shadows: <Shadow>[Shadow(color: Colors.white, blurRadius: 15.0)],
+        ));
   }
 }

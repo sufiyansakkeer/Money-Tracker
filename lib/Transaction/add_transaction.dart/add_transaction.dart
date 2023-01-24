@@ -170,9 +170,9 @@ class _AddTransactionState extends State<AddTransaction> {
       return;
     }
     //to check the notes is null or not
-    if (notesText.isEmpty) {
-      return;
-    }
+    // if (notesText.isEmpty) {
+    //   return;
+    // }
     //here we checked category id because at initial category id is null
     if (_categoryId == null) {
       return;
@@ -183,13 +183,21 @@ class _AddTransactionState extends State<AddTransaction> {
     }
     // _categoryId;
     // _selectedCategoryType;
+    // final modal = TransactionModel(
+    //   id: DateTime.now().microsecondsSinceEpoch.toString(),
+    //   categoryModel: _selectedCategoryModel!,
+    //   amount: parsedAmount,
+    //   notes: notesText,
+    //   date: _selectedDateTime!,
+    //   type: _selectedCategoryType!,
+    // );
     final modal = TransactionModel(
-      id: DateTime.now().microsecondsSinceEpoch.toString(),
-      categoryModel: _selectedCategoryModel!,
       amount: parsedAmount,
-      notes: notesText,
       date: _selectedDateTime!,
       type: _selectedCategoryType!,
+      categoryModel: _selectedCategoryModel!,
+      id: DateTime.now().microsecondsSinceEpoch.toString(),
+      notes: notesText,
     );
 
     TransactionDB.instance.addTransaction(modal);
@@ -219,6 +227,7 @@ class _AddTransactionState extends State<AddTransaction> {
   //key for the form
   @override
   Widget build(BuildContext context) {
+    CategoryDb.instance.refreshUI();
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -286,12 +295,12 @@ class _AddTransactionState extends State<AddTransaction> {
                 TextFormField(
                   keyboardType: TextInputType.multiline,
                   controller: _notesTextEditingController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Enter the purpose';
-                    }
-                    return null;
-                  },
+                  // validator: (value) {
+                  //   if (value == null || value.isEmpty) {
+                  //     return 'Enter the purpose';
+                  //   }
+                  //   return null;
+                  // },
                   decoration: const InputDecoration(
                     hintText: 'Notes',
                     enabledBorder: OutlineInputBorder(

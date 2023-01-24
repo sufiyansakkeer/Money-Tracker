@@ -58,105 +58,108 @@ class _HomeScreenState extends State<HomeScreen> {
                         fit: BoxFit.fill,
                       ),
                     ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        ValueListenableBuilder(
-                          valueListenable: totalBalance,
-                          builder: (BuildContext context, dynamic value,
-                              Widget? child) {
-                            return Column(
-                              children: [
-                                Text(
-                                  totalBalance.value < 0 ? 'Damn' : 'Total',
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 30, bottom: 30),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ValueListenableBuilder(
+                            valueListenable: totalBalance,
+                            builder: (BuildContext context, dynamic value,
+                                Widget? child) {
+                              return Column(
+                                children: [
+                                  Text(
+                                    totalBalance.value < 0 ? 'Lose' : 'Total',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 23,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                Text(
-                                  totalBalance.value.toString(),
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 28,
-                                    fontWeight: FontWeight.bold,
+                                  const SizedBox(
+                                    height: 5,
                                   ),
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            ValueListenableBuilder(
-                              valueListenable: expenseTotal,
-                              builder: (BuildContext context, dynamic value,
-                                  Widget? child) {
-                                return Column(
-                                  children: [
-                                    const Text(
-                                      'Expense',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
+                                  Text(
+                                    totalBalance.value.toString(),
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              ValueListenableBuilder(
+                                valueListenable: incomeTotal,
+                                builder: (BuildContext context, dynamic value,
+                                    Widget? child) {
+                                  return Column(
+                                    children: [
+                                      const Text(
+                                        'Income',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 23,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      expenseTotal.value.toString(),
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 28,
-                                        fontWeight: FontWeight.bold,
+                                      const SizedBox(
+                                        height: 5,
                                       ),
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
-                            const SizedBox(
-                              width: 20,
-                            ),
-                            ValueListenableBuilder(
-                              valueListenable: incomeTotal,
-                              builder: (BuildContext context, dynamic value,
-                                  Widget? child) {
-                                return Column(
-                                  children: [
-                                    const Text(
-                                      'Income',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
+                                      Text(
+                                        '${incomeTotal.value}',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 30,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      '${incomeTotal.value}',
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 28,
-                                        fontWeight: FontWeight.bold,
+                                    ],
+                                  );
+                                },
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              ValueListenableBuilder(
+                                valueListenable: expenseTotal,
+                                builder: (BuildContext context, dynamic value,
+                                    Widget? child) {
+                                  return Column(
+                                    children: [
+                                      const Text(
+                                        'Expense',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 23,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
-                          ],
-                        )
-                      ],
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      Text(
+                                        expenseTotal.value.toString(),
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 30,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),

@@ -16,7 +16,7 @@ class DAteFilterTransaction extends StatelessWidget {
         ),
       ),
       child: const Icon(
-        Icons.filter_list_rounded,
+        Icons.calendar_today_rounded,
         size: 30,
         // shadows: <Shadow>[Shadow(color: Colors.white, blurRadius: 15.0)],
       ),

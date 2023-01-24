@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
+
 import 'package:money_track/screens/onboarding_screens/onboarding_screen_1.dart';
 import 'package:money_track/screens/onboarding_screens/onboarding_screen_2.dart';
 import 'package:money_track/screens/onboarding_screens/onboarding_screen_3.dart';

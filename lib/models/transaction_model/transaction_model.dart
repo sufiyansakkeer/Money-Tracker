@@ -1,4 +1,6 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:hive/hive.dart';
+
 import '../categories_model/category_model.dart';
 part 'transaction_model.g.dart';
 
@@ -7,7 +9,7 @@ class TransactionModel {
   @HiveField(0)
   final double amount;
   @HiveField(1)
-  final String notes;
+  String? notes;
   @HiveField(2)
   final DateTime date;
   @HiveField(3)
@@ -16,13 +18,12 @@ class TransactionModel {
   final CategoryModel categoryModel;
   @HiveField(5)
   String? id;
-
   TransactionModel({
-    required this.categoryModel,
     required this.amount,
-    required this.notes,
     required this.date,
     required this.type,
+    required this.categoryModel,
     required this.id,
+    this.notes,
   });
 }
