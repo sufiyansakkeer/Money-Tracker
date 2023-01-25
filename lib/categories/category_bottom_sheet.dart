@@ -2,7 +2,7 @@ import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:money_track/db/category/db_category.dart';
 import 'package:money_track/models/categories_model/category_model.dart';
-import 'package:money_track/widgets/colors.dart';
+import 'package:money_track/constants/color/colors.dart';
 
 ValueNotifier<CategoryType> selectCategoryNotifier =
     ValueNotifier(CategoryType.income);

@@ -29,12 +29,11 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-
- 
   animated_custom_dropdown: ^1.2.2
   animated_snack_bar: ^0.3.0
   animations: 2.0.7
   auto_animated: ^3.1.0
+  avatar_glow: ^2.0.2
   cupertino_icons: 1.0.2
   decorated_dropdownbutton: 0.0.3
   flutter:
@@ -43,7 +42,6 @@ dependencies:
   hive: 2.2.3
   hive_flutter: 1.1.0
   intl: ^0.18.0
-  
   lottie: ^2.2.0
   quickalert: ^1.0.1
   shared_preferences: 2.0.16

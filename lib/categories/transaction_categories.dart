@@ -25,6 +25,7 @@ class _TransactionCategoriesState extends State<TransactionCategories> {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
+      initialIndex: 0,
       child: Scaffold(
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(50.0),
@@ -43,7 +44,7 @@ class _TransactionCategoriesState extends State<TransactionCategories> {
                   child: Container(
                     height: 70,
                     decoration: BoxDecoration(
-                      color: const Color(0xFF68AFF6),
+                      color: Color(0xFF68AFF6),
                       borderRadius: BorderRadius.circular(15),
                       border: Border.all(
                         color: const Color(0xFF68AFF6),
@@ -62,7 +63,7 @@ class _TransactionCategoriesState extends State<TransactionCategories> {
                 Tab(
                   child: Container(
                     decoration: BoxDecoration(
-                      color: const Color(0xFFDE45FE),
+                      // color: const Color(0xFFDE45FE),
                       borderRadius: BorderRadius.circular(15),
                       border: Border.all(
                         color: const Color(0xFFDE45FE),

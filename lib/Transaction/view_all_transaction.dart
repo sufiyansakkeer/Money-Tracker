@@ -29,7 +29,7 @@ class _TransactionListAllState extends State<TransactionListAll> {
         title: const Text(
           'All Transactions',
         ),
-        actions: [
+        actions: const [
           // IconButton(
           //   onPressed: (() {
           //     showSearch(
@@ -39,14 +39,21 @@ class _TransactionListAllState extends State<TransactionListAll> {
           //   }),
           //   icon: const Icon(Icons.search),
           // ),
-          const DAteFilterTransaction(),
-          const TypeFilterClass(),
+
+          DAteFilterTransaction(),
+          SizedBox(
+            width: 10,
+          ),
+          TypeFilterClass(),
+          SizedBox(
+            width: 20,
+          ),
         ],
       ),
       body: Column(
         children: [
           TextFormField(),
-          Expanded(
+          const Expanded(
             child: SizedBox(
               width: double.infinity,
               child: TransactionList(),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:money_track/widgets/colors.dart';
+import 'package:money_track/constants/color/colors.dart';
 
 var nameOfTheUser = 'Sufiyan';
 

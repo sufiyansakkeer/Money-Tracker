@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money_track/db/category/db_category.dart';
-import 'package:money_track/widgets/colors.dart';
+import 'package:money_track/constants/color/colors.dart';
 
 import '../models/categories_model/category_model.dart';
 

@@ -1,3 +1,4 @@
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:money_track/Transaction/recent_transaction/recent_transaction.dart';
 import 'package:money_track/Transaction/view_all_transaction.dart';
@@ -5,7 +6,7 @@ import 'package:money_track/db/category/db_category.dart';
 import 'package:money_track/db/transaction/db_transaction_function.dart';
 import 'package:money_track/db/transaction/income_and_expense.dart';
 import 'package:money_track/screens/home/widgets/floating_action_button.dart';
-import 'package:money_track/widgets/colors.dart';
+import 'package:money_track/constants/color/colors.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -101,13 +102,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                     Widget? child) {
                                   return Column(
                                     children: [
-                                      const Text(
-                                        'Income',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 23,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                      Row(
+                                        children: [
+                                          Icon(Icons.arrow_upward_outlined),
+                                          Text(
+                                            'Income',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                       const SizedBox(
                                         height: 5,
@@ -116,16 +122,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                         '${incomeTotal.value}',
                                         style: const TextStyle(
                                           color: Colors.white,
-                                          fontSize: 30,
+                                          fontSize: 25,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                     ],
                                   );
                                 },
-                              ),
-                              const SizedBox(
-                                width: 20,
                               ),
                               ValueListenableBuilder(
                                 valueListenable: expenseTotal,
@@ -137,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         'Expense',
                                         style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: 23,
+                                          fontSize: 20,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -148,7 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         expenseTotal.value.toString(),
                                         style: const TextStyle(
                                           color: Colors.white,
-                                          fontSize: 30,
+                                          fontSize: 25,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -169,36 +172,40 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Column(
               children: [
-                const Text(
-                  "Recent Transactions",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: secondaryThemeBlue,
-                    elevation: 0,
-                    shape: const StadiumBorder(),
-                  ),
-                  onPressed: (() {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: ((context) {
-                          return const TransactionListAll();
-                        }),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Recent Transactions",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
                       ),
-                    );
-                  }),
-                  child: const Text(
-                    'View all',
-                    style: TextStyle(color: themeDarkBlue),
-                  ),
-                )
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: secondaryThemeBlue,
+                        elevation: 0,
+                        shape: const StadiumBorder(),
+                      ),
+                      onPressed: (() {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: ((context) {
+                              return const TransactionListAll();
+                            }),
+                          ),
+                        );
+                      }),
+                      child: const Text(
+                        'View all',
+                        style: TextStyle(color: themeDarkBlue),
+                      ),
+                    )
+                  ],
+                ),
               ],
             ),
           ),

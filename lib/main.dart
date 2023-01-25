@@ -7,7 +7,7 @@ import 'package:money_track/Transaction/add_transaction.dart/add_transaction.dar
 import 'package:money_track/models/categories_model/category_model.dart';
 
 import 'package:money_track/screens/splash_screen.dart';
-import 'package:money_track/widgets/colors.dart';
+import 'package:money_track/constants/color/colors.dart';
 
 import 'models/transaction_model/transaction_model.dart';
 
@@ -44,7 +44,7 @@ Future<void> main() async {
   // if (!Hive.isAdapterRegistered(CategoryModelAdapter().typeId)) {
   // }
   runApp(
-    MoneyTrack(),
+    const MoneyTrack(),
   );
 }
 
