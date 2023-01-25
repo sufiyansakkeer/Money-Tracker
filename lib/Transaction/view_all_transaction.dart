@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:money_track/Transaction/filter/date_filter/date_filter_transaction.dart';
+import 'package:money_track/Transaction/search/search_field.dart';
 
 import 'package:money_track/Transaction/transaction_list.dart';
 import 'package:money_track/Transaction/filter/type_filter_transaction/type_filter_transaction.dart';
@@ -51,13 +52,10 @@ class _TransactionListAllState extends State<TransactionListAll> {
         ],
       ),
       body: Column(
-        children: [
-          TextFormField(),
-          const Expanded(
-            child: SizedBox(
-              width: double.infinity,
-              child: TransactionList(),
-            ),
+        children: const [
+          SearchField(),
+          Expanded(
+            child: TransactionList(),
           ),
         ],
       ),

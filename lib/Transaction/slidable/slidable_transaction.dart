@@ -6,7 +6,6 @@ import 'package:money_track/Transaction/edit_transaction/edit_transaction.dart';
 import 'package:money_track/db/transaction/db_transaction_function.dart';
 import 'package:money_track/models/categories_model/category_model.dart';
 import 'package:money_track/models/transaction_model/transaction_model.dart';
-import 'package:quickalert/quickalert.dart';
 
 class SlidableTransaction extends StatelessWidget {
   const SlidableTransaction({super.key, required this.transaction});

@@ -82,7 +82,7 @@ class _AddTransactionState extends State<AddTransaction> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: Visibility(
-                    visible: _isVisibleCategoryId,
+                    visible: false,
                     child: Padding(
                       padding: const EdgeInsets.all(3.0),
                       child: Row(
@@ -266,7 +266,16 @@ class _AddTransactionState extends State<AddTransaction> {
       children: [
         Expanded(
           child: DropdownButtonFormField(
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Required';
+              }
+              return null;
+            },
             decoration: const InputDecoration(
+              errorBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.red, width: 1),
+              ),
               enabledBorder: OutlineInputBorder(),
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: themeDarkBlue, width: 2),
