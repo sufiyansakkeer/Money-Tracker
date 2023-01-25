@@ -6,7 +6,7 @@ import 'package:money_track/Transaction/search/search_field.dart';
 import 'package:money_track/Transaction/transaction_list.dart';
 import 'package:money_track/Transaction/filter/type_filter_transaction/type_filter_transaction.dart';
 
-import 'package:money_track/search/search_widget.dart';
+import 'package:money_track/search_delegate/search_widget.dart';
 
 ValueNotifier showCategory = ValueNotifier('All');
 ValueNotifier showDateNotifier = ValueNotifier("All");
