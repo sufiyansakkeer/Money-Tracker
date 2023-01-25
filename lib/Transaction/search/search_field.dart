@@ -5,21 +5,35 @@ import 'package:money_track/Transaction/transaction_list.dart';
 import 'package:money_track/db/transaction/db_transaction_function.dart';
 
 class SearchField extends StatelessWidget {
-  const SearchField({super.key});
-
+  SearchField({super.key});
+  TextEditingController _searchQueryController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: TextField(
-          onChanged: (value) => searchResult(value),
-          decoration: const InputDecoration(
-            hintText: 'Search..',
-            border: OutlineInputBorder(),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: Card(
+        elevation: 9,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: TextField(
+            controller: _searchQueryController,
+            onChanged: (value) => searchResult(value),
+            decoration: InputDecoration(
+                hintText: 'Search..',
+                border: InputBorder.none,
+                icon: Icon(
+                  Icons.search,
+                  // color: textClr,
+                ),
+                suffixIcon: IconButton(
+                    onPressed: _searchQueryController.clear,
+                    icon: Icon(
+                      Icons.close,
+                      color: Colors.black,
+                    ))),
           ),
         ),
       ),

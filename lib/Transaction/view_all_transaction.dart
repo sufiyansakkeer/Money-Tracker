@@ -52,7 +52,7 @@ class _TransactionListAllState extends State<TransactionListAll> {
         ],
       ),
       body: Column(
-        children: const [
+        children: [
           SearchField(),
           Expanded(
             child: TransactionList(),

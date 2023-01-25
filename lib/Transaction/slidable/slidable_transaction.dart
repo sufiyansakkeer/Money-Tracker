@@ -74,29 +74,6 @@ class SlidableTransaction extends StatelessWidget {
                     ],
                   );
                 }));
-            // QuickAlert.show(
-            //   context: context,
-            //   type: QuickAlertType.confirm,
-            //   title: 'Warning!',
-            //   text: 'Are you sure you want to Delete?',
-            //   onConfirmBtnTap: () {
-            //     // TransactionDB.instance.deleteTransaction(transaction);
-            //     // Navigator.of(context).pop();
-            //     // Navigator.pop(context);
-            //   },
-            //   // onCancelBtnTap: () {
-            //   //   // Navigator.of(context).pop();
-            //   // },
-            //   // widget: TextButton(
-            //   //   onPressed: ((() {
-            //   //     TransactionDB.instance.deleteTransaction(transaction);
-            //   //     Navigator.of(context).pop();
-            //   //   })),
-            //   //   child: Text(
-            //   //     'Yes',
-            //   //   ),
-            //   // ),
-            // );
           }),
           icon: Icons.delete,
           foregroundColor: Colors.red,
