@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 import 'package:money_track/Transaction/slidable/slidable_transaction.dart';
 import 'package:money_track/Transaction/view_all_transaction.dart';
@@ -52,23 +53,16 @@ class TransactionList extends StatelessWidget {
               //here i am checking whether the list is empty or not ,
               //if it is empty i would sent a lottie to it
               return displayList.isEmpty
-                  ? Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(50.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Image.asset(
-                              "assets/images/man-waiving-hand.gif",
-                              height: 150,
-                            ),
-                            const Text(
-                              'No Transaction Found',
-                              style: TextStyle(
-                                fontSize: 15,
-                              ),
-                            ),
-                          ],
+                  ? SingleChildScrollView(
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(50.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Lottie.asset('assets/images/no-data.json'),
+                            ],
+                          ),
                         ),
                       ),
                     )

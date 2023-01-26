@@ -44,124 +44,130 @@ class _HomeScreenState extends State<HomeScreen> {
                   top: 20,
                   left: 30,
                   right: 30,
-                  child: Container(
-                    height: 250,
-                    width: 300,
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(30),
-                      ),
-                      border: Border.all(color: Colors.transparent),
-                      image: const DecorationImage(
-                        image: AssetImage(
-                          "assets/images/WhatsApp Image 2023-01-17 at 12.06.12.jpg",
-                        ),
-                        fit: BoxFit.fill,
-                      ),
+                  child: Card(
+                    elevation: 9,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 30, bottom: 30),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          ValueListenableBuilder(
-                            valueListenable: totalBalance,
-                            builder: (BuildContext context, dynamic value,
-                                Widget? child) {
-                              return Column(
-                                children: [
-                                  Text(
-                                    totalBalance.value < 0 ? 'Lose' : 'Total',
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 23,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  Text(
-                                    totalBalance.value.toString(),
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              );
-                            },
+                    child: Container(
+                      height: 250,
+                      width: 300,
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(30),
+                        ),
+                        border: Border.all(color: Colors.transparent),
+                        image: const DecorationImage(
+                          image: AssetImage(
+                            "assets/images/WhatsApp Image 2023-01-17 at 12.06.12.jpg",
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              ValueListenableBuilder(
-                                valueListenable: incomeTotal,
-                                builder: (BuildContext context, dynamic value,
-                                    Widget? child) {
-                                  return Column(
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Icon(Icons.arrow_upward_outlined),
-                                          Text(
-                                            'Income',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold,
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 30, bottom: 30),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ValueListenableBuilder(
+                              valueListenable: totalBalance,
+                              builder: (BuildContext context, dynamic value,
+                                  Widget? child) {
+                                return Column(
+                                  children: [
+                                    Text(
+                                      totalBalance.value < 0 ? 'Lose' : 'Total',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 23,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      totalBalance.value.toString(),
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                ValueListenableBuilder(
+                                  valueListenable: incomeTotal,
+                                  builder: (BuildContext context, dynamic value,
+                                      Widget? child) {
+                                    return Column(
+                                      children: [
+                                        Row(
+                                          children: const [
+                                            Icon(Icons.arrow_upward_outlined),
+                                            Text(
+                                              'Income',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             ),
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Text(
+                                          '${incomeTotal.value}',
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 25,
+                                            fontWeight: FontWeight.bold,
                                           ),
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      Text(
-                                        '${incomeTotal.value}',
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 25,
-                                          fontWeight: FontWeight.bold,
                                         ),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              ),
-                              ValueListenableBuilder(
-                                valueListenable: expenseTotal,
-                                builder: (BuildContext context, dynamic value,
-                                    Widget? child) {
-                                  return Column(
-                                    children: [
-                                      const Text(
-                                        'Expense',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
+                                      ],
+                                    );
+                                  },
+                                ),
+                                ValueListenableBuilder(
+                                  valueListenable: expenseTotal,
+                                  builder: (BuildContext context, dynamic value,
+                                      Widget? child) {
+                                    return Column(
+                                      children: [
+                                        const Text(
+                                          'Expense',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
-                                      ),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      Text(
-                                        expenseTotal.value.toString(),
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 25,
-                                          fontWeight: FontWeight.bold,
+                                        const SizedBox(
+                                          height: 5,
                                         ),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              ),
-                            ],
-                          )
-                        ],
+                                        Text(
+                                          expenseTotal.value.toString(),
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 25,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),

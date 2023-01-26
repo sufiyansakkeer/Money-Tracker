@@ -19,7 +19,10 @@ class SearchField extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: TextField(
             controller: _searchQueryController,
-            onChanged: (value) => searchResult(value),
+            onChanged: (query) {
+              searchResult(query);
+              // overViewListNotifier.notifyListeners();
+            },
             decoration: InputDecoration(
                 hintText: 'Search..',
                 border: InputBorder.none,
@@ -35,7 +38,7 @@ class SearchField extends StatelessWidget {
                     },
                     icon: const Icon(
                       Icons.close,
-                      color: Colors.black,
+                      // color: Colors.black,
                     ))),
           ),
         ),
