@@ -113,7 +113,13 @@ class _RootPageState extends State<RootPage> {
             );
           },
         ),
-        drawer: const NavigationDrawerClass(),
+        drawer:
+            // NavigationDrawer(children: [
+            //   ListTile(
+            //     title: Text('hiii'),
+            //   )
+            // ])
+            NavigationDrawerClass(),
       ),
     );
   }

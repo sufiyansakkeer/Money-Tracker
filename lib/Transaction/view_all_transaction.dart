@@ -5,6 +5,7 @@ import 'package:money_track/Transaction/search/search_field.dart';
 
 import 'package:money_track/Transaction/transaction_list.dart';
 import 'package:money_track/Transaction/filter/type_filter_transaction/type_filter_transaction.dart';
+import 'package:money_track/db/transaction/db_transaction_function.dart';
 
 import 'package:money_track/search_delegate/search_widget.dart';
 
@@ -21,6 +22,13 @@ class TransactionListAll extends StatefulWidget {
 class _TransactionListAllState extends State<TransactionListAll> {
   double expenseTotal = 0;
   double incomeTotal = 0;
+
+  @override
+  void initState() {
+    overViewListNotifier.value =
+        TransactionDB.instance.transactionListNotifier.value;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
