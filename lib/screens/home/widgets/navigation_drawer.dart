@@ -3,8 +3,8 @@ import 'package:money_track/constants/color/colors.dart';
 
 var nameOfTheUser = 'Sufiyan';
 
-class NavigationDrawer extends StatelessWidget {
-  const NavigationDrawer({super.key});
+class NavigationDrawerClass extends StatelessWidget {
+  const NavigationDrawerClass({super.key});
 
   @override
   Widget build(BuildContext context) => Container(

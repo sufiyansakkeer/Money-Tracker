@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:money_track/Transaction/transaction_list.dart';
 import 'package:money_track/db/transaction/db_transaction_function.dart';
 
 class SearchField extends StatelessWidget {
   SearchField({super.key});
-  TextEditingController _searchQueryController = TextEditingController();
+  final TextEditingController _searchQueryController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -24,13 +23,17 @@ class SearchField extends StatelessWidget {
             decoration: InputDecoration(
                 hintText: 'Search..',
                 border: InputBorder.none,
-                icon: Icon(
+                icon: const Icon(
                   Icons.search,
                   // color: textClr,
                 ),
                 suffixIcon: IconButton(
-                    onPressed: _searchQueryController.clear,
-                    icon: Icon(
+                    onPressed: () {
+                      overViewListNotifier.value =
+                          TransactionDB.instance.transactionListNotifier.value;
+                      _searchQueryController.clear();
+                    },
+                    icon: const Icon(
                       Icons.close,
                       color: Colors.black,
                     ))),

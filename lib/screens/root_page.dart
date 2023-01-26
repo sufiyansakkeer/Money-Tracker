@@ -113,7 +113,7 @@ class _RootPageState extends State<RootPage> {
             );
           },
         ),
-        drawer: const NavigationDrawer(),
+        drawer: const NavigationDrawerClass(),
       ),
     );
   }
