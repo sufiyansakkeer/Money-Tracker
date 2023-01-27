@@ -13,79 +13,54 @@ class IncomeInsights extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Row(
-              children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.filter,
-                    color: themeDarkBlue,
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.calendar_today,
-                    color: themeDarkBlue,
-                  ),
-                ),
-              ],
-            ),
-            Expanded(
-              child: ValueListenableBuilder(
-                valueListenable: overViewGraphNotifier,
-                builder: (BuildContext context, List<TransactionModel> newList,
-                    Widget? child) {
-                  // Map incomeMap = {
-                  //   'name': 'Income',
-                  //   "amount": incomeTotal.value
-                  // };
-                  // Map expenseMap = {
-                  //   "name": "Expense",
-                  //   "amount": expenseTotal.value
-                  // };
-                  // List<Map> totalMap = [incomeMap, expenseMap];
-                  var allIncome = newList
-                      .where((element) => element.type == CategoryType.income)
-                      .toList();
-                  return SfCircularChart(
-                    // tooltipBehavior: _tooltipBehavior,
-                    series: <CircularSeries>[
-                      PieSeries<TransactionModel, String>(
-                        dataSource: allIncome,
-                        // color: themeDarkBlue,
-                        // xAxisName: 'Category',
-                        // yAxisName: 'Amount',
-                        xValueMapper: (TransactionModel incomeDate, _) =>
-                            incomeDate.categoryModel.categoryName,
-                        yValueMapper: (TransactionModel incomeDate, _) =>
-                            incomeDate.amount,
-                        // enableTooltip: true,
+        body: ValueListenableBuilder(
+          valueListenable: overViewGraphNotifier,
+          builder: (BuildContext context, List<TransactionModel> newList,
+              Widget? child) {
+            // Map incomeMap = {
+            //   'name': 'Income',
+            //   "amount": incomeTotal.value
+            // };
+            // Map expenseMap = {
+            //   "name": "Expense",
+            //   "amount": expenseTotal.value
+            // };
+            // List<Map> totalMap = [incomeMap, expenseMap];
+            var allIncome = newList
+                .where((element) => element.type == CategoryType.income)
+                .toList();
+            return SfCircularChart(
+              // tooltipBehavior: _tooltipBehavior,
+              series: <CircularSeries>[
+                PieSeries<TransactionModel, String>(
+                  dataSource: allIncome,
+                  // color: themeDarkBlue,
+                  // xAxisName: 'Category',
+                  // yAxisName: 'Amount',
+                  xValueMapper: (TransactionModel incomeDate, _) =>
+                      incomeDate.categoryModel.categoryName,
+                  yValueMapper: (TransactionModel incomeDate, _) =>
+                      incomeDate.amount,
+                  // enableTooltip: true,
 
-                        // name: totalMap.toString(),
-                        dataLabelSettings: const DataLabelSettings(
-                          isVisible: true,
-                          // borderWidth: 20,
-                        ),
-                        // markerSettings: const MarkerSettings(
-                        //   isVisible: true,
-                        // ),
-                      )
-                    ],
-                    legend: Legend(
-                      isVisible: true,
-                      overflowMode: LegendItemOverflowMode.scroll,
-                      alignment: ChartAlignment.center,
-                    ),
-                    // primaryXAxis: CategoryAxis(),
-                  );
-                },
+                  // name: totalMap.toString(),
+                  dataLabelSettings: const DataLabelSettings(
+                    isVisible: true,
+                    // borderWidth: 20,
+                  ),
+                  // markerSettings: const MarkerSettings(
+                  //   isVisible: true,
+                  // ),
+                )
+              ],
+              legend: Legend(
+                isVisible: true,
+                overflowMode: LegendItemOverflowMode.scroll,
+                alignment: ChartAlignment.center,
               ),
-            ),
-          ],
+              // primaryXAxis: CategoryAxis(),
+            );
+          },
         ),
       ),
     );

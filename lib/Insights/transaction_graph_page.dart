@@ -5,8 +5,8 @@ import 'package:money_track/Insights/expense_insights.dart';
 import 'package:money_track/Insights/income_insights.dart';
 import 'package:money_track/Insights/over_view_graph.dart';
 import 'package:money_track/categories/expense_category.dart';
-import 'package:money_track/categories/income_category.dart';
 import 'package:money_track/constants/color/colors.dart';
+import 'package:money_track/db/transaction/db_transaction_function.dart';
 
 class TransactionInsightsAll extends StatefulWidget {
   const TransactionInsightsAll({super.key});
@@ -16,67 +16,168 @@ class TransactionInsightsAll extends StatefulWidget {
 }
 
 class _TransactionInsightsAllState extends State<TransactionInsightsAll> {
+  String dateFilterTitle = "All";
+  @override
+  void initState() {
+    super.initState();
+    overViewGraphNotifier.value =
+        TransactionDB.instance.transactionListNotifier.value;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: DefaultTabController(
-        length: 3,
-        initialIndex: 0,
-        child: Column(
-          // mainAxisAlignment: mai,
-          children: <Widget>[
-            Container(
-              alignment: Alignment.center,
-              // transformAlignment: Alignment.center,
-              decoration: BoxDecoration(
-                  color: themeDarkBlue,
-                  border: Border.all(width: 0, color: themeDarkBlue)),
-              width: double.infinity,
-              child: ButtonsTabBar(
-                contentPadding: const EdgeInsets.symmetric(horizontal: 45),
-                borderColor: const Color.fromARGB(255, 255, 98, 0),
-                backgroundColor: Colors.white,
-                unselectedBackgroundColor: Colors.grey,
-                labelSpacing: 30,
-                labelStyle: const TextStyle(
-                  color: themeDarkBlue,
+      body: Column(
+        children: [
+          Row(
+            children: [
+              Text(
+                dateFilterTitle,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
                 ),
-                unselectedLabelStyle: const TextStyle(color: themeDarkBlue),
-                tabs: const [
-                  Tab(
-                    iconMargin: EdgeInsets.all(30),
-                    // icon: Icon(
-                    //   Icons.arrow_circle_up_rounded,
-                    //   color: incomeColor,
-                    // ),
-                    text: 'All',
-                    // child: Padding(
-                    //   padding: EdgeInsets.symmetric(horizontal: 40),
-                    //   child: Text(
-                    //     'Income',
-                    //     style: TextStyle(
-                    //       color: Colors.white,
-                    //     ),
-                    //   ),
-                    // ),
+              ),
+              PopupMenuButton<int>(
+                shape: ContinuousRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                    50,
                   ),
-                  Tab(
-                    text: 'Income',
+                ),
+                child: const Padding(
+                  padding: EdgeInsets.only(
+                    right: 15.0,
                   ),
-                  Tab(
-                    text: 'Expense',
+                  child: Icon(
+                    Icons.arrow_drop_down,
+                    size: 30,
+                  ),
+                ),
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    value: 1,
+                    child: const Text(
+                      "All",
+                    ),
+                    onTap: () {
+                      overViewGraphNotifier.value =
+                          TransactionDB.instance.transactionListNotifier.value;
+                      setState(() {
+                        dateFilterTitle = "All";
+                      });
+                    },
+                  ),
+                  PopupMenuItem(
+                    value: 2,
+                    child: const Text(
+                      "Today",
+                    ),
+                    onTap: () {
+                      overViewGraphNotifier.value =
+                          TransactionDB.instance.transactionListNotifier.value;
+                      overViewGraphNotifier.value = overViewGraphNotifier.value
+                          .where((element) =>
+                              element.date.day == DateTime.now().day &&
+                              element.date.month == DateTime.now().month &&
+                              element.date.year == DateTime.now().year)
+                          .toList();
+                      setState(() {
+                        dateFilterTitle = "Today";
+                      });
+                    },
+                  ),
+                  PopupMenuItem(
+                    value: 2,
+                    child: const Text(
+                      "Yesterday",
+                    ),
+                    onTap: () {
+                      overViewGraphNotifier.value =
+                          TransactionDB.instance.transactionListNotifier.value;
+                      overViewGraphNotifier.value = overViewGraphNotifier.value
+                          .where((element) =>
+                              element.date.day == DateTime.now().day - 1 &&
+                              element.date.month == DateTime.now().month &&
+                              element.date.year == DateTime.now().year)
+                          .toList();
+                      setState(() {
+                        dateFilterTitle = "Yesterday";
+                      });
+                    },
+                  ),
+                  PopupMenuItem(
+                    value: 2,
+                    child: const Text(
+                      "Month",
+                    ),
+                    onTap: () {
+                      overViewGraphNotifier.value =
+                          TransactionDB.instance.transactionListNotifier.value;
+
+                      overViewGraphNotifier.value = overViewGraphNotifier.value
+                          .where((element) =>
+                              element.date.month == DateTime.now().month &&
+                              element.date.year == DateTime.now().year)
+                          .toList();
+                      setState(() {
+                        dateFilterTitle = "Month";
+                      });
+                    },
                   ),
                 ],
               ),
+            ],
+          ),
+          Expanded(
+            child: DefaultTabController(
+              length: 3,
+              initialIndex: 0,
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    alignment: Alignment.center,
+                    // transformAlignment: Alignment.center,
+
+                    width: double.infinity,
+                    child: ButtonsTabBar(
+                      tabs: const [
+                        Tab(
+                          iconMargin: EdgeInsets.all(30),
+                          // icon: Icon(
+                          //   Icons.arrow_circle_up_rounded,
+                          //   color: incomeColor,
+                          // ),
+                          text: 'All',
+                          // child: Padding(
+                          //   padding: EdgeInsets.symmetric(horizontal: 40),
+                          //   child: Text(
+                          //     'Income',
+                          //     style: TextStyle(
+                          //       color: Colors.white,
+                          //     ),
+                          //   ),
+                          // ),
+                        ),
+                        Tab(
+                          text: 'Income',
+                        ),
+                        Tab(
+                          text: 'Expense',
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Expanded(
+                      child: TabBarView(children: [
+                    TransactionOverView(),
+                    IncomeInsights(),
+                    ExpenseInsights(),
+                  ]))
+                ],
+              ),
             ),
-            const Expanded(
-                child: TabBarView(children: [
-              TransactionOverView(),
-              IncomeInsights(),
-              ExpenseInsights(),
-            ]))
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

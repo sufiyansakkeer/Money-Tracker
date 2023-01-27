@@ -39,16 +39,6 @@ class _TransactionListAllState extends State<TransactionListAll> {
           'All Transactions',
         ),
         actions: const [
-          // IconButton(
-          //   onPressed: (() {
-          //     showSearch(
-          //       context: context,
-          //       delegate: SearchTransaction(),
-          //     );
-          //   }),
-          //   icon: const Icon(Icons.search),
-          // ),
-
           DAteFilterTransaction(),
           SizedBox(
             width: 10,
@@ -62,7 +52,7 @@ class _TransactionListAllState extends State<TransactionListAll> {
       body: Column(
         children: [
           SearchField(),
-          Expanded(
+          const Expanded(
             child: TransactionList(),
           ),
         ],
