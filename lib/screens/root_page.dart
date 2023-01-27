@@ -2,7 +2,7 @@ import 'package:animations/animations.dart';
 
 import 'package:flutter/material.dart';
 import 'package:money_track/Insights/over_view_graph.dart';
-import 'package:money_track/Insights/transaction_graph.dart';
+import 'package:money_track/Insights/transaction_graph_page.dart';
 
 import 'package:money_track/categories/transaction_categories.dart';
 

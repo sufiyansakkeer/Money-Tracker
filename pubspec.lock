@@ -21,10 +21,10 @@ packages:
     dependency: "direct main"
     description:
       name: animated_custom_dropdown
-      sha256: a1ce14dd584dc73891da4c29047bc41a7520781d58c9169ccf7b0e1516f531bf
+      sha256: ecfbceee6912ef0a4eb9da6e5908ce70ac16f35bfd4153068a9fdae879f445ff
       url: "https://pub.dev"
     source: hosted
-    version: "1.4.0"
+    version: "1.2.2"
   animated_snack_bar:
     dependency: "direct main"
     description:

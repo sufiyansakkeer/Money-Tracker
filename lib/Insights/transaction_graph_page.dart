@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:money_track/Insights/expense_insights.dart';
 import 'package:money_track/Insights/income_insights.dart';
 import 'package:money_track/Insights/over_view_graph.dart';
+import 'package:money_track/categories/expense_category.dart';
+import 'package:money_track/categories/income_category.dart';
 import 'package:money_track/constants/color/colors.dart';
 
 class TransactionInsightsAll extends StatefulWidget {
@@ -19,6 +21,7 @@ class _TransactionInsightsAllState extends State<TransactionInsightsAll> {
     return Scaffold(
       body: DefaultTabController(
         length: 3,
+        initialIndex: 0,
         child: Column(
           // mainAxisAlignment: mai,
           children: <Widget>[
@@ -41,15 +44,12 @@ class _TransactionInsightsAllState extends State<TransactionInsightsAll> {
                 unselectedLabelStyle: const TextStyle(color: themeDarkBlue),
                 tabs: const [
                   Tab(
-                    text: 'All',
-                  ),
-                  Tab(
                     iconMargin: EdgeInsets.all(30),
                     // icon: Icon(
                     //   Icons.arrow_circle_up_rounded,
                     //   color: incomeColor,
                     // ),
-                    text: 'Income',
+                    text: 'All',
                     // child: Padding(
                     //   padding: EdgeInsets.symmetric(horizontal: 40),
                     //   child: Text(
@@ -61,23 +61,15 @@ class _TransactionInsightsAllState extends State<TransactionInsightsAll> {
                     // ),
                   ),
                   Tab(
+                    text: 'Income',
+                  ),
+                  Tab(
                     text: 'Expense',
-                    // icon: Icon(
-                    //   Icons.arrow_downward_outlined,
-                    //   color: expenseColor,
-                    // ),
-                    // child: Padding(
-                    //   padding: EdgeInsets.symmetric(horizontal: 40),
-                    //   child: Text(
-                    //     'Expense',
-                    //     style: TextStyle(color: Colors.white),
-                    //   ),
-                    // ),
                   ),
                 ],
               ),
             ),
-            Expanded(
+            const Expanded(
                 child: TabBarView(children: [
               TransactionOverView(),
               IncomeInsights(),
@@ -89,3 +81,7 @@ class _TransactionInsightsAllState extends State<TransactionInsightsAll> {
     );
   }
 }
+
+//  TransactionOverView(),
+                    // IncomeInsights(),
+                    // ExpenseInsights(),
