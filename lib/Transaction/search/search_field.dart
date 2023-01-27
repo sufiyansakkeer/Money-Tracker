@@ -52,8 +52,9 @@ class SearchField extends StatelessWidget {
           TransactionDB.instance.transactionListNotifier.value;
     } else {
       overViewListNotifier.value = overViewListNotifier.value
-          .where(
-              (element) => element.categoryModel.categoryName.contains(query))
+          .where((element) => element.categoryModel.categoryName
+              .toLowerCase()
+              .contains(query.trim().toLowerCase()))
           .toList();
     }
   }

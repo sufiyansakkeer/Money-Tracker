@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:money_track/Transaction/transaction_list.dart';
+
 import 'package:money_track/constants/color/colors.dart';
-import 'package:money_track/db/category/db_category.dart';
+
 import 'package:money_track/db/transaction/db_transaction_function.dart';
 import 'package:money_track/db/transaction/income_and_expense.dart';
-import 'package:money_track/models/categories_model/category_model.dart';
+
 import 'package:money_track/models/transaction_model/transaction_model.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -36,14 +36,14 @@ class _TransactionInsightsState extends State<TransactionInsights> {
           elevation: 0,
           leading: IconButton(
               onPressed: () {},
-              icon: Icon(
+              icon: const Icon(
                 Icons.filter,
                 color: themeDarkBlue,
               )),
           actions: [
             IconButton(
                 onPressed: () {},
-                icon: Icon(
+                icon: const Icon(
                   Icons.calendar_today,
                   color: themeDarkBlue,
                 ))
@@ -72,7 +72,7 @@ class _TransactionInsightsState extends State<TransactionInsights> {
                     yValueMapper: (Map data, _) => data['amount'],
                     enableTooltip: true,
                     dataLabelSettings: const DataLabelSettings(isVisible: true),
-                    markerSettings: MarkerSettings(isVisible: true))
+                    markerSettings: const MarkerSettings(isVisible: true))
               ],
               primaryXAxis: CategoryAxis(),
             );

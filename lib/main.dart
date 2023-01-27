@@ -78,7 +78,7 @@ class MoneyTrack extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        // useMaterial3: true,
+        useMaterial3: true,
         primarySwatch: createMaterialColor(
           themeDarkBlue,
         ),
