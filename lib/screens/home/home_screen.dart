@@ -17,10 +17,16 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
+  void initState() {
+    incomeAndExpense();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     CategoryDb.instance.refreshUI();
     TransactionDB.instance.refreshUi();
-    incomeAndExpense();
+    // incomeAndExpense();
     return Scaffold(
       body: Column(
         children: [
@@ -109,7 +115,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                       children: [
                                         Row(
                                           children: const [
-                                            Icon(Icons.arrow_upward_outlined),
+                                            Icon(
+                                              Icons.arrow_upward_outlined,
+                                              color: Colors.white,
+                                            ),
                                             Text(
                                               'Income',
                                               style: TextStyle(
@@ -141,13 +150,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                       Widget? child) {
                                     return Column(
                                       children: [
-                                        const Text(
-                                          'Expense',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                        Row(
+                                          children: const [
+                                            Icon(
+                                              Icons.arrow_downward_outlined,
+                                              color: Colors.white,
+                                            ),
+                                            Text(
+                                              'Expense',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                         const SizedBox(
                                           height: 5,

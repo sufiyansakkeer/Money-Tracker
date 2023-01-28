@@ -13,6 +13,7 @@ abstract class TransactionDBFunction {
   Future<void> editTransaction(TransactionModel value);
 
   Future<void> deleteTransaction(TransactionModel obj);
+  Future<void> deleteAllTransaction();
 }
 
 class TransactionDB implements TransactionDBFunction {
@@ -81,16 +82,10 @@ class TransactionDB implements TransactionDBFunction {
     overViewListNotifier.notifyListeners();
   }
 
-  // recentTransactionList() async {
-  //   final list = await getAllTransaction();
-  //   ValueNotifier<List<TransactionModel>> recentTransactionItems =
-  //       ValueNotifier([]);
-
-  //   final List<TransactionModel> value =
-  //       TransactionDB.instance.transactionListNotifier.value;
-  //   for (var i = value.length - 5; i < value.length; i++) {
-  //     recentTransactionItems.value.add(value[i]);
-  //   }
-  //   recentTransactionItems.notifyListeners();
-  // }
+  @override
+  Future<void> deleteAllTransaction() async {
+    final transactionDb =
+        await Hive.openBox<TransactionModel>(transactionDbName);
+    transactionDb.deleteFromDisk();
+  }
 }

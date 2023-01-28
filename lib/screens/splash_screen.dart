@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:money_track/db/transaction/income_and_expense.dart';
 import 'package:money_track/screens/onboarding_screens/onboard_screen.dart';
 import 'package:money_track/screens/root_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,6 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
       bool seen = preferences.getBool('seen') ?? false;
       seen ? goToRootPage() : goToOnboardPage();
     }));
+
     super.initState();
   }
 

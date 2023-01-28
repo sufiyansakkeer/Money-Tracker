@@ -6,8 +6,7 @@ import 'package:money_track/models/transaction_model/transaction_model.dart';
 
 ValueNotifier expenseTotal = ValueNotifier(0.0);
 ValueNotifier incomeTotal = ValueNotifier(0.0);
-// var scaffoldKey = GlobalKey<ScaffoldState>();
-// int? totalAmount = 100000;
+
 ValueNotifier totalBalance = ValueNotifier(0.0);
 void incomeAndExpense() {
   incomeTotal.value = 0;
