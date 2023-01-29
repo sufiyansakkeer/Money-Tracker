@@ -1,5 +1,6 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
+import 'package:money_track/Insights/over_view_graph.dart';
 import 'package:money_track/Transaction/recent_transaction/recent_transaction.dart';
 import 'package:money_track/Transaction/view_all_transaction.dart';
 import 'package:money_track/db/category/db_category.dart';
@@ -18,7 +19,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
-    incomeAndExpense();
+    // incomeAndExpense();
+    overViewGraphNotifier.value =
+        TransactionDB.instance.transactionListNotifier.value;
     super.initState();
   }
 
@@ -26,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     CategoryDb.instance.refreshUI();
     TransactionDB.instance.refreshUi();
-    // incomeAndExpense();
+    incomeAndExpense();
     return Scaffold(
       body: Column(
         children: [

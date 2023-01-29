@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 import 'package:money_track/db/transaction/db_transaction_function.dart';
 import 'package:money_track/db/transaction/income_and_expense.dart';
@@ -39,35 +40,47 @@ class _TransactionOverView extends State<TransactionOverView> {
             // var allIncome = newList
             //     .where((element) => element.type == CategoryType.income)
             //     .toList();
-            return SfCircularChart(
-              tooltipBehavior: _tooltipBehavior,
-              series: <CircularSeries>[
-                PieSeries<Map, String>(
-                  dataSource: totalMap,
-                  // color: themeDarkBlue,
-                  // xAxisName: 'Category',
-                  // yAxisName: 'Amount',
-                  xValueMapper: (Map data, _) => data['name'],
-                  yValueMapper: (Map data, _) => data['amount'],
-                  // enableTooltip: true,
+            return overViewGraphNotifier.value.isEmpty
+                ? Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(50.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Lottie.asset('assets/images/no-data.json'),
+                        ],
+                      ),
+                    ),
+                  )
+                : SfCircularChart(
+                    tooltipBehavior: _tooltipBehavior,
+                    series: <CircularSeries>[
+                      PieSeries<Map, String>(
+                        dataSource: totalMap,
+                        // color: themeDarkBlue,
+                        // xAxisName: 'Category',
+                        // yAxisName: 'Amount',
+                        xValueMapper: (Map data, _) => data['name'],
+                        yValueMapper: (Map data, _) => data['amount'],
+                        // enableTooltip: true,
 
-                  // name: totalMap.toString(),
-                  dataLabelSettings: const DataLabelSettings(
-                    isVisible: true,
-                    // borderWidth: 20,
-                  ),
-                  // markerSettings: const MarkerSettings(
-                  //   isVisible: true,
-                  // ),
-                )
-              ],
-              legend: Legend(
-                isVisible: true,
-                overflowMode: LegendItemOverflowMode.scroll,
-                alignment: ChartAlignment.center,
-              ),
-              // primaryXAxis: CategoryAxis(),
-            );
+                        // name: totalMap.toString(),
+                        dataLabelSettings: const DataLabelSettings(
+                          isVisible: true,
+                          // borderWidth: 20,
+                        ),
+                        // markerSettings: const MarkerSettings(
+                        //   isVisible: true,
+                        // ),
+                      )
+                    ],
+                    legend: Legend(
+                      isVisible: true,
+                      overflowMode: LegendItemOverflowMode.scroll,
+                      alignment: ChartAlignment.center,
+                    ),
+                    // primaryXAxis: CategoryAxis(),
+                  );
           },
         ),
       ),

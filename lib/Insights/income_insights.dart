@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:money_track/Insights/over_view_graph.dart';
 import 'package:money_track/constants/color/colors.dart';
 import 'package:money_track/db/transaction/income_and_expense.dart';
@@ -29,37 +30,49 @@ class IncomeInsights extends StatelessWidget {
             var allIncome = newList
                 .where((element) => element.type == CategoryType.income)
                 .toList();
-            return SfCircularChart(
-              // tooltipBehavior: _tooltipBehavior,
-              series: <CircularSeries>[
-                PieSeries<TransactionModel, String>(
-                  dataSource: allIncome,
-                  // color: themeDarkBlue,
-                  // xAxisName: 'Category',
-                  // yAxisName: 'Amount',
-                  xValueMapper: (TransactionModel incomeDate, _) =>
-                      incomeDate.categoryModel.categoryName,
-                  yValueMapper: (TransactionModel incomeDate, _) =>
-                      incomeDate.amount,
-                  // enableTooltip: true,
+            return overViewGraphNotifier.value.isEmpty
+                ? Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(50.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Lottie.asset('assets/images/no-data.json'),
+                        ],
+                      ),
+                    ),
+                  )
+                : SfCircularChart(
+                    // tooltipBehavior: _tooltipBehavior,
+                    series: <CircularSeries>[
+                      PieSeries<TransactionModel, String>(
+                        dataSource: allIncome,
+                        // color: themeDarkBlue,
+                        // xAxisName: 'Category',
+                        // yAxisName: 'Amount',
+                        xValueMapper: (TransactionModel incomeDate, _) =>
+                            incomeDate.categoryModel.categoryName,
+                        yValueMapper: (TransactionModel incomeDate, _) =>
+                            incomeDate.amount,
+                        // enableTooltip: true,
 
-                  // name: totalMap.toString(),
-                  dataLabelSettings: const DataLabelSettings(
-                    isVisible: true,
-                    // borderWidth: 20,
-                  ),
-                  // markerSettings: const MarkerSettings(
-                  //   isVisible: true,
-                  // ),
-                )
-              ],
-              legend: Legend(
-                isVisible: true,
-                overflowMode: LegendItemOverflowMode.scroll,
-                alignment: ChartAlignment.center,
-              ),
-              // primaryXAxis: CategoryAxis(),
-            );
+                        // name: totalMap.toString(),
+                        dataLabelSettings: const DataLabelSettings(
+                          isVisible: true,
+                          // borderWidth: 20,
+                        ),
+                        // markerSettings: const MarkerSettings(
+                        //   isVisible: true,
+                        // ),
+                      )
+                    ],
+                    legend: Legend(
+                      isVisible: true,
+                      overflowMode: LegendItemOverflowMode.scroll,
+                      alignment: ChartAlignment.center,
+                    ),
+                    // primaryXAxis: CategoryAxis(),
+                  );
           },
         ),
       ),

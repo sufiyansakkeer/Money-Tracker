@@ -16,7 +16,7 @@ Future<void> main() async {
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
-      systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarColor: Colors.black,
     ),
   );
   //here it will ensure that the app will connect with platform channels or not,
@@ -30,19 +30,19 @@ Future<void> main() async {
   //without adapter we can't read or write to data base,
   // it act as a bridge between database and app
 //category type adapter registration
-  Hive.registerAdapter(CategoryTypeAdapter());
 
-  // if (!Hive.isAdapterRegistered(CategoryTypeAdapter().typeId)) {
-  // }
+  if (!Hive.isAdapterRegistered(CategoryTypeAdapter().typeId)) {
+    Hive.registerAdapter(CategoryTypeAdapter());
+  }
 
   // //here we register the category name adapter if it is not registered
 //category model adapter registration
-  Hive.registerAdapter(CategoryModelAdapter());
 //transaction model adapter registration
 
   Hive.registerAdapter(TransactionModelAdapter());
-  // if (!Hive.isAdapterRegistered(CategoryModelAdapter().typeId)) {
-  // }
+  if (!Hive.isAdapterRegistered(CategoryModelAdapter().typeId)) {
+    Hive.registerAdapter(CategoryModelAdapter());
+  }
   runApp(
     const MoneyTrack(),
   );

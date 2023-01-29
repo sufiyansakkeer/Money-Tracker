@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:money_track/constants/color/colors.dart';
+import 'package:money_track/db/category/db_category.dart';
+import 'package:money_track/db/transaction/db_transaction_function.dart';
 import 'package:money_track/models/categories_model/category_model.dart';
 import 'package:money_track/models/transaction_model/transaction_model.dart';
 import 'package:money_track/screens/splash_screen.dart';
@@ -45,82 +47,85 @@ class NavigationDrawerClass extends StatelessWidget {
         child: Wrap(
           runSpacing: 10,
           children: [
-            GestureDetector(
-              onTap: () {},
-              child: Card(
-                shape: RoundedRectangleBorder(
-                  //<-- SEE HERE
-                  // side: BorderSide(width: 1),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: ListTile(
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (ctx) {
-                        return AlertDialog(
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(15),
-                            ),
+            Card(
+              shape: RoundedRectangleBorder(
+                //<-- SEE HERE
+                // side: BorderSide(width: 1),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: ListTile(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (ctx) {
+                      return AlertDialog(
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(15),
                           ),
-                          actions: [
-                            TextButton(
-                                onPressed: () => Navigator.of(ctx).pop(),
-                                child: const Text(
-                                  'No',
-                                  style: TextStyle(color: Colors.blueGrey),
-                                )),
-                            const SizedBox(
-                              width: 30,
-                            ),
-                            TextButton(
-                              onPressed: () async {
-                                SharedPreferences pref =
-                                    await SharedPreferences.getInstance();
-                                await pref.clear();
-
-                                final transactionDb =
-                                    await Hive.openBox<TransactionModel>(
-                                        'transaction-db');
-                                final categoryDB =
-                                    await Hive.openBox<CategoryModel>(
-                                        'category-db');
-
-                                await categoryDB.deleteFromDisk();
-                                await transactionDb.deleteFromDisk();
-                                // ignore: use_build_context_synchronously
-                                Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                    builder: (context) => const SplashScreen(),
-                                  ),
-                                );
-                              },
+                        ),
+                        actions: [
+                          TextButton(
+                              onPressed: () => Navigator.of(ctx).pop(),
                               child: const Text(
-                                'Yes',
-                                style: TextStyle(color: Colors.red),
-                              ),
-                            )
-                          ],
-                          title: const Text("Reset App"),
-                          content: const Text(
-                              "Are you sure you want to reset the app?"),
-                        );
-                      },
-                    );
-                  },
-                  title: const Text(
-                    'Reset',
-                    style: TextStyle(
-                      color: themeDarkBlue,
-                      fontSize: 16,
-                    ),
-                  ),
-                  leading: const Icon(
-                    Icons.restart_alt_rounded,
+                                'No',
+                                style: TextStyle(color: Colors.blueGrey),
+                              )),
+                          const SizedBox(
+                            width: 30,
+                          ),
+                          TextButton(
+                            onPressed: () async {
+                              SharedPreferences pref =
+                                  await SharedPreferences.getInstance();
+                              await pref.clear();
+                              // TransactionDB.instance.resetApp();
+                              // resetApp();
+                              final categoryDB =
+                                  await Hive.openBox<CategoryModel>(
+                                      'category-database');
+
+                              categoryDB.clear();
+
+                              final transactionDb =
+                                  await Hive.openBox<TransactionModel>(
+                                      'Transaction-database');
+
+                              transactionDb.clear();
+                              // Hive.box('category-database').clear();
+                              // Hive.box('Transaction-database').clear();
+
+                              // ignore: use_build_context_synchronously
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (context) => const SplashScreen(),
+                                ),
+                              );
+                            },
+                            child: const Text(
+                              'Yes',
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          )
+                        ],
+                        title: const Text("Reset App"),
+                        content: const Text(
+                            "Are you sure you want to reset the app?"),
+                      );
+                    },
+                  );
+                },
+                title: const Text(
+                  'Reset',
+                  style: TextStyle(
                     color: themeDarkBlue,
-                    size: 25,
+                    fontSize: 16,
                   ),
+                ),
+                leading: const Icon(
+                  Icons.restart_alt_rounded,
+                  color: themeDarkBlue,
+                  size: 25,
                 ),
               ),
             ),
