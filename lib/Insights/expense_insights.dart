@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 import 'package:money_track/Insights/over_view_graph.dart';
 import 'package:money_track/models/categories_model/category_model.dart';
@@ -24,27 +25,39 @@ class _ExpenseInsightsState extends State<ExpenseInsights> {
             var allIncome = newList
                 .where((element) => element.type == CategoryType.expense)
                 .toList();
-            return SfCircularChart(
-              series: <CircularSeries>[
-                PieSeries<TransactionModel, String>(
-                  dataSource: allIncome,
-                  xValueMapper: (TransactionModel expenseDate, _) =>
-                      expenseDate.categoryModel.categoryName,
-                  yValueMapper: (TransactionModel expenseDate, _) =>
-                      expenseDate.amount,
-                  dataLabelSettings: const DataLabelSettings(
-                    isVisible: true,
-                    // borderWidth: 20,
-                  ),
-                )
-              ],
-              legend: Legend(
-                isVisible: true,
-                overflowMode: LegendItemOverflowMode.scroll,
-                alignment: ChartAlignment.center,
-              ),
-              // primaryXAxis: CategoryAxis(),
-            );
+            return overViewGraphNotifier.value.isEmpty
+                ? Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(50.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Lottie.asset('assets/images/no-data.json'),
+                        ],
+                      ),
+                    ),
+                  )
+                : SfCircularChart(
+                    series: <CircularSeries>[
+                      PieSeries<TransactionModel, String>(
+                        dataSource: allIncome,
+                        xValueMapper: (TransactionModel expenseDate, _) =>
+                            expenseDate.categoryModel.categoryName,
+                        yValueMapper: (TransactionModel expenseDate, _) =>
+                            expenseDate.amount,
+                        dataLabelSettings: const DataLabelSettings(
+                          isVisible: true,
+                          // borderWidth: 20,
+                        ),
+                      )
+                    ],
+                    legend: Legend(
+                      isVisible: true,
+                      overflowMode: LegendItemOverflowMode.scroll,
+                      alignment: ChartAlignment.center,
+                    ),
+                    // primaryXAxis: CategoryAxis(),
+                  );
           },
         ),
       ),

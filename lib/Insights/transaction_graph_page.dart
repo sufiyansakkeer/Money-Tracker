@@ -34,7 +34,7 @@ class _TransactionInsightsAllState extends State<TransactionInsightsAll> {
             child: Row(
               children: [
                 Text(
-                  dateFilterTitle,
+                  'Date  ',
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -46,13 +46,24 @@ class _TransactionInsightsAllState extends State<TransactionInsightsAll> {
                       50,
                     ),
                   ),
-                  child: const Padding(
+                  child: Padding(
                     padding: EdgeInsets.only(
                       right: 15.0,
                     ),
-                    child: Icon(
-                      Icons.arrow_drop_down,
-                      size: 30,
+                    child: Row(
+                      children: [
+                        Text(
+                          dateFilterTitle,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Icon(
+                          Icons.arrow_drop_down,
+                          size: 30,
+                        ),
+                      ],
                     ),
                   ),
                   itemBuilder: (context) => [
