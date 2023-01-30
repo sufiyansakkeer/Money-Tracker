@@ -282,61 +282,67 @@ class _AddTransactionState extends State<AddTransaction> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
-          child: DropdownButtonFormField(
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Required';
-              }
-              return null;
-            },
-            decoration: const InputDecoration(
-              errorBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.red, width: 1),
-              ),
-              enabledBorder: OutlineInputBorder(),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: themeDarkBlue, width: 2),
-              ),
-            ),
-            elevation: 9,
-            hint: const Text('select category'),
-            value: _categoryId,
-            items: (_selectedCategoryType == CategoryType.income
-                    ? CategoryDb.instance.incomeCategoryListListener
-                    : CategoryDb.instance.expenseCategoryListListener)
-                .value
-                .map((e) {
-              return DropdownMenuItem(
-                alignment: AlignmentDirectional.center,
-                value: e.id,
-                child: Container(
-                  decoration: BoxDecoration(
-                    // border: Border.all(
-                    //   color: Colors.black38,
-                    //   width: 1,
-                    // ),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Text(
-                    e.categoryName,
-                  ),
+            child: ValueListenableBuilder(
+          valueListenable: _selectedCategoryType == CategoryType.income
+              ? CategoryDb().incomeCategoryListListener
+              : CategoryDb().expenseCategoryListListener,
+          builder: (BuildContext context, dynamic value, Widget? child) {
+            return DropdownButtonFormField(
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Required';
+                }
+                return null;
+              },
+              decoration: const InputDecoration(
+                errorBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.red, width: 1),
                 ),
-                onTap: () {
-                  setState(() {
-                    CategoryDb.instance.refreshUI();
-                    _selectedCategoryModel = e;
-                  });
-                },
-              );
-            }).toList(),
-            onChanged: ((selectedValue) {
-              // print(selectedValue);
-              setState(() {
-                _categoryId = selectedValue;
-              });
-            }),
-          ),
-        ),
+                enabledBorder: OutlineInputBorder(),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: themeDarkBlue, width: 2),
+                ),
+              ),
+              elevation: 9,
+              hint: const Text('select category'),
+              value: _categoryId,
+              items: (_selectedCategoryType == CategoryType.income
+                      ? CategoryDb.instance.incomeCategoryListListener
+                      : CategoryDb.instance.expenseCategoryListListener)
+                  .value
+                  .map((e) {
+                return DropdownMenuItem(
+                  alignment: AlignmentDirectional.center,
+                  value: e.id,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      // border: Border.all(
+                      //   color: Colors.black38,
+                      //   width: 1,
+                      // ),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Text(
+                      e.categoryName,
+                    ),
+                  ),
+                  onTap: () {
+                    setState(() {
+                      CategoryDb.instance.refreshUI();
+                      _selectedCategoryModel = e;
+                    });
+                  },
+                );
+              }).toList(),
+              onChanged: ((selectedValue) {
+                // print(selectedValue);
+                setState(() {
+                  _categoryId = selectedValue;
+                });
+              }),
+            );
+          },
+        )),
         Padding(
           padding: const EdgeInsets.only(left: 10),
           child: Container(

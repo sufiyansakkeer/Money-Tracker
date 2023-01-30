@@ -49,6 +49,7 @@ class NavigationDrawerClass extends StatelessWidget {
           runSpacing: 10,
           children: [
             Card(
+              elevation: 8,
               shape: RoundedRectangleBorder(
                 //<-- SEE HERE
                 // side: BorderSide(width: 1),
@@ -131,6 +132,7 @@ class NavigationDrawerClass extends StatelessWidget {
               ),
             ),
             Card(
+              elevation: 8,
               shape: RoundedRectangleBorder(
                 //<-- SEE HERE
                 // side: BorderSide(width: 1),
@@ -155,6 +157,7 @@ class NavigationDrawerClass extends StatelessWidget {
               ),
             ),
             Card(
+              elevation: 8,
               shape: RoundedRectangleBorder(
                 //<-- SEE HERE
                 // side: BorderSide(width: 1),
@@ -176,6 +179,7 @@ class NavigationDrawerClass extends StatelessWidget {
               ),
             ),
             Card(
+              elevation: 8,
               shape: RoundedRectangleBorder(
                 //<-- SEE HERE
                 // side: BorderSide(width: 1),
