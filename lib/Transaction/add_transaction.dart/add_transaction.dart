@@ -168,9 +168,21 @@ class _AddTransactionState extends State<AddTransaction> {
                 ),
 
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  // width: double.infinity,
+                  // decoration: BoxDecoration(
+                  //   border: Border.all(),
+                  //   borderRadius: BorderRadius.all(Radius.circular(5)),
+                  // ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
                   child: Center(
                     child: TextButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: themeDarkBlue,
+                        foregroundColor: Colors.white,
+                        // primary: Colors.black,
+                        minimumSize: const Size.fromHeight(50), // NEW
+                      ),
                       onPressed: (() async {
                         final selectedTempDate = await showDatePicker(
                             context: context,
@@ -250,7 +262,9 @@ class _AddTransactionState extends State<AddTransaction> {
                       addTransaction();
                     }
                   }),
-                  style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
+                  style: ElevatedButton.styleFrom(
+                    shape: const StadiumBorder(),
+                  ),
                   child: const Text(
                     'Submit',
                   ),

@@ -99,7 +99,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       height: 5,
                                     ),
                                     Text(
-                                      totalBalance.value.toString(),
+                                      //here i used abs to avoid the negative values
+                                      totalBalance.value.abs().toString(),
                                       style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 30,

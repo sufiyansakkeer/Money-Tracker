@@ -1,11 +1,13 @@
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:flutter/material.dart';
+import 'package:money_track/categories/add_category.dart';
 
 import 'package:money_track/categories/category_bottom_sheet.dart';
 import 'package:money_track/categories/expense_category.dart';
 import 'package:money_track/categories/income_category.dart';
 import 'package:money_track/constants/color/colors.dart';
 import 'package:money_track/db/category/db_category.dart';
+import 'package:money_track/models/categories_model/category_model.dart';
 
 class TransactionCategories extends StatefulWidget {
   const TransactionCategories({super.key});
@@ -14,16 +16,27 @@ class TransactionCategories extends StatefulWidget {
   State<TransactionCategories> createState() => _TransactionCategoriesState();
 }
 
-class _TransactionCategoriesState extends State<TransactionCategories> {
+class _TransactionCategoriesState extends State<TransactionCategories>
+    with SingleTickerProviderStateMixin {
+  // late TabController _tabController = TabController(
+  //   length: 2,
+  //   vsync: this,
+  // );
+  // late CategoryType _type;
   @override
   void initState() {
     CategoryDb().refreshUI();
     super.initState();
+    // DefaultTabController.of(context).addListener(() {
+    //   selectedCategoryNotifier.value =
+    //       DefaultTabController.of(context).index == 0
+    //           ? CategoryType.income
+    //           : CategoryType.expense;
+    // });
   }
 
   @override
   Widget build(BuildContext context) {
-    // const hhh;
     return Scaffold(
       body: DefaultTabController(
         length: 2,
@@ -51,10 +64,6 @@ class _TransactionCategoriesState extends State<TransactionCategories> {
                 tabs: const [
                   Tab(
                     iconMargin: EdgeInsets.all(30),
-                    // icon: Icon(
-                    //   Icons.arrow_circle_up_rounded,
-                    //   color: incomeColor,
-                    // ),
                     text: 'Income',
                   ),
                   Tab(
@@ -75,6 +84,13 @@ class _TransactionCategoriesState extends State<TransactionCategories> {
         onPressed: () {
           //  print('ia, category');
           // showCategoryAddPopup(context);
+          // categoryShowBottomSheetApp(
+          //   context,
+          // );
+          // CategoryType type = DefaultTabController.of(context).index == 0
+          //     ? CategoryType.income
+          //     : CategoryType.expense;
+
           categoryShowBottomSheetApp(context);
         },
         backgroundColor: Colors.white,

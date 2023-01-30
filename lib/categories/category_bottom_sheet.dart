@@ -30,17 +30,17 @@ categoryShowBottomSheetApp(BuildContext context) async {
                       style: TextStyle(fontSize: 18),
                     )),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: const [
-                        RadioButton(title: 'Income', type: CategoryType.income),
-                        RadioButton(
-                            title: 'Expense', type: CategoryType.expense),
-                      ],
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.all(10.0),
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //     children: const [
+                  //       RadioButton(title: 'Income', type: CategoryType.income),
+                  //       RadioButton(
+                  //           title: 'Expense', type: CategoryType.expense),
+                  //     ],
+                  //   ),
+                  // ),
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: TextFormField(

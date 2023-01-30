@@ -162,20 +162,7 @@ class _TransactionInsightsAllState extends State<TransactionInsightsAll> {
                       tabs: const [
                         Tab(
                           iconMargin: EdgeInsets.all(30),
-                          // icon: Icon(
-                          //   Icons.arrow_circle_up_rounded,
-                          //   color: incomeColor,
-                          // ),
                           text: 'All',
-                          // child: Padding(
-                          //   padding: EdgeInsets.symmetric(horizontal: 40),
-                          //   child: Text(
-                          //     'Income',
-                          //     style: TextStyle(
-                          //       color: Colors.white,
-                          //     ),
-                          //   ),
-                          // ),
                         ),
                         Tab(
                           text: 'Income',
