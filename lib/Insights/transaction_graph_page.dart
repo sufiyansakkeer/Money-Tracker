@@ -33,9 +33,9 @@ class _TransactionInsightsAllState extends State<TransactionInsightsAll> {
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
-                Text(
+                const Text(
                   'Date  ',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
@@ -47,7 +47,7 @@ class _TransactionInsightsAllState extends State<TransactionInsightsAll> {
                     ),
                   ),
                   child: Padding(
-                    padding: EdgeInsets.only(
+                    padding: const EdgeInsets.only(
                       right: 15.0,
                     ),
                     child: Row(
@@ -59,7 +59,7 @@ class _TransactionInsightsAllState extends State<TransactionInsightsAll> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Icon(
+                        const Icon(
                           Icons.arrow_drop_down,
                           size: 30,
                         ),

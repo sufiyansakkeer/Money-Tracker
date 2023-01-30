@@ -56,15 +56,6 @@ class _TransactionCategoriesState extends State<TransactionCategories> {
                     //   color: incomeColor,
                     // ),
                     text: 'Income',
-                    // child: Padding(
-                    //   padding: EdgeInsets.symmetric(horizontal: 40),
-                    //   child: Text(
-                    //     'Income',
-                    //     style: TextStyle(
-                    //       color: Colors.white,
-                    //     ),
-                    //   ),
-                    // ),
                   ),
                   Tab(
                     text: 'Expense',

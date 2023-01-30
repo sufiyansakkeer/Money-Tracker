@@ -3,6 +3,7 @@ import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:money_track/categories/category_app_popup.dart';
+import 'package:money_track/categories/category_type_pop_up.dart';
 import 'package:money_track/constants/color/colors.dart';
 
 import 'package:money_track/db/category/db_category.dart';
@@ -76,6 +77,7 @@ class _AddTransactionState extends State<AddTransaction> {
                 ),
                 //category drop down button and add category button
                 selectCategoryItem(context),
+
                 const SizedBox(
                   height: 5,
                 ),
@@ -221,7 +223,7 @@ class _AddTransactionState extends State<AddTransaction> {
                 ),
 
                 // submit button
-                TextButton(
+                ElevatedButton(
                   onPressed: (() {
                     if (_selectedDateTime == null) {
                       setState(() {
@@ -248,6 +250,7 @@ class _AddTransactionState extends State<AddTransaction> {
                       addTransaction();
                     }
                   }),
+                  style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
                   child: const Text(
                     'Submit',
                   ),
@@ -327,7 +330,8 @@ class _AddTransactionState extends State<AddTransaction> {
                 borderRadius: BorderRadius.circular(10), color: themeDarkBlue),
             child: IconButton(
               onPressed: (() {
-                showCategoryAddPopup(context);
+                // showCategoryAddPopup(context);
+                categoryTypePopUp(context, _selectedCategoryType!);
               }),
               icon: const Icon(
                 Icons.add_circle_outline,

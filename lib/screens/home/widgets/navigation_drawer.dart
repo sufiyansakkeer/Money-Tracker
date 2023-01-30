@@ -6,6 +6,7 @@ import 'package:money_track/db/transaction/db_transaction_function.dart';
 import 'package:money_track/models/categories_model/category_model.dart';
 import 'package:money_track/models/transaction_model/transaction_model.dart';
 import 'package:money_track/screens/splash_screen.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 var nameOfTheUser = 'Sufiyan';
@@ -136,7 +137,10 @@ class NavigationDrawerClass extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20),
               ),
               child: ListTile(
-                onTap: () {},
+                onTap: () {
+                  Share.share(
+                      'hey! check out this new app https://play.google.com/store/search?q=money%20tracker&c=apps');
+                },
                 title: const Text(
                   'Share',
                   style: TextStyle(
