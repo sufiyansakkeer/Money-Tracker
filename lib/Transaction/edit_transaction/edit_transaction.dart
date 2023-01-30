@@ -8,6 +8,8 @@ import 'package:money_track/db/transaction/db_transaction_function.dart';
 import 'package:money_track/models/categories_model/category_model.dart';
 import 'package:money_track/models/transaction_model/transaction_model.dart';
 
+import '../../constants/color/colors.dart';
+
 class EditTransaction extends StatefulWidget {
   const EditTransaction({
     Key? key,
@@ -61,11 +63,12 @@ class _EditTransactionState extends State<EditTransaction> {
         child: Padding(
           padding: const EdgeInsets.all(15.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     ChoiceChip(
                       padding: const EdgeInsets.all(8),
@@ -82,6 +85,9 @@ class _EditTransactionState extends State<EditTransaction> {
                           _categoryId = null;
                         });
                       },
+                    ),
+                    SizedBox(
+                      width: 20,
                     ),
                     ChoiceChip(
                       padding: const EdgeInsets.all(8),
@@ -100,6 +106,19 @@ class _EditTransactionState extends State<EditTransaction> {
                       },
                     ),
                   ],
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  'Category',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
               DropdownButtonFormField(
@@ -170,6 +189,16 @@ class _EditTransactionState extends State<EditTransaction> {
                   ),
                 ),
               ),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  'Amount',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: TextFormField(
@@ -189,6 +218,19 @@ class _EditTransactionState extends State<EditTransaction> {
                       ), //<-- SEE HERE
                     ),
                     border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  'Notes',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
@@ -216,7 +258,7 @@ class _EditTransactionState extends State<EditTransaction> {
                   maxLines: 5,
                 ),
               ),
-              TextButton.icon(
+              TextButton(
                 onPressed: (() async {
                   final selectedTempDate = await showDatePicker(
                       context: context,
@@ -236,36 +278,47 @@ class _EditTransactionState extends State<EditTransaction> {
                     });
                   }
                 }),
-                icon: const Icon(
-                  Icons.calendar_today,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: themeDarkBlue,
+                  foregroundColor: Colors.white,
+                  // primary: Colors.black,
+                  minimumSize: const Size.fromHeight(50), // NEW
                 ),
-                label: Text(
+                child: Text(
                   _selectedDateTime == null
                       ? 'Select Your Date'
                       : parseDateTime(_selectedDateTime!),
                 ),
               ),
-              ElevatedButton(
-                onPressed: (() {
-                  if (_categoryId == null) {
-                    setState(() {
-                      // _categoryItemValidationText =
-                      //     '    Please Select Category';
-                      _isVisibleCategoryId = true;
-                    });
-                  } else {
-                    setState(() {
-                      _isVisibleCategoryId = false;
-                    });
-                  }
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: (() {
+                      if (_categoryId == null) {
+                        setState(() {
+                          // _categoryItemValidationText =
+                          //     '    Please Select Category';
+                          _isVisibleCategoryId = true;
+                        });
+                      } else {
+                        setState(() {
+                          _isVisibleCategoryId = false;
+                        });
+                      }
 
-                  if (_formKey.currentState!.validate()) {
-                    editTransaction();
-                  }
-                }),
-                child: const Text(
-                  'Update',
-                ),
+                      if (_formKey.currentState!.validate()) {
+                        editTransaction();
+                      }
+                    }),
+                    style: ElevatedButton.styleFrom(
+                      shape: const StadiumBorder(),
+                    ),
+                    child: const Text(
+                      'Update',
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
