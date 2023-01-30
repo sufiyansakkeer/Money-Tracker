@@ -71,6 +71,7 @@ Future<void> categoryTypePopUp(BuildContext context, CategoryType type) async {
                       ).show(
                         context,
                       );
+                      CategoryDb.instance.refreshUI();
                     }
                     final name = nameEditingController.text;
                     if (name.isEmpty) {

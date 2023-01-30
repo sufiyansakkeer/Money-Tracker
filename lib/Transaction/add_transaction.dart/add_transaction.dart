@@ -332,6 +332,10 @@ class _AddTransactionState extends State<AddTransaction> {
               onPressed: (() {
                 // showCategoryAddPopup(context);
                 categoryTypePopUp(context, _selectedCategoryType!);
+                CategoryDb.instance.expenseCategoryListListener
+                    .notifyListeners();
+                CategoryDb.instance.incomeCategoryListListener
+                    .notifyListeners();
               }),
               icon: const Icon(
                 Icons.add_circle_outline,

@@ -7,10 +7,8 @@ import 'package:money_track/Transaction/transaction_list.dart';
 import 'package:money_track/Transaction/filter/type_filter_transaction/type_filter_transaction.dart';
 import 'package:money_track/db/transaction/db_transaction_function.dart';
 
-import 'package:money_track/search_delegate/search_widget.dart';
-
 ValueNotifier showCategory = ValueNotifier('All');
-ValueNotifier showDateNotifier = ValueNotifier("All");
+// ValueNotifier showDateNotifier = ValueNotifier("All");
 
 class TransactionListAll extends StatefulWidget {
   const TransactionListAll({super.key});
@@ -27,6 +25,7 @@ class _TransactionListAllState extends State<TransactionListAll> {
   void initState() {
     overViewListNotifier.value =
         TransactionDB.instance.transactionListNotifier.value;
+    // overViewListNotifier.notifyListeners();
     super.initState();
   }
 

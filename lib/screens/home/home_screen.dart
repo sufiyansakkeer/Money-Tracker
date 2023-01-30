@@ -19,17 +19,19 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
-    // incomeAndExpense();
-    overViewGraphNotifier.value =
-        TransactionDB.instance.transactionListNotifier.value;
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      incomeAndExpense();
+      overViewGraphNotifier.value =
+          TransactionDB.instance.transactionListNotifier.value;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     CategoryDb.instance.refreshUI();
     TransactionDB.instance.refreshUi();
-    incomeAndExpense();
+    // incomeAndExpense();
     return Scaffold(
       body: Column(
         children: [
