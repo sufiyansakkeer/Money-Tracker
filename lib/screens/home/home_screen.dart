@@ -20,6 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    // * here we used widget binding add post frame call back to call after the widget in builded
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       incomeAndExpense();
       overViewGraphNotifier.value =

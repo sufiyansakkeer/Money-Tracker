@@ -157,6 +157,8 @@ class _TransactionInsightsAllState extends State<TransactionInsightsAll> {
 
                     width: double.infinity,
                     child: ButtonsTabBar(
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 40),
                       tabs: const [
                         Tab(
                           iconMargin: EdgeInsets.all(30),

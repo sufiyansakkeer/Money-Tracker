@@ -59,17 +59,6 @@ class _TransactionCategoriesState extends State<TransactionCategories> {
                   ),
                   Tab(
                     text: 'Expense',
-                    // icon: Icon(
-                    //   Icons.arrow_downward_outlined,
-                    //   color: expenseColor,
-                    // ),
-                    // child: Padding(
-                    //   padding: EdgeInsets.symmetric(horizontal: 40),
-                    //   child: Text(
-                    //     'Expense',
-                    //     style: TextStyle(color: Colors.white),
-                    //   ),
-                    // ),
                   ),
                 ],
               ),
