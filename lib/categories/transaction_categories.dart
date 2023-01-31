@@ -1,13 +1,11 @@
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:flutter/material.dart';
-import 'package:money_track/categories/add_category.dart';
 
 import 'package:money_track/categories/category_bottom_sheet.dart';
 import 'package:money_track/categories/expense_category.dart';
 import 'package:money_track/categories/income_category.dart';
 import 'package:money_track/constants/color/colors.dart';
 import 'package:money_track/db/category/db_category.dart';
-import 'package:money_track/models/categories_model/category_model.dart';
 
 class TransactionCategories extends StatefulWidget {
   const TransactionCategories({super.key});
@@ -18,21 +16,10 @@ class TransactionCategories extends StatefulWidget {
 
 class _TransactionCategoriesState extends State<TransactionCategories>
     with SingleTickerProviderStateMixin {
-  // late TabController _tabController = TabController(
-  //   length: 2,
-  //   vsync: this,
-  // );
-  // late CategoryType _type;
   @override
   void initState() {
     CategoryDb().refreshUI();
     super.initState();
-    // DefaultTabController.of(context).addListener(() {
-    //   selectedCategoryNotifier.value =
-    //       DefaultTabController.of(context).index == 0
-    //           ? CategoryType.income
-    //           : CategoryType.expense;
-    // });
   }
 
   @override

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:money_track/constants/color/colors.dart';
-import 'package:money_track/db/category/db_category.dart';
-import 'package:money_track/db/transaction/db_transaction_function.dart';
+
 import 'package:money_track/models/categories_model/category_model.dart';
 import 'package:money_track/models/transaction_model/transaction_model.dart';
 import 'package:money_track/screens/splash_screen.dart';

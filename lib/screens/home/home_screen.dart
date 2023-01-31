@@ -1,4 +1,3 @@
-import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:money_track/Insights/over_view_graph.dart';
 import 'package:money_track/Transaction/recent_transaction/recent_transaction.dart';

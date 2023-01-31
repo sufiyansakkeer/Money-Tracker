@@ -2,7 +2,7 @@ import 'package:animated_snack_bar/animated_snack_bar.dart';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:money_track/categories/category_app_popup.dart';
+
 import 'package:money_track/categories/category_type_pop_up.dart';
 import 'package:money_track/constants/color/colors.dart';
 
@@ -25,7 +25,7 @@ class _AddTransactionState extends State<AddTransaction> {
   String? _categoryId;
   final _formKey = GlobalKey<FormState>();
   // final DatePickerController _controller = DatePickerController();
-  bool _isVisibleCategoryId = false;
+  // bool _isVisibleCategoryId = false;
 
   bool _isVisibleDate = false;
   final _notesTextEditingController = TextEditingController();
@@ -148,12 +148,7 @@ class _AddTransactionState extends State<AddTransaction> {
                 TextFormField(
                   keyboardType: TextInputType.multiline,
                   controller: _notesTextEditingController,
-                  // validator: (value) {
-                  //   if (value == null || value.isEmpty) {
-                  //     return 'Enter the purpose';
-                  //   }
-                  //   return null;
-                  // },
+
                   decoration: const InputDecoration(
                     hintText: 'Enter the Purpose',
                     enabledBorder: OutlineInputBorder(
@@ -199,9 +194,6 @@ class _AddTransactionState extends State<AddTransaction> {
                           });
                         }
                       }),
-                      // icon: const Icon(
-                      //   Icons.calendar_today,
-                      // ),
                       child: Text(
                         _selectedDateTime == null
                             // ? 'Select Date'
@@ -241,17 +233,17 @@ class _AddTransactionState extends State<AddTransaction> {
                         _isVisibleDate = false;
                       });
                     }
-                    if (_categoryId == null) {
-                      setState(() {
-                        // _categoryItemValidationText =
-                        //     '    Please Select Category';
-                        _isVisibleCategoryId = true;
-                      });
-                    } else {
-                      setState(() {
-                        _isVisibleCategoryId = false;
-                      });
-                    }
+                    // if (_categoryId == null) {
+                    //   setState(() {
+                    //     // _categoryItemValidationText =
+                    //     //     '    Please Select Category';
+                    //     _isVisibleCategoryId = true;
+                    //   });
+                    // } else {
+                    //   setState(() {
+                    //     _isVisibleCategoryId = false;
+                    //   });
+                    // }
 
                     if (_formKey.currentState!.validate()) {
                       addTransaction();

@@ -41,14 +41,16 @@ class _TransactionOverView extends State<TransactionOverView> {
             //     .where((element) => element.type == CategoryType.income)
             //     .toList();
             return overViewGraphNotifier.value.isEmpty
-                ? Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(50.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Lottie.asset('assets/images/no-data.json'),
-                        ],
+                ? SingleChildScrollView(
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(50.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Lottie.asset('assets/images/no-data.json'),
+                          ],
+                        ),
                       ),
                     ),
                   )

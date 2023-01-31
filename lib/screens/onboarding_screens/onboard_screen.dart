@@ -105,10 +105,7 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
                               final pref =
                                   await SharedPreferences.getInstance();
                               pref.setBool('seen', true);
-                              Navigator.of(context).pushAndRemoveUntil(
-                                  MaterialPageRoute(
-                                      builder: ((context) => const RootPage())),
-                                  (route) => false);
+                              rootPageNavigation();
                             }),
                             // child: Container(
                             //   decoration: BoxDecoration(
@@ -199,5 +196,11 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
         ],
       ),
     );
+  }
+
+  rootPageNavigation() {
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: ((context) => const RootPage())),
+        (route) => false);
   }
 }

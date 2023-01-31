@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:money_track/categories/category_bottom_sheet.dart';
+
 import 'package:money_track/constants/color/colors.dart';
 
 import '../db/category/db_category.dart';

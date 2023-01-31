@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:money_track/Insights/over_view_graph.dart';
-import 'package:money_track/constants/color/colors.dart';
-import 'package:money_track/db/transaction/income_and_expense.dart';
+
 import 'package:money_track/models/categories_model/category_model.dart';
 import 'package:money_track/models/transaction_model/transaction_model.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -31,14 +30,16 @@ class IncomeInsights extends StatelessWidget {
                 .where((element) => element.type == CategoryType.income)
                 .toList();
             return overViewGraphNotifier.value.isEmpty
-                ? Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(50.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Lottie.asset('assets/images/no-data.json'),
-                        ],
+                ? SingleChildScrollView(
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(50.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Lottie.asset('assets/images/no-data.json'),
+                          ],
+                        ),
                       ),
                     ),
                   )

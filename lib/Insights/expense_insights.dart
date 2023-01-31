@@ -26,14 +26,16 @@ class _ExpenseInsightsState extends State<ExpenseInsights> {
                 .where((element) => element.type == CategoryType.expense)
                 .toList();
             return overViewGraphNotifier.value.isEmpty
-                ? Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(50.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Lottie.asset('assets/images/no-data.json'),
-                        ],
+                ? SingleChildScrollView(
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(50.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Lottie.asset('assets/images/no-data.json'),
+                          ],
+                        ),
                       ),
                     ),
                   )

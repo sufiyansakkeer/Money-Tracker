@@ -86,7 +86,7 @@ class _EditTransactionState extends State<EditTransaction> {
                         });
                       },
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 20,
                     ),
                     ChoiceChip(

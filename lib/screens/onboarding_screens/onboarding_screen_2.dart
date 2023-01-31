@@ -11,12 +11,17 @@ class OnBoardingTwo extends StatelessWidget {
         padding:
             const EdgeInsets.only(top: 70, bottom: 70, left: 20, right: 20),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Lottie.asset(
-                'assets/images/organize-in-closet-wardrobe-animation.json'),
-            Text(
+            SizedBox(
+              height: 250,
+              child: Lottie.asset(
+                'assets/images/organize-in-closet-wardrobe-animation.json',
+                // fit: BoxFit.fill,
+              ),
+            ),
+            const Text(
               'Arrange Your Money\n Conveniently',
               style: TextStyle(
                 fontSize: 30,
