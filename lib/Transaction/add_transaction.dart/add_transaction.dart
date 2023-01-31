@@ -135,41 +135,15 @@ class _AddTransactionState extends State<AddTransaction> {
                 const SizedBox(
                   height: 10,
                 ),
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    'Notes',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-                TextFormField(
-                  keyboardType: TextInputType.multiline,
-                  controller: _notesTextEditingController,
-
-                  decoration: const InputDecoration(
-                    hintText: 'Enter the Purpose',
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        width: 1,
-                      ), //<-- SEE HERE
-                    ),
-                    border: OutlineInputBorder(),
-                  ),
-                  minLines: 5, // <-- SEE HERE
-                  maxLines: 5,
-                ),
-
                 Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
                   child: Center(
                     child: TextButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: themeDarkBlue,
-                        foregroundColor: Colors.white,
+                        side: const BorderSide(width: 1.0),
+                        // backgroundColor: themeDarkBlue,
+                        foregroundColor: themeDarkBlue,
                         // primary: Colors.black,
                         minimumSize: const Size.fromHeight(50), // NEW
                       ),
@@ -203,6 +177,32 @@ class _AddTransactionState extends State<AddTransaction> {
                     ),
                   ),
                 ),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    'Notes',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                TextFormField(
+                  keyboardType: TextInputType.multiline,
+                  controller: _notesTextEditingController,
+
+                  decoration: const InputDecoration(
+                    hintText: 'Enter the Purpose',
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        width: 1,
+                      ), //<-- SEE HERE
+                    ),
+                    border: OutlineInputBorder(),
+                  ),
+                  minLines: 5, // <-- SEE HERE
+                  maxLines: 5,
+                ),
 
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 5),
@@ -222,39 +222,44 @@ class _AddTransactionState extends State<AddTransaction> {
                 ),
 
                 // submit button
-                ElevatedButton(
-                  onPressed: (() {
-                    if (_selectedDateTime == null) {
-                      setState(() {
-                        _selectedDateTime = DateTime.now();
-                      });
-                    } else {
-                      setState(() {
-                        _isVisibleDate = false;
-                      });
-                    }
-                    // if (_categoryId == null) {
-                    //   setState(() {
-                    //     // _categoryItemValidationText =
-                    //     //     '    Please Select Category';
-                    //     _isVisibleCategoryId = true;
-                    //   });
-                    // } else {
-                    //   setState(() {
-                    //     _isVisibleCategoryId = false;
-                    //   });
-                    // }
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: (() {
+                        if (_selectedDateTime == null) {
+                          setState(() {
+                            _selectedDateTime = DateTime.now();
+                          });
+                        } else {
+                          setState(() {
+                            _isVisibleDate = false;
+                          });
+                        }
+                        // if (_categoryId == null) {
+                        //   setState(() {
+                        //     // _categoryItemValidationText =
+                        //     //     '    Please Select Category';
+                        //     _isVisibleCategoryId = true;
+                        //   });
+                        // } else {
+                        //   setState(() {
+                        //     _isVisibleCategoryId = false;
+                        //   });
+                        // }
 
-                    if (_formKey.currentState!.validate()) {
-                      addTransaction();
-                    }
-                  }),
-                  style: ElevatedButton.styleFrom(
-                    shape: const StadiumBorder(),
-                  ),
-                  child: const Text(
-                    'Submit',
-                  ),
+                        if (_formKey.currentState!.validate()) {
+                          addTransaction();
+                        }
+                      }),
+                      style: ElevatedButton.styleFrom(
+                        shape: const StadiumBorder(),
+                      ),
+                      child: const Text(
+                        'Submit',
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

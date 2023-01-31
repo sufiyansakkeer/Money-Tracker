@@ -2,6 +2,7 @@ import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:money_track/db/category/db_category.dart';
 import 'package:money_track/models/categories_model/category_model.dart';
+import 'package:intl/intl.dart' show toBeginningOfSentenceCase;
 
 Future<void> categoryTypePopUp(BuildContext context, CategoryType type) async {
   final formKey = GlobalKey<FormState>();
@@ -29,13 +30,14 @@ Future<void> categoryTypePopUp(BuildContext context, CategoryType type) async {
                   }
                   return null;
                 },
-                decoration: const InputDecoration(
-                  labelText: 'Category Name',
+                decoration: InputDecoration(
+                  labelText:
+                      '${toBeginningOfSentenceCase(categoryType.name)} Category',
                   // floatingLabelStyle: TextStyle(
                   //   color: Colors.black,
                   // ),
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
+                  border: const OutlineInputBorder(),
+                  enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Color(0xFF2E49FB),
                     ),
@@ -102,4 +104,8 @@ Future<void> categoryTypePopUp(BuildContext context, CategoryType type) async {
       );
     },
   );
+
+  String capitalize(String name) {
+    return "${name[0].toUpperCase()}${name.substring(1).toLowerCase()}";
+  }
 }
