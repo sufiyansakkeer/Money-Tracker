@@ -224,6 +224,39 @@ class _EditTransactionState extends State<EditTransaction> {
               const SizedBox(
                 height: 10,
               ),
+              TextButton(
+                onPressed: (() async {
+                  final selectedTempDate = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime.now().subtract(
+                        const Duration(
+                          days: 30,
+                        ),
+                      ),
+                      lastDate: DateTime.now(),
+                      helpText: 'select a Date');
+                  if (selectedTempDate == null) {
+                    return;
+                  } else {
+                    setState(() {
+                      _selectedDateTime = selectedTempDate;
+                    });
+                  }
+                }),
+                style: ElevatedButton.styleFrom(
+                  side: const BorderSide(width: 1.0),
+                  // backgroundColor: themeDarkBlue,
+                  foregroundColor: themeDarkBlue,
+                  // primary: Colors.black,
+                  minimumSize: const Size.fromHeight(50),
+                ),
+                child: Text(
+                  _selectedDateTime == null
+                      ? 'Select Your Date'
+                      : parseDateTime(_selectedDateTime!),
+                ),
+              ),
               const Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Text(
@@ -258,37 +291,8 @@ class _EditTransactionState extends State<EditTransaction> {
                   maxLines: 5,
                 ),
               ),
-              TextButton(
-                onPressed: (() async {
-                  final selectedTempDate = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime.now().subtract(
-                        const Duration(
-                          days: 30,
-                        ),
-                      ),
-                      lastDate: DateTime.now(),
-                      helpText: 'select a Date');
-                  if (selectedTempDate == null) {
-                    return;
-                  } else {
-                    setState(() {
-                      _selectedDateTime = selectedTempDate;
-                    });
-                  }
-                }),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: themeDarkBlue,
-                  foregroundColor: Colors.white,
-                  // primary: Colors.black,
-                  minimumSize: const Size.fromHeight(50), // NEW
-                ),
-                child: Text(
-                  _selectedDateTime == null
-                      ? 'Select Your Date'
-                      : parseDateTime(_selectedDateTime!),
-                ),
+              const SizedBox(
+                height: 10,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

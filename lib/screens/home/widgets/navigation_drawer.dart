@@ -55,6 +55,28 @@ class NavigationDrawerClass extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20),
               ),
               child: ListTile(
+                onTap: () {},
+                title: const Text(
+                  'About',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: themeDarkBlue,
+                  ),
+                ),
+                leading: const Icon(
+                  Icons.info_rounded,
+                  color: themeDarkBlue,
+                ),
+              ),
+            ),
+            Card(
+              elevation: 8,
+              shape: RoundedRectangleBorder(
+                //<-- SEE HERE
+                // side: BorderSide(width: 1),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: ListTile(
                 onTap: () {
                   showDialog(
                     context: context,
@@ -173,28 +195,6 @@ class NavigationDrawerClass extends StatelessWidget {
                 ),
                 leading: const Icon(
                   Icons.description,
-                  color: themeDarkBlue,
-                ),
-              ),
-            ),
-            Card(
-              elevation: 8,
-              shape: RoundedRectangleBorder(
-                //<-- SEE HERE
-                // side: BorderSide(width: 1),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: ListTile(
-                onTap: () {},
-                title: const Text(
-                  'About',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: themeDarkBlue,
-                  ),
-                ),
-                leading: const Icon(
-                  Icons.info_rounded,
                   color: themeDarkBlue,
                 ),
               ),
