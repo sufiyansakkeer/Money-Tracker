@@ -239,12 +239,12 @@ class _EditTransactionState extends State<EditTransaction> {
                 child: TextFormField(
                   keyboardType: TextInputType.multiline,
                   controller: _notesTextEditingController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Enter your purpose';
-                    }
-                    return null;
-                  },
+                  // validator: (value) {
+                  //   if (value == null || value.isEmpty) {
+                  //     return 'Enter your purpose';
+                  //   }
+                  //   return null;
+                  // },
                   decoration: const InputDecoration(
                     hintText: 'Notes',
                     enabledBorder: OutlineInputBorder(
@@ -342,9 +342,9 @@ class _EditTransactionState extends State<EditTransaction> {
       return;
     }
     //to check the notes is null or not
-    if (notesText.isEmpty) {
-      return;
-    }
+    // if (notesText.isEmpty) {
+    //   return;
+    // }
     //here we checked category id because at initial category id is null
     if (_categoryId == null) {
       return;

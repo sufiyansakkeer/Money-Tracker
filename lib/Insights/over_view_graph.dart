@@ -57,9 +57,7 @@ class _TransactionOverView extends State<TransactionOverView> {
                     series: <CircularSeries>[
                       PieSeries<Map, String>(
                         dataSource: totalMap,
-                        // color: themeDarkBlue,
-                        // xAxisName: 'Category',
-                        // yAxisName: 'Amount',
+
                         xValueMapper: (Map data, _) => data['name'],
                         yValueMapper: (Map data, _) => data['amount'],
                         // enableTooltip: true,

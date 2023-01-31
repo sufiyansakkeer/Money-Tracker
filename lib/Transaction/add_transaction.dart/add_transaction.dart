@@ -168,11 +168,6 @@ class _AddTransactionState extends State<AddTransaction> {
                 ),
 
                 Container(
-                  // width: double.infinity,
-                  // decoration: BoxDecoration(
-                  //   border: Border.all(),
-                  //   borderRadius: BorderRadius.all(Radius.circular(5)),
-                  // ),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
                   child: Center(

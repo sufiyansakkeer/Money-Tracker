@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:money_track/Insights/expense_insights.dart';
 import 'package:money_track/Insights/income_insights.dart';
 import 'package:money_track/Insights/over_view_graph.dart';
-import 'package:money_track/categories/expense_category.dart';
-import 'package:money_track/constants/color/colors.dart';
+
 import 'package:money_track/db/transaction/db_transaction_function.dart';
 
 class TransactionInsightsAll extends StatefulWidget {
