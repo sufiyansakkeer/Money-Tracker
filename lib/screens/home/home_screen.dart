@@ -99,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                     Text(
                                       //here i used abs to avoid the negative values
-                                      totalBalance.value.abs().toString(),
+                                      '₹${totalBalance.value.abs().toString()}',
                                       style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 30,
@@ -139,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           height: 5,
                                         ),
                                         Text(
-                                          '${incomeTotal.value}',
+                                          '₹${incomeTotal.value}',
                                           style: const TextStyle(
                                             color: Colors.white,
                                             fontSize: 25,
@@ -176,7 +176,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           height: 5,
                                         ),
                                         Text(
-                                          expenseTotal.value.toString(),
+                                          '₹${expenseTotal.value.toString()}',
                                           style: const TextStyle(
                                             color: Colors.white,
                                             fontSize: 25,
