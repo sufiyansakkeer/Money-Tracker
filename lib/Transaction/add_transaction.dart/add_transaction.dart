@@ -280,6 +280,7 @@ class _AddTransactionState extends State<AddTransaction> {
               : CategoryDb().expenseCategoryListListener,
           builder: (BuildContext context, dynamic value, Widget? child) {
             return DropdownButtonFormField(
+              alignment: Alignment.bottomLeft,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Required';
@@ -304,7 +305,7 @@ class _AddTransactionState extends State<AddTransaction> {
                   .value
                   .map((e) {
                 return DropdownMenuItem(
-                  alignment: AlignmentDirectional.center,
+                  alignment: AlignmentDirectional.centerStart,
                   value: e.id,
                   child: Container(
                     decoration: BoxDecoration(
