@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:money_track/Insights/over_view_graph.dart';
-import 'package:money_track/Transaction/recent_transaction/recent_transaction.dart';
-import 'package:money_track/Transaction/view_all_transaction.dart';
+import 'package:money_track/insights/over_view_graph.dart';
+import 'package:money_track/transaction/recent_transaction/recent_transaction.dart';
+import 'package:money_track/transaction/view_all_transaction.dart';
 import 'package:money_track/db/category/db_category.dart';
 import 'package:money_track/db/transaction/db_transaction_function.dart';
 import 'package:money_track/db/transaction/income_and_expense.dart';

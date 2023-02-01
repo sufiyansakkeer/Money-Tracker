@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
 
-import 'package:money_track/Transaction/add_transaction.dart/add_transaction.dart';
+import 'package:money_track/transaction/add_transaction.dart/add_transaction.dart';
 import 'package:money_track/models/categories_model/category_model.dart';
 
 import 'package:money_track/screens/splash_screen.dart';

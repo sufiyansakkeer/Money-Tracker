@@ -107,15 +107,6 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
                               pref.setBool('seen', true);
                               rootPageNavigation();
                             }),
-                            // child: Container(
-                            //   decoration: BoxDecoration(
-
-                            //   ),
-                            //   height: 50,
-
-                            //   child:
-                            //       Lottie.asset('assets/images/getStarted.json'),
-                            // ),
                             child: Container(
                               height: 50,
                               width: 140,

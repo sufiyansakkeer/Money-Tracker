@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
-import 'package:money_track/Transaction/edit_transaction/edit_transaction.dart';
+import 'package:money_track/transaction/edit_transaction/edit_transaction.dart';
 import 'package:money_track/db/transaction/db_transaction_function.dart';
 import 'package:money_track/models/categories_model/category_model.dart';
 import 'package:money_track/models/transaction_model/transaction_model.dart';

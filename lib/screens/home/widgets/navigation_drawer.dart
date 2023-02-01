@@ -32,9 +32,14 @@ class NavigationDrawerClass extends StatelessWidget {
           ),
           child: SafeArea(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 buildMenuItems(
                   context,
+                ),
+                const Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Text('V 1.0'),
                 ),
               ],
             ),

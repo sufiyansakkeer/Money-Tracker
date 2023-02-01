@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:money_track/Transaction/slidable/slidable_transaction.dart';
+import 'package:money_track/transaction/slidable/slidable_transaction.dart';
 
 import 'package:money_track/db/transaction/db_transaction_function.dart';
 import 'package:money_track/models/transaction_model/transaction_model.dart';

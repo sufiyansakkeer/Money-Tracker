@@ -75,7 +75,8 @@ class _AddTransactionState extends State<AddTransaction> {
                     ),
                   ),
                 ),
-                //category drop down button and add category button
+
+                // * category drop down button and add category button
                 selectCategoryItem(context),
 
                 const SizedBox(
@@ -236,17 +237,6 @@ class _AddTransactionState extends State<AddTransaction> {
                             _isVisibleDate = false;
                           });
                         }
-                        // if (_categoryId == null) {
-                        //   setState(() {
-                        //     // _categoryItemValidationText =
-                        //     //     '    Please Select Category';
-                        //     _isVisibleCategoryId = true;
-                        //   });
-                        // } else {
-                        //   setState(() {
-                        //     _isVisibleCategoryId = false;
-                        //   });
-                        // }
 
                         if (_formKey.currentState!.validate()) {
                           addTransaction();
