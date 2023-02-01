@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money_track/insights/over_view_graph.dart';
+import 'package:money_track/models/transaction_model/transaction_model.dart';
 import 'package:money_track/transaction/recent_transaction/recent_transaction.dart';
 import 'package:money_track/transaction/view_all_transaction.dart';
 import 'package:money_track/db/category/db_category.dart';
@@ -200,7 +201,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Column(
               children: [
                 Row(
@@ -213,26 +214,43 @@ class _HomeScreenState extends State<HomeScreen> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: secondaryThemeBlue,
-                        elevation: 0,
-                        shape: const StadiumBorder(),
-                      ),
-                      onPressed: (() {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: ((context) {
-                              return const TransactionListAll();
-                            }),
-                          ),
-                        );
-                      }),
-                      child: const Text(
-                        'View all',
-                        style: TextStyle(color: themeDarkBlue),
-                      ),
-                    )
+                    ValueListenableBuilder(
+                      valueListenable:
+                          TransactionDB.instance.transactionListNotifier,
+                      builder: (BuildContext context,
+                          List<TransactionModel> newList, Widget? child) {
+                        return newList.isEmpty
+                            ? const Padding(
+                                padding: EdgeInsets.only(right: 10),
+                                child: Text(
+                                  'No Data!',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              )
+                            : ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: secondaryThemeBlue,
+                                  elevation: 0,
+                                  shape: const StadiumBorder(),
+                                ),
+                                onPressed: (() {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: ((context) {
+                                        return const TransactionListAll();
+                                      }),
+                                    ),
+                                  );
+                                }),
+                                child: const Text(
+                                  'View all',
+                                  style: TextStyle(color: themeDarkBlue),
+                                ),
+                              );
+                      },
+                    ),
                   ],
                 ),
               ],
