@@ -36,19 +36,24 @@ class RecentTransactionList extends StatelessWidget {
                   ),
                 ),
               )
-            : ListView.separated(
+            : ListView.builder(
                 padding: const EdgeInsets.only(
                   left: 15,
                   right: 15,
                 ),
-                separatorBuilder: ((context, index) {
-                  return const Divider();
-                }),
+                // separatorBuilder: ((context, index) {
+                //   return const Divider();
+                // }),
                 itemCount: newList.length > 3 ? 3 : newList.length,
                 itemBuilder: (context, index) {
                   final transaction = newList[index];
 
-                  return SlidableTransaction(transaction: transaction);
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 5,
+                    ),
+                    child: SlidableTransaction(transaction: transaction),
+                  );
                 });
       },
     );

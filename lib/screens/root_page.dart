@@ -7,7 +7,7 @@ import 'package:money_track/insights/transaction_graph_page.dart';
 import 'package:money_track/categories/transaction_categories.dart';
 
 import 'package:money_track/screens/home/home_screen.dart';
-import 'package:money_track/screens/home/widgets/navigation_drawer.dart';
+import 'package:money_track/navigation_drawer/navigation_drawer.dart';
 
 class RootPage extends StatefulWidget {
   const RootPage({super.key});
@@ -18,19 +18,22 @@ class RootPage extends StatefulWidget {
 
 class _RootPageState extends State<RootPage> {
   static ValueNotifier<int> currentIndexNotifier = ValueNotifier(0);
+
+  var blueclr = const Color(0xFF2E49FB);
   // var nameOfTheUser = 'Sufiyan';
   // late RiveAnimationController _btnAnimationController;
 
   bool isShowSignInDialog = false;
-  final transitionType = ContainerTransitionType.fade;
+
   int? totalAmount = 100000;
-  var blueclr = const Color(0xFF2E49FB);
+  final transitionType = ContainerTransitionType.fade;
 
   final _pages = [
     const HomeScreen(),
     const TransactionCategories(),
     const TransactionInsightsAll(),
   ];
+
   @override
   void initState() {
     // _btnAnimationController = OneShotAnimation(
@@ -39,6 +42,33 @@ class _RootPageState extends State<RootPage> {
     // );
     super.initState();
   }
+
+  Future<bool?> showMyDailogue() => showDialog(
+        context: context,
+        builder: ((context) => AlertDialog(
+              content: const Text(
+                'Do you want to exit',
+              ),
+              actions: [
+                TextButton(
+                  onPressed: (() {
+                    return Navigator.pop(context, true);
+                  }),
+                  child: const Text(
+                    'Yes',
+                  ),
+                ),
+                TextButton(
+                  onPressed: (() {
+                    return Navigator.pop(context, false);
+                  }),
+                  child: const Text(
+                    'cancel',
+                  ),
+                )
+              ],
+            )),
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -119,31 +149,4 @@ class _RootPageState extends State<RootPage> {
       ),
     );
   }
-
-  Future<bool?> showMyDailogue() => showDialog(
-        context: context,
-        builder: ((context) => AlertDialog(
-              content: const Text(
-                'Do you want to exit',
-              ),
-              actions: [
-                TextButton(
-                  onPressed: (() {
-                    return Navigator.pop(context, true);
-                  }),
-                  child: const Text(
-                    'Yes',
-                  ),
-                ),
-                TextButton(
-                  onPressed: (() {
-                    return Navigator.pop(context, false);
-                  }),
-                  child: const Text(
-                    'cancel',
-                  ),
-                )
-              ],
-            )),
-      );
 }

@@ -4,9 +4,11 @@ import 'package:money_track/constants/color/colors.dart';
 
 import 'package:money_track/models/categories_model/category_model.dart';
 import 'package:money_track/models/transaction_model/transaction_model.dart';
+import 'package:money_track/navigation_drawer/widgets/about_page.dart';
 import 'package:money_track/screens/splash_screen.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 var nameOfTheUser = 'Sufiyan';
 
@@ -60,7 +62,15 @@ class NavigationDrawerClass extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20),
               ),
               child: ListTile(
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: ((context) {
+                        return const AboutPage();
+                      }),
+                    ),
+                  );
+                },
                 title: const Text(
                   'About',
                   style: TextStyle(
@@ -178,6 +188,34 @@ class NavigationDrawerClass extends StatelessWidget {
                 ),
                 leading: Icon(
                   Icons.adaptive.share,
+                  color: themeDarkBlue,
+                ),
+              ),
+            ),
+            Card(
+              elevation: 8,
+              shape: RoundedRectangleBorder(
+                //<-- SEE HERE
+                // side: BorderSide(width: 1),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: ListTile(
+                onTap: () async {
+                  const url =
+                      'mailto:sufiyansakkeer616@gmail.com?subject=Help me&body=need help';
+                  Uri uri = Uri.parse(url);
+
+                  await launchUrl(uri);
+                },
+                title: const Text(
+                  'Feedback',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: themeDarkBlue,
+                  ),
+                ),
+                leading: const Icon(
+                  Icons.chat_outlined,
                   color: themeDarkBlue,
                 ),
               ),

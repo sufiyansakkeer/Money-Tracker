@@ -48,9 +48,9 @@ dependencies:
   share_plus: ^6.3.0
   shared_preferences: 2.0.16
   smooth_page_indicator: 1.0.0+2
-
   syncfusion_flutter_charts: 20.4.44
   top_snackbar_flutter: 3.0.0+1
+  url_launcher: ^6.1.8
 
 dev_dependencies:
   build_runner: 2.3.3
