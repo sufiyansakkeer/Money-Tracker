@@ -40,7 +40,7 @@ class NavigationDrawerClass extends StatelessWidget {
                   context,
                 ),
                 const Padding(
-                  padding: EdgeInsets.all(10.0),
+                  padding: EdgeInsets.all(30.0),
                   child: Text('V 1.0'),
                 ),
               ],
@@ -220,28 +220,28 @@ class NavigationDrawerClass extends StatelessWidget {
                 ),
               ),
             ),
-            Card(
-              elevation: 8,
-              shape: RoundedRectangleBorder(
-                //<-- SEE HERE
-                // side: BorderSide(width: 1),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: ListTile(
-                onTap: () {},
-                title: const Text(
-                  'Privacy Policy',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: themeDarkBlue,
-                  ),
-                ),
-                leading: const Icon(
-                  Icons.description,
-                  color: themeDarkBlue,
-                ),
-              ),
-            ),
+            // Card(
+            //   elevation: 8,
+            //   shape: RoundedRectangleBorder(
+            //     //<-- SEE HERE
+            //     // side: BorderSide(width: 1),
+            //     borderRadius: BorderRadius.circular(20),
+            //   ),
+            //   child: ListTile(
+            //     onTap: () {},
+            //     title: const Text(
+            //       'Privacy Policy',
+            //       style: TextStyle(
+            //         fontSize: 16,
+            //         color: themeDarkBlue,
+            //       ),
+            //     ),
+            //     leading: const Icon(
+            //       Icons.description,
+            //       color: themeDarkBlue,
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       );
