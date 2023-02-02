@@ -183,6 +183,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                             fontSize: 25,
                                             fontWeight: FontWeight.bold,
                                           ),
+                                          // softWrap: false,
+                                          // maxLines: 1,
                                         ),
                                       ],
                                     );
