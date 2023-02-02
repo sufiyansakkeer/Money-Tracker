@@ -25,24 +25,33 @@ class AboutPage extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(80.0),
         child: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: const [
-              Text(
-                'Money Track',
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 20,
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 20),
+                child: Text(
+                  'Money Track',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 20,
+                  ),
                 ),
               ),
-              Text(
-                "Developed by Sufiyan Sakkeer ",
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                child: Text(
+                  "Developed by Sufiyan Sakkeer ",
+                ),
               ),
-              Text(
-                'Version 1.0.0',
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                child: Text(
+                  'Version 1.0.0',
+                ),
               ),
             ],
           ),
