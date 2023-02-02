@@ -79,21 +79,9 @@ class _RootPageState extends State<RootPage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          // leading: Builder(
-          //   builder: (BuildContext context) {
-          //     return ElevatedButton(
-          //       onPressed: (() {
-          //         Scaffold.of(context).openDrawer();
-          //       }),
-          //       child: const Icon(
-          //         Icons.menu_open_rounded,
-          //       ),
-          //     );
-          //   },
-          // ),
           centerTitle: true,
           title: const Text(
-            'Money Tracker',
+            'Money Track',
           ),
           elevation: 0,
         ),

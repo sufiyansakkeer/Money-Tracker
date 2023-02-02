@@ -43,7 +43,7 @@ class _TransactionCategoriesState extends State<TransactionCategories>
                 contentPadding: const EdgeInsets.symmetric(horizontal: 45),
                 borderColor: const Color.fromARGB(255, 255, 98, 0),
                 backgroundColor: Colors.white,
-                unselectedBackgroundColor: Colors.grey,
+                unselectedBackgroundColor: const Color(0xFFB8B0B0),
                 labelSpacing: 30,
                 labelStyle: const TextStyle(
                   color: themeDarkBlue,

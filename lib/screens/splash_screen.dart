@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 import 'package:money_track/screens/onboarding_screens/onboard_screen.dart';
 import 'package:money_track/screens/root_page.dart';
@@ -16,7 +17,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    Timer(const Duration(seconds: 3), (() async {
+    Timer(const Duration(seconds: 2), (() async {
       SharedPreferences preferences = await SharedPreferences.getInstance();
       bool seen = preferences.getBool('seen') ?? false;
       seen ? goToRootPage() : goToOnboardPage();
@@ -27,15 +28,25 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      constraints: const BoxConstraints.expand(),
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage("assets/images/Splash Screen.png"),
-          fit: BoxFit.cover,
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Center(
+          child: Container(
+            child: Lottie.asset('assets/images/progression1.json'),
+          ),
         ),
       ),
     );
+    // Container(
+    //   constraints: const BoxConstraints.expand(),
+    //   decoration: const BoxDecoration(
+    //     image: DecorationImage(
+    //       image: AssetImage("assets/images/Splash Screen.png"),
+    //       fit: BoxFit.cover,
+    //     ),
+    //   ),
+    // );
   }
 
   Future<void> goToRootPage() async {

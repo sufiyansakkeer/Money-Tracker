@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:money_track/insights/over_view_graph.dart';
+import 'package:money_track/insights/widgets/over_view_graph.dart';
 import 'package:money_track/models/transaction_model/transaction_model.dart';
 import 'package:money_track/transaction/recent_transaction/recent_transaction.dart';
 import 'package:money_track/transaction/view_all_transaction.dart';
