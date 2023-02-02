@@ -3,7 +3,7 @@ import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import 'package:money_track/categories/category_type_pop_up.dart';
+import 'package:money_track/categories/widgets/category_type_pop_up.dart';
 import 'package:money_track/constants/color/colors.dart';
 
 import 'package:money_track/db/category/db_category.dart';

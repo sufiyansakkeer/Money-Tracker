@@ -2,13 +2,12 @@ import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:money_track/db/category/db_category.dart';
 import 'package:money_track/models/categories_model/category_model.dart';
+import 'package:intl/intl.dart' show toBeginningOfSentenceCase;
 
-ValueNotifier<CategoryType> selectCategoryNotifier =
-    ValueNotifier(CategoryType.income);
-
-Future<void> showCategoryAddPopup(BuildContext context) async {
+Future<void> categoryTypePopUp(BuildContext context, CategoryType type) async {
   final formKey = GlobalKey<FormState>();
   final nameEditingController = TextEditingController();
+  final categoryType = type;
   showDialog(
     context: context,
     builder: (ctx) {
@@ -31,27 +30,19 @@ Future<void> showCategoryAddPopup(BuildContext context) async {
                   }
                   return null;
                 },
-                decoration: const InputDecoration(
-                  labelText: 'Category Name',
+                decoration: InputDecoration(
+                  labelText:
+                      '${toBeginningOfSentenceCase(categoryType.name)} Category',
                   // floatingLabelStyle: TextStyle(
                   //   color: Colors.black,
                   // ),
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
+                  border: const OutlineInputBorder(),
+                  enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Color(0xFF2E49FB),
                     ),
                   ),
                 ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Row(
-                children: const [
-                  RadioButton(title: 'Income', type: CategoryType.income),
-                  RadioButton(title: 'Expense', type: CategoryType.expense),
-                ],
               ),
             ),
             Padding(
@@ -82,12 +73,13 @@ Future<void> showCategoryAddPopup(BuildContext context) async {
                       ).show(
                         context,
                       );
+                      CategoryDb.instance.refreshUI();
                     }
                     final name = nameEditingController.text;
                     if (name.isEmpty) {
                       return;
                     }
-                    final type = selectCategoryNotifier.value;
+                    final type = categoryType;
                     final category = CategoryModel(
                       id: DateTime.now().millisecondsSinceEpoch.toString(),
                       type: type,
@@ -112,43 +104,4 @@ Future<void> showCategoryAddPopup(BuildContext context) async {
       );
     },
   );
-}
-
-class RadioButton extends StatelessWidget {
-  const RadioButton({
-    super.key,
-    required this.title,
-    required this.type,
-  });
-
-  final String title;
-  final CategoryType type;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        ValueListenableBuilder(
-            valueListenable: selectCategoryNotifier,
-            builder: (BuildContext ctx, CategoryType newCategory, Widget? _) {
-              return Radio<CategoryType>(
-                fillColor: MaterialStateColor.resolveWith(
-                    (states) => const Color(0xFF2E49FB)),
-                focusColor: MaterialStateColor.resolveWith(
-                    (states) => const Color.fromARGB(255, 255, 0, 0)),
-                value: type,
-                groupValue: newCategory,
-                onChanged: (value) {
-                  if (value == null) {
-                    return;
-                  }
-                  selectCategoryNotifier.value = value;
-                  selectCategoryNotifier.notifyListeners();
-                },
-              );
-            }),
-        Text(title),
-      ],
-    );
-  }
 }

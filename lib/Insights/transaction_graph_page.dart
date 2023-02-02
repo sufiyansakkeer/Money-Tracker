@@ -1,9 +1,9 @@
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:flutter/material.dart';
 
-import 'package:money_track/insights/expense_insights.dart';
-import 'package:money_track/insights/income_insights.dart';
-import 'package:money_track/insights/over_view_graph.dart';
+import 'package:money_track/insights/widgets/expense_insights.dart';
+import 'package:money_track/insights/widgets/income_insights.dart';
+import 'package:money_track/insights/widgets/over_view_graph.dart';
 
 import 'package:money_track/db/transaction/db_transaction_function.dart';
 

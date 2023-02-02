@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:money_track/constants/color/colors.dart';
 
-import '../db/category/db_category.dart';
-import '../models/categories_model/category_model.dart';
+import '../../db/category/db_category.dart';
+import '../../models/categories_model/category_model.dart';
 
 class IncomeTransaction extends StatelessWidget {
   const IncomeTransaction({super.key});

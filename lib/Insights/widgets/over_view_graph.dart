@@ -1,13 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:money_track/insights/over_view_graph.dart';
-
-import 'package:money_track/models/categories_model/category_model.dart';
+import 'package:money_track/db/transaction/db_transaction_function.dart';
+import 'package:money_track/db/transaction/income_and_expense.dart';
 import 'package:money_track/models/transaction_model/transaction_model.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class IncomeInsights extends StatelessWidget {
-  const IncomeInsights({super.key});
+ValueNotifier<List<TransactionModel>> overViewGraphNotifier =
+    ValueNotifier(TransactionDB.instance.transactionListNotifier.value);
+
+class TransactionOverView extends StatefulWidget {
+  const TransactionOverView({super.key});
+
+  @override
+  State<TransactionOverView> createState() => _TransactionOverView();
+}
+
+class _TransactionOverView extends State<TransactionOverView> {
+  late TooltipBehavior _tooltipBehavior;
+
+  @override
+  void initState() {
+    _tooltipBehavior = TooltipBehavior(enable: true);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,18 +32,9 @@ class IncomeInsights extends StatelessWidget {
           valueListenable: overViewGraphNotifier,
           builder: (BuildContext context, List<TransactionModel> newList,
               Widget? child) {
-            // Map incomeMap = {
-            //   'name': 'Income',
-            //   "amount": incomeTotal.value
-            // };
-            // Map expenseMap = {
-            //   "name": "Expense",
-            //   "amount": expenseTotal.value
-            // };
-            // List<Map> totalMap = [incomeMap, expenseMap];
-            var allIncome = newList
-                .where((element) => element.type == CategoryType.income)
-                .toList();
+            Map incomeMap = {'name': 'Income', "amount": incomeTotal.value};
+            Map expenseMap = {"name": "Expense", "amount": expenseTotal.value};
+            List<Map> totalMap = [incomeMap, expenseMap];
             return overViewGraphNotifier.value.isEmpty
                 ? SingleChildScrollView(
                     child: Center(
@@ -44,27 +50,15 @@ class IncomeInsights extends StatelessWidget {
                     ),
                   )
                 : SfCircularChart(
-                    // tooltipBehavior: _tooltipBehavior,
+                    tooltipBehavior: _tooltipBehavior,
                     series: <CircularSeries>[
-                      PieSeries<TransactionModel, String>(
-                        dataSource: allIncome,
-                        // color: themeDarkBlue,
-                        // xAxisName: 'Category',
-                        // yAxisName: 'Amount',
-                        xValueMapper: (TransactionModel incomeDate, _) =>
-                            incomeDate.categoryModel.categoryName,
-                        yValueMapper: (TransactionModel incomeDate, _) =>
-                            incomeDate.amount,
-                        // enableTooltip: true,
-
-                        // name: totalMap.toString(),
+                      PieSeries<Map, String>(
+                        dataSource: totalMap,
+                        xValueMapper: (Map data, _) => data['name'],
+                        yValueMapper: (Map data, _) => data['amount'],
                         dataLabelSettings: const DataLabelSettings(
                           isVisible: true,
-                          // borderWidth: 20,
                         ),
-                        // markerSettings: const MarkerSettings(
-                        //   isVisible: true,
-                        // ),
                       )
                     ],
                     legend: Legend(
@@ -72,7 +66,6 @@ class IncomeInsights extends StatelessWidget {
                       overflowMode: LegendItemOverflowMode.scroll,
                       alignment: ChartAlignment.center,
                     ),
-                    // primaryXAxis: CategoryAxis(),
                   );
           },
         ),
