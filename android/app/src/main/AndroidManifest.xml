@@ -1,5 +1,7 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.money_track">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+   <uses-permission
+     android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+     android:maxSdkVersion="18" />
    <application
         android:label="Money Track"
         android:name="${applicationName}"

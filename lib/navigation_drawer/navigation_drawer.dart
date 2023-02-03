@@ -177,7 +177,7 @@ class NavigationDrawerClass extends StatelessWidget {
               child: ListTile(
                 onTap: () {
                   Share.share(
-                      'hey! check out this new app https://play.google.com/store/search?q=money%20tracker&c=apps');
+                      'hey! check out this new app https://play.google.com/store/search?q=money%20track&c=apps');
                 },
                 title: const Text(
                   'Share',
