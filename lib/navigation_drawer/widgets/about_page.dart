@@ -50,7 +50,7 @@ class AboutPage extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 10),
                 child: Text(
-                  'Version 1.0.0',
+                  'Version 1.0.1',
                 ),
               ),
             ],
