@@ -1,10 +1,11 @@
-# money_track
+# Money Track
 
-A new Flutter project.
+A project that developed in flutter which helps to manage your income and expense.
+And it will give you real time graph.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+This project is a starting point for a Flutter application. I used Hive as the database 
 
 A few resources to get you started if this is your first Flutter project:
 
