@@ -20,7 +20,7 @@ class IncomeTransaction extends StatelessWidget {
                 crossAxisCount: constraints.maxWidth > 700 ? 4 : 2,
                 crossAxisSpacing: 0,
                 mainAxisSpacing: 10.0,
-                childAspectRatio: (2 / 1.38),
+                childAspectRatio: (2 / 1.5),
               ),
               itemBuilder: ((
                 context,
@@ -47,56 +47,67 @@ class IncomeTransaction extends StatelessWidget {
                         ),
                       ),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                        // crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          IconButton(
-                            icon: const Icon(
-                              Icons.close,
-                              size: 20,
-                            ),
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: ((context) {
-                                  return AlertDialog(
-                                    title: const Text(
-                                      'alert! ',
-                                      style: TextStyle(color: Colors.red),
-                                    ),
-                                    content:
-                                        const Text('Do you want to Delete.'),
-                                    actions: [
-                                      TextButton(
-                                          onPressed: (() {
-                                            CategoryDb().deleteCategory(
-                                              category.id,
-                                            );
-                                            Navigator.of(context).pop();
-                                          }),
-                                          child: const Text(
-                                            'yes',
-                                            style:
-                                                TextStyle(color: Colors.black),
-                                          )),
-                                      TextButton(
-                                          onPressed: (() {
-                                            Navigator.of(context).pop();
-                                          }),
-                                          child: const Text('no',
-                                              style: TextStyle(
-                                                  color: Colors.black)))
-                                    ],
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.close,
+                                  size: 20,
+                                ),
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: ((context) {
+                                      return AlertDialog(
+                                        title: const Text(
+                                          'alert! ',
+                                          style: TextStyle(color: Colors.red),
+                                        ),
+                                        content: const Text(
+                                            'Do you want to Delete.'),
+                                        actions: [
+                                          TextButton(
+                                              onPressed: (() {
+                                                CategoryDb().deleteCategory(
+                                                  category.id,
+                                                );
+                                                Navigator.of(context).pop();
+                                              }),
+                                              child: const Text(
+                                                'yes',
+                                                style: TextStyle(
+                                                    color: Colors.black),
+                                              )),
+                                          TextButton(
+                                              onPressed: (() {
+                                                Navigator.of(context).pop();
+                                              }),
+                                              child: const Text('no',
+                                                  style: TextStyle(
+                                                      color: Colors.black)))
+                                        ],
+                                      );
+                                    }),
                                   );
-                                }),
-                              );
-                            },
-                          ),
-                          Center(
-                            child: Text(
-                              category.categoryName,
-                              style: const TextStyle(
-                                fontSize: 20,
+                                },
                               ),
+                            ],
+                          ),
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  category.categoryName,
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],

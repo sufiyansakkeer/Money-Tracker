@@ -41,7 +41,7 @@ class NavigationDrawerClass extends StatelessWidget {
                 ),
                 const Padding(
                   padding: EdgeInsets.all(30.0),
-                  child: Text('V 1.0.1'),
+                  child: Text('V 1.0.2'),
                 ),
               ],
             ),
