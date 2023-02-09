@@ -225,7 +225,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ? const Padding(
                                 padding: EdgeInsets.only(right: 10),
                                 child: Text(
-                                  'No Data!',
+                                  '',
                                   style: TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold),
