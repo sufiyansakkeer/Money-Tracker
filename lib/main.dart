@@ -10,11 +10,9 @@ import 'package:money_track/screens/splash_screen.dart';
 import 'package:money_track/constants/color/colors.dart';
 
 import 'models/transaction_model/transaction_model.dart';
-import 'package:url_strategy/url_strategy.dart';
 
 //here main function became future because the init flutter function is a future method
 Future<void> main() async {
-  setPathUrlStrategy();
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
