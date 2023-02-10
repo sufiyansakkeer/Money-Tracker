@@ -22,14 +22,14 @@ class IncomeInsights extends StatelessWidget {
             return overViewGraphNotifier.value.isEmpty
                 ? SingleChildScrollView(
                     child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(50.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Lottie.asset('assets/images/no-data.json'),
-                          ],
-                        ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Lottie.asset(
+                            'assets/images/no-data.json',
+                            height: 360,
+                          ),
+                        ],
                       ),
                     ),
                   )
