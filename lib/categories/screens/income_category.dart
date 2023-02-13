@@ -46,9 +46,9 @@ class IncomeTransaction extends StatelessWidget {
                           fit: BoxFit.fill,
                         ),
                       ),
-                      child: Column(
+                      child: Stack(
                         // crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        // mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
@@ -97,18 +97,20 @@ class IncomeTransaction extends StatelessWidget {
                               ),
                             ],
                           ),
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text(
-                                  category.categoryName,
-                                  style: const TextStyle(
-                                    fontSize: 20,
+                          Column(
+                            children: [
+                              Expanded(
+                                child: Center(
+                                  // mainAxisAlignment: MainAxisAlignment.start,
+                                  child: Text(
+                                    category.categoryName,
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                    ),
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ],
                       ),

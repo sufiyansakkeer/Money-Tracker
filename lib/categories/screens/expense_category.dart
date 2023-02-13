@@ -47,58 +47,68 @@ class ExpenseTransaction extends StatelessWidget {
                           fit: BoxFit.fill,
                         ),
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                      child: Stack(
                         children: [
-                          IconButton(
-                            icon: const Icon(
-                              Icons.close,
-                              size: 20,
-                            ),
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: ((context) {
-                                  return AlertDialog(
-                                    title: const Text(
-                                      'alert! ',
-                                      style: TextStyle(color: Colors.red),
-                                    ),
-                                    content:
-                                        const Text('Do you want to Delete.'),
-                                    actions: [
-                                      TextButton(
-                                          onPressed: (() {
-                                            CategoryDb().deleteCategory(
-                                              category.id,
-                                            );
-                                            Navigator.of(context).pop();
-                                          }),
-                                          child: const Text(
-                                            'yes',
-                                            style:
-                                                TextStyle(color: Colors.black),
-                                          )),
-                                      TextButton(
-                                          onPressed: (() {
-                                            Navigator.of(context).pop();
-                                          }),
-                                          child: const Text('no',
-                                              style: TextStyle(
-                                                  color: Colors.black)))
-                                    ],
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.close,
+                                  size: 20,
+                                ),
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: ((context) {
+                                      return AlertDialog(
+                                        title: const Text(
+                                          'alert! ',
+                                          style: TextStyle(color: Colors.red),
+                                        ),
+                                        content: const Text(
+                                            'Do you want to Delete.'),
+                                        actions: [
+                                          TextButton(
+                                              onPressed: (() {
+                                                CategoryDb().deleteCategory(
+                                                  category.id,
+                                                );
+                                                Navigator.of(context).pop();
+                                              }),
+                                              child: const Text(
+                                                'yes',
+                                                style: TextStyle(
+                                                    color: Colors.black),
+                                              )),
+                                          TextButton(
+                                              onPressed: (() {
+                                                Navigator.of(context).pop();
+                                              }),
+                                              child: const Text('no',
+                                                  style: TextStyle(
+                                                      color: Colors.black)))
+                                        ],
+                                      );
+                                    }),
                                   );
-                                }),
-                              );
-                            },
-                          ),
-                          Center(
-                            child: Text(
-                              category.categoryName,
-                              style: const TextStyle(
-                                fontSize: 20,
+                                },
                               ),
-                            ),
+                              Column(
+                                children: [
+                                  Expanded(
+                                    child: Center(
+                                      child: Text(
+                                        category.categoryName,
+                                        style: const TextStyle(
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         ],
                       ),
