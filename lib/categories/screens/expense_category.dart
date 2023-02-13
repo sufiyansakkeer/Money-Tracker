@@ -48,9 +48,11 @@ class ExpenseTransaction extends StatelessWidget {
                         ),
                       ),
                       child: Stack(
+                        // crossAxisAlignment: CrossAxisAlignment.end,
+                        // mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Row(
-                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               IconButton(
                                 icon: const Icon(
@@ -94,19 +96,20 @@ class ExpenseTransaction extends StatelessWidget {
                                   );
                                 },
                               ),
-                              Column(
-                                children: [
-                                  Expanded(
-                                    child: Center(
-                                      child: Text(
-                                        category.categoryName,
-                                        style: const TextStyle(
-                                          fontSize: 20,
-                                        ),
-                                      ),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Expanded(
+                                child: Center(
+                                  // mainAxisAlignment: MainAxisAlignment.start,
+                                  child: Text(
+                                    category.categoryName,
+                                    style: const TextStyle(
+                                      fontSize: 20,
                                     ),
                                   ),
-                                ],
+                                ),
                               ),
                             ],
                           ),
