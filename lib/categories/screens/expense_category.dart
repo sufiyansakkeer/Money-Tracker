@@ -21,7 +21,7 @@ class ExpenseTransaction extends StatelessWidget {
                 crossAxisCount: constraints.maxWidth > 700 ? 4 : 2,
                 crossAxisSpacing: 0,
                 mainAxisSpacing: 10.0,
-                childAspectRatio: (2 / 1.38),
+                childAspectRatio: (2 / 1.5),
               ),
               itemBuilder: ((
                 context,
