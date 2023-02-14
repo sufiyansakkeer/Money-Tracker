@@ -80,9 +80,14 @@ class _RootPageState extends State<RootPage> {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text(
-            'Money Track',
-          ),
+          title: LayoutBuilder(builder: (context, constraints) {
+            return Text(
+              'Money Track',
+              style: TextStyle(
+                fontSize: constraints.maxWidth > 700 ? 30 : 20,
+              ),
+            );
+          }),
           elevation: 0,
         ),
         body: ValueListenableBuilder(

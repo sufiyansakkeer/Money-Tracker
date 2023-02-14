@@ -18,7 +18,7 @@ class ExpenseTransaction extends StatelessWidget {
             return GridView.builder(
               itemCount: newList.length,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: constraints.maxWidth > 700 ? 4 : 2,
+                crossAxisCount: constraints.maxWidth > 700 ? 6 : 2,
                 crossAxisSpacing: 0,
                 mainAxisSpacing: 10.0,
                 childAspectRatio: (2 / 1.5),
