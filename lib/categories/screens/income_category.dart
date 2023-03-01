@@ -14,6 +14,7 @@ class IncomeTransaction extends StatelessWidget {
       color: themeDarkBlue,
       child: Consumer<CategoryProvider>(
         builder: ((context, value, child) {
+          value.refreshUI();
           return LayoutBuilder(builder: (context, constraints) {
             return GridView.builder(
               itemCount: value.incomeCategoryProvider.length,
@@ -73,7 +74,7 @@ class IncomeTransaction extends StatelessWidget {
                                         actions: [
                                           TextButton(
                                               onPressed: (() {
-                                                CategoryDb().deleteCategory(
+                                                value.deleteCategory(
                                                   category.id,
                                                 );
                                                 Navigator.of(context).pop();

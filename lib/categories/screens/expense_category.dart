@@ -15,6 +15,7 @@ class ExpenseTransaction extends StatelessWidget {
       color: themeDarkBlue,
       child: Consumer<CategoryProvider>(
         builder: ((context, value, child) {
+          value.refreshUI();
           return LayoutBuilder(builder: (context, constraints) {
             return GridView.builder(
               itemCount: value.expenseCategoryProvider.length,

@@ -8,7 +8,7 @@ import 'package:money_track/db/transaction/db_transaction_function.dart';
 import 'package:money_track/models/categories_model/category_model.dart';
 import 'package:money_track/models/transaction_model/transaction_model.dart';
 
-import '../../constants/color/colors.dart';
+import '../../core/colors.dart';
 
 class EditTransaction extends StatefulWidget {
   const EditTransaction({
