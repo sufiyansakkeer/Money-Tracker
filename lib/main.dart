@@ -2,12 +2,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:money_track/provider/onboarding_screen.dart';
+import 'package:money_track/provider/transaction_provider.dart';
 
 import 'package:money_track/transaction/add_transaction.dart/add_transaction.dart';
 import 'package:money_track/models/categories_model/category_model.dart';
 
 import 'package:money_track/screens/splash_screen.dart';
-import 'package:money_track/constants/color/colors.dart';
+import 'package:money_track/core/colors.dart';
+import 'package:provider/provider.dart';
 
 import 'models/transaction_model/transaction_model.dart';
 
@@ -75,18 +78,28 @@ class MoneyTrack extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        // useMaterial3: true,
-        primarySwatch: createMaterialColor(
-          themeDarkBlue,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (BuildContext context) => ProviderTransaction(),
         ),
+        ChangeNotifierProvider(
+          create: (BuildContext context) => OnBoardingProvider(),
+        ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          // useMaterial3: true,
+          primarySwatch: createMaterialColor(
+            themeDarkBlue,
+          ),
+        ),
+        home: const SplashScreen(),
+        routes: const {
+          // AddTransaction.routeName: (context) => const AddTransaction(),
+        },
       ),
-      home: const SplashScreen(),
-      routes: {
-        AddTransaction.routeName: (context) => const AddTransaction(),
-      },
     );
   }
 }
