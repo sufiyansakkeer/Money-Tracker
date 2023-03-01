@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import 'package:money_track/categories/widgets/category_type_pop_up.dart';
-import 'package:money_track/constants/color/colors.dart';
+import 'package:money_track/core/colors.dart';
 
 import 'package:money_track/db/category/db_category.dart';
 import 'package:money_track/db/transaction/db_transaction_function.dart';

@@ -7,7 +7,7 @@ import 'package:money_track/db/category/db_category.dart';
 import 'package:money_track/db/transaction/db_transaction_function.dart';
 import 'package:money_track/db/transaction/income_and_expense.dart';
 import 'package:money_track/screens/home/widgets/floating_action_button.dart';
-import 'package:money_track/constants/color/colors.dart';
+import 'package:money_track/core/colors.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

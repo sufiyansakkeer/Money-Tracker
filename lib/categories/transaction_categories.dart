@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:money_track/categories/widgets/category_bottom_sheet.dart';
 import 'package:money_track/categories/screens/expense_category.dart';
 import 'package:money_track/categories/screens/income_category.dart';
-import 'package:money_track/constants/color/colors.dart';
+import 'package:money_track/core/colors.dart';
 import 'package:money_track/db/category/db_category.dart';
 
 class TransactionCategories extends StatefulWidget {

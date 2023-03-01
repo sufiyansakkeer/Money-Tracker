@@ -16,6 +16,7 @@ class CategoryProvider extends ChangeNotifier {
 
   Future<List<CategoryModel>> getCategories() async {
     final categoryDB = await Hive.openBox<CategoryModel>(categoryDbName);
+    notifyListeners();
     return categoryDB.values.toList().reversed.toList();
   }
 
