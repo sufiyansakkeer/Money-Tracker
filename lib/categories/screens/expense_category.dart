@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:money_track/db/category/db_category.dart';
-import 'package:money_track/constants/color/colors.dart';
+import 'package:money_track/core/colors.dart';
+import 'package:money_track/provider/category_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/categories_model/category_model.dart';
 
@@ -11,12 +13,11 @@ class ExpenseTransaction extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: themeDarkBlue,
-      child: ValueListenableBuilder(
-        valueListenable: CategoryDb().expenseCategoryListListener,
-        builder: ((BuildContext ctx, List<CategoryModel> newList, Widget? _) {
+      child: Consumer<CategoryProvider>(
+        builder: ((context, value, child) {
           return LayoutBuilder(builder: (context, constraints) {
             return GridView.builder(
-              itemCount: newList.length,
+              itemCount: value.expenseCategoryProvider.length,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: constraints.maxWidth > 700 ? 6 : 2,
                 crossAxisSpacing: 0,
@@ -27,7 +28,7 @@ class ExpenseTransaction extends StatelessWidget {
                 context,
                 index,
               ) {
-                final category = newList[index];
+                final category = value.expenseCategoryProvider[index];
                 return Padding(
                   padding: const EdgeInsets.only(
                     left: 5,

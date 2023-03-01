@@ -5,27 +5,16 @@ import 'package:money_track/screens/onboarding_screens/onboard_screen.dart';
 import 'package:money_track/screens/root_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
+  Widget build(BuildContext context) {
     Timer(const Duration(seconds: 2), (() async {
       SharedPreferences preferences = await SharedPreferences.getInstance();
       bool seen = preferences.getBool('seen') ?? false;
-      seen ? goToRootPage() : goToOnboardPage();
+      seen ? goToRootPage(context) : goToOnboardPage(context);
     }));
-
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(10.0),
@@ -38,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  Future<void> goToRootPage() async {
+  Future<void> goToRootPage(context) async {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: ((context) => const RootPage()),
@@ -46,9 +35,9 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  goToOnboardPage() async {
+  goToOnboardPage(context) async {
     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: ((ctx) {
-      return const OnBoardingScreens();
+      return OnBoardingScreens();
     })));
   }
 }

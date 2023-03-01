@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:money_track/provider/category_provider.dart';
 import 'package:money_track/provider/onboarding_screen.dart';
 import 'package:money_track/provider/transaction_provider.dart';
 
@@ -85,6 +86,9 @@ class MoneyTrack extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (BuildContext context) => OnBoardingProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (BuildContext context) => CategoryProvider(),
         ),
       ],
       child: MaterialApp(

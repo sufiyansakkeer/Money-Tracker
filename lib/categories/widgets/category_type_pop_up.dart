@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:money_track/db/category/db_category.dart';
 import 'package:money_track/models/categories_model/category_model.dart';
 import 'package:intl/intl.dart' show toBeginningOfSentenceCase;
+import 'package:money_track/provider/category_provider.dart';
+import 'package:provider/provider.dart';
 
 Future<void> categoryTypePopUp(BuildContext context, CategoryType type) async {
   final formKey = GlobalKey<FormState>();
@@ -86,7 +88,7 @@ Future<void> categoryTypePopUp(BuildContext context, CategoryType type) async {
                       categoryName: name,
                     );
 
-                    CategoryDb.instance.insertCategory(category);
+                    context.read<CategoryProvider>().insertCategory(category);
                     Navigator.of(ctx).pop();
                   },
                   child: const Text(
