@@ -4,10 +4,8 @@ import 'package:money_track/db/category/db_category.dart';
 import 'package:money_track/models/categories_model/category_model.dart';
 import 'package:money_track/core/colors.dart';
 import 'package:money_track/provider/category_provider.dart';
+import 'package:money_track/provider/category_type_provider.dart';
 import 'package:provider/provider.dart';
-
-ValueNotifier<CategoryType> selectCategoryNotifier =
-    ValueNotifier(CategoryType.income);
 
 categoryShowBottomSheetApp(BuildContext context) async {
   final formKey = GlobalKey<FormState>();
@@ -100,7 +98,8 @@ categoryShowBottomSheetApp(BuildContext context) async {
                           if (name.isEmpty) {
                             return;
                           }
-                          final type = selectCategoryNotifier.value;
+                          final type =
+                              CategoryTypeProvider().selectCategoryProvider;
                           final category = CategoryModel(
                             id: DateTime.now()
                                 .millisecondsSinceEpoch
@@ -149,25 +148,17 @@ class RadioButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        ValueListenableBuilder(
-            valueListenable: selectCategoryNotifier,
-            builder: (BuildContext ctx, CategoryType newCategory, Widget? _) {
-              return Radio<CategoryType>(
-                fillColor: MaterialStateColor.resolveWith(
-                    (states) => const Color(0xFF2E49FB)),
-                focusColor: MaterialStateColor.resolveWith(
-                    (states) => const Color.fromARGB(255, 255, 0, 0)),
-                value: type,
-                groupValue: newCategory,
-                onChanged: (value) {
-                  if (value == null) {
-                    return;
-                  }
-                  selectCategoryNotifier.value = value;
-                  selectCategoryNotifier.notifyListeners();
-                },
-              );
-            }),
+        Consumer<CategoryTypeProvider>(builder: (context, newCategory, child) {
+          return Radio<CategoryType>(
+            value: type,
+            groupValue: newCategory.selectCategoryProvider,
+            onChanged: (value) {
+              context
+                  .read<CategoryTypeProvider>()
+                  .onChanging(value, newCategory);
+            },
+          );
+        }),
         Text(title),
       ],
     );
