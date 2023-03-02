@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import 'package:money_track/db/category/db_category.dart';
-import 'package:money_track/db/transaction/db_transaction_function.dart';
+
 import 'package:money_track/models/categories_model/category_model.dart';
 import 'package:money_track/models/transaction_model/transaction_model.dart';
+import 'package:money_track/provider/transaction_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../../core/colors.dart';
 
@@ -26,7 +28,7 @@ class EditTransaction extends StatefulWidget {
 
 class _EditTransactionState extends State<EditTransaction> {
   TextEditingController _amountTextEditingController = TextEditingController();
-  String? _categoryId;
+  String? categoryId;
   final _formKey = GlobalKey<FormState>();
   bool _isVisibleCategoryId = false;
   TextEditingController _notesTextEditingController = TextEditingController();
@@ -40,7 +42,7 @@ class _EditTransactionState extends State<EditTransaction> {
     super.initState();
 
     _value = widget.obj.type.index;
-    _categoryId = widget.obj.categoryModel.id;
+    categoryId = widget.obj.categoryModel.id;
     _amountTextEditingController =
         TextEditingController(text: widget.obj.amount.toString());
     _notesTextEditingController = TextEditingController(text: widget.obj.notes);
@@ -82,7 +84,7 @@ class _EditTransactionState extends State<EditTransaction> {
                         setState(() {
                           _value = 0;
                           _selectedCategoryType = CategoryType.income;
-                          _categoryId = null;
+                          categoryId = null;
                         });
                       },
                     ),
@@ -101,7 +103,7 @@ class _EditTransactionState extends State<EditTransaction> {
                         setState(() {
                           _value = 1;
                           _selectedCategoryType = CategoryType.expense;
-                          _categoryId = null;
+                          categoryId = null;
                         });
                       },
                     ),
@@ -133,7 +135,7 @@ class _EditTransactionState extends State<EditTransaction> {
 
                 // border: Border.all(color: Colors.redAccent, width: 2),
                 hint: const Text('Select the Category'),
-                value: _categoryId,
+                value: categoryId,
                 items: (_selectedCategoryType == CategoryType.income
                         ? CategoryDb.instance.incomeCategoryListListener
                         : CategoryDb.instance.expenseCategoryListListener)
@@ -143,10 +145,6 @@ class _EditTransactionState extends State<EditTransaction> {
                     value: e.id,
                     child: Container(
                       decoration: BoxDecoration(
-                        // border: Border.all(
-                        //   // color: Colors.black38,
-                        //   width: 1,
-                        // ),
                         borderRadius: BorderRadius.circular(5),
                       ),
                       width: 220,
@@ -164,7 +162,7 @@ class _EditTransactionState extends State<EditTransaction> {
                 onChanged: ((selectedValue) {
                   // print(selectedValue);
                   setState(() {
-                    _categoryId = selectedValue;
+                    categoryId = selectedValue;
                   });
                 }),
               ),
@@ -272,12 +270,6 @@ class _EditTransactionState extends State<EditTransaction> {
                 child: TextFormField(
                   keyboardType: TextInputType.multiline,
                   controller: _notesTextEditingController,
-                  // validator: (value) {
-                  //   if (value == null || value.isEmpty) {
-                  //     return 'Enter your purpose';
-                  //   }
-                  //   return null;
-                  // },
                   decoration: const InputDecoration(
                     hintText: 'Notes',
                     enabledBorder: OutlineInputBorder(
@@ -299,7 +291,7 @@ class _EditTransactionState extends State<EditTransaction> {
                 children: [
                   ElevatedButton(
                     onPressed: (() {
-                      if (_categoryId == null) {
+                      if (categoryId == null) {
                         setState(() {
                           // _categoryItemValidationText =
                           //     '    Please Select Category';
@@ -350,7 +342,7 @@ class _EditTransactionState extends State<EditTransaction> {
     //   return;
     // }
     //here we checked category id because at initial category id is null
-    if (_categoryId == null) {
+    if (categoryId == null) {
       return;
     }
     // to check the selected date in null of not
@@ -361,7 +353,7 @@ class _EditTransactionState extends State<EditTransaction> {
     if (_selectedCategoryType == null) {
       return;
     }
-    // _categoryId;
+    // categoryId;
     // _selectedCategoryType;
     final modal = TransactionModel(
       categoryModel: _selectedCategoryModel!,
@@ -372,9 +364,12 @@ class _EditTransactionState extends State<EditTransaction> {
       id: widget.obj.id,
     );
 
-    TransactionDB.instance.editTransaction(modal);
+    // TransactionDB.instance.editTransaction(modal);
+    context.read<ProviderTransaction>().editTransaction(modal);
     Navigator.of(context).pop();
-    TransactionDB.instance.refreshUi();
+    context.read<ProviderTransaction>().refreshUi();
+
+    // TransactionDB.instance.refreshUi();
 
     AnimatedSnackBar.rectangle(
       'Success',

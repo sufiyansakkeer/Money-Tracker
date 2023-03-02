@@ -4,8 +4,6 @@ import 'package:money_track/core/colors.dart';
 import 'package:money_track/provider/category_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/categories_model/category_model.dart';
-
 class ExpenseTransaction extends StatelessWidget {
   const ExpenseTransaction({super.key});
 
