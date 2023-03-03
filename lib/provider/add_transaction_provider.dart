@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:money_track/models/categories_model/category_model.dart';
 
@@ -23,6 +25,7 @@ class AddTransactionProvider extends ChangeNotifier {
   }
 
   dateSelection(DateTime? selectedTempDate) {
+    log('$selectedTempDate');
     if (selectedTempDate == null) {
       selectedDateTime = DateTime.now();
       notifyListeners();

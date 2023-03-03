@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:money_track/provider/transaction_provider.dart';
 
 import 'package:money_track/transaction/slidable/slidable_transaction.dart';
 
 import 'package:money_track/db/transaction/db_transaction_function.dart';
 import 'package:money_track/models/transaction_model/transaction_model.dart';
+import 'package:provider/provider.dart';
 
 class RecentTransactionList extends StatelessWidget {
   const RecentTransactionList({super.key});
 
   @override
   Widget build(BuildContext context) {
-    TransactionDB.instance.refreshUi();
-    return ValueListenableBuilder(
-      valueListenable: TransactionDB.instance.transactionListNotifier,
-      builder:
-          (BuildContext context, List<TransactionModel> newList, Widget? _) {
-        return newList.isEmpty
+    // TransactionDB.instance.refreshUi();
+    context.read<ProviderTransaction>().refreshUi();
+    return Consumer<ProviderTransaction>(
+      builder: (context, newList, child) {
+        return newList.transactionListProvider.isEmpty
             ? Center(
                 child: Padding(
                   padding: const EdgeInsets.all(50.0),
@@ -44,9 +45,11 @@ class RecentTransactionList extends StatelessWidget {
                 // separatorBuilder: ((context, index) {
                 //   return const Divider();
                 // }),
-                itemCount: newList.length > 3 ? 3 : newList.length,
+                itemCount: newList.transactionListProvider.length > 3
+                    ? 3
+                    : newList.transactionListProvider.length,
                 itemBuilder: (context, index) {
-                  final transaction = newList[index];
+                  final transaction = newList.transactionListProvider[index];
 
                   return Padding(
                     padding: const EdgeInsets.symmetric(

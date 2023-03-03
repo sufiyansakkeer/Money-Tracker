@@ -1,16 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+
 import 'package:money_track/models/transaction_model/transaction_model.dart';
+import 'package:provider/provider.dart';
 
 class ProviderTransaction extends ChangeNotifier {
+  double incomeTotal = 0;
+  double expenseTotal = 0;
+  double totalBalance = 0;
   String transactionDbName = 'Transaction-database';
+  String showCategory = ("All");
+  String dateFilterTitle = "All";
   List<TransactionModel> transactionListProvider = [];
+  List<TransactionModel> overviewGraphTransactions = [];
+  List<TransactionModel> overviewTransactions = [];
+
+  set setOverviewTransactions(List<TransactionModel> overViewNewList) {
+    overviewTransactions = overViewNewList;
+
+    notifyListeners();
+  }
+
+  set setOverViewGraphTransactions(
+      List<TransactionModel> overViewGraphTransactionsNewList) {
+    overviewGraphTransactions = overViewGraphTransactionsNewList;
+
+    notifyListeners();
+  }
+
+  set setDateFilterTitle(String dateFilterTitleNewList) {
+    dateFilterTitle = dateFilterTitleNewList;
+
+    notifyListeners();
+  }
+
+  set setShowCategory(String overShowCategory) {
+    showCategory = overShowCategory;
+    notifyListeners();
+  }
+
+  set setTransactionListNotifier(List<TransactionModel> transactionNewList) {
+    transactionListProvider = transactionNewList;
+    notifyListeners();
+  }
+
   Future<void> addTransaction(TransactionModel obj) async {
-    //to get anything in hive we need to open the hive , so here i am opening the hive database
     final transactionDb =
         await Hive.openBox<TransactionModel>(transactionDbName);
-    //here i am putting a key value db model into the database ,
-    //it is future function thats why added await
+
     await transactionDb.put(obj.id, obj);
     refreshUi();
   }
@@ -42,13 +79,10 @@ class ProviderTransaction extends ChangeNotifier {
     //here we use sorting to make the current transaction to be shown first
     list.sort(
         ((firstDate, secondDate) => secondDate.date.compareTo(firstDate.date)));
+    transactionListProvider.clear();
     transactionListProvider.addAll(list);
+    overviewTransactions = transactionListProvider;
+
     notifyListeners();
-    // transactionListNotifier.value.clear();
-    // transactionListNotifier.value.addAll(list);
-    // incomeAndExpense();
-    // recentTransactionList();
-    // transactionListNotifier.notifyListeners();
-    // overViewListNotifier.notifyListeners();
   }
 }

@@ -171,7 +171,7 @@ class AddTransaction extends StatelessWidget {
   Widget build(BuildContext context) {
     // CategoryDb.instance.refreshUI();
     context.read<AddTransactionProvider>().categoryId;
-    TransactionDB.instance.refreshUi();
+    // TransactionDB.instance.refreshUi();
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
