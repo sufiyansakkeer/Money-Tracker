@@ -195,12 +195,9 @@ class HomeScreen extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    ValueListenableBuilder(
-                      valueListenable:
-                          TransactionDB.instance.transactionListNotifier,
-                      builder: (BuildContext context,
-                          List<TransactionModel> newList, Widget? child) {
-                        return newList.isEmpty
+                    Consumer<ProviderTransaction>(
+                      builder: (context, newList, child) {
+                        return newList.transactionListProvider.isEmpty
                             ? const Padding(
                                 padding: EdgeInsets.only(right: 10),
                                 child: Text(

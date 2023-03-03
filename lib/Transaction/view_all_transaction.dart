@@ -7,7 +7,7 @@ import 'package:money_track/transaction/transaction_list.dart';
 import 'package:money_track/transaction/filter/type_filter_transaction/type_filter_transaction.dart';
 import 'package:money_track/db/transaction/db_transaction_function.dart';
 
-ValueNotifier showCategory = ValueNotifier('All');
+// ValueNotifier showCategory = ValueNotifier('All');
 // ValueNotifier showDateNotifier = ValueNotifier("All");
 
 class TransactionListAll extends StatefulWidget {

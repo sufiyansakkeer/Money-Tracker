@@ -1,7 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:money_track/provider/transaction_provider.dart';
 
 import 'package:money_track/transaction/transaction_list.dart';
 import 'package:money_track/db/transaction/db_transaction_function.dart';
+import 'package:provider/provider.dart';
 
 class SearchField extends StatelessWidget {
   SearchField({super.key});
@@ -20,7 +24,8 @@ class SearchField extends StatelessWidget {
           child: TextField(
             controller: _searchQueryController,
             onChanged: (query) {
-              searchResult(query);
+              searchResult(query, context);
+              log(query);
               // overViewListNotifier.notifyListeners();
             },
             decoration: InputDecoration(
@@ -32,8 +37,10 @@ class SearchField extends StatelessWidget {
                 ),
                 suffixIcon: IconButton(
                     onPressed: () {
-                      overViewListNotifier.value =
-                          TransactionDB.instance.transactionListNotifier.value;
+                      context.read<ProviderTransaction>().overviewTransactions =
+                          context
+                              .read<ProviderTransaction>()
+                              .transactionListProvider;
                       _searchQueryController.clear();
                     },
                     icon: const Icon(
@@ -46,16 +53,20 @@ class SearchField extends StatelessWidget {
     );
   }
 
-  searchResult(String query) {
+  searchResult(String query, BuildContext context) {
     if (query.isEmpty) {
-      overViewListNotifier.value =
-          TransactionDB.instance.transactionListNotifier.value;
+      context.read<ProviderTransaction>().overviewTransactions =
+          context.read<ProviderTransaction>().transactionListProvider;
+      context.read<ProviderTransaction>().notifyListeners();
     } else {
-      overViewListNotifier.value = overViewListNotifier.value
-          .where((element) => element.categoryModel.categoryName
-              .toLowerCase()
-              .contains(query.trim().toLowerCase()))
+      context.read<ProviderTransaction>().overviewTransactions = context
+          .read<ProviderTransaction>()
+          .overviewTransactions
+          .where((element) =>
+              element.categoryModel.categoryName.toLowerCase().contains(query))
           .toList();
+      log("${context.read<ProviderTransaction>().overviewTransactions}");
+      context.read<ProviderTransaction>().notifyListeners();
     }
   }
 }
