@@ -69,7 +69,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.only(top: 30, bottom: 30),
-                        child: Consumer<IncomeAndExpense>(builder:
+                        child: Consumer<ProviderTransaction>(builder:
                             (context, incomeAndExpenseProvider, child) {
                           return Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
