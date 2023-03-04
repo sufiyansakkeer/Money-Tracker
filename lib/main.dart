@@ -2,21 +2,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:money_track/provider/add_transaction_provider.dart';
-// import 'package:money_track/provider/add_transaction_provider.dart';
-import 'package:money_track/provider/category_provider.dart';
-import 'package:money_track/provider/income_expense.dart';
-import 'package:money_track/provider/onboarding_screen.dart';
+import 'package:money_track/controller/provider/add_transaction_provider.dart';
+import 'package:money_track/controller/provider/category_provider.dart';
+import 'package:money_track/controller/provider/category_type_provider.dart';
+import 'package:money_track/controller/provider/income_expense.dart';
+import 'package:money_track/controller/provider/onboarding_screen.dart';
+import 'package:money_track/controller/provider/transaction_provider.dart';
 
 import 'package:money_track/models/categories_model/category_model.dart';
 
-import 'package:money_track/screens/splash_screen.dart';
 import 'package:money_track/core/colors.dart';
+import 'package:money_track/view/screens/splash_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'models/transaction_model/transaction_model.dart';
-import 'provider/category_type_provider.dart';
-import 'provider/transaction_provider.dart';
 
 //here main function became future because the init flutter function is a future method
 Future<void> main() async {
