@@ -1,41 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:money_track/db/transaction/db_transaction_function.dart';
-import 'package:money_track/db/transaction/income_and_expense.dart';
-import 'package:money_track/models/transaction_model/transaction_model.dart';
+
+import 'package:money_track/provider/transaction_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-ValueNotifier<List<TransactionModel>> overViewGraphNotifier =
-    ValueNotifier(TransactionDB.instance.transactionListNotifier.value);
+// ValueNotifier<List<TransactionModel>> overViewGraphNotifier =
+//     ValueNotifier(TransactionDB.instance.transactionListNotifier.value);
 
-class TransactionOverView extends StatefulWidget {
-  const TransactionOverView({super.key});
+class TransactionOverView extends StatelessWidget {
+  TransactionOverView({super.key});
 
-  @override
-  State<TransactionOverView> createState() => _TransactionOverView();
-}
-
-class _TransactionOverView extends State<TransactionOverView> {
-  late TooltipBehavior _tooltipBehavior;
-
-  @override
-  void initState() {
-    _tooltipBehavior = TooltipBehavior(enable: true);
-    super.initState();
-  }
+  final TooltipBehavior _tooltipBehavior = TooltipBehavior(enable: true);
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: ValueListenableBuilder(
-          valueListenable: overViewGraphNotifier,
-          builder: (BuildContext context, List<TransactionModel> newList,
-              Widget? child) {
-            Map incomeMap = {'name': 'Income', "amount": incomeTotal.value};
-            Map expenseMap = {"name": "Expense", "amount": expenseTotal.value};
+        body: Consumer<ProviderTransaction>(
+          builder: (context, value, child) {
+            Map incomeMap = {'name': 'Income', "amount": value.incomeTotal};
+            Map expenseMap = {"name": "Expense", "amount": value.expenseTotal};
             List<Map> totalMap = [incomeMap, expenseMap];
-            return overViewGraphNotifier.value.isEmpty
+            return value.overviewGraphTransactions.isEmpty
                 ? SingleChildScrollView(
                     child: Center(
                       child: Column(

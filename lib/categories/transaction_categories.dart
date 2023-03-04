@@ -4,25 +4,19 @@ import 'package:money_track/categories/widgets/category_bottom_sheet.dart';
 import 'package:money_track/categories/screens/expense_category.dart';
 import 'package:money_track/categories/screens/income_category.dart';
 import 'package:money_track/core/colors.dart';
-import 'package:money_track/db/category/db_category.dart';
 
-class TransactionCategories extends StatefulWidget {
+import 'package:money_track/provider/category_provider.dart';
+import 'package:provider/provider.dart';
+
+class TransactionCategories extends StatelessWidget {
   const TransactionCategories({super.key});
 
   @override
-  State<TransactionCategories> createState() => _TransactionCategoriesState();
-}
-
-class _TransactionCategoriesState extends State<TransactionCategories>
-    with SingleTickerProviderStateMixin {
-  @override
-  void initState() {
-    CategoryDb().refreshUI();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) =>
+          Provider.of<CategoryProvider>(context, listen: false).refreshUI(),
+    );
     return Scaffold(
       body: DefaultTabController(
         length: 2,

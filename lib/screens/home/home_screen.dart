@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:money_track/insights/widgets/over_view_graph.dart';
-import 'package:money_track/models/transaction_model/transaction_model.dart';
-import 'package:money_track/provider/income_expense.dart';
+
 import 'package:money_track/provider/transaction_provider.dart';
 import 'package:money_track/transaction/recent_transaction/recent_transaction.dart';
 import 'package:money_track/transaction/view_all_transaction.dart';
-import 'package:money_track/db/category/db_category.dart';
-import 'package:money_track/db/transaction/db_transaction_function.dart';
-import 'package:money_track/db/transaction/income_and_expense.dart';
+
 import 'package:money_track/screens/home/widgets/floating_action_button.dart';
 import 'package:money_track/core/colors.dart';
 import 'package:provider/provider.dart';

@@ -3,8 +3,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:money_track/provider/transaction_provider.dart';
 
-import 'package:money_track/transaction/transaction_list.dart';
-import 'package:money_track/db/transaction/db_transaction_function.dart';
 import 'package:provider/provider.dart';
 
 class SearchField extends StatelessWidget {
@@ -37,11 +35,12 @@ class SearchField extends StatelessWidget {
                 ),
                 suffixIcon: IconButton(
                     onPressed: () {
+                      _searchQueryController.clear();
                       context.read<ProviderTransaction>().overviewTransactions =
                           context
                               .read<ProviderTransaction>()
                               .transactionListProvider;
-                      _searchQueryController.clear();
+                      context.read<ProviderTransaction>().notifyListeners();
                     },
                     icon: const Icon(
                       Icons.close,

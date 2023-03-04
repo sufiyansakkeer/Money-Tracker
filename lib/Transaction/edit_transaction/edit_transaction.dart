@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
 
-import 'package:money_track/db/category/db_category.dart';
-
 import 'package:money_track/models/categories_model/category_model.dart';
 import 'package:money_track/models/transaction_model/transaction_model.dart';
 import 'package:money_track/provider/add_transaction_provider.dart';
@@ -26,14 +24,11 @@ class EditTransaction extends StatelessWidget {
   TextEditingController amountTextEditingController = TextEditingController();
 
   final String? id;
-  bool isVisibleCategoryId = false;
   TextEditingController notesTextEditingController = TextEditingController();
   final TransactionModel obj;
-  CategoryModel? selectedCategoryModel;
-  CategoryType? selectedCategoryType;
-  DateTime? selectedDateTime;
 
   final _formKey = GlobalKey<FormState>();
+  bool isVisibleCategoryId = false;
 
 //Edit Transaction Function
   Future<void> editTransaction(context) async {

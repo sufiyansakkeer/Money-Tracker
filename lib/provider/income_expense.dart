@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money_track/models/categories_model/category_model.dart';
 import 'package:money_track/models/transaction_model/transaction_model.dart';
-import 'package:money_track/provider/transaction_provider.dart';
-import 'package:provider/provider.dart';
 
 class IncomeAndExpense extends ChangeNotifier {
   double incomeTotal = 0;

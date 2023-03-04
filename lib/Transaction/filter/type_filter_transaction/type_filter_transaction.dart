@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money_track/provider/transaction_provider.dart';
-import 'package:money_track/transaction/view_all_transaction.dart';
+
 import 'package:provider/provider.dart';
 
 class TypeFilterClass extends StatelessWidget {

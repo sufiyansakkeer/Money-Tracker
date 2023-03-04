@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:money_track/insights/widgets/over_view_graph.dart';
+
 import 'package:money_track/models/categories_model/category_model.dart';
 import 'package:money_track/models/transaction_model/transaction_model.dart';
+import 'package:money_track/provider/transaction_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class ExpenseInsights extends StatefulWidget {
@@ -17,14 +19,12 @@ class _ExpenseInsightsState extends State<ExpenseInsights> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: ValueListenableBuilder(
-          valueListenable: overViewGraphNotifier,
-          builder: (BuildContext context, List<TransactionModel> newList,
-              Widget? child) {
-            var allIncome = newList
+        body: Consumer<ProviderTransaction>(
+          builder: (context, value, child) {
+            var allIncome = value.overviewGraphTransactions
                 .where((element) => element.type == CategoryType.expense)
                 .toList();
-            return overViewGraphNotifier.value.isEmpty
+            return allIncome.isEmpty
                 ? SingleChildScrollView(
                     child: Center(
                       child: Column(

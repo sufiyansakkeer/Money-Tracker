@@ -5,7 +5,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:money_track/models/categories_model/category_model.dart';
 
 import 'package:money_track/models/transaction_model/transaction_model.dart';
-import 'package:provider/provider.dart';
 
 class ProviderTransaction extends ChangeNotifier {
   double incomeTotal = 0;
@@ -85,6 +84,7 @@ class ProviderTransaction extends ChangeNotifier {
     transactionListProvider.clear();
     transactionListProvider.addAll(list);
     overviewTransactions = transactionListProvider;
+    overviewGraphTransactions = transactionListProvider;
     log(transactionListProvider.toString());
     incomeAndExpense();
     notifyListeners();

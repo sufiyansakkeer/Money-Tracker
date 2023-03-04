@@ -8,7 +8,6 @@ import 'package:intl/intl.dart';
 import 'package:money_track/categories/widgets/category_type_pop_up.dart';
 import 'package:money_track/core/colors.dart';
 
-import 'package:money_track/db/transaction/db_transaction_function.dart';
 import 'package:money_track/models/categories_model/category_model.dart';
 import 'package:money_track/models/transaction_model/transaction_model.dart';
 import 'package:money_track/provider/add_transaction_provider.dart';
@@ -170,7 +169,8 @@ class AddTransaction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // CategoryDb.instance.refreshUI();
-    context.read<AddTransactionProvider>().categoryId;
+    context.read<ProviderTransaction>().refreshUi();
+    context.read<CategoryProvider>().refreshUI();
     // TransactionDB.instance.refreshUi();
     return Scaffold(
       appBar: AppBar(
