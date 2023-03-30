@@ -7,7 +7,15 @@ class CategoryTypeProvider extends ChangeNotifier {
     if (value == null) {
       return;
     }
-    newCategory.selectCategoryProvider = value;
+    if (selectCategoryProvider == CategoryType.income) {
+      selectCategoryProvider = CategoryType.expense;
+
+      notifyListeners();
+    } else {
+      selectCategoryProvider = CategoryType.income;
+      notifyListeners();
+    }
+    selectCategoryProvider = newCategory;
     notifyListeners();
   }
 }

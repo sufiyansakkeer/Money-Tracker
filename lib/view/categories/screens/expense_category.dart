@@ -72,27 +72,32 @@ class ExpenseTransaction extends StatelessWidget {
                                             'Do you want to Delete.'),
                                         actions: [
                                           TextButton(
-                                              onPressed: (() {
-                                                context
-                                                    .read<CategoryProvider>()
-                                                    .deleteCategory(
-                                                      category.id,
-                                                    );
+                                            onPressed: (() {
+                                              context
+                                                  .read<CategoryProvider>()
+                                                  .deleteCategory(
+                                                    category.id,
+                                                  );
 
-                                                Navigator.of(context).pop();
-                                              }),
-                                              child: const Text(
-                                                'yes',
-                                                style: TextStyle(
-                                                    color: Colors.black),
-                                              )),
+                                              Navigator.of(context).pop();
+                                            }),
+                                            child: const Text(
+                                              'Yes',
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                          ),
                                           TextButton(
-                                              onPressed: (() {
-                                                Navigator.of(context).pop();
-                                              }),
-                                              child: const Text('no',
-                                                  style: TextStyle(
-                                                      color: Colors.black)))
+                                            onPressed: (() {
+                                              Navigator.of(context).pop();
+                                            }),
+                                            child: const Text(
+                                              'No',
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ),
                                         ],
                                       );
                                     }),

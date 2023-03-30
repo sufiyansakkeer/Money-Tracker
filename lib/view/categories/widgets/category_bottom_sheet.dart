@@ -73,57 +73,60 @@ categoryShowBottomSheetApp(BuildContext context) async {
                           20,
                         ),
                       ),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          elevation: 0,
-                          shape: const StadiumBorder(),
-                        ),
-                        onPressed: () {
-                          if (formKey.currentState!.validate()) {
-                            // If the form is valid, display a snackbar. In the real world,
+                      child: Consumer<CategoryTypeProvider>(
+                          builder: (context, value, child) {
+                        return ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            elevation: 0,
+                            shape: const StadiumBorder(),
+                          ),
+                          onPressed: () {
+                            if (formKey.currentState!.validate()) {
+                              // If the form is valid, display a snackbar. In the real world,
 
-                            AnimatedSnackBar.rectangle(
-                              'Success',
-                              'Category Added Successfully',
-                              type: AnimatedSnackBarType.success,
-                              brightness: Brightness.light,
-                              duration: const Duration(
-                                seconds: 3,
-                              ),
-                            ).show(
-                              context,
+                              AnimatedSnackBar.rectangle(
+                                'Success',
+                                'Category Added Successfully',
+                                type: AnimatedSnackBarType.success,
+                                brightness: Brightness.light,
+                                duration: const Duration(
+                                  seconds: 3,
+                                ),
+                              ).show(
+                                context,
+                              );
+                            }
+                            final name = nameEditingController.text;
+                            if (name.isEmpty) {
+                              return;
+                            }
+                            // final type =
+                            //     CategoryTypeProvider().selectCategoryProvider;
+                            final category = CategoryModel(
+                              id: DateTime.now()
+                                  .millisecondsSinceEpoch
+                                  .toString(),
+                              type: value.selectCategoryProvider,
+                              categoryName: name,
                             );
-                          }
-                          final name = nameEditingController.text;
-                          if (name.isEmpty) {
-                            return;
-                          }
-                          final type =
-                              CategoryTypeProvider().selectCategoryProvider;
-                          final category = CategoryModel(
-                            id: DateTime.now()
-                                .millisecondsSinceEpoch
-                                .toString(),
-                            type: type,
-                            categoryName: name,
-                          );
 
-                          context
-                              .read<CategoryProvider>()
-                              .insertCategory(category);
-                          Navigator.of(context).pop();
-                        },
-                        child: const Hero(
-                          tag: 'CategoryAppBottomSheet',
-                          child: Text(
-                            'Add',
-                            style: TextStyle(
-                              // color: Colors.black,
-                              fontWeight: FontWeight.bold,
+                            context
+                                .read<CategoryProvider>()
+                                .insertCategory(category);
+                            Navigator.of(context).pop();
+                          },
+                          child: const Hero(
+                            tag: 'CategoryAppBottomSheet',
+                            child: Text(
+                              'Add',
+                              style: TextStyle(
+                                // color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
-                        ),
-                      ),
+                        );
+                      }),
                     ),
                   ),
                 ],
@@ -148,14 +151,12 @@ class RadioButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Consumer<CategoryTypeProvider>(builder: (context, newCategory, child) {
+        Consumer<CategoryTypeProvider>(builder: (context, provider, child) {
           return Radio<CategoryType>(
             value: type,
-            groupValue: newCategory.selectCategoryProvider,
+            groupValue: provider.selectCategoryProvider,
             onChanged: (value) {
-              context
-                  .read<CategoryTypeProvider>()
-                  .onChanging(value, newCategory);
+              provider.onChanging(value, type);
             },
           );
         }),
