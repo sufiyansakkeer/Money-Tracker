@@ -58,10 +58,10 @@ class OnBoardingScreens extends StatelessWidget {
                               ),
                               color: Color(0x992E49FB),
                             ),
-                            child: Center(
+                            child: const Center(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
+                                children: [
                                   Text(
                                     'Skip',
                                     style: TextStyle(color: Colors.white),

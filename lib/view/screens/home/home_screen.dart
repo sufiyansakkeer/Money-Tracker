@@ -101,8 +101,8 @@ class HomeScreen extends StatelessWidget {
                                 children: [
                                   Column(
                                     children: [
-                                      Row(
-                                        children: const [
+                                      const Row(
+                                        children: [
                                           Icon(
                                             Icons.arrow_upward_outlined,
                                             color: Colors.white,
@@ -132,8 +132,8 @@ class HomeScreen extends StatelessWidget {
                                   ),
                                   Column(
                                     children: [
-                                      Row(
-                                        children: const [
+                                      const Row(
+                                        children: [
                                           Icon(
                                             Icons.arrow_downward_outlined,
                                             color: Colors.white,

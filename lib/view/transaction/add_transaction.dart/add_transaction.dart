@@ -210,15 +210,15 @@ class AddTransaction extends StatelessWidget {
                 const SizedBox(
                   height: 5,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10),
                   child: Visibility(
                     visible: false,
                     child: Padding(
-                      padding: const EdgeInsets.all(3.0),
+                      padding: EdgeInsets.all(3.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
-                        children: const [
+                        children: [
                           Text(
                             '    Please Select the Category',
                             style: TextStyle(

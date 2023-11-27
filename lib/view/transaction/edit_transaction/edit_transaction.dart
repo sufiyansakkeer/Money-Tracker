@@ -250,11 +250,11 @@ class EditTransaction extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 5),
                 child: Visibility(
                   visible: isVisibleCategoryId,
-                  child: Padding(
-                    padding: const EdgeInsets.all(3.0),
+                  child: const Padding(
+                    padding: EdgeInsets.all(3.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
-                      children: const [
+                      children: [
                         Text(
                           '  Please Select Category',
                           style: TextStyle(

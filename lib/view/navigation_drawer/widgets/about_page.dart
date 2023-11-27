@@ -24,13 +24,13 @@ class AboutPage extends StatelessWidget {
           'About',
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(80.0),
+      body: const Padding(
+        padding: EdgeInsets.all(80.0),
         child: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
+            children: [
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 20),
                 child: Text(
