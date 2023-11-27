@@ -22,7 +22,7 @@ Future<void> main() async {
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
-      systemNavigationBarColor: Colors.black,
+      systemNavigationBarColor: Colors.transparent,
     ),
   );
   //here it will ensure that the app will connect with platform channels or not,
@@ -41,7 +41,7 @@ Future<void> main() async {
     Hive.registerAdapter(CategoryTypeAdapter());
   }
 
-  // //here we register the category name adapter if it is not registered
+  //here we register the category name adapter if it is not registered
 //category model adapter registration
 //transaction model adapter registration
 
@@ -105,7 +105,7 @@ class MoneyTrack extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          // useMaterial3: true,
+          useMaterial3: true,
           primarySwatch: createMaterialColor(
             themeDarkBlue,
           ),
