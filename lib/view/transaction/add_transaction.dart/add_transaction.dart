@@ -4,9 +4,9 @@ import 'package:animated_snack_bar/animated_snack_bar.dart';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:money_track/controller/provider/add_transaction_provider.dart';
-import 'package:money_track/controller/provider/category_provider.dart';
-import 'package:money_track/controller/provider/transaction_provider.dart';
+import 'package:money_track/provider/add_transaction_provider.dart';
+import 'package:money_track/provider/category_provider.dart';
+import 'package:money_track/provider/transaction_provider.dart';
 
 import 'package:money_track/view/categories/widgets/category_type_pop_up.dart';
 import 'package:money_track/core/colors.dart';
@@ -50,7 +50,8 @@ class AddTransaction extends StatelessWidget {
                 ),
                 enabledBorder: OutlineInputBorder(),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: themeDarkBlue, width: 2),
+                  borderSide:
+                      BorderSide(color: ColorConstants.themeDarkBlue, width: 2),
                 ),
               ),
               elevation: 9,
@@ -89,7 +90,8 @@ class AddTransaction extends StatelessWidget {
           padding: const EdgeInsets.only(left: 10),
           child: Container(
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10), color: themeDarkBlue),
+                borderRadius: BorderRadius.circular(10),
+                color: ColorConstants.themeDarkBlue),
             child: IconButton(
               onPressed: (() {
                 // showCategoryAddPopup(context);
@@ -273,8 +275,8 @@ class AddTransaction extends StatelessWidget {
                       return TextButton(
                         style: ElevatedButton.styleFrom(
                           side: const BorderSide(width: 1.0),
-                          // backgroundColor: themeDarkBlue,
-                          foregroundColor: themeDarkBlue,
+                          // backgroundColor:ColorConstants. themeDarkBlue,
+                          foregroundColor: ColorConstants.themeDarkBlue,
                           // primary: Colors.black,
                           minimumSize: const Size.fromHeight(50), // NEW
                         ),

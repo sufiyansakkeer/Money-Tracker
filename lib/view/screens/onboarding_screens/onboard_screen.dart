@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:money_track/controller/provider/onboarding_screen.dart';
+import 'package:money_track/provider/onboarding_screen.dart';
 import 'package:money_track/view/screens/onboarding_screens/widgets/onboarding_screen_1.dart';
 import 'package:money_track/view/screens/onboarding_screens/widgets/onboarding_screen_2.dart';
 import 'package:money_track/view/screens/onboarding_screens/widgets/onboarding_screen_3.dart';

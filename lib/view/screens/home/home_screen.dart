@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:money_track/controller/provider/transaction_provider.dart';
+import 'package:money_track/provider/transaction_provider.dart';
 
 import 'package:money_track/core/colors.dart';
 import 'package:money_track/view/screens/home/widgets/floating_action_button.dart';
@@ -204,7 +204,8 @@ class HomeScreen extends StatelessWidget {
                               )
                             : ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: secondaryThemeBlue,
+                                  backgroundColor:
+                                      ColorConstants.secondaryThemeBlue,
                                   elevation: 0,
                                   shape: const StadiumBorder(),
                                 ),
@@ -219,7 +220,8 @@ class HomeScreen extends StatelessWidget {
                                 }),
                                 child: const Text(
                                   'View all',
-                                  style: TextStyle(color: themeDarkBlue),
+                                  style: TextStyle(
+                                      color: ColorConstants.themeDarkBlue),
                                 ),
                               );
                       },

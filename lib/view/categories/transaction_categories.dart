@@ -1,6 +1,6 @@
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:flutter/material.dart';
-import 'package:money_track/controller/provider/category_provider.dart';
+import 'package:money_track/provider/category_provider.dart';
 import 'package:money_track/view/categories/widgets/category_bottom_sheet.dart';
 import 'package:money_track/view/categories/screens/expense_category.dart';
 import 'package:money_track/view/categories/screens/income_category.dart';
@@ -26,10 +26,10 @@ class TransactionCategories extends StatelessWidget {
             Container(
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: themeDarkBlue,
+                color: ColorConstants.themeDarkBlue,
                 border: Border.all(
                   width: 0,
-                  color: themeDarkBlue,
+                  color: ColorConstants.themeDarkBlue,
                 ),
               ),
               width: double.infinity,
@@ -40,9 +40,10 @@ class TransactionCategories extends StatelessWidget {
                 unselectedBackgroundColor: const Color(0xFFB8B0B0),
                 labelSpacing: 30,
                 labelStyle: const TextStyle(
-                  color: themeDarkBlue,
+                  color: ColorConstants.themeDarkBlue,
                 ),
-                unselectedLabelStyle: const TextStyle(color: themeDarkBlue),
+                unselectedLabelStyle:
+                    const TextStyle(color: ColorConstants.themeDarkBlue),
                 tabs: const [
                   Tab(
                     iconMargin: EdgeInsets.all(30),

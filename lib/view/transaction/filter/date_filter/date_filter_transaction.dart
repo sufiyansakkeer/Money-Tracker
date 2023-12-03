@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:money_track/controller/provider/transaction_provider.dart';
+import 'package:money_track/provider/transaction_provider.dart';
 
 import 'package:provider/provider.dart';
 

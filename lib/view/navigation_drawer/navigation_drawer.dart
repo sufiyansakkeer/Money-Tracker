@@ -76,12 +76,12 @@ class NavigationDrawerClass extends StatelessWidget {
                   'About',
                   style: TextStyle(
                     fontSize: 16,
-                    color: themeDarkBlue,
+                    color: ColorConstants.themeDarkBlue,
                   ),
                 ),
                 leading: const Icon(
                   Icons.info_rounded,
-                  color: themeDarkBlue,
+                  color: ColorConstants.themeDarkBlue,
                 ),
               ),
             ),
@@ -157,13 +157,13 @@ class NavigationDrawerClass extends StatelessWidget {
                 title: const Text(
                   'Reset',
                   style: TextStyle(
-                    color: themeDarkBlue,
+                    color: ColorConstants.themeDarkBlue,
                     fontSize: 16,
                   ),
                 ),
                 leading: const Icon(
                   Icons.restart_alt_rounded,
-                  color: themeDarkBlue,
+                  color: ColorConstants.themeDarkBlue,
                   size: 25,
                 ),
               ),
@@ -184,12 +184,12 @@ class NavigationDrawerClass extends StatelessWidget {
                   'Share',
                   style: TextStyle(
                     fontSize: 16,
-                    color: themeDarkBlue,
+                    color: ColorConstants.themeDarkBlue,
                   ),
                 ),
                 leading: Icon(
                   Icons.adaptive.share,
-                  color: themeDarkBlue,
+                  color: ColorConstants.themeDarkBlue,
                 ),
               ),
             ),
@@ -212,12 +212,12 @@ class NavigationDrawerClass extends StatelessWidget {
                   'Feedback',
                   style: TextStyle(
                     fontSize: 16,
-                    color: themeDarkBlue,
+                    color: ColorConstants.themeDarkBlue,
                   ),
                 ),
                 leading: const Icon(
                   Icons.chat_outlined,
-                  color: themeDarkBlue,
+                  color: ColorConstants.themeDarkBlue,
                 ),
               ),
             ),
@@ -234,12 +234,12 @@ class NavigationDrawerClass extends StatelessWidget {
             //       'Privacy Policy',
             //       style: TextStyle(
             //         fontSize: 16,
-            //         color: themeDarkBlue,
+            //         color:ColorConstants. themeDarkBlue,
             //       ),
             //     ),
             //     leading: const Icon(
             //       Icons.description,
-            //       color: themeDarkBlue,
+            //       color:ColorConstants. themeDarkBlue,
             //     ),
             //   ),
             // ),

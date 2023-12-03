@@ -1,7 +1,7 @@
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:money_track/controller/provider/category_provider.dart';
-import 'package:money_track/controller/provider/category_type_provider.dart';
+import 'package:money_track/provider/category_provider.dart';
+import 'package:money_track/provider/category_type_provider.dart';
 
 import 'package:money_track/models/categories_model/category_model.dart';
 import 'package:money_track/core/colors.dart';
@@ -59,7 +59,7 @@ categoryShowBottomSheetApp(BuildContext context) async {
                         border: OutlineInputBorder(),
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(
-                            color: themeDarkBlue,
+                            color: ColorConstants.themeDarkBlue,
                           ),
                         ),
                       ),

@@ -2,12 +2,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:money_track/controller/provider/add_transaction_provider.dart';
-import 'package:money_track/controller/provider/category_provider.dart';
-import 'package:money_track/controller/provider/category_type_provider.dart';
-import 'package:money_track/controller/provider/income_expense.dart';
-import 'package:money_track/controller/provider/onboarding_screen.dart';
-import 'package:money_track/controller/provider/transaction_provider.dart';
+import 'package:money_track/provider/add_transaction_provider.dart';
+import 'package:money_track/provider/category_provider.dart';
+import 'package:money_track/provider/category_type_provider.dart';
+import 'package:money_track/provider/income_expense.dart';
+import 'package:money_track/provider/onboarding_screen.dart';
+import 'package:money_track/provider/transaction_provider.dart';
 
 import 'package:money_track/models/categories_model/category_model.dart';
 
@@ -107,7 +107,7 @@ class MoneyTrack extends StatelessWidget {
         theme: ThemeData(
           useMaterial3: true,
           primarySwatch: createMaterialColor(
-            themeDarkBlue,
+            ColorConstants.themeDarkBlue,
           ),
         ),
         home: const SplashScreen(),
