@@ -234,7 +234,6 @@ class EditTransaction extends StatelessWidget {
                       onTap: () {
                         context.read<CategoryProvider>().refreshUI();
                         tProvider.selectedCategoryModel = e;
-                        log('$e');
                       },
                     );
                   }).toList(),

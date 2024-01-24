@@ -17,14 +17,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.13.0"
-  animated_custom_dropdown:
-    dependency: "direct main"
-    description:
-      name: animated_custom_dropdown
-      sha256: ecfbceee6912ef0a4eb9da6e5908ce70ac16f35bfd4153068a9fdae879f445ff
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.2.2"
   animated_snack_bar:
     dependency: "direct main"
     description:
@@ -65,22 +57,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
-  auto_animated:
-    dependency: "direct main"
-    description:
-      name: auto_animated
-      sha256: e0688309ac014333564932ac0eb059b265674004603d0118b649416fdcd6ab20
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.1.0"
-  avatar_glow:
-    dependency: "direct main"
-    description:
-      name: avatar_glow
-      sha256: "3627f6f97d1f10d3c1996ae108d3488eabaf68c0cf0c3eac7e7c746a3812881d"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.2"
   boolean_selector:
     dependency: transitive
     description:
@@ -249,14 +225,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.2"
-  decorated_dropdownbutton:
-    dependency: "direct main"
-    description:
-      name: decorated_dropdownbutton
-      sha256: "03844d031650f2561cf74b3480734bab5b8b40cc52bdf2af197f3345ab0e9418"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.3"
   fake_async:
     dependency: transitive
     description:
@@ -344,6 +312,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.2"
+  google_fonts:
+    dependency: "direct main"
+    description:
+      name: google_fonts
+      sha256: f0b8d115a13ecf827013ec9fc883390ccc0e87a96ed5347a3114cac177ef18e8
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.1.0"
   graphs:
     dependency: transitive
     description:
@@ -376,6 +352,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
+  http:
+    dependency: transitive
+    description:
+      name: http
+      sha256: "759d1a329847dd0f39226c688d3e06a6b8679668e350e2891a6474f8b4bb8525"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   http_multi_server:
     dependency: transitive
     description:
@@ -624,14 +608,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.3"
-  quickalert:
-    dependency: "direct main"
-    description:
-      name: quickalert
-      sha256: "33a52870b2a87c55d0649d0cd228efaa2368d5df39231fdecebb71f349a9b221"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.1"
   share_plus:
     dependency: "direct main"
     description:
@@ -837,14 +813,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.1"
-  top_snackbar_flutter:
-    dependency: "direct main"
-    description:
-      name: top_snackbar_flutter
-      sha256: "7d4aa8f0031ad4a597c02487b4bb9b0dbb6a8d76ce1ab6e13e9565f865c1b70c"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.0+1"
   typed_data:
     dependency: transitive
     description:
@@ -917,14 +885,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.0"
-  url_strategy:
-    dependency: "direct main"
-    description:
-      name: url_strategy
-      sha256: "42b68b42a9864c4d710401add17ad06e28f1c1d5500c93b98c431f6b0ea4ab87"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.2.0"
   uuid:
     dependency: transitive
     description:
@@ -941,14 +901,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
-  visibility_detector:
-    dependency: transitive
-    description:
-      name: visibility_detector
-      sha256: "15c54a459ec2c17b4705450483f3d5a2858e733aee893dcee9d75fd04814940d"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.3.3"
   watcher:
     dependency: transitive
     description:

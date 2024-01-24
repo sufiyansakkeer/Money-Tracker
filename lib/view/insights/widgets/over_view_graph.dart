@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 import 'package:money_track/provider/transaction_provider.dart';
+import 'package:money_track/view/insights/widgets/no_data_found_women.dart';
 
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -23,19 +23,7 @@ class TransactionOverView extends StatelessWidget {
             Map expenseMap = {"name": "Expense", "amount": value.expenseTotal};
             List<Map> totalMap = [incomeMap, expenseMap];
             return value.overviewGraphTransactions.isEmpty
-                ? SingleChildScrollView(
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Lottie.asset(
-                            'assets/images/no-data.json',
-                            height: 360,
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
+                ? const NoDataFoundWomenWidget()
                 : SfCircularChart(
                     tooltipBehavior: _tooltipBehavior,
                     series: <CircularSeries>[

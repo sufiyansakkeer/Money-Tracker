@@ -39,11 +39,11 @@ class TransactionCategories extends StatelessWidget {
                 backgroundColor: Colors.white,
                 unselectedBackgroundColor: const Color(0xFFB8B0B0),
                 labelSpacing: 30,
-                labelStyle: const TextStyle(
+                labelStyle: TextStyle(
                   color: ColorConstants.themeDarkBlue,
                 ),
                 unselectedLabelStyle:
-                    const TextStyle(color: ColorConstants.themeDarkBlue),
+                    TextStyle(color: ColorConstants.themeDarkBlue),
                 tabs: const [
                   Tab(
                     iconMargin: EdgeInsets.all(30),

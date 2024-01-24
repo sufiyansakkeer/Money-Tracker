@@ -44,11 +44,11 @@ class AddTransaction extends StatelessWidget {
                 }
                 return null;
               },
-              decoration: const InputDecoration(
-                errorBorder: OutlineInputBorder(
+              decoration: InputDecoration(
+                errorBorder: const OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.red, width: 1),
                 ),
-                enabledBorder: OutlineInputBorder(),
+                enabledBorder: const OutlineInputBorder(),
                 focusedBorder: OutlineInputBorder(
                   borderSide:
                       BorderSide(color: ColorConstants.themeDarkBlue, width: 2),

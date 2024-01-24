@@ -51,12 +51,12 @@ categoryShowBottomSheetApp(BuildContext context) async {
                         }
                         return null;
                       },
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: 'Category Name',
                         // floatingLabelStyle: TextStyle(
                         //   color: Colors.black,
                         // ),
-                        border: OutlineInputBorder(),
+                        border: const OutlineInputBorder(),
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(
                             color: ColorConstants.themeDarkBlue,

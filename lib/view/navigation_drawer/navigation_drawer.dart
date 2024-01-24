@@ -72,14 +72,14 @@ class NavigationDrawerClass extends StatelessWidget {
                     ),
                   );
                 },
-                title: const Text(
+                title: Text(
                   'About',
                   style: TextStyle(
                     fontSize: 16,
                     color: ColorConstants.themeDarkBlue,
                   ),
                 ),
-                leading: const Icon(
+                leading: Icon(
                   Icons.info_rounded,
                   color: ColorConstants.themeDarkBlue,
                 ),
@@ -154,14 +154,14 @@ class NavigationDrawerClass extends StatelessWidget {
                     },
                   );
                 },
-                title: const Text(
+                title: Text(
                   'Reset',
                   style: TextStyle(
                     color: ColorConstants.themeDarkBlue,
                     fontSize: 16,
                   ),
                 ),
-                leading: const Icon(
+                leading: Icon(
                   Icons.restart_alt_rounded,
                   color: ColorConstants.themeDarkBlue,
                   size: 25,
@@ -180,7 +180,7 @@ class NavigationDrawerClass extends StatelessWidget {
                   Share.share(
                       'hey! check out this new app https://play.google.com/store/apps/details?id=in.brototype.money_track');
                 },
-                title: const Text(
+                title: Text(
                   'Share',
                   style: TextStyle(
                     fontSize: 16,
@@ -208,14 +208,14 @@ class NavigationDrawerClass extends StatelessWidget {
 
                   await launchUrl(uri);
                 },
-                title: const Text(
+                title: Text(
                   'Feedback',
                   style: TextStyle(
                     fontSize: 16,
                     color: ColorConstants.themeDarkBlue,
                   ),
                 ),
-                leading: const Icon(
+                leading: Icon(
                   Icons.chat_outlined,
                   color: ColorConstants.themeDarkBlue,
                 ),

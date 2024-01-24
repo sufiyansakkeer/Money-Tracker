@@ -1,5 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:money_track/core/colors.dart';
+import 'package:money_track/core/theme.dart';
 import 'package:money_track/view/insights/transaction_graph_page.dart';
 import 'package:money_track/view/categories/transaction_categories.dart';
 import 'package:money_track/view/navigation_drawer/navigation_drawer.dart';
@@ -104,10 +106,14 @@ class _RootPageState extends State<RootPage> {
             Widget? child,
           ) {
             return BottomNavigationBar(
-              unselectedItemColor: Colors.black,
+              unselectedItemColor: isDarkMode ? Colors.grey : Colors.black,
               iconSize: 35,
+              selectedItemColor:
+                  isDarkMode ? Colors.white : ColorConstants.themeDarkBlue,
               elevation: 0,
               currentIndex: updatedIndex,
+              backgroundColor:
+                  isDarkMode ? const Color(0xFF333333) : Colors.white,
               items: const [
                 BottomNavigationBarItem(
                   icon: Icon(
