@@ -41,15 +41,16 @@ class HomeScreen extends StatelessWidget {
                   width: double.infinity,
                   height: 140,
                 ),
+
                 Positioned(
                   top: 20,
                   left: 30,
                   right: 30,
-                  child: Card(
-                    elevation: 9,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
+                  child: Container(
+                    // elevation: 9,
+                    // shape: RoundedRectangleBorder(
+                    //   borderRadius: BorderRadius.circular(30),
+                    // ),
                     child: ShaderMask(
                       shaderCallback: (Rect bounds) {
                         return const SweepGradient(
@@ -67,130 +68,129 @@ class HomeScreen extends StatelessWidget {
                       child: Container(
                         height: 250,
                         width: 300,
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
                           color: Colors.white,
-                          // gradient: LinearGradient(
-                          //   begin: Alignment.topRight,
-                          //   end: Alignment.bottomLeft,
-                          //   colors: [
-                          //     Color(0xFFDE45FE), // First color
-                          //     Color(0xFF2E49FB), // Second color
-                          //     Color(0xFF68AFF6), // Third color
-                          //   ],
-                          // ),
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 30, bottom: 30),
-                          child: Consumer<ProviderTransaction>(builder:
-                              (context, incomeAndExpenseProvider, child) {
-                            return Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  children: [
-                                    Text(
-                                      incomeAndExpenseProvider.totalBalance < 0
-                                          ? 'Lose'
-                                          : 'Total',
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 23,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      //here i used abs to avoid the negative values
-                                      '₹${incomeAndExpenseProvider.totalBalance.abs().toString()}',
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 30,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Column(
-                                      children: [
-                                        const Row(
-                                          children: [
-                                            Icon(
-                                              Icons.arrow_upward_outlined,
-                                              color: Colors.white,
-                                            ),
-                                            Text(
-                                              'Income',
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(
-                                          height: 5,
-                                        ),
-                                        Text(
-                                          '₹${incomeAndExpenseProvider.incomeTotal}',
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 25,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      children: [
-                                        const Row(
-                                          children: [
-                                            Icon(
-                                              Icons.arrow_downward_outlined,
-                                              color: Colors.white,
-                                            ),
-                                            Text(
-                                              'Expense',
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(
-                                          height: 5,
-                                        ),
-                                        Text(
-                                          '₹${incomeAndExpenseProvider.expenseTotal.toString()}',
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 25,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                          // softWrap: false,
-                                          // maxLines: 1,
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                )
-                              ],
-                            );
-                          }),
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(30),
+                          ),
+                          border: Border.all(color: Colors.transparent),
                         ),
                       ),
                     ),
                   ),
                 ),
+                Positioned(
+                  top: 20,
+                  left: 30,
+                  right: 30,
+                  child: Consumer<ProviderTransaction>(
+                      builder: (context, incomeAndExpenseProvider, child) {
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 30, bottom: 30),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                incomeAndExpenseProvider.totalBalance < 0
+                                    ? 'Lose'
+                                    : 'Total',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 23,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                //here i used abs to avoid the negative values
+                                '₹${incomeAndExpenseProvider.totalBalance.abs().toString()}',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Column(
+                                children: [
+                                  const Row(
+                                    children: [
+                                      Icon(
+                                        Icons.arrow_upward_outlined,
+                                        color: Colors.white,
+                                      ),
+                                      Text(
+                                        'Income',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    '₹${incomeAndExpenseProvider.incomeTotal}',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  const Row(
+                                    children: [
+                                      Icon(
+                                        Icons.arrow_downward_outlined,
+                                        color: Colors.white,
+                                      ),
+                                      Text(
+                                        'Expense',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    '₹${incomeAndExpenseProvider.expenseTotal.toString()}',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    // softWrap: false,
+                                    // maxLines: 1,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    );
+                  }),
+                )
+
                 // ),
               ],
             ),

@@ -91,7 +91,7 @@ class MoneyTrack extends StatelessWidget {
           primarySwatch: createMaterialColor(
             ColorConstants.themeDarkBlue,
           ),
-          useMaterial3: true,
+          // useMaterial3: true,
           // fontFamily: google,
         ),
         darkTheme: ThemeData(
