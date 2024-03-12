@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -17,10 +17,10 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.3+1
+version: 1.0.1+1
 
 environment:
-  sdk: '>=2.18.6 <3.0.0'
+  sdk: ">=2.18.6 <3.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -29,30 +29,24 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  animated_custom_dropdown: 1.2.2
   animated_snack_bar: 0.3.0
   animations: 2.0.7
-  auto_animated: 3.1.0
-  avatar_glow: 2.0.2
   buttons_tabbar: 1.3.6
   cupertino_icons: 1.0.2
-  decorated_dropdownbutton: 0.0.3
   flutter:
     sdk: flutter
   flutter_slidable: 2.0.0
+  google_fonts: ^6.1.0
   hive: 2.2.3
   hive_flutter: 1.1.0
   intl: 0.18.0
   lottie: 2.2.0
   provider: ^6.0.5
-  quickalert: 1.0.1
   share_plus: ^6.3.0
   shared_preferences: 2.0.16
   smooth_page_indicator: 1.0.0+2
   syncfusion_flutter_charts: 20.4.44
-  top_snackbar_flutter: 3.0.0+1
   url_launcher: ^6.1.8
-  url_strategy: ^0.2.0
 
 dev_dependencies:
   build_runner: 2.3.3
@@ -73,7 +67,6 @@ flutter_icons:
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter packages.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

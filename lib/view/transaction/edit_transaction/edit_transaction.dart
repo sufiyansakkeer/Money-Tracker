@@ -4,9 +4,9 @@ import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
-import 'package:money_track/controller/provider/add_transaction_provider.dart';
-import 'package:money_track/controller/provider/category_provider.dart';
-import 'package:money_track/controller/provider/transaction_provider.dart';
+import 'package:money_track/provider/add_transaction_provider.dart';
+import 'package:money_track/provider/category_provider.dart';
+import 'package:money_track/provider/transaction_provider.dart';
 import 'package:money_track/core/colors.dart';
 
 import 'package:money_track/models/categories_model/category_model.dart';
@@ -234,7 +234,6 @@ class EditTransaction extends StatelessWidget {
                       onTap: () {
                         context.read<CategoryProvider>().refreshUI();
                         tProvider.selectedCategoryModel = e;
-                        log('$e');
                       },
                     );
                   }).toList(),
@@ -321,7 +320,7 @@ class EditTransaction extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     side: const BorderSide(width: 1.0),
                     // backgroundColor: themeDarkBlue,
-                    foregroundColor: themeDarkBlue,
+                    foregroundColor: ColorConstants.themeDarkBlue,
                     // primary: Colors.black,
                     minimumSize: const Size.fromHeight(50),
                   ),

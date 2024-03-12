@@ -1,6 +1,6 @@
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:money_track/controller/provider/category_provider.dart';
+import 'package:money_track/provider/category_provider.dart';
 
 import 'package:money_track/models/categories_model/category_model.dart';
 import 'package:intl/intl.dart' show toBeginningOfSentenceCase;
