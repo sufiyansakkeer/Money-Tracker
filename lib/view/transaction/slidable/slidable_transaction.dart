@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
+import 'package:money_track/helper/navigation_extension.dart';
 import 'package:money_track/provider/transaction_provider.dart';
 
 import 'package:money_track/models/categories_model/category_model.dart';
@@ -28,16 +29,7 @@ class SlidableTransaction extends StatelessWidget {
       endActionPane: ActionPane(motion: const StretchMotion(), children: [
         SlidableAction(
           onPressed: ((context) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: ((context) {
-                  return EditTransaction(
-                    obj: transaction,
-                  );
-                }),
-              ),
-            );
+            context.push(EditTransaction(obj: transaction));
           }),
           icon: Icons.edit,
           foregroundColor: const Color(0xFF2E49FB),

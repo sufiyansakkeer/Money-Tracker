@@ -9,7 +9,7 @@ import 'package:money_track/provider/category_provider.dart';
 import 'package:money_track/provider/transaction_provider.dart';
 
 import 'package:money_track/view/categories/widgets/category_type_pop_up.dart';
-import 'package:money_track/core/colors.dart';
+import 'package:money_track/core/constants/colors.dart';
 
 import 'package:money_track/models/categories_model/category_model.dart';
 import 'package:money_track/models/transaction_model/transaction_model.dart';

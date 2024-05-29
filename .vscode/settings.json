@@ -1,15 +1,16 @@
 {
-    "cSpell.words": [
-        "ARGB",
-        "autoplay",
-        "blueclr",
-        "bwrnwosd",
-        "cupertino",
-        "dailogue",
-        "gradienta",
-        "RGBO",
-        "splited",
-        "Sufiyan"
-    ],
-    "liveServer.settings.port": 5501
+  "cSpell.words": [
+    "ARGB",
+    "artboard",
+    "autoplay",
+    "blueclr",
+    "bwrnwosd",
+    "cupertino",
+    "dailogue",
+    "gradienta",
+    "RGBO",
+    "splited",
+    "Sufiyan"
+  ],
+  "liveServer.settings.port": 5501
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:money_track/core/colors.dart';
+import 'package:money_track/core/constants/colors.dart';
 
 ThemeData _lightTheme = ThemeData(
   primaryColor: ColorConstants.themeDarkBlue,

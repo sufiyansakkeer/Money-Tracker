@@ -1,7 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'package:money_track/core/colors.dart';
-import 'package:money_track/core/theme.dart';
+import 'package:money_track/core/constants/colors.dart';
+import 'package:money_track/config/theme/theme.dart';
 import 'package:money_track/view/insights/transaction_graph_page.dart';
 import 'package:money_track/view/categories/transaction_categories.dart';
 import 'package:money_track/view/navigation_drawer/navigation_drawer.dart';
@@ -70,10 +70,14 @@ class _RootPageState extends State<RootPage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (didPop) return;
         final shouldPop = await showMyDailogue();
-        return shouldPop ?? false;
+        if (shouldPop != null && shouldPop) {
+          Navigator.pop(context);
+        }
       },
       child: Scaffold(
         appBar: AppBar(

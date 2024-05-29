@@ -4,7 +4,7 @@ import 'package:money_track/provider/category_provider.dart';
 import 'package:money_track/view/categories/widgets/category_bottom_sheet.dart';
 import 'package:money_track/view/categories/screens/expense_category.dart';
 import 'package:money_track/view/categories/screens/income_category.dart';
-import 'package:money_track/core/colors.dart';
+import 'package:money_track/core/constants/colors.dart';
 
 import 'package:provider/provider.dart';
 

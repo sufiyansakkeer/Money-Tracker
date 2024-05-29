@@ -1,6 +1,6 @@
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:flutter/material.dart';
-import 'package:money_track/core/colors.dart';
+import 'package:money_track/core/constants/colors.dart';
 import 'package:money_track/provider/transaction_provider.dart';
 
 import 'package:money_track/view/insights/widgets/expense_insights.dart';

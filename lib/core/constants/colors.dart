@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:money_track/core/theme.dart';
+import 'package:money_track/config/theme/theme.dart';
 
 class ColorConstants {
   static Color themeDarkBlue =

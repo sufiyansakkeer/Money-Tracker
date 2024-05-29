@@ -3,7 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:money_track/provider/transaction_provider.dart';
 
-import 'package:money_track/core/colors.dart';
+import 'package:money_track/core/constants/colors.dart';
 import 'package:money_track/view/screens/home/widgets/floating_action_button.dart';
 import 'package:money_track/view/transaction/recent_transaction/recent_transaction.dart';
 import 'package:money_track/view/transaction/view_all_transaction.dart';
