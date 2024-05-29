@@ -92,7 +92,7 @@ class OnBoardingScreens extends StatelessWidget {
                         count: 3,
                       ),
                       value.isLastPage
-                          ? GestureDetector(
+                          ? InkWell(
                               onTap: (() async {
                                 final pref =
                                     await SharedPreferences.getInstance();

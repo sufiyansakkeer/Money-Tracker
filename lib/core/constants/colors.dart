@@ -10,4 +10,6 @@ class ColorConstants {
       isDarkMode ? const Color(0xFF345A73) : const Color(0xFF68AFF6);
   static Color secondaryThemeBlue =
       isDarkMode ? const Color(0xD42E49FB) : const Color(0x412E49FB);
+  static Color bottomNaColor =
+      isDarkMode ? const Color(0xFF0D1222) : const Color(0xFF17203A);
 }
