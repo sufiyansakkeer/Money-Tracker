@@ -1,11 +1,13 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:money_track/core/constants/colors.dart';
 import 'package:money_track/helper/sized_box_extension.dart';
 import 'package:money_track/helper/widget_extension.dart';
-import 'package:money_track/presentation/widgets/bottom_navigation_list.dart'; // Custom widget or list for bottom navigation items
+import 'package:money_track/presentation/bloc/bottom_navigation/bottom_navigation_bloc.dart';
+import 'package:money_track/presentation/pages/bottom_navigation/widgets/bottom_navigation_list.dart'; // Custom widget or list for bottom navigation items
 import 'package:money_track/presentation/widgets/custom_inkwell.dart';
 import 'package:rive/rive.dart'; // Rive package for animations
 
@@ -13,7 +15,7 @@ import 'package:rive/rive.dart'; // Rive package for animations
 List<SMIBool> riveIconInputs = [];
 List<StateMachineController?> controllers =
     []; // List to store state machine controllers
-int selectedNavIndex = 0; // Index to keep track of selected navigation item
+// int selectedNavIndex = 0; // Index to keep track of selected navigation item
 
 class BottomNavigationPage extends StatefulWidget {
   const BottomNavigationPage({super.key});
@@ -26,12 +28,10 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: const SafeArea(
-        child: Center(
-          child: Text(
-            "Bottom navigation",
-          ),
-        ),
+      body: BlocBuilder<BottomNavigationBloc, BottomNavigationState>(
+        builder: (context, state) {
+          return state.pages[state.index];
+        },
       ),
       bottomNavigationBar: SafeArea(
         child: Container(
@@ -61,54 +61,60 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
               children: List.generate(
                 bottomNavItems
                     .length, // Generate widgets based on number of bottom navigation items
-                (index) => CustomInkWell(
-                  onTap: () {
-                    riveIconInputs[index]
-                        .change(true); // Activate animation on tap
-                    Future.delayed(
-                      const Duration(
-                          milliseconds: 200), // Delay to reset the animation
-                      () {
+                (index) =>
+                    BlocBuilder<BottomNavigationBloc, BottomNavigationState>(
+                  builder: (context, state) {
+                    return CustomInkWell(
+                      onTap: () {
                         riveIconInputs[index]
-                            .change(false); // Deactivate animation after delay
+                            .change(true); // Activate animation on tap
+                        Future.delayed(
+                          const Duration(
+                              milliseconds:
+                                  200), // Delay to reset the animation
+                          () {
+                            riveIconInputs[index].change(
+                                false); // Deactivate animation after delay
+                          },
+                        );
+
+                        context
+                            .read<BottomNavigationBloc>()
+                            .add(ChangeBottomNavigation(index: index));
                       },
-                    );
-                    setState(() {
-                      selectedNavIndex =
-                          index; // Update the selected navigation index
-                    });
-                  },
-                  child: Column(
-                    children: [
-                      10.height(),
-                      RiveAnimation.asset(
-                        bottomNavItems[index].rive.src, // Rive animation source
-                        artboard: bottomNavItems[index]
-                            .rive
-                            .artBoard, // Artboard for the Rive animation
-                        onInit: (artboard) {
-                          log(index.toString(), name: "index");
-                          riveOnInIt(artboard,
-                              stateMachineName: bottomNavItems[index]
-                                  .rive
-                                  .stateMachineName); // Initialize the Rive animation state machine
-                        },
-                      ).expand(),
-                      Text(
-                        bottomNavItems[index].text,
-                        style: TextStyle(
-                          fontFamily: GoogleFonts.mulish().fontFamily,
-                          color: selectedNavIndex == index
-                              ? Colors.white
-                              : Colors.grey[100],
-                          fontWeight: selectedNavIndex == index
-                              ? FontWeight.w700
-                              : null,
-                        ),
+                      child: Column(
+                        children: [
+                          10.height(),
+                          RiveAnimation.asset(
+                            bottomNavItems[index]
+                                .rive
+                                .src, // Rive animation source
+                            artboard: bottomNavItems[index]
+                                .rive
+                                .artBoard, // Artboard for the Rive animation
+                            onInit: (artboard) {
+                              riveOnInIt(artboard,
+                                  stateMachineName: bottomNavItems[index]
+                                      .rive
+                                      .stateMachineName); // Initialize the Rive animation state machine
+                            },
+                          ).expand(),
+                          Text(
+                            bottomNavItems[index].text,
+                            style: TextStyle(
+                              fontFamily: GoogleFonts.mulish().fontFamily,
+                              color: state.index == index
+                                  ? Colors.white
+                                  : Colors.grey[100],
+                              fontWeight:
+                                  state.index == index ? FontWeight.w700 : null,
+                            ),
+                          ),
+                          10.height(),
+                        ],
                       ),
-                      10.height(),
-                    ],
-                  ),
+                    );
+                  },
                 ).expand(),
               ),
             ),
