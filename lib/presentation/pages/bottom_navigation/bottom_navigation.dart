@@ -94,6 +94,8 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
                                 .rive
                                 .artBoard, // Artboard for the Rive animation
                             onInit: (artboard) {
+                              log(index.toString(),
+                                  name: "index on onInit function");
                               riveOnInIt(artboard,
                                   stateMachineName: bottomNavItems[index]
                                       .rive
@@ -127,15 +129,19 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
 }
 
 void riveOnInIt(Artboard artboard, {required String stateMachineName}) {
-  StateMachineController? controller = StateMachineController.fromArtboard(
-      artboard,
-      stateMachineName); // Get the state machine controller from the artboard
+  try {
+    StateMachineController? controller = StateMachineController.fromArtboard(
+        artboard,
+        stateMachineName); // Get the state machine controller from the artboard
 
-  bool added =
-      artboard.addController(controller!); // Add the controller to the artboard
-  log(added.toString(), name: "artboard adding bool");
-  controllers.add(controller); // Add the controller to the controllers list
+    bool added = artboard
+        .addController(controller!); // Add the controller to the artboard
+    log(added.toString(), name: "artboard adding bool");
+    controllers.add(controller); // Add the controller to the controllers list
 
-  riveIconInputs.add(controller.findInput<bool>('active')
-      as SMIBool); // Find and add the boolean input for animation state
+    riveIconInputs.add(controller.findInput<bool>('active')
+        as SMIBool); // Find and add the boolean input for animation state
+  } catch (e) {
+    log(e.toString(), name: "on catch rive on init");
+  }
 }

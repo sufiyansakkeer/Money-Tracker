@@ -20,15 +20,15 @@ List<NavItemModel> bottomNavItems = [
     ),
   ),
   NavItemModel(
-    text: "Chat",
+    text: "Category",
     rive: RiveModel(
       src: "assets/rive/animated_icon_rive.riv",
-      artBoard: "CHAT",
-      stateMachineName: "CHAT_Interactivity",
+      artBoard: "LIKE/STAR",
+      stateMachineName: "STAR_Interactivity",
     ),
   ),
   NavItemModel(
-    text: "user",
+    text: "Settings",
     rive: RiveModel(
       src: "assets/rive/animated_icon_rive.riv",
       artBoard: "USER",

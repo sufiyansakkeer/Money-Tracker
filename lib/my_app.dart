@@ -47,7 +47,9 @@ class MyApp extends StatelessWidget {
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          theme: getThemeData(context),
+          theme: ThemeData(
+            useMaterial3: true,
+          ),
           // themeMode: MediaQuery.platformBrightnessOf(context) == Brightness.dark
           //     ? ThemeMode.dark
           //     : ThemeMode.light,
