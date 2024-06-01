@@ -26,10 +26,10 @@ class TransactionCategories extends StatelessWidget {
             Container(
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: ColorConstants.themeDarkBlue,
+                color: ColorConstants.themeColor,
                 border: Border.all(
                   width: 0,
-                  color: ColorConstants.themeDarkBlue,
+                  color: ColorConstants.themeColor,
                 ),
               ),
               width: double.infinity,
@@ -40,10 +40,10 @@ class TransactionCategories extends StatelessWidget {
                 unselectedBackgroundColor: const Color(0xFFB8B0B0),
                 labelSpacing: 30,
                 labelStyle: TextStyle(
-                  color: ColorConstants.themeDarkBlue,
+                  color: ColorConstants.themeColor,
                 ),
                 unselectedLabelStyle:
-                    TextStyle(color: ColorConstants.themeDarkBlue),
+                    TextStyle(color: ColorConstants.themeColor),
                 tabs: const [
                   Tab(
                     iconMargin: EdgeInsets.all(30),

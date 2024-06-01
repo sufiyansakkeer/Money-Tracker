@@ -59,7 +59,7 @@ categoryShowBottomSheetApp(BuildContext context) async {
                         border: const OutlineInputBorder(),
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(
-                            color: ColorConstants.themeDarkBlue,
+                            color: ColorConstants.themeColor,
                           ),
                         ),
                       ),

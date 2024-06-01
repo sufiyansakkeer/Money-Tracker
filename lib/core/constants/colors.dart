@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:money_track/config/theme/theme.dart';
 
 class ColorConstants {
-  static Color themeDarkBlue =
-      isDarkMode ? const Color(0xFF1A2D7A) : const Color(0xFF2E49FB);
+  static Color themeColor =
+      isDarkMode ? const Color(0xFF7F3DFF) : const Color(0xFF7F3DFF);
   static Color expenseColor =
-      isDarkMode ? const Color(0xFF6F22A1) : const Color(0xFFDE45FE);
+      isDarkMode ? const Color(0xFFFD3C4A) : const Color(0xFFFD3C4A);
   static Color incomeColor =
-      isDarkMode ? const Color(0xFF345A73) : const Color(0xFF68AFF6);
-  static Color secondaryThemeBlue =
-      isDarkMode ? const Color(0xD42E49FB) : const Color(0x412E49FB);
-  static Color bottomNaColor =
-      isDarkMode ? const Color(0xFF0D1222) : const Color(0xFF17203A);
+      isDarkMode ? const Color(0xFF00A86B) : const Color(0xFF00A86B);
+  static Color secondaryColor =
+      isDarkMode ? const Color(0xFFEEE5FF) : const Color(0xFFEEE5FF);
+  static Color bottomNaColor = isDarkMode ? Colors.white : Colors.white;
 }

@@ -7,12 +7,13 @@ import 'models/transaction_model/transaction_model.dart';
 
 //here main function became future because the init flutter function is a future method
 Future<void> main() async {
-  SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
+  //Setting SystemUIOverlay
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      systemStatusBarContrastEnforced: true,
       systemNavigationBarColor: Colors.transparent,
-    ),
-  );
+      systemNavigationBarDividerColor: Colors.transparent,
+      systemNavigationBarIconBrightness: Brightness.dark,
+      statusBarIconBrightness: Brightness.dark));
   //here it will ensure that the app will connect with platform channels or not,
   // all plugins are connected with platform channels or not before app starting
   WidgetsFlutterBinding.ensureInitialized();

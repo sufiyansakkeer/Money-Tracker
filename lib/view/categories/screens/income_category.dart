@@ -9,7 +9,7 @@ class IncomeTransaction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: ColorConstants.themeDarkBlue,
+      color: ColorConstants.themeColor,
       child: Consumer<CategoryProvider>(
         builder: ((context, value, child) {
           value.refreshUI();

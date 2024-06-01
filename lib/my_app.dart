@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_track/config/theme/theme.dart';
-import 'package:money_track/core/constants/colors.dart';
 import 'package:money_track/presentation/bloc/bottom_navigation/bottom_navigation_bloc.dart';
 import 'package:money_track/provider/add_transaction_provider.dart';
 import 'package:money_track/provider/category_provider.dart';
@@ -48,25 +47,10 @@ class MyApp extends StatelessWidget {
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            primaryColor: ColorConstants.themeDarkBlue,
-            primarySwatch: createMaterialColor(
-              ColorConstants.themeDarkBlue,
-            ),
-            // useMaterial3: true,
-            // fontFamily: google,
-          ),
-          darkTheme: ThemeData(
-            useMaterial3: true,
-            primaryColor: ColorConstants.themeDarkBlue,
-            primaryColorDark: ColorConstants.themeDarkBlue,
-            primarySwatch: createMaterialColor(ColorConstants.themeDarkBlue),
-            scaffoldBackgroundColor: const Color(0xFF333333),
-            colorScheme: const ColorScheme.dark(),
-          ),
-          themeMode: MediaQuery.platformBrightnessOf(context) == Brightness.dark
-              ? ThemeMode.dark
-              : ThemeMode.light,
+          theme: getThemeData(context),
+          // themeMode: MediaQuery.platformBrightnessOf(context) == Brightness.dark
+          //     ? ThemeMode.dark
+          //     : ThemeMode.light,
           home: const SplashScreen(),
           routes: const {
             // AddTransaction.routeName: (context) => const AddTransaction(),

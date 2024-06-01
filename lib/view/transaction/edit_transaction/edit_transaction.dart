@@ -16,10 +16,10 @@ import 'package:provider/provider.dart';
 
 class EditTransaction extends StatelessWidget {
   EditTransaction({
-    Key? key,
+    super.key,
     required this.obj,
     this.id,
-  }) : super(key: key);
+  });
 
   TextEditingController amountTextEditingController = TextEditingController();
 
@@ -319,8 +319,8 @@ class EditTransaction extends StatelessWidget {
                   }),
                   style: ElevatedButton.styleFrom(
                     side: const BorderSide(width: 1.0),
-                    // backgroundColor: themeDarkBlue,
-                    foregroundColor: ColorConstants.themeDarkBlue,
+                    // backgroundColor: themeColor,
+                    foregroundColor: ColorConstants.themeColor,
                     // primary: Colors.black,
                     minimumSize: const Size.fromHeight(50),
                   ),

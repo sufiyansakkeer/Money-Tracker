@@ -145,7 +145,7 @@ class TransactionInsightsAll extends StatelessWidget {
                     width: double.infinity,
                     child: ButtonsTabBar(
                       decoration:
-                          BoxDecoration(color: ColorConstants.themeDarkBlue),
+                          BoxDecoration(color: ColorConstants.themeColor),
                       contentPadding:
                           const EdgeInsets.symmetric(horizontal: 40),
                       tabs: const [

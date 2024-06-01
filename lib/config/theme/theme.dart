@@ -2,21 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:money_track/core/constants/colors.dart';
 
 ThemeData _lightTheme = ThemeData(
-  primaryColor: ColorConstants.themeDarkBlue,
-  primarySwatch: createMaterialColor(ColorConstants.themeDarkBlue),
+  primaryColor: ColorConstants.themeColor,
+  primarySwatch: createMaterialColor(ColorConstants.themeColor),
   // fontFamily: google,
 );
 
 ThemeData _darkTheme = ThemeData(
-    primaryColor: ColorConstants.themeDarkBlue,
-    primaryColorDark: ColorConstants.themeDarkBlue,
-    primarySwatch: createMaterialColor(ColorConstants.themeDarkBlue),
+    primaryColor: ColorConstants.themeColor,
+    primaryColorDark: ColorConstants.themeColor,
+    primarySwatch: createMaterialColor(ColorConstants.themeColor),
     scaffoldBackgroundColor: const Color(0xFF333333));
 
 bool isDarkMode = false;
 
-ThemeData getThemeData() {
-  return isDarkMode ? _darkTheme : _lightTheme;
+ThemeData getThemeData(BuildContext context) {
+  return MediaQuery.platformBrightnessOf(context) == Brightness.dark
+      ? _darkTheme
+      : _lightTheme;
 }
 
 MaterialColor createMaterialColor(Color color) {

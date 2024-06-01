@@ -51,7 +51,7 @@ class AddTransaction extends StatelessWidget {
                 enabledBorder: const OutlineInputBorder(),
                 focusedBorder: OutlineInputBorder(
                   borderSide:
-                      BorderSide(color: ColorConstants.themeDarkBlue, width: 2),
+                      BorderSide(color: ColorConstants.themeColor, width: 2),
                 ),
               ),
               elevation: 9,
@@ -91,7 +91,7 @@ class AddTransaction extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: ColorConstants.themeDarkBlue),
+                color: ColorConstants.themeColor),
             child: IconButton(
               onPressed: (() {
                 // showCategoryAddPopup(context);
@@ -275,8 +275,8 @@ class AddTransaction extends StatelessWidget {
                       return TextButton(
                         style: ElevatedButton.styleFrom(
                           side: const BorderSide(width: 1.0),
-                          // backgroundColor:ColorConstants. themeDarkBlue,
-                          foregroundColor: ColorConstants.themeDarkBlue,
+                          // backgroundColor:ColorConstants. themeColor,
+                          foregroundColor: ColorConstants.themeColor,
                           // primary: Colors.black,
                           minimumSize: const Size.fromHeight(50), // NEW
                         ),

@@ -113,7 +113,7 @@ class _RootPageState extends State<RootPage> {
               unselectedItemColor: isDarkMode ? Colors.grey : Colors.black,
               iconSize: 35,
               selectedItemColor:
-                  isDarkMode ? Colors.white : ColorConstants.themeDarkBlue,
+                  isDarkMode ? Colors.white : ColorConstants.themeColor,
               elevation: 0,
               currentIndex: updatedIndex,
               backgroundColor:

@@ -38,15 +38,16 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
           height: 76, // Height of the bottom navigation bar
           padding: const EdgeInsets.all(0), // Padding inside the container
           margin: const EdgeInsets.symmetric(
-              horizontal: 18), // Horizontal margin outside the container
+              horizontal: 18,
+              vertical: 10), // Horizontal margin outside the container
           decoration: BoxDecoration(
-            color: ColorConstants.bottomNaColor
+            color: ColorConstants.themeColor
                 .withOpacity(0.8), // Background color with opacity
             borderRadius:
                 const BorderRadius.all(Radius.circular(24)), // Rounded corners
             boxShadow: [
               BoxShadow(
-                color: ColorConstants.bottomNaColor
+                color: ColorConstants.themeColor
                     .withOpacity(0.3), // Shadow color with opacity
                 offset: const Offset(0, 20), // Shadow offset
                 blurRadius: 20, // Blur radius for the shadow

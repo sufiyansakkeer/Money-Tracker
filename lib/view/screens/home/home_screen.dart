@@ -32,7 +32,7 @@ class HomeScreen extends StatelessWidget {
               children: [
                 Container(
                   decoration: BoxDecoration(
-                    color: ColorConstants.themeDarkBlue,
+                    color: ColorConstants.themeColor,
                     borderRadius: const BorderRadius.only(
                       bottomLeft: Radius.circular(50),
                       bottomRight: Radius.circular(50),
@@ -224,7 +224,7 @@ class HomeScreen extends StatelessWidget {
                             : ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor:
-                                      ColorConstants.secondaryThemeBlue,
+                                      ColorConstants.secondaryColor,
                                   elevation: 0,
                                   shape: const StadiumBorder(),
                                 ),
@@ -240,7 +240,7 @@ class HomeScreen extends StatelessWidget {
                                 child: Text(
                                   'View all',
                                   style: TextStyle(
-                                      color: ColorConstants.themeDarkBlue),
+                                      color: ColorConstants.themeColor),
                                 ),
                               );
                       },

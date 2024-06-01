@@ -36,7 +36,7 @@ class TransactionOverView extends StatelessWidget {
                         ),
                       )
                     ],
-                    legend: Legend(
+                    legend: const Legend(
                       isVisible: true,
                       overflowMode: LegendItemOverflowMode.scroll,
                       alignment: ChartAlignment.center,
