@@ -38,6 +38,9 @@ Future<void> main() async {
   if (!Hive.isAdapterRegistered(CategoryModelAdapter().typeId)) {
     Hive.registerAdapter(CategoryModelAdapter());
   }
+  if (!Hive.isAdapterRegistered(TransactionTypeAdapter().typeId)) {
+    Hive.registerAdapter(TransactionTypeAdapter());
+  }
   runApp(
     const MyApp(),
   );

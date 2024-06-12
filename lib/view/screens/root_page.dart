@@ -2,8 +2,8 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:money_track/core/constants/colors.dart';
 import 'package:money_track/config/theme/theme.dart';
-import 'package:money_track/view/insights/transaction_graph_page.dart';
-import 'package:money_track/view/categories/transaction_categories.dart';
+// import 'package:money_track/view/insights/transaction_graph_page.dart';
+// import 'package:money_track/view/categories/transaction_categories.dart';
 import 'package:money_track/view/navigation_drawer/navigation_drawer.dart';
 import 'package:money_track/view/screens/home/home_screen.dart';
 
@@ -27,9 +27,9 @@ class _RootPageState extends State<RootPage> {
   final transitionType = ContainerTransitionType.fade;
 
   final _pages = [
-    const HomeScreen(),
-    const TransactionCategories(),
-    const TransactionInsightsAll(),
+    // const HomeScreen(),
+    // const TransactionCategories(),
+    // const TransactionInsightsAll(),
   ];
 
   @override

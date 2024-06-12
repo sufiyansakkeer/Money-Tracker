@@ -97,7 +97,7 @@ class ProviderTransaction extends ChangeNotifier {
     final List<TransactionModel> value = transactionListProvider;
 
     for (int i = 0; i < value.length; i++) {
-      if (CategoryType.income == value[i].categoryModel.type) {
+      if (TransactionType.income == value[i].categoryModel.type) {
         incomeTotal = incomeTotal + value[i].amount;
       } else {
         expenseTotal = expenseTotal + value[i].amount;

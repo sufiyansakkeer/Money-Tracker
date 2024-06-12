@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:money_track/config/theme/theme.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:money_track/presentation/bloc/bottom_navigation/bottom_navigation_bloc.dart';
 import 'package:money_track/provider/add_transaction_provider.dart';
 import 'package:money_track/provider/category_provider.dart';
@@ -10,6 +10,8 @@ import 'package:money_track/provider/onboarding_screen.dart';
 import 'package:money_track/provider/transaction_provider.dart';
 import 'package:money_track/view/screens/splash_screen.dart';
 import 'package:provider/provider.dart';
+
+import 'presentation/bloc/category/category_bloc.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({
@@ -22,6 +24,9 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => BottomNavigationBloc(),
+        ),
+        BlocProvider(
+          create: (context) => CategoryBloc(),
         ),
       ],
       child: MultiProvider(
@@ -49,12 +54,15 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
             useMaterial3: true,
+            fontFamily: GoogleFonts.oxygen().fontFamily,
           ),
           // themeMode: MediaQuery.platformBrightnessOf(context) == Brightness.dark
           //     ? ThemeMode.dark
           //     : ThemeMode.light,
-          home: const SplashScreen(),
-          routes: const {
+          // home: const SplashScreen(), // when you initialize initial route no need to declare initial
+          initialRoute: "/",
+          routes: {
+            "/": (context) => const SplashScreen(),
             // AddTransaction.routeName: (context) => const AddTransaction(),
           },
         ),
