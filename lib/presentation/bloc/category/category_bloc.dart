@@ -27,5 +27,6 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       await CategoryRepository()
           .setConstantCategoryModels(categoryDbName: categoryDbName);
     });
+    on<AddCategoryEvent>((event, emit) async {});
   }
 }

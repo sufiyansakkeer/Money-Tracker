@@ -10,3 +10,5 @@ sealed class CategoryEvent extends Equatable {
 class GetAllCategoryModels extends CategoryEvent {}
 
 class SetConstantCategoryModels extends CategoryEvent {}
+
+class AddCategoryEvent extends CategoryEvent {}
