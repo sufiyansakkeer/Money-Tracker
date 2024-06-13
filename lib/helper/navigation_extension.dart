@@ -21,6 +21,10 @@ extension Navigation on BuildContext {
     );
   }
 
+  void pop<T extends Object?>([T? result]) {
+    Navigator.pop(this, result);
+  }
+
   Future<T?> pushWithRightToLeftTransition<T>(Widget page) {
     return Navigator.push(
       this,

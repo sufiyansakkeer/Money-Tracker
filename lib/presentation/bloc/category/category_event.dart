@@ -11,4 +11,8 @@ class GetAllCategoryModels extends CategoryEvent {}
 
 class SetConstantCategoryModels extends CategoryEvent {}
 
-class AddCategoryEvent extends CategoryEvent {}
+class AddCategoryEvent extends CategoryEvent {
+  final String name;
+
+  const AddCategoryEvent({required this.name});
+}

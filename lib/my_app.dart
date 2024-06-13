@@ -13,6 +13,8 @@ import 'package:provider/provider.dart';
 
 import 'presentation/bloc/category/category_bloc.dart';
 
+GlobalKey<ScaffoldMessengerState> snackBarKey = GlobalKey();
+
 class MyApp extends StatelessWidget {
   const MyApp({
     super.key,
@@ -51,6 +53,7 @@ class MyApp extends StatelessWidget {
           ),
         ],
         child: MaterialApp(
+          scaffoldMessengerKey: snackBarKey,
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
             useMaterial3: true,

@@ -1,10 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_track/core/constants/colors.dart';
+import 'package:money_track/helper/navigation_extension.dart';
 import 'package:money_track/helper/sized_box_extension.dart';
-import 'package:money_track/helper/widget_extension.dart';
 import 'package:money_track/presentation/bloc/category/category_bloc.dart';
 import 'widget/category_card.dart';
 
@@ -166,7 +164,7 @@ class _CategoryBottomSheetWidgetState extends State<CategoryBottomSheetWidget> {
                     hintText: "Category Name",
                   ),
                   validator: (value) {
-                    if (value == null || value.isEmpty) {
+                    if (value == null || value.isEmpty || value.trim() == "") {
                       return "Required";
                     }
                     return null;
@@ -183,7 +181,13 @@ class _CategoryBottomSheetWidgetState extends State<CategoryBottomSheetWidget> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16))),
               onPressed: () {
-                if (_formKey.currentState!.validate()) {}
+                if (_formKey.currentState!.validate()) {
+                  context
+                      .read<CategoryBloc>()
+                      .add(AddCategoryEvent(name: controller.text.trim()));
+                  controller.clear();
+                  context.pop();
+                }
               },
               child: const Text(
                 "Add Category",

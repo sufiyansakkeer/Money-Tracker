@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:money_track/core/constants/db_constants.dart';
+import 'package:money_track/helper/snack_bar_extension.dart';
 import 'package:money_track/models/categories_model/category_model.dart';
 
 class CategoryRepository {
@@ -49,9 +51,10 @@ class CategoryRepository {
     ),
   ];
 
-  setConstantCategoryModels({required categoryDbName}) async {
+  setConstantCategoryModels() async {
     try {
-      final categoryDB = await Hive.openBox<CategoryModel>(categoryDbName);
+      final categoryDB =
+          await Hive.openBox<CategoryModel>(DBConstants.categoryDbName);
       if (categoryDB.values.toList().isEmpty) {
         for (var category in categoryConstants) {
           log("category type $category adding",
@@ -61,6 +64,22 @@ class CategoryRepository {
       }
     } catch (e) {
       log(e.toString(), name: "Exception while registering the categories");
+    }
+  }
+
+  Future<String> addCategoryToDB(CategoryModel categoryModel) async {
+    try {
+      final categoryDB =
+          await Hive.openBox<CategoryModel>(DBConstants.categoryDbName);
+      categoryDB.add(
+        categoryModel,
+      );
+      return "success";
+    } catch (e) {
+      log(e.toString(), name: "add Category Exception");
+      "Unable to add Category".showSnack();
+      return "error";
+      // "Unable to add Category".sh
     }
   }
 }
