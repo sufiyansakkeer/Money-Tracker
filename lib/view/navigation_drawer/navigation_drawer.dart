@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:money_track/core/colors.dart';
+import 'package:money_track/core/constants/colors.dart';
 
 import 'package:money_track/models/categories_model/category_model.dart';
 import 'package:money_track/models/transaction_model/transaction_model.dart';
@@ -76,12 +76,12 @@ class NavigationDrawerClass extends StatelessWidget {
                   'About',
                   style: TextStyle(
                     fontSize: 16,
-                    color: ColorConstants.themeDarkBlue,
+                    color: ColorConstants.themeColor,
                   ),
                 ),
                 leading: Icon(
                   Icons.info_rounded,
-                  color: ColorConstants.themeDarkBlue,
+                  color: ColorConstants.themeColor,
                 ),
               ),
             ),
@@ -157,13 +157,13 @@ class NavigationDrawerClass extends StatelessWidget {
                 title: Text(
                   'Reset',
                   style: TextStyle(
-                    color: ColorConstants.themeDarkBlue,
+                    color: ColorConstants.themeColor,
                     fontSize: 16,
                   ),
                 ),
                 leading: Icon(
                   Icons.restart_alt_rounded,
-                  color: ColorConstants.themeDarkBlue,
+                  color: ColorConstants.themeColor,
                   size: 25,
                 ),
               ),
@@ -184,12 +184,12 @@ class NavigationDrawerClass extends StatelessWidget {
                   'Share',
                   style: TextStyle(
                     fontSize: 16,
-                    color: ColorConstants.themeDarkBlue,
+                    color: ColorConstants.themeColor,
                   ),
                 ),
                 leading: Icon(
                   Icons.adaptive.share,
-                  color: ColorConstants.themeDarkBlue,
+                  color: ColorConstants.themeColor,
                 ),
               ),
             ),
@@ -212,12 +212,12 @@ class NavigationDrawerClass extends StatelessWidget {
                   'Feedback',
                   style: TextStyle(
                     fontSize: 16,
-                    color: ColorConstants.themeDarkBlue,
+                    color: ColorConstants.themeColor,
                   ),
                 ),
                 leading: Icon(
                   Icons.chat_outlined,
-                  color: ColorConstants.themeDarkBlue,
+                  color: ColorConstants.themeColor,
                 ),
               ),
             ),
@@ -234,12 +234,12 @@ class NavigationDrawerClass extends StatelessWidget {
             //       'Privacy Policy',
             //       style: TextStyle(
             //         fontSize: 16,
-            //         color:ColorConstants. themeDarkBlue,
+            //         color:ColorConstants. themeColor,
             //       ),
             //     ),
             //     leading: const Icon(
             //       Icons.description,
-            //       color:ColorConstants. themeDarkBlue,
+            //       color:ColorConstants. themeColor,
             //     ),
             //   ),
             // ),

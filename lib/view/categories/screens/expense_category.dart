@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_track/provider/category_provider.dart';
 
-import 'package:money_track/core/colors.dart';
+import 'package:money_track/core/constants/colors.dart';
 import 'package:provider/provider.dart';
 
 class ExpenseTransaction extends StatelessWidget {
@@ -10,7 +10,7 @@ class ExpenseTransaction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: ColorConstants.themeDarkBlue,
+      color: ColorConstants.themeColor,
       child: Consumer<CategoryProvider>(
         builder: ((context, value, child) {
           value.refreshUI();

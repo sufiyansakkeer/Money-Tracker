@@ -5,8 +5,8 @@ import 'package:provider/provider.dart';
 
 class DAteFilterTransaction extends StatelessWidget {
   const DAteFilterTransaction({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

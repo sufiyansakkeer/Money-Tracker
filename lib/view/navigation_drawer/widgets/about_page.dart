@@ -16,7 +16,7 @@ class AboutPage extends StatelessWidget {
           }),
           icon: Icon(
             Icons.adaptive.arrow_back,
-            // color: themeDarkBlue,
+            // color: themeColor,
           ),
         ),
         centerTitle: true,

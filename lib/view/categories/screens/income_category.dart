@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money_track/provider/category_provider.dart';
-import 'package:money_track/core/colors.dart';
+import 'package:money_track/core/constants/colors.dart';
 import 'package:provider/provider.dart';
 
 class IncomeTransaction extends StatelessWidget {
@@ -9,7 +9,7 @@ class IncomeTransaction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: ColorConstants.themeDarkBlue,
+      color: ColorConstants.themeColor,
       child: Consumer<CategoryProvider>(
         builder: ((context, value, child) {
           value.refreshUI();
@@ -40,10 +40,15 @@ class IncomeTransaction extends StatelessWidget {
                       //set border radius more than 50% of height and width to make circle
                     ),
                     child: Container(
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage("assets/images/income-card.png"),
-                          fit: BoxFit.fill,
+                      decoration: BoxDecoration(
+                        gradient: RadialGradient(
+                          colors: [
+                            const Color(0xFF5AD5E5),
+                            ColorConstants.incomeColor, // Light blue color
+                          ],
+                          radius: 0.5,
+                          focal: const Alignment(-0.2, 0.2),
+                          tileMode: TileMode.clamp,
                         ),
                       ),
                       child: Stack(

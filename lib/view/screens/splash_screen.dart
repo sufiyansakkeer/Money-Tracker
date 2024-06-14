@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:money_track/presentation/pages/bottom_navigation/bottom_navigation.dart';
 import 'package:money_track/view/screens/onboarding_screens/onboard_screen.dart';
-import 'package:money_track/view/screens/root_page.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -31,7 +31,7 @@ class SplashScreen extends StatelessWidget {
   Future<void> goToRootPage(context) async {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: ((context) => const RootPage()),
+        builder: ((context) => const BottomNavigationPage()),
       ),
     );
   }

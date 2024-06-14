@@ -33,7 +33,7 @@ class CategoryProvider extends ChangeNotifier {
     await Future.forEach(
       allCategories,
       (CategoryModel category) {
-        if (category.type == CategoryType.income) {
+        if (category.type == TransactionType.income) {
           incomeCategoryProvider.add(category);
         } else {
           expenseCategoryProvider.add(category);

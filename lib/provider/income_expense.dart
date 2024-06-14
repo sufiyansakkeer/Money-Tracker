@@ -13,7 +13,7 @@ class IncomeAndExpense extends ChangeNotifier {
     final List<TransactionModel> value = listOfModal;
 
     for (int i = 0; i < value.length; i++) {
-      if (CategoryType.income == value[i].categoryModel.type) {
+      if (TransactionType.income == value[i].categoryModel.type) {
         incomeTotal = incomeTotal + value[i].amount;
       } else {
         expenseTotal = expenseTotal + value[i].amount;

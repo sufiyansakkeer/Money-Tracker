@@ -5,21 +5,21 @@ import 'package:money_track/models/categories_model/category_model.dart';
 
 class AddTransactionProvider extends ChangeNotifier {
   CategoryModel? selectedCategoryModel;
-  CategoryType? selectedCategoryType = CategoryType.income;
+  TransactionType? selectedCategoryType = TransactionType.income;
   DateTime selectedDateTime = DateTime.now();
   int value = 0;
   String? categoryId;
 
   incomeChoiceChip() {
     value = 0;
-    selectedCategoryType = CategoryType.income;
+    selectedCategoryType = TransactionType.income;
     categoryId = null;
     notifyListeners();
   }
 
   expenseChoiceChip() {
     value = 1;
-    selectedCategoryType = CategoryType.expense;
+    selectedCategoryType = TransactionType.expense;
     categoryId = null;
     notifyListeners();
   }

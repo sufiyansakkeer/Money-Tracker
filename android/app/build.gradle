@@ -24,8 +24,8 @@ if (flutterVersionName == null) {
 
 android {
     namespace "com.example.money_track"
-    compileSdkVersion flutter.compileSdkVersion
-    ndkVersion flutter.ndkVersion
+    compileSdk flutter.compileSdkVersion
+    ndkVersion "27.0.11718014"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
