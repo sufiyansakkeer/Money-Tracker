@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_track/core/constants/colors.dart';
 import 'package:money_track/helper/sized_box_extension.dart';
 import 'package:money_track/helper/widget_extension.dart';
 import 'package:money_track/models/categories_model/category_model.dart';
+import 'package:money_track/presentation/bloc/transaction/transaction_bloc.dart';
 import 'package:money_track/presentation/pages/home/widgets/source_tile.dart';
 import 'package:money_track/presentation/widgets/category_icon_widget.dart';
 
@@ -95,74 +97,155 @@ class HomePage extends StatelessWidget {
                   ],
                 ),
                 20.height(),
-                ListView.separated(
-                  separatorBuilder: (context, index) => 10.height(),
-                  primary: false,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) => Row(
-                    children: [
-                      const CategoryIconWidget(
-                        categoryType: CategoryType.other,
-                      ),
-                      10.width(),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "index $index",
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                overflow: TextOverflow.ellipsis,
+                BlocBuilder<TransactionBloc, TransactionState>(
+                  builder: (context, state) {
+                    if (state is TransactionLoading) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (state is TransactionLoaded) {
+                      return state.transactionList.isEmpty
+                          ? Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  100.height(),
+                                  const Text(
+                                    "No transaction found",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              // 10.width(),
-                              Text(
-                                "₹$index",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: ColorConstants.expenseColor,
-                                ),
-                                overflow: TextOverflow.ellipsis,
+                            )
+                          : ListView.separated(
+                              separatorBuilder: (context, index) => 10.height(),
+                              primary: false,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) => TransactionTile(
+                                categoryType:
+                                    state.transactionList[index].categoryType,
+                                categoryName: state.transactionList[index]
+                                    .categoryModel.categoryName,
+                                time: DateTime.now().hour.toString(),
+                                description:
+                                    state.transactionList[index].notes ?? "",
+                                amount: state.transactionList[index].amount,
+                                type: state
+                                    .transactionList[index].transactionType,
                               ),
-                            ],
-                          ),
-                          10.height(),
-                          Row(
-                            children: [
-                              Text(
-                                "index $index ",
-                                style: const TextStyle(
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ).expand(),
-                              10.width(),
-                              const Text(
-                                "3:33 PM",
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ).expand(),
-                    ],
-                  ),
-                  itemCount: 10,
+                              itemCount: state.transactionList.length,
+                            );
+                    } else {
+                      return const Center(
+                          child:
+                              Text("Something Went wrong. Please try again"));
+                    }
+                  },
                 ),
               ],
             ),
           ),
         ),
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.only(
+            bottom: 100,
+            right: 20,
+          ),
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                backgroundColor: ColorConstants.secondaryColor,
+                padding: const EdgeInsets.all(20)),
+            onPressed: () {},
+            child: Icon(
+              Icons.add,
+              color: ColorConstants.themeColor,
+            ),
+          ),
+        ),
       ),
+    );
+  }
+}
+
+class TransactionTile extends StatelessWidget {
+  const TransactionTile({
+    super.key,
+    required this.categoryType,
+    required this.categoryName,
+    required this.time,
+    required this.description,
+    required this.amount,
+    required this.type,
+  });
+  final CategoryType categoryType;
+  final String categoryName;
+  final String time;
+  final String description;
+  final double amount;
+  final TransactionType type;
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        CategoryIconWidget(
+          categoryType: categoryType,
+        ),
+        10.width(),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  categoryName,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+                // 10.width(),
+                Text(
+                  "₹$amount",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: type == TransactionType.expense
+                        ? ColorConstants.expenseColor
+                        : ColorConstants.incomeColor,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+            10.height(),
+            Row(
+              children: [
+                Text(
+                  description,
+                  style: const TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w400,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ).expand(),
+                10.width(),
+                Text(
+                  time,
+                  style: const TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ).expand(),
+      ],
     );
   }
 }

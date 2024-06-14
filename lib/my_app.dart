@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:money_track/presentation/bloc/bottom_navigation/bottom_navigation_bloc.dart';
+import 'package:money_track/presentation/bloc/transaction/transaction_bloc.dart';
 import 'package:money_track/provider/add_transaction_provider.dart';
 import 'package:money_track/provider/category_provider.dart';
 import 'package:money_track/provider/category_type_provider.dart';
@@ -29,6 +30,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => CategoryBloc(),
+        ),
+        BlocProvider(
+          create: (context) => TransactionBloc(),
         ),
       ],
       child: MultiProvider(

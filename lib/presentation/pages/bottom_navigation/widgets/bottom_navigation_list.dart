@@ -1,4 +1,4 @@
-import 'package:money_track/domain/bottom_navigation/rive.dart';
+import 'package:money_track/models/bottom_navigation/rive.dart';
 
 class NavItemModel {
   final String text;
