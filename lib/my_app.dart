@@ -60,9 +60,10 @@ class MyApp extends StatelessWidget {
           scaffoldMessengerKey: snackBarKey,
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
-            useMaterial3: true,
-            fontFamily: GoogleFonts.oxygen().fontFamily,
-          ),
+              useMaterial3: true,
+              fontFamily: GoogleFonts.oxygen().fontFamily,
+              scaffoldBackgroundColor: Colors.white,
+              appBarTheme: const AppBarTheme(backgroundColor: Colors.white)),
           // themeMode: MediaQuery.platformBrightnessOf(context) == Brightness.dark
           //     ? ThemeMode.dark
           //     : ThemeMode.light,

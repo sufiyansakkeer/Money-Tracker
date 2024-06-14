@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:money_track/helper/navigation_extension.dart';
 import 'package:money_track/helper/sized_box_extension.dart';
 import 'package:money_track/models/settings/settings_title_model.dart';
+import 'package:money_track/presentation/pages/settings/about/about_page.dart';
+import 'package:money_track/presentation/pages/settings/currency/currency_page.dart';
+import 'package:money_track/presentation/pages/settings/theme_page/theme_page.dart';
 
+import 'analyze/analyze_page.dart';
 import 'widget/settings_tile.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -34,11 +38,14 @@ class SettingsPage extends StatelessWidget {
                 shrinkWrap: true,
                 itemBuilder: (context, index) => SettingsTile(
                   title: _tileList[index].title,
+                  tag: _tileList[index].tag,
                   subtitle: _tileList[index].subtitle,
                   onPressed: () {
                     if (_tileList[index].navigationScreen != null) {
                       context.pushWithRightToLeftTransition(
                           _tileList[index].navigationScreen!);
+                    } else if (_tileList[index].onPressed != null) {
+                      _tileList[index].onPressed;
                     }
                   },
                 ),
@@ -54,19 +61,21 @@ class SettingsPage extends StatelessWidget {
 
 List<SettingsModel> _tileList = [
   SettingsModel(
-    title: "Analyze",
-    subtitle: "",
-    navigationScreen: null,
-  ),
+      title: "Analyze",
+      subtitle: "",
+      navigationScreen: const AnalyzePage(),
+      tag: "Analyze"),
   SettingsModel(
     title: "Currency",
     subtitle: "INR",
-    navigationScreen: null,
+    navigationScreen: const CurrencyPage(),
+    tag: "Currency",
   ),
   SettingsModel(
     title: "Theme",
-    subtitle: "White",
-    navigationScreen: null,
+    subtitle: "Light",
+    navigationScreen: const ThemePage(),
+    tag: "Theme",
   ),
   SettingsModel(
     title: "Reset",
@@ -79,10 +88,10 @@ List<SettingsModel> _tileList = [
     navigationScreen: null,
   ),
   SettingsModel(
-    title: "About",
-    subtitle: "",
-    navigationScreen: null,
-  ),
+      title: "About",
+      subtitle: "",
+      navigationScreen: const AboutPage(),
+      tag: "About"),
   SettingsModel(
     title: "Help",
     subtitle: "",
