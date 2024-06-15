@@ -24,6 +24,7 @@ class _CategoryPageState extends State<CategoryPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.white,
         body: Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 20,
