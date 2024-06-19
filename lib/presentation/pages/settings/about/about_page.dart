@@ -9,14 +9,11 @@ class AboutPage extends StatelessWidget {
     return Scaffold(
       appBar: customAppBar(context, title: "About"),
       body: const Center(
-          child: Hero(
-        tag: "About",
-        child: Text(
-          "About",
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w700,
-          ),
+          child: Text(
+        "About",
+        style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.w700,
         ),
       )),
     );

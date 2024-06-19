@@ -10,14 +10,11 @@ class ThemePage extends StatelessWidget {
       child: Scaffold(
         appBar: customAppBar(context, title: "Theme"),
         body: const Center(
-            child: Hero(
-          tag: "Theme",
-          child: Text(
-            "Theme",
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w700,
-            ),
+            child: Text(
+          "Theme",
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w700,
           ),
         )),
       ),

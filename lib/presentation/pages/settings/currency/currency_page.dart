@@ -9,14 +9,11 @@ class CurrencyPage extends StatelessWidget {
     return Scaffold(
       appBar: customAppBar(context, title: "Currency"),
       body: const Center(
-          child: Hero(
-        tag: "Currency",
-        child: Text(
-          "Currency",
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w700,
-          ),
+          child: Text(
+        "Currency",
+        style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.w700,
         ),
       )),
     );

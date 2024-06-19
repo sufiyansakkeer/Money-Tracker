@@ -80,11 +80,13 @@ class _CategoryBottomSheetWidgetState extends State<CategoryBottomSheetWidget> {
             20.height(),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  backgroundColor: ColorConstants.themeColor,
-                  minimumSize: const Size(double.infinity, 55),
-                  enableFeedback: true,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16))),
+                backgroundColor: ColorConstants.themeColor,
+                minimumSize: const Size(double.infinity, 55),
+                enableFeedback: true,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+              ),
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   context
