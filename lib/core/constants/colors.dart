@@ -11,4 +11,6 @@ class ColorConstants {
   static Color secondaryColor =
       isDarkMode ? const Color(0xFFEEE5FF) : const Color(0xFFEEE5FF);
   static Color bottomNaColor = isDarkMode ? Colors.white : Colors.white;
+  static Color borderColor =
+      isDarkMode ? const Color(0xFFDDDCDC) : const Color(0xFFDDDCDC);
 }

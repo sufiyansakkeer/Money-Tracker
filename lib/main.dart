@@ -13,7 +13,7 @@ Future<void> main() async {
       systemNavigationBarColor: Colors.transparent,
       systemNavigationBarDividerColor: Colors.transparent,
       systemNavigationBarIconBrightness: Brightness.dark,
-      statusBarIconBrightness: Brightness.dark));
+      statusBarIconBrightness: Brightness.light));
   //here it will ensure that the app will connect with platform channels or not,
   // all plugins are connected with platform channels or not before app starting
   WidgetsFlutterBinding.ensureInitialized();
