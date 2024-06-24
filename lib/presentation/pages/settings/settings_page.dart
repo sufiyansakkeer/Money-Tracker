@@ -17,42 +17,37 @@ class SettingsPage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        body: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20,
-          ),
-          child: Column(
-            children: [
-              20.height(),
-              const Text(
-                "Settings",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                ),
+        body: Column(
+          children: [
+            20.height(),
+            const Text(
+              "Settings",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
               ),
-              30.height(),
-              ListView.separated(
-                separatorBuilder: (context, index) => 20.height(),
-                primary: false,
-                shrinkWrap: true,
-                itemBuilder: (context, index) => SettingsTile(
-                  title: _tileList[index].title,
-                  tag: _tileList[index].tag,
-                  subtitle: _tileList[index].subtitle,
-                  onPressed: () {
-                    if (_tileList[index].navigationScreen != null) {
-                      context.pushWithRightToLeftTransition(
-                          _tileList[index].navigationScreen!);
-                    } else if (_tileList[index].onPressed != null) {
-                      _tileList[index].onPressed;
-                    }
-                  },
-                ),
-                itemCount: _tileList.length,
-              )
-            ],
-          ),
+            ),
+            30.height(),
+            ListView.separated(
+              separatorBuilder: (context, index) => 20.height(),
+              primary: false,
+              shrinkWrap: true,
+              itemBuilder: (context, index) => SettingsTile(
+                title: _tileList[index].title,
+                tag: _tileList[index].tag,
+                subtitle: _tileList[index].subtitle,
+                onPressed: () {
+                  if (_tileList[index].navigationScreen != null) {
+                    context.pushWithRightToLeftTransition(
+                        _tileList[index].navigationScreen!);
+                  } else if (_tileList[index].onPressed != null) {
+                    _tileList[index].onPressed;
+                  }
+                },
+              ),
+              itemCount: _tileList.length,
+            )
+          ],
         ),
       ),
     );
