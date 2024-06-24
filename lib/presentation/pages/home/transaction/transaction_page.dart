@@ -2,10 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_track/core/constants/colors.dart';
 import 'package:money_track/core/constants/style_constants.dart';
+import 'package:money_track/helper/navigation_extension.dart';
 import 'package:money_track/helper/sized_box_extension.dart';
+import 'package:money_track/helper/snack_bar_extension.dart';
 import 'package:money_track/helper/widget_extension.dart';
+import 'package:money_track/models/categories_model/category_model.dart';
 import 'package:money_track/presentation/bloc/category/category_bloc.dart';
+import 'package:money_track/presentation/bloc/transaction/transaction_bloc.dart';
 import 'package:money_track/presentation/pages/settings/widget/custom_app_bar.dart';
+import 'package:money_track/presentation/widgets/category_icon_widget.dart';
+import 'package:money_track/presentation/widgets/custom_inkwell.dart';
 import 'package:svg_flutter/svg.dart';
 
 class TransactionPage extends StatefulWidget {
@@ -20,7 +26,9 @@ class _TransactionPageState extends State<TransactionPage> {
   late TextEditingController amountEditingController;
   late TextEditingController categoryController;
   late TextEditingController descriptionController;
-
+  CategoryType? categoryType;
+  CategoryModel? categoryModel;
+  final _formKey = GlobalKey<FormState>();
   @override
   void initState() {
     amountEditingController = TextEditingController();
@@ -79,77 +87,187 @@ class _TransactionPageState extends State<TransactionPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       // 10.height(),
-                      Column(
-                        children: [
-                          TextFormField(
-                            controller: categoryController,
-                            readOnly: true,
-                            onTap: () {
-                              showModalBottomSheet(
-                                context: context,
-                                builder: (context) => Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 20,
+                      Form(
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            TextFormField(
+                              controller: categoryController,
+                              readOnly: true,
+                              validator: (value) {
+                                if (value == null || value.trim() == "") {
+                                  return "Required";
+                                }
+                                return null;
+                              },
+                              onTap: () {
+                                showModalBottomSheet(
+                                  context: context,
+                                  builder: (context) => Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 20,
+                                      vertical: 20,
+                                    ),
+                                    width: 800,
+                                    child: Column(
+                                      children: [
+                                        const Text(
+                                          "Category",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                        BlocBuilder<CategoryBloc,
+                                            CategoryState>(
+                                          builder: (context, state) {
+                                            if (state is CategoryLoading) {
+                                              return const Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              );
+                                            } else if (state
+                                                is CategoryLoaded) {
+                                              return Scrollbar(
+                                                child: ListView.separated(
+                                                  separatorBuilder:
+                                                      (context, index) =>
+                                                          10.height(),
+                                                  itemBuilder:
+                                                      (context, index) =>
+                                                          CustomInkWell(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        categoryType = state
+                                                            .categoryList[index]
+                                                            .categoryType;
+                                                        categoryModel =
+                                                            state.categoryList[
+                                                                index];
+                                                        categoryController
+                                                                .text =
+                                                            state
+                                                                .categoryList[
+                                                                    index]
+                                                                .categoryName;
+                                                      });
+                                                      context.pop();
+                                                    },
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Row(
+                                                          children: [
+                                                            CategoryIconWidget(
+                                                                categoryType: state
+                                                                    .categoryList[
+                                                                        index]
+                                                                    .categoryType),
+                                                            10.width(),
+                                                            Text(
+                                                              state
+                                                                  .categoryList[
+                                                                      index]
+                                                                  .categoryName,
+                                                              style:
+                                                                  const TextStyle(
+                                                                fontSize: 16,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        if (state
+                                                                .categoryList[
+                                                                    index]
+                                                                .categoryType ==
+                                                            categoryType)
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .only(
+                                                                    right: 5),
+                                                            child: SvgPicture.asset(
+                                                                "assets/svg/common/success.svg"),
+                                                          ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  itemCount:
+                                                      state.categoryList.length,
+                                                ),
+                                              );
+                                            } else {
+                                              return const Center(
+                                                child:
+                                                    Text("No category found"),
+                                              );
+                                            }
+                                          },
+                                        ).expand()
+                                      ],
+                                    ),
                                   ),
-                                  width: 800,
-                                  child: Column(
-                                    children: [
-                                      const Text("Category"),
-                                      BlocBuilder<CategoryBloc, CategoryState>(
-                                        builder: (context, state) {
-                                          if (state is CategoryLoading) {
-                                            return const Center(
-                                              child:
-                                                  CircularProgressIndicator(),
-                                            );
-                                          } else if (state is CategoryLoaded) {
-                                            return ListView.builder(
-                                              itemBuilder: (context, index) =>
-                                                  Text(state.categoryList[index]
-                                                      .categoryName),
-                                              itemCount:
-                                                  state.categoryList.length,
-                                            );
-                                          } else {
-                                            return const Center(
-                                              child: Text("No category found"),
-                                            );
-                                          }
-                                        },
-                                      ).expand()
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                            decoration: InputDecoration(
-                              disabledBorder:
-                                  StyleConstants.textFormFieldBorder(),
-                              enabledBorder:
-                                  StyleConstants.textFormFieldBorder(),
-                              border: StyleConstants.textFormFieldBorder(),
-                              hintText: "Category",
-                              suffixIcon: const DropDownIcon(),
+                                );
+                              },
+                              decoration: InputDecoration(
+                                disabledBorder:
+                                    StyleConstants.textFormFieldBorder(),
+                                enabledBorder:
+                                    StyleConstants.textFormFieldBorder(),
+                                border: StyleConstants.textFormFieldBorder(),
+                                hintText: "Category",
+                                suffixIcon: const DropDownIcon(),
+                              ),
                             ),
-                          ),
-                          20.height(),
-                          TextFormField(
-                            controller: descriptionController,
-                            decoration: InputDecoration(
-                              disabledBorder:
-                                  StyleConstants.textFormFieldBorder(),
-                              enabledBorder:
-                                  StyleConstants.textFormFieldBorder(),
-                              border: StyleConstants.textFormFieldBorder(),
-                              hintText: "Description",
+                            20.height(),
+                            TextFormField(
+                              validator: (value) {
+                                if (value == null || value.trim() == "") {
+                                  return "Required";
+                                }
+                                return null;
+                              },
+                              controller: descriptionController,
+                              decoration: InputDecoration(
+                                disabledBorder:
+                                    StyleConstants.textFormFieldBorder(),
+                                enabledBorder:
+                                    StyleConstants.textFormFieldBorder(),
+                                border: StyleConstants.textFormFieldBorder(),
+                                hintText: "Description",
+                              ),
+                              maxLines: 2,
                             ),
-                            maxLines: 2,
-                          ),
-                          20.height(),
-                        ],
+                            20.height(),
+                          ],
+                        ),
                       ),
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          if (amountEditingController.text.isEmpty) {
+                            "Please Enter the amount".showSnack();
+                          }
+                          if (_formKey.currentState!.validate() &&
+                              amountEditingController.text.trim() != "" &&
+                              categoryType != null &&
+                              categoryModel != null) {
+                            context.read<TransactionBloc>().add(
+                                  AddTransactionEvent(
+                                    amount: amountEditingController.text,
+                                    description: descriptionController.text,
+                                    isExpense: widget.isExpense,
+                                    categoryType: categoryType!,
+                                    categoryModel: categoryModel!,
+                                  ),
+                                );
+                            context.pop();
+                          }
+                        },
                         style: StyleConstants.elevatedButtonStyle(),
                         child: const Text(
                           "Continue",

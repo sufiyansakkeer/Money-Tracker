@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_track/core/constants/colors.dart';
+import 'package:money_track/helper/date_time_extension.dart';
 import 'package:money_track/helper/navigation_extension.dart';
 import 'package:money_track/helper/sized_box_extension.dart';
 import 'package:money_track/helper/widget_extension.dart';
@@ -193,7 +194,8 @@ class _HomePageState extends State<HomePage>
                                         .transactionList[index].categoryType,
                                     categoryName: state.transactionList[index]
                                         .categoryModel.categoryName,
-                                    time: DateTime.now().hour.toString(),
+                                    time: state.transactionList[index].date
+                                        .to12HourFormat(),
                                     description:
                                         state.transactionList[index].notes ??
                                             "",

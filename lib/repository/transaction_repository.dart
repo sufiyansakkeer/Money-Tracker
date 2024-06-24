@@ -20,16 +20,18 @@ class TransactionRepository {
     }
   }
 
-  Future<void> addTransaction(TransactionModel obj) async {
+  Future<String> addTransaction(TransactionModel obj) async {
     try {
       final transactionDb =
           await Hive.openBox<TransactionModel>(transactionDbName);
 
       await transactionDb.put(obj.id, obj);
+      return "success";
     } catch (e) {
       if (kDebugMode) {
         log(e.toString(), name: "Add transaction Exception");
       }
+      return "error";
     }
   }
 
