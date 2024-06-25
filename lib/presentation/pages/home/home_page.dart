@@ -4,6 +4,7 @@ import 'package:money_track/core/constants/colors.dart';
 import 'package:money_track/helper/date_time_extension.dart';
 import 'package:money_track/helper/navigation_extension.dart';
 import 'package:money_track/helper/sized_box_extension.dart';
+import 'package:money_track/presentation/bloc/transaction/total_transaction/total_transaction_cubit.dart';
 import 'package:money_track/presentation/bloc/transaction/transaction_bloc.dart';
 import 'package:money_track/presentation/pages/home/transaction/transaction_page.dart';
 import 'package:money_track/presentation/pages/home/widgets/transaction_tile.dart';
@@ -126,7 +127,14 @@ class _HomePageState extends State<HomePage>
                       ],
                     ),
                     20.height(),
-                    BlocBuilder<TransactionBloc, TransactionState>(
+                    BlocConsumer<TransactionBloc, TransactionState>(
+                      listener: (context, state) {
+                        if (state is TransactionLoaded) {
+                          context
+                              .read<TotalTransactionCubit>()
+                              .getTotalAmount();
+                        }
+                      },
                       builder: (context, state) {
                         if (state is TransactionLoading) {
                           return const Center(

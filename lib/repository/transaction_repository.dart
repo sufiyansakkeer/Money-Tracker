@@ -47,6 +47,4 @@ class TransactionRepository {
       }
     }
   }
-
-  getTotalTransaction() {}
 }

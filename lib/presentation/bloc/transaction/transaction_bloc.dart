@@ -15,7 +15,6 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
       emit(TransactionLoading());
       List<TransactionModel>? res =
           await TransactionRepository().getAllTransaction();
-
       if (res != null) {
         emit(TransactionLoaded(transactionList: res));
       } else {
@@ -29,7 +28,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
 
         TransactionModel model = TransactionModel(
           amount: amount,
-          date: DateTime.now(),
+          date: event.date,
           categoryType: event.categoryType,
           transactionType: event.isExpense
               ? TransactionType.expense

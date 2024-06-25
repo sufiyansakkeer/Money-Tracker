@@ -45,7 +45,7 @@ class TransactionTile extends StatelessWidget {
                 ),
                 // 10.width(),
                 Text(
-                  "₹$amount",
+                  "${type == TransactionType.expense ? '-' : '+'} ₹$amount",
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,

@@ -15,8 +15,10 @@ class AddTransactionEvent extends TransactionEvent {
   final bool isExpense;
   final CategoryType categoryType;
   final CategoryModel categoryModel;
+  final DateTime date;
   const AddTransactionEvent({
     required this.amount,
+    required this.date,
     required this.description,
     required this.isExpense,
     required this.categoryType,
