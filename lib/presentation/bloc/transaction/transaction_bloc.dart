@@ -15,6 +15,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
       emit(TransactionLoading());
       List<TransactionModel>? res =
           await TransactionRepository().getAllTransaction();
+
       if (res != null) {
         emit(TransactionLoaded(transactionList: res));
       } else {

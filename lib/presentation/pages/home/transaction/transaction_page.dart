@@ -8,6 +8,7 @@ import 'package:money_track/helper/snack_bar_extension.dart';
 import 'package:money_track/helper/widget_extension.dart';
 import 'package:money_track/models/categories_model/category_model.dart';
 import 'package:money_track/presentation/bloc/category/category_bloc.dart';
+import 'package:money_track/presentation/bloc/transaction/total_transaction/total_transaction_cubit.dart';
 import 'package:money_track/presentation/bloc/transaction/transaction_bloc.dart';
 import 'package:money_track/presentation/pages/settings/widget/custom_app_bar.dart';
 import 'package:money_track/presentation/widgets/category_icon_widget.dart';
@@ -265,6 +266,9 @@ class _TransactionPageState extends State<TransactionPage> {
                                     categoryModel: categoryModel!,
                                   ),
                                 );
+                            context
+                                .read<TotalTransactionCubit>()
+                                .getTotalAmount();
                             context.pop();
                           }
                         },
