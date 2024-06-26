@@ -7,6 +7,7 @@ import 'package:money_track/helper/sized_box_extension.dart';
 import 'package:money_track/presentation/bloc/transaction/total_transaction/total_transaction_cubit.dart';
 import 'package:money_track/presentation/bloc/transaction/transaction_bloc.dart';
 import 'package:money_track/presentation/pages/home/transaction/transaction_page.dart';
+import 'package:money_track/presentation/pages/home/transaction_list/transaction_list.dart';
 import 'package:money_track/presentation/pages/home/widgets/transaction_tile.dart';
 import 'package:money_track/presentation/widgets/custom_inkwell.dart';
 import 'package:svg_flutter/svg_flutter.dart';
@@ -111,7 +112,10 @@ class _HomePageState extends State<HomePage>
                           ),
                         ),
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            context.pushWithDownToUpTransition(
+                                const TransactionListPage());
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: ColorConstants.secondaryColor,
                             elevation: 0,
@@ -162,21 +166,21 @@ class _HomePageState extends State<HomePage>
                                       10.height(),
                                   primary: false,
                                   shrinkWrap: true,
-                                  itemBuilder: (context, index) =>
-                                      TransactionTile(
-                                    categoryType: state
-                                        .transactionList[index].categoryType,
-                                    categoryName: state.transactionList[index]
-                                        .categoryModel.categoryName,
-                                    time: state.transactionList[index].date
-                                        .to12HourFormat(),
-                                    description:
-                                        state.transactionList[index].notes ??
-                                            "",
-                                    amount: state.transactionList[index].amount,
-                                    type: state
-                                        .transactionList[index].transactionType,
-                                  ),
+                                  itemBuilder: (_, index) {
+                                    var item = state.transactionList[index];
+
+                                    return TransactionTile(
+                                      categoryType: item.categoryType,
+                                      categoryName:
+                                          item.categoryModel.categoryName,
+                                      time: item.date.isToday()
+                                          ? item.date.to12HourFormat()
+                                          : item.date.toDayMonthYearFormat(),
+                                      description: item.notes ?? "",
+                                      amount: item.amount,
+                                      type: item.transactionType,
+                                    );
+                                  },
                                   itemCount: state.transactionList.length,
                                 );
                         } else {

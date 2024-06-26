@@ -11,7 +11,11 @@ class TransactionRepository {
     try {
       final transactionDb =
           await Hive.openBox<TransactionModel>(DBConstants.transactionDbName);
-      return transactionDb.values.toList().reversed.toList();
+      var list = transactionDb.values.toList();
+      list.sort(
+        (a, b) => a.date.compareTo(b.date),
+      );
+      return list.reversed.toList();
     } catch (e) {
       if (kDebugMode) {
         log(e.toString(), name: "Get all transaction Exception");
