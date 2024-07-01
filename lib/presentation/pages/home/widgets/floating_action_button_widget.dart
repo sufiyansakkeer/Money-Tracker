@@ -58,8 +58,12 @@ class FloatingActionButtonWidget extends StatelessWidget {
                       const TransactionPage(isExpense: false),
                     );
                   },
-                  child: SvgPicture.asset(
-                      "assets/svg/home/Income_button_icon.svg"),
+                  child: Container(
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(50)),
+                    child: SvgPicture.asset(
+                        "assets/svg/home/Income_button_icon.svg"),
+                  ),
                 ),
               ),
             ),
