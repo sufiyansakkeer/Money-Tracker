@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_track/core/constants/colors.dart';
+import 'package:money_track/core/constants/style_constants.dart';
 import 'package:money_track/helper/date_time_extension.dart';
 import 'package:money_track/helper/sized_box_extension.dart';
 import 'package:money_track/helper/widget_extension.dart';
@@ -9,6 +10,8 @@ import 'package:money_track/presentation/bloc/transaction/transaction_bloc.dart'
 import 'package:money_track/presentation/pages/home/widgets/transaction_tile.dart';
 import 'package:money_track/presentation/pages/settings/widget/custom_app_bar.dart';
 import 'package:svg_flutter/svg_flutter.dart';
+
+import 'widget/date_filter_widget.dart';
 
 class TransactionListPage extends StatelessWidget {
   const TransactionListPage({super.key});
@@ -24,13 +27,46 @@ class TransactionListPage extends StatelessWidget {
         child: Column(
           children: [
             20.height(),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                DateFilterIcon(
+                const DateFilterIcon(
                   dateType: 'Month',
                 ),
-                SortIconWidget(),
+                InkWell(
+                    onTap: () {
+                      showModalBottomSheet(
+                        showDragHandle: true,
+                        context: context,
+                        builder: (context) => Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          // width: double.infinity,
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  const Text(
+                                    "Filter Transaction",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  ElevatedButton(
+                                    style: StyleConstants.elevatedButtonStyle(),
+                                    onPressed: () {},
+                                    child: const Text(
+                                      "Resent",
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                    child: const SortIconWidget()),
               ],
             ),
             30.height(),
@@ -152,47 +188,6 @@ class SortIconWidget extends StatelessWidget {
       ),
       child: SvgPicture.asset(
         "assets/svg/common/sort.svg",
-      ),
-    );
-  }
-}
-
-class DateFilterIcon extends StatelessWidget {
-  const DateFilterIcon({
-    super.key,
-    required this.dateType,
-  });
-  final String dateType;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: ColorConstants.borderColor,
-        ),
-        borderRadius: BorderRadius.circular(
-          30,
-        ),
-      ),
-      child: Row(
-        children: [
-          SvgPicture.asset(
-            "assets/svg/common/arrow_down_rounded.svg",
-            colorFilter: ColorFilter.mode(
-              ColorConstants.themeColor,
-              BlendMode.srcIn,
-            ),
-          ),
-          5.width(),
-          Text(
-            dateType,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
       ),
     );
   }
