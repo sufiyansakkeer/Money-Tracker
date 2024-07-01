@@ -8,6 +8,7 @@ import 'package:money_track/helper/sized_box_extension.dart';
 import 'package:money_track/helper/snack_bar_extension.dart';
 import 'package:money_track/helper/widget_extension.dart';
 import 'package:money_track/models/categories_model/category_model.dart';
+import 'package:money_track/models/transaction_model/transaction_model.dart';
 import 'package:money_track/presentation/bloc/category/category_bloc.dart';
 import 'package:money_track/presentation/bloc/transaction/total_transaction/total_transaction_cubit.dart';
 import 'package:money_track/presentation/bloc/transaction/transaction_bloc.dart';
@@ -17,9 +18,10 @@ import 'package:money_track/presentation/widgets/custom_inkwell.dart';
 import 'package:svg_flutter/svg.dart';
 
 class TransactionPage extends StatefulWidget {
-  const TransactionPage({super.key, required this.isExpense});
+  const TransactionPage(
+      {super.key, required this.isExpense, this.transactionModel});
   final bool isExpense;
-
+  final TransactionModel? transactionModel;
   @override
   State<TransactionPage> createState() => _TransactionPageState();
 }
@@ -39,6 +41,16 @@ class _TransactionPageState extends State<TransactionPage> {
     categoryController = TextEditingController();
     descriptionController = TextEditingController();
     dateController = TextEditingController();
+    if (widget.transactionModel != null) {
+      categoryModel = widget.transactionModel!.categoryModel;
+      categoryType = widget.transactionModel!.categoryType;
+      date = widget.transactionModel!.date;
+      amountEditingController.text = widget.transactionModel!.amount.toString();
+      categoryController.text =
+          widget.transactionModel!.categoryModel.categoryName;
+      descriptionController.text = widget.transactionModel!.notes ?? "";
+      dateController.text = DateFormat('dd-MMMM-yyyy').format(date);
+    }
     super.initState();
   }
 
@@ -262,24 +274,38 @@ class _TransactionPageState extends State<TransactionPage> {
                         amountEditingController.text.trim() != "" &&
                         categoryType != null &&
                         categoryModel != null) {
-                      context.read<TransactionBloc>().add(
-                            AddTransactionEvent(
-                              amount: amountEditingController.text,
-                              description: descriptionController.text,
-                              isExpense: widget.isExpense,
-                              categoryType: categoryType!,
-                              categoryModel: categoryModel!,
-                              date: date,
-                            ),
-                          );
+                      if (widget.transactionModel != null) {
+                        context.read<TransactionBloc>().add(
+                              EditTransactionEvent(
+                                id: widget.transactionModel!.id!,
+                                amount: amountEditingController.text,
+                                description: descriptionController.text,
+                                isExpense: widget.isExpense,
+                                categoryType: categoryType!,
+                                categoryModel: categoryModel!,
+                                date: date,
+                              ),
+                            );
+                      } else {
+                        context.read<TransactionBloc>().add(
+                              AddTransactionEvent(
+                                amount: amountEditingController.text,
+                                description: descriptionController.text,
+                                isExpense: widget.isExpense,
+                                categoryType: categoryType!,
+                                categoryModel: categoryModel!,
+                                date: date,
+                              ),
+                            );
+                      }
                       context.read<TotalTransactionCubit>().getTotalAmount();
                       context.pop();
                     }
                   },
                   style: StyleConstants.elevatedButtonStyle(),
-                  child: const Text(
-                    "Continue",
-                    style: TextStyle(
+                  child: Text(
+                    widget.transactionModel == null ? "Continue" : "Save",
+                    style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 16,

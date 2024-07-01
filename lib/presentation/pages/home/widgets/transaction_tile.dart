@@ -40,6 +40,7 @@ class TransactionTile extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
+                    color: Colors.black,
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),

@@ -7,8 +7,11 @@ import 'package:money_track/helper/sized_box_extension.dart';
 import 'package:money_track/helper/widget_extension.dart';
 import 'package:money_track/presentation/bloc/transaction/total_transaction/total_transaction_cubit.dart';
 import 'package:money_track/presentation/bloc/transaction/transaction_bloc.dart';
+import 'package:money_track/presentation/pages/home/home_page.dart';
+import 'package:money_track/presentation/pages/home/widgets/empty_transaction_list.dart';
 import 'package:money_track/presentation/pages/home/widgets/transaction_tile.dart';
 import 'package:money_track/presentation/pages/settings/widget/custom_app_bar.dart';
+import 'package:money_track/presentation/widgets/custom_inkwell.dart';
 import 'package:svg_flutter/svg_flutter.dart';
 
 import 'widget/date_filter_widget.dart';
@@ -83,21 +86,7 @@ class TransactionListPage extends StatelessWidget {
                   );
                 } else if (state is TransactionLoaded) {
                   return state.transactionList.isEmpty
-                      ? Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              100.height(),
-                              const Text(
-                                "No transaction found",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
+                      ? const EmptyTransactionList()
                       : ListView.separated(
                           separatorBuilder: (context, index) => 10.height(),
                           primary: false,
@@ -132,25 +121,49 @@ class TransactionListPage extends StatelessWidget {
                                     ),
                                   ),
                                   10.height(),
-                                  TransactionTile(
-                                    categoryType: item.categoryType,
-                                    categoryName:
-                                        item.categoryModel.categoryName,
-                                    time: item.date.to12HourFormat(),
-                                    description: item.notes ?? "",
-                                    amount: item.amount,
-                                    type: item.transactionType,
+                                  CustomInkWell(
+                                    onLongPress: () {
+                                      showModalBottomSheet(
+                                        showDragHandle: true,
+                                        context: context,
+                                        builder: (context) =>
+                                            EditAndDeleteBottomSheet(
+                                          transactionModel: item,
+                                        ),
+                                      );
+                                    },
+                                    child: TransactionTile(
+                                      categoryType: item.categoryType,
+                                      categoryName:
+                                          item.categoryModel.categoryName,
+                                      time: item.date.to12HourFormat(),
+                                      description: item.notes ?? "",
+                                      amount: item.amount,
+                                      type: item.transactionType,
+                                    ),
                                   ),
                                 ],
                               );
                             } else {
-                              return TransactionTile(
-                                categoryType: item.categoryType,
-                                categoryName: item.categoryModel.categoryName,
-                                time: item.date.to12HourFormat(),
-                                description: item.notes ?? "",
-                                amount: item.amount,
-                                type: item.transactionType,
+                              return CustomInkWell(
+                                onLongPress: () {
+                                  showModalBottomSheet(
+                                    showDragHandle: true,
+                                    context: context,
+                                    builder: (context) =>
+                                        EditAndDeleteBottomSheet(
+                                      transactionModel: item,
+                                    ),
+                                  );
+                                },
+                                child: TransactionTile(
+                                  categoryType: item.categoryType,
+                                  categoryName: item.categoryModel.categoryName,
+                                  time: item.date.to12HourFormat(),
+                                  description: item.notes ?? "",
+                                  amount: item.amount,
+                                  type: item.transactionType,
+                                ),
                               );
                             }
                           },

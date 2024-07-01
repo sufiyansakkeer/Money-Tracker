@@ -4,15 +4,19 @@ import 'package:money_track/core/constants/colors.dart';
 import 'package:money_track/helper/date_time_extension.dart';
 import 'package:money_track/helper/navigation_extension.dart';
 import 'package:money_track/helper/sized_box_extension.dart';
+import 'package:money_track/models/categories_model/category_model.dart';
 import 'package:money_track/models/transaction_model/transaction_model.dart';
 import 'package:money_track/presentation/bloc/transaction/total_transaction/total_transaction_cubit.dart';
 import 'package:money_track/presentation/bloc/transaction/transaction_bloc.dart';
+import 'package:money_track/presentation/pages/home/transaction/transaction_page.dart';
 import 'package:money_track/presentation/pages/home/transaction_list/transaction_list.dart';
 import 'package:money_track/presentation/pages/home/widgets/background.dart';
 import 'package:money_track/presentation/pages/home/widgets/empty_transaction_list.dart';
 import 'package:money_track/presentation/pages/home/widgets/floating_action_button_widget.dart';
 import 'package:money_track/presentation/pages/home/widgets/overlay_widget.dart';
 import 'package:money_track/presentation/pages/home/widgets/transaction_tile.dart';
+import 'package:money_track/presentation/widgets/custom_inkwell.dart';
+import 'package:svg_flutter/svg_flutter.dart';
 import 'widgets/total_amount_widget.dart';
 
 class HomePage extends StatefulWidget {
@@ -201,17 +205,140 @@ class FilledTransactionList extends StatelessWidget {
       itemCount: transactionList.length,
       itemBuilder: (_, index) {
         var item = transactionList[index];
-        return TransactionTile(
-          categoryType: item.categoryType,
-          categoryName: item.categoryModel.categoryName,
-          time: item.date.isToday()
-              ? item.date.to12HourFormat()
-              : item.date.toDayMonthYearFormat(),
-          description: item.notes ?? "",
-          amount: item.amount,
-          type: item.transactionType,
+        return CustomInkWell(
+          onLongPress: () {
+            showModalBottomSheet(
+              showDragHandle: true,
+              context: context,
+              builder: (context) => EditAndDeleteBottomSheet(
+                transactionModel: item,
+              ),
+            );
+          },
+          child: TransactionTile(
+            categoryType: item.categoryType,
+            categoryName: item.categoryModel.categoryName,
+            time: item.date.isToday()
+                ? item.date.to12HourFormat()
+                : item.date.toDayMonthYearFormat(),
+            description: item.notes ?? "",
+            amount: item.amount,
+            type: item.transactionType,
+          ),
         );
       },
+    );
+  }
+}
+
+class EditAndDeleteBottomSheet extends StatelessWidget {
+  const EditAndDeleteBottomSheet({
+    super.key,
+    required this.transactionModel,
+  });
+  final TransactionModel transactionModel;
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 800,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 10,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            InkWell(
+              onTap: () {
+                context.pop();
+                context.pushWithRightToLeftTransition(
+                  TransactionPage(
+                    isExpense: transactionModel.transactionType ==
+                        TransactionType.expense,
+                    transactionModel: transactionModel,
+                  ),
+                );
+              },
+              child: Container(
+                width: 100,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 10,
+                ),
+                decoration: BoxDecoration(
+                  color: ColorConstants.themeColor.withOpacity(0.4),
+                  borderRadius: BorderRadius.circular(
+                    5,
+                  ),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SvgPicture.asset(
+                      "assets/svg/common/edit.svg",
+                      colorFilter: ColorFilter.mode(
+                        ColorConstants.themeColor,
+                        BlendMode.srcIn,
+                      ),
+                    ),
+                    5.height(),
+                    const Text(
+                      "Edit",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            40.width(),
+            InkWell(
+              onTap: () {
+                context.read<TransactionBloc>().add(
+                      DeleteTransactionEvent(
+                        transactionModel: transactionModel,
+                      ),
+                    );
+                context.pop();
+              },
+              child: Container(
+                width: 100,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 10,
+                ),
+                decoration: BoxDecoration(
+                  color: ColorConstants.expenseColor.withOpacity(0.4),
+                  borderRadius: BorderRadius.circular(
+                    5,
+                  ),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SvgPicture.asset(
+                      "assets/svg/common/trash.svg",
+                      colorFilter: ColorFilter.mode(
+                        ColorConstants.expenseColor,
+                        BlendMode.srcIn,
+                      ),
+                    ),
+                    5.height(),
+                    const Text(
+                      "Delete",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
