@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:money_track/presentation/pages/bottom_navigation/bottom_navigation.dart';
 import 'package:money_track/provider/onboarding_screen.dart';
 import 'package:money_track/view/screens/onboarding_screens/widgets/onboarding_screen_1.dart';
 import 'package:money_track/view/screens/onboarding_screens/widgets/onboarding_screen_2.dart';
 import 'package:money_track/view/screens/onboarding_screens/widgets/onboarding_screen_3.dart';
-import 'package:money_track/view/screens/root_page.dart';
-
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -184,7 +183,7 @@ class OnBoardingScreens extends StatelessWidget {
 
   rootPageNavigation(context) {
     Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: ((context) => const RootPage())),
+        MaterialPageRoute(builder: ((context) => const BottomNavigationPage())),
         (route) => false);
   }
 }

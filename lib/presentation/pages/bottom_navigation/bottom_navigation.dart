@@ -7,6 +7,7 @@ import 'package:money_track/helper/sized_box_extension.dart';
 import 'package:money_track/helper/widget_extension.dart';
 import 'package:money_track/presentation/bloc/bottom_navigation/bottom_navigation_bloc.dart';
 import 'package:money_track/presentation/bloc/category/category_bloc.dart';
+import 'package:money_track/presentation/bloc/transaction/total_transaction/total_transaction_cubit.dart';
 import 'package:money_track/presentation/bloc/transaction/transaction_bloc.dart';
 import 'package:money_track/presentation/pages/bottom_navigation/widgets/bottom_navigation_list.dart'; // Custom widget or list for bottom navigation items
 import 'package:money_track/presentation/widgets/custom_inkwell.dart';
@@ -30,6 +31,7 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
   void initState() {
     context.read<TransactionBloc>().add(GetAllTransaction());
     context.read<CategoryBloc>().add(SetConstantCategoryModels());
+    context.read<TotalTransactionCubit>().getTotalAmount();
     super.initState();
   }
 

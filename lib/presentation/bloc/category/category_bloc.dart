@@ -27,6 +27,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
 
     on<SetConstantCategoryModels>((event, emit) async {
       await CategoryRepository().setConstantCategoryModels();
+      add(GetAllCategoryModels());
     });
 
     on<AddCategoryEvent>((event, emit) async {
