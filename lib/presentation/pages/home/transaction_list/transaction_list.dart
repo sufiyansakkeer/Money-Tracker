@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_track/core/constants/colors.dart';
-import 'package:money_track/core/constants/style_constants.dart';
 import 'package:money_track/helper/date_time_extension.dart';
 import 'package:money_track/helper/sized_box_extension.dart';
 import 'package:money_track/helper/widget_extension.dart';
+import 'package:money_track/models/transaction_model/filter_model/filter_data.dart';
 import 'package:money_track/presentation/bloc/transaction/total_transaction/total_transaction_cubit.dart';
 import 'package:money_track/presentation/bloc/transaction/transaction_bloc.dart';
 import 'package:money_track/presentation/pages/home/home_page.dart';
+import 'package:money_track/presentation/pages/home/transaction_list/widget/filter_widget.dart';
 import 'package:money_track/presentation/pages/home/widgets/empty_transaction_list.dart';
 import 'package:money_track/presentation/pages/home/widgets/transaction_tile.dart';
 import 'package:money_track/presentation/pages/settings/widget/custom_app_bar.dart';
@@ -16,8 +17,21 @@ import 'package:svg_flutter/svg_flutter.dart';
 
 import 'widget/date_filter_widget.dart';
 
-class TransactionListPage extends StatelessWidget {
+class TransactionListPage extends StatefulWidget {
   const TransactionListPage({super.key});
+
+  @override
+  State<TransactionListPage> createState() => _TransactionListPageState();
+}
+
+class _TransactionListPageState extends State<TransactionListPage> {
+  late FilterData filterData;
+
+  @override
+  void initState() {
+    filterData = FilterData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,31 +55,8 @@ class TransactionListPage extends StatelessWidget {
                       showModalBottomSheet(
                         showDragHandle: true,
                         context: context,
-                        builder: (context) => Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          // width: double.infinity,
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  const Text(
-                                    "Filter Transaction",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  ElevatedButton(
-                                    style: StyleConstants.elevatedButtonStyle(),
-                                    onPressed: () {},
-                                    child: const Text(
-                                      "Resent",
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                        builder: (context) => FilterWidget(
+                          filterData: filterData,
                         ),
                       );
                     },
