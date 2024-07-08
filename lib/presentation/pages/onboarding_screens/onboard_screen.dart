@@ -22,6 +22,7 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
   @override
   void initState() {
     _pageController = PageController();
+    context.read<OnBoardingCubit>().changeIndex(index: 0);
     super.initState();
   }
 
@@ -72,25 +73,32 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
                                 _pageController.jumpToPage(2);
                               },
                               child: Container(
-                                height: 30,
-                                width: 70,
+                                // height: 30,
+                                // width: 70,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 14,
+                                  vertical: 8,
+                                ),
                                 decoration: BoxDecoration(
                                   borderRadius: const BorderRadius.all(
-                                    Radius.circular(15),
+                                    Radius.circular(30),
                                   ),
                                   color: ColorConstants.secondaryColor,
                                 ),
-                                child: const Center(
+                                child: Center(
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
                                         'Skip',
-                                        style: TextStyle(color: Colors.white),
+                                        style: TextStyle(
+                                          color: ColorConstants.themeColor,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                       Icon(
                                         Icons.skip_next_rounded,
-                                        color: Colors.white,
+                                        color: ColorConstants.themeColor,
                                       )
                                     ],
                                   ),

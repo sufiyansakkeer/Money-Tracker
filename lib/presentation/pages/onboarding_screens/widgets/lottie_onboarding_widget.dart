@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:money_track/helper/sized_box_extension.dart';
 
 class LottieOnBoardWidget extends StatelessWidget {
   const LottieOnBoardWidget({
@@ -18,9 +19,13 @@ class LottieOnBoardWidget extends StatelessWidget {
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          LottieBuilder.asset(lottie),
+          LottieBuilder.asset(
+            lottie,
+            height: 350,
+          ),
+          20.height(),
           Text(
             lottieTitle,
             style: const TextStyle(
