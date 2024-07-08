@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_track/core/constants/colors.dart';
 import 'package:money_track/helper/navigation_extension.dart';
-import 'package:money_track/presentation/pages/home/transaction/transaction_page.dart';
+import 'package:money_track/presentation/pages/home/add_transaction/transaction_page.dart';
 import 'package:svg_flutter/svg_flutter.dart';
 
 class FloatingActionButtonWidget extends StatelessWidget {

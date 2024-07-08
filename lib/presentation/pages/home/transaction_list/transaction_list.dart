@@ -131,7 +131,7 @@ class _TransactionListPageState extends State<TransactionListPage> {
                                         categoryType: item.categoryType,
                                         categoryName:
                                             item.categoryModel.categoryName,
-                                        time: item.date.hour.toString(),
+                                        time: "",
                                         description: item.notes ?? "",
                                         amount: item.amount,
                                         type: item.transactionType,
@@ -155,7 +155,7 @@ class _TransactionListPageState extends State<TransactionListPage> {
                                     categoryType: item.categoryType,
                                     categoryName:
                                         item.categoryModel.categoryName,
-                                    time: item.date.hour.toString(),
+                                    time: "",
                                     description: item.notes ?? "",
                                     amount: item.amount,
                                     type: item.transactionType,

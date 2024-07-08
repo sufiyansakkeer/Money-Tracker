@@ -8,7 +8,7 @@ import 'package:money_track/models/categories_model/category_model.dart';
 import 'package:money_track/models/transaction_model/transaction_model.dart';
 import 'package:money_track/presentation/bloc/transaction/total_transaction/total_transaction_cubit.dart';
 import 'package:money_track/presentation/bloc/transaction/transaction_bloc.dart';
-import 'package:money_track/presentation/pages/home/transaction/transaction_page.dart';
+import 'package:money_track/presentation/pages/home/add_transaction/transaction_page.dart';
 import 'package:money_track/presentation/pages/home/transaction_list/transaction_list.dart';
 import 'package:money_track/presentation/pages/home/widgets/background.dart';
 import 'package:money_track/presentation/pages/home/widgets/empty_transaction_list.dart';
