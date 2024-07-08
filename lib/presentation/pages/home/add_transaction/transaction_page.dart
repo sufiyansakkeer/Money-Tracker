@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -331,6 +333,8 @@ class _TransactionPageState extends State<TransactionPage> {
         date = picked;
       });
     }
+    log(date.hour.toString(), name: "date hour");
+    log(date.minute.toString(), name: "date hour");
   }
 }
 

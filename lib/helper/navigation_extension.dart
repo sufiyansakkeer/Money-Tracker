@@ -86,17 +86,6 @@ extension Navigation on BuildContext {
     );
   }
 
-  Future<T?> pushWithRotateTransition<T>(Widget page) {
-    return Navigator.push(
-      this,
-      PageTransition(
-        type: PageTransitionType.rotate,
-        alignment: Alignment.center,
-        child: page,
-      ),
-    );
-  }
-
   Future<T?> pushWithSizeTransition<T>(Widget page) {
     return Navigator.push(
       this,
