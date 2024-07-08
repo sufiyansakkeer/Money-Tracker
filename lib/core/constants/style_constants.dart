@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:money_track/core/constants/colors.dart';
 
 class StyleConstants {
-  static ButtonStyle elevatedButtonStyle() {
+  static ButtonStyle elevatedButtonStyle({
+    Color? backgroundColor,
+  }) {
     return ElevatedButton.styleFrom(
-      backgroundColor: ColorConstants.themeColor,
+      backgroundColor: backgroundColor ?? ColorConstants.themeColor,
       minimumSize: const Size(double.infinity, 55),
       enableFeedback: true,
       shape: RoundedRectangleBorder(

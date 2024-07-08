@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:money_track/core/constants/db_constants.dart';
 import 'package:money_track/helper/snack_bar_extension.dart';
@@ -39,9 +40,15 @@ class CategoryRepository {
   }
 
   Future<void> deleteCategory(String categoryID) async {
-    final categoryDB =
-        await Hive.openBox<CategoryModel>(DBConstants.categoryDbName);
-    await categoryDB.delete(categoryID);
+    try {
+      final categoryDB =
+          await Hive.openBox<CategoryModel>(DBConstants.categoryDbName);
+      await categoryDB.delete(categoryID);
+    } catch (e) {
+      if (kDebugMode) {
+        log(e.toString(), name: "Category delete Exception");
+      }
+    }
   }
 }
 

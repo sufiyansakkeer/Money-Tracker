@@ -8,8 +8,7 @@ extension DateTimeExtension on DateTime {
   }
 
   String toDayMonthYearFormat() {
-    final DateFormat formatter = DateFormat(
-        'dd-MMMM-yyyy'); // jms() includes seconds, jm() includes minutes
+    final DateFormat formatter = DateFormat('dd-MMMM-yyyy');
     return formatter.format(this);
   }
 

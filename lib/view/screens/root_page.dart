@@ -2,6 +2,7 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:money_track/core/constants/colors.dart';
 import 'package:money_track/config/theme/theme.dart';
+import 'package:money_track/helper/navigation_extension.dart';
 // import 'package:money_track/view/insights/transaction_graph_page.dart';
 // import 'package:money_track/view/categories/transaction_categories.dart';
 import 'package:money_track/view/navigation_drawer/navigation_drawer.dart';
@@ -75,7 +76,9 @@ class _RootPageState extends State<RootPage> {
         if (didPop) return;
         final shouldPop = await showMyDailogue();
         if (shouldPop != null && shouldPop) {
-          Navigator.pop(context);
+          if (context.mounted) {
+            context.pop();
+          }
         }
       },
       child: Scaffold(

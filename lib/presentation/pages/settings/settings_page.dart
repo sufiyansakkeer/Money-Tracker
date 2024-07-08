@@ -5,6 +5,8 @@ import 'package:money_track/models/settings/settings_title_model.dart';
 import 'package:money_track/presentation/pages/settings/about/about_page.dart';
 import 'package:money_track/presentation/pages/settings/currency/currency_page.dart';
 import 'package:money_track/presentation/pages/settings/theme_page/theme_page.dart';
+import 'package:money_track/presentation/pages/settings/widget/reset_drop_down.dart';
+import 'package:money_track/repository/settings_repository.dart';
 
 import 'analyze/analyze_page.dart';
 import 'widget/settings_tile.dart';
@@ -34,7 +36,6 @@ class SettingsPage extends StatelessWidget {
               shrinkWrap: true,
               itemBuilder: (context, index) => SettingsTile(
                 title: _tileList[index].title,
-                tag: _tileList[index].tag,
                 subtitle: _tileList[index].subtitle,
                 onPressed: () {
                   if (_tileList[index].navigationScreen != null) {
@@ -42,6 +43,12 @@ class SettingsPage extends StatelessWidget {
                         _tileList[index].navigationScreen!);
                   } else if (_tileList[index].onPressed != null) {
                     _tileList[index].onPressed;
+                  }
+                  if (_tileList[index].title == "Reset") {
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context) => const ResetDropDown(),
+                    );
                   }
                 },
               ),
@@ -56,10 +63,11 @@ class SettingsPage extends StatelessWidget {
 
 List<SettingsModel> _tileList = [
   SettingsModel(
-      title: "Analyze",
-      subtitle: "",
-      navigationScreen: const AnalyzePage(),
-      tag: "Analyze"),
+    title: "Analyze",
+    subtitle: "",
+    navigationScreen: const AnalyzePage(),
+    tag: "Analyze",
+  ),
   SettingsModel(
     title: "Currency",
     subtitle: "INR",
@@ -91,5 +99,6 @@ List<SettingsModel> _tileList = [
     title: "Help",
     subtitle: "",
     navigationScreen: null,
+    onPressed: () => SettingsRepository().navigateToMail(),
   ),
 ];

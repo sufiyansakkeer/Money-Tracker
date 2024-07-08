@@ -9,12 +9,10 @@ class SettingsTile extends StatelessWidget {
     required this.title,
     required this.subtitle,
     this.onPressed,
-    this.tag,
   });
   final String title;
   final String subtitle;
   final void Function()? onPressed;
-  final String? tag;
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -27,14 +25,11 @@ class SettingsTile extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Hero(
-              tag: tag ?? "",
-              child: Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
               ),
             ),
             Row(
