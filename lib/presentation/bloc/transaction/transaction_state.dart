@@ -15,6 +15,8 @@ final class TransactionLoaded extends TransactionState {
   final List<TransactionModel> transactionList;
 
   const TransactionLoaded({required this.transactionList});
+  @override
+  List<Object> get props => [transactionList];
 }
 
 final class TransactionError extends TransactionState {}

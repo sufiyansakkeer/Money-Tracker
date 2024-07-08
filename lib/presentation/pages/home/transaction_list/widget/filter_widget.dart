@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_track/core/constants/colors.dart';
 import 'package:money_track/core/constants/style_constants.dart';
+import 'package:money_track/helper/navigation_extension.dart';
 import 'package:money_track/helper/sized_box_extension.dart';
 import 'package:money_track/helper/string_extensions.dart';
 import 'package:money_track/models/categories_model/category_model.dart';
 import 'package:money_track/models/transaction_model/filter_model/filter_data.dart';
+import 'package:money_track/presentation/bloc/transaction/transaction_bloc.dart';
 import 'package:money_track/presentation/pages/home/transaction_list/widget/custom_choice_chip.dart';
 
 class FilterWidget extends StatefulWidget {
@@ -131,7 +134,12 @@ class _FilterWidgetState extends State<FilterWidget> {
           10.height(),
           ElevatedButton(
             style: StyleConstants.elevatedButtonStyle(),
-            onPressed: () {},
+            onPressed: () {
+              context
+                  .read<TransactionBloc>()
+                  .add(FilterTransaction(filterData: widget.filterData));
+              context.pop();
+            },
             child: const Text(
               "Apply",
               style: TextStyle(

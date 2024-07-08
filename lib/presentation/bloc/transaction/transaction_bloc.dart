@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_track/models/categories_model/category_model.dart';
+import 'package:money_track/models/transaction_model/filter_model/filter_data.dart';
 import 'package:money_track/models/transaction_model/transaction_model.dart';
 import 'package:money_track/repository/transaction_repository.dart';
 
@@ -45,6 +46,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
         log(e.toString(), name: "Add transaction event Exception");
       }
     });
+
     on<DeleteTransactionEvent>((event, emit) async {
       try {
         await TransactionRepository().deleteTransaction(event.transactionModel);
@@ -75,6 +77,72 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
         }
       } catch (e) {
         log(e.toString(), name: "Add transaction event Exception");
+      }
+    });
+    on<FilterTransaction>((event, emit) async {
+      var filter = event.filterData;
+      if (filter.transactionSortEnum == null &&
+          filter.transactionType == null) {
+        add(GetAllTransaction());
+        return;
+      }
+      emit(TransactionLoading());
+      List<TransactionModel> filteredList = [];
+      try {
+        List<TransactionModel>? res =
+            await TransactionRepository().getAllTransaction();
+        if (res != null) {
+          if (filter.transactionType != null) {
+            for (var item in res) {
+              if (item.transactionType == filter.transactionType) {
+                filteredList.add(item);
+              }
+            }
+          }
+
+          if (filter.transactionSortEnum != null && filteredList.isNotEmpty) {
+            switch (filter.transactionSortEnum) {
+              case TransactionSortEnum.newest:
+                filteredList.sort(
+                  (a, b) => a.date.compareTo(b.date),
+                );
+                break;
+              case TransactionSortEnum.oldest:
+                filteredList.sort(
+                  (a, b) => a.date.compareTo(b.date),
+                );
+                filteredList.reversed.toList();
+                break;
+
+              default:
+                break;
+            }
+          } else if (filter.transactionSortEnum != null &&
+              filteredList.isEmpty) {
+            switch (filter.transactionSortEnum) {
+              case TransactionSortEnum.newest:
+                res.sort(
+                  (a, b) => a.date.compareTo(b.date),
+                );
+                break;
+              case TransactionSortEnum.oldest:
+                res.sort(
+                  (a, b) => a.date.compareTo(b.date),
+                );
+                res.reversed.toList();
+                break;
+
+              default:
+                break;
+            }
+
+            filteredList.addAll(res);
+          }
+        }
+
+        return emit(TransactionLoaded(transactionList: filteredList));
+      } catch (e) {
+        log(e.toString(), name: "Filter transaction event Exception");
       }
     });
   }

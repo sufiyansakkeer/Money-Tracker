@@ -12,6 +12,4 @@ class FilterData {
 enum TransactionSortEnum {
   newest,
   oldest,
-  highest,
-  lowest,
 }

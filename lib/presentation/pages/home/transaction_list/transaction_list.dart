@@ -35,138 +35,144 @@ class _TransactionListPageState extends State<TransactionListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: customAppBar(context, title: "Transaction List"),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 20,
-        ),
-        child: Column(
-          children: [
-            20.height(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const DateFilterIcon(
-                  dateType: 'Month',
-                ),
-                InkWell(
-                    onTap: () {
-                      showModalBottomSheet(
-                        showDragHandle: true,
-                        context: context,
-                        builder: (context) => FilterWidget(
-                          filterData: filterData,
-                        ),
-                      );
-                    },
-                    child: const SortIconWidget()),
-              ],
-            ),
-            30.height(),
-            BlocConsumer<TransactionBloc, TransactionState>(
-              listener: (context, state) {
-                if (state is TransactionLoaded) {
-                  context.read<TotalTransactionCubit>().getTotalAmount();
-                }
-              },
-              builder: (context, state) {
-                if (state is TransactionLoading) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else if (state is TransactionLoaded) {
-                  return state.transactionList.isEmpty
-                      ? const EmptyTransactionList()
-                      : ListView.separated(
-                          separatorBuilder: (context, index) => 10.height(),
-                          primary: false,
-                          shrinkWrap: true,
-                          itemBuilder: (_, index) {
-                            var item = state.transactionList[index];
-                            DateTime date = item.date;
-                            bool isSameDate = true;
-                            if (index == 0) {
-                              isSameDate = false;
-                            } else {
-                              isSameDate = date.compareDatesOnly(
-                                  state.transactionList[index - 1].date);
-                            }
+    return PopScope(
+      onPopInvoked: (didPop) {
+        context.read<TransactionBloc>().add(GetAllTransaction());
+      },
+      child: Scaffold(
+        appBar: customAppBar(context, title: "Transaction List"),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 20,
+          ),
+          child: Column(
+            children: [
+              20.height(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const DateFilterIcon(
+                    dateType: 'Month',
+                  ),
+                  InkWell(
+                      onTap: () {
+                        showModalBottomSheet(
+                          showDragHandle: true,
+                          context: context,
+                          builder: (context) => FilterWidget(
+                            filterData: filterData,
+                          ),
+                        );
+                      },
+                      child: const SortIconWidget()),
+                ],
+              ),
+              30.height(),
+              BlocConsumer<TransactionBloc, TransactionState>(
+                listener: (context, state) {
+                  if (state is TransactionLoaded) {
+                    context.read<TotalTransactionCubit>().getTotalAmount();
+                  }
+                },
+                builder: (context, state) {
+                  if (state is TransactionLoading) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (state is TransactionLoaded) {
+                    return state.transactionList.isEmpty
+                        ? const EmptyTransactionList()
+                        : ListView.separated(
+                            separatorBuilder: (context, index) => 10.height(),
+                            primary: false,
+                            shrinkWrap: true,
+                            itemBuilder: (_, index) {
+                              var item = state.transactionList[index];
+                              DateTime date = item.date;
+                              bool isSameDate = true;
+                              if (index == 0) {
+                                isSameDate = false;
+                              } else {
+                                isSameDate = date.compareDatesOnly(
+                                    state.transactionList[index - 1].date);
+                              }
 
-                            if (index == 0 || (!isSameDate)) {
-                              return Column(
-                                children: [
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      item.date.isToday()
-                                          ? "Today"
-                                          : item.date.isYesterday()
-                                              ? "Yesterday"
-                                              : item.date
-                                                  .toDayMonthYearFormat(),
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
+                              if (index == 0 || (!isSameDate)) {
+                                return Column(
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        item.date.isToday()
+                                            ? "Today"
+                                            : item.date.isYesterday()
+                                                ? "Yesterday"
+                                                : item.date
+                                                    .toDayMonthYearFormat(),
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  10.height(),
-                                  CustomInkWell(
-                                    onLongPress: () {
-                                      showModalBottomSheet(
-                                        showDragHandle: true,
-                                        context: context,
-                                        builder: (context) =>
-                                            EditAndDeleteBottomSheet(
-                                          transactionModel: item,
-                                        ),
-                                      );
-                                    },
-                                    child: TransactionTile(
-                                      categoryType: item.categoryType,
-                                      categoryName:
-                                          item.categoryModel.categoryName,
-                                      time: item.date.to12HourFormat(),
-                                      description: item.notes ?? "",
-                                      amount: item.amount,
-                                      type: item.transactionType,
+                                    10.height(),
+                                    CustomInkWell(
+                                      onLongPress: () {
+                                        showModalBottomSheet(
+                                          showDragHandle: true,
+                                          context: context,
+                                          builder: (context) =>
+                                              EditAndDeleteBottomSheet(
+                                            transactionModel: item,
+                                          ),
+                                        );
+                                      },
+                                      child: TransactionTile(
+                                        categoryType: item.categoryType,
+                                        categoryName:
+                                            item.categoryModel.categoryName,
+                                        time: item.date.hour.toString(),
+                                        description: item.notes ?? "",
+                                        amount: item.amount,
+                                        type: item.transactionType,
+                                      ),
                                     ),
+                                  ],
+                                );
+                              } else {
+                                return CustomInkWell(
+                                  onLongPress: () {
+                                    showModalBottomSheet(
+                                      showDragHandle: true,
+                                      context: context,
+                                      builder: (context) =>
+                                          EditAndDeleteBottomSheet(
+                                        transactionModel: item,
+                                      ),
+                                    );
+                                  },
+                                  child: TransactionTile(
+                                    categoryType: item.categoryType,
+                                    categoryName:
+                                        item.categoryModel.categoryName,
+                                    time: item.date.hour.toString(),
+                                    description: item.notes ?? "",
+                                    amount: item.amount,
+                                    type: item.transactionType,
                                   ),
-                                ],
-                              );
-                            } else {
-                              return CustomInkWell(
-                                onLongPress: () {
-                                  showModalBottomSheet(
-                                    showDragHandle: true,
-                                    context: context,
-                                    builder: (context) =>
-                                        EditAndDeleteBottomSheet(
-                                      transactionModel: item,
-                                    ),
-                                  );
-                                },
-                                child: TransactionTile(
-                                  categoryType: item.categoryType,
-                                  categoryName: item.categoryModel.categoryName,
-                                  time: item.date.to12HourFormat(),
-                                  description: item.notes ?? "",
-                                  amount: item.amount,
-                                  type: item.transactionType,
-                                ),
-                              );
-                            }
-                          },
-                          itemCount: state.transactionList.length,
-                        );
-                } else {
-                  return const Center(
-                      child: Text("Something Went wrong. Please try again"));
-                }
-              },
-            ).expand(),
-          ],
+                                );
+                              }
+                            },
+                            itemCount: state.transactionList.length,
+                          );
+                  } else {
+                    return const Center(
+                        child: Text("Something Went wrong. Please try again"));
+                  }
+                },
+              ).expand(),
+            ],
+          ),
         ),
       ),
     );

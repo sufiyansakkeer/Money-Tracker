@@ -9,6 +9,12 @@ sealed class TransactionEvent extends Equatable {
 
 class GetAllTransaction extends TransactionEvent {}
 
+class FilterTransaction extends TransactionEvent {
+  final FilterData filterData;
+
+  const FilterTransaction({required this.filterData});
+}
+
 class DeleteTransactionEvent extends TransactionEvent {
   final TransactionModel transactionModel;
 
