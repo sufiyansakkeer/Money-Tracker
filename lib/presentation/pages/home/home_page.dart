@@ -267,7 +267,7 @@ class EditAndDeleteBottomSheet extends StatelessWidget {
                   vertical: 10,
                 ),
                 decoration: BoxDecoration(
-                  color: ColorConstants.themeColor.withOpacity(0.4),
+                  color: ColorConstants.themeColor.withValues(alpha: 0.4),
                   borderRadius: BorderRadius.circular(
                     5,
                   ),
@@ -310,7 +310,7 @@ class EditAndDeleteBottomSheet extends StatelessWidget {
                   vertical: 10,
                 ),
                 decoration: BoxDecoration(
-                  color: ColorConstants.expenseColor.withOpacity(0.4),
+                  color: ColorConstants.expenseColor.withValues(alpha: 0.4),
                   borderRadius: BorderRadius.circular(
                     5,
                   ),

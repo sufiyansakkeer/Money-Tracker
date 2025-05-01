@@ -11,7 +11,7 @@ class OverlayWidget extends StatelessWidget {
         gradient: LinearGradient(
           colors: [
             Colors.transparent,
-            ColorConstants.themeColor.withOpacity(0.3),
+            ColorConstants.themeColor.withValues(alpha: 0.3),
           ],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,

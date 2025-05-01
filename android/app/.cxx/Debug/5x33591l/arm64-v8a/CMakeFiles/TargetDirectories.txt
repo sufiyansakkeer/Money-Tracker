@@ -1,0 +1,2 @@
+D:/programing/flutter/money_track/android/app/.cxx/Debug/5x33591l/arm64-v8a/CMakeFiles/edit_cache.dir
+D:/programing/flutter/money_track/android/app/.cxx/Debug/5x33591l/arm64-v8a/CMakeFiles/rebuild_cache.dir

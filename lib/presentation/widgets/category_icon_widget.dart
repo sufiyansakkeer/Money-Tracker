@@ -56,7 +56,7 @@ class CategoryIconWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(
           10,
         ),
-        color: categoryType.svgEnumModel.backgroundColor.withOpacity(0.4),
+        color: categoryType.svgEnumModel.backgroundColor.withValues(alpha: 0.4),
       ),
       child: SizedBox(
         height: 30,

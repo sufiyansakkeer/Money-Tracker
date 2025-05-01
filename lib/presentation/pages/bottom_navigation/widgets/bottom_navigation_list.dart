@@ -28,7 +28,7 @@ List<NavItemModel> bottomNavItems = [
     ),
   ),
   NavItemModel(
-    text: "Settings",
+    text: "Profile",
     rive: RiveModel(
       src: "assets/rive/animated_icon_rive.riv",
       artBoard: "USER",

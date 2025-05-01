@@ -6,7 +6,7 @@ class BottomNavigationState {
   final pages = [
     const HomePage(),
     const CategoryPage(),
-    const SettingsPage(),
+    const ProfilePage(),
   ];
   BottomNavigationState({required this.index});
 }

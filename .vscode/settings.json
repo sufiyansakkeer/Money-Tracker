@@ -11,7 +11,9 @@
     "RGBO",
     "Sakkeer",
     "splited",
-    "Sufiyan"
+    "Sufiyan",
+    "syncfusion"
   ],
-  "liveServer.settings.port": 5501
+  "liveServer.settings.port": 5501,
+  "CodeGPT.apiKey": "CodeGPT Plus Beta"
 }

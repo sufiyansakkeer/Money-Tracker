@@ -56,13 +56,13 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
                     18, 0, 18, 10), // Horizontal margin outside the container
                 decoration: BoxDecoration(
                   color: ColorConstants.themeColor
-                      .withOpacity(0.8), // Background color with opacity
+                      .withValues(alpha: 0.8), // Background color with opacity
                   borderRadius: const BorderRadius.all(
                       Radius.circular(24)), // Rounded corners
                   boxShadow: [
                     BoxShadow(
                       color: ColorConstants.themeColor
-                          .withOpacity(0.2), // Shadow color with opacity
+                          .withValues(alpha: 0.2), // Shadow color with opacity
                       offset: const Offset(0, 20), // Shadow offset
                       blurRadius: 10, // Blur radius for the shadow
                     ),

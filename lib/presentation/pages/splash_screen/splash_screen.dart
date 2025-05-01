@@ -16,14 +16,28 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    Timer(const Duration(seconds: 2), (() async {
-      SharedPreferences preferences = await SharedPreferences.getInstance();
-      bool seen = preferences.getBool('seen') ?? false;
-      if (context.mounted) {
-        seen ? goToRootPage(context) : goToOnboardPage(context);
-      }
-    }));
     super.initState();
+    _checkOnboardingStatus();
+  }
+
+  Future<void> _checkOnboardingStatus() async {
+    await Future.delayed(const Duration(seconds: 2));
+
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    bool seen = preferences.getBool('seen') ?? false;
+
+    if (!mounted) return;
+
+    if (seen) {
+      goToRootPage(context);
+    } else {
+      goToOnboardPage(context);
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override

@@ -11,7 +11,7 @@ import 'package:money_track/presentation/pages/home/home_page.dart';
 import 'package:money_track/presentation/pages/home/transaction_list/widget/filter_widget.dart';
 import 'package:money_track/presentation/pages/home/widgets/empty_transaction_list.dart';
 import 'package:money_track/presentation/pages/home/widgets/transaction_tile.dart';
-import 'package:money_track/presentation/pages/settings/widget/custom_app_bar.dart';
+import 'package:money_track/presentation/pages/profile/widget/custom_app_bar.dart';
 import 'package:money_track/presentation/widgets/custom_inkwell.dart';
 import 'package:svg_flutter/svg_flutter.dart';
 
@@ -36,7 +36,7 @@ class _TransactionListPageState extends State<TransactionListPage> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      onPopInvoked: (didPop) {
+      onPopInvokedWithResult: (didPop, result) {
         context.read<TransactionBloc>().add(GetAllTransaction());
       },
       child: Scaffold(
