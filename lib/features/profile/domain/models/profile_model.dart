@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
-class SettingsModel {
+class ProfileModel {
   final String title;
   final String subtitle;
   final Widget? navigationScreen;
   final void Function()? onPressed;
   final String? tag;
-  SettingsModel({
+
+  ProfileModel({
     required this.title,
     required this.subtitle,
     required this.navigationScreen,

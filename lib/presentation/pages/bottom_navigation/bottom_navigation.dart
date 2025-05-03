@@ -6,7 +6,7 @@ import 'package:money_track/core/constants/colors.dart';
 import 'package:money_track/helper/sized_box_extension.dart';
 import 'package:money_track/helper/widget_extension.dart';
 import 'package:money_track/presentation/bloc/bottom_navigation/bottom_navigation_bloc.dart';
-import 'package:money_track/presentation/bloc/category/category_bloc.dart';
+import 'package:money_track/features/onboarding/domain/category/category_bloc.dart';
 import 'package:money_track/presentation/bloc/transaction/total_transaction/total_transaction_cubit.dart';
 import 'package:money_track/presentation/bloc/transaction/transaction_bloc.dart';
 import 'package:money_track/presentation/pages/bottom_navigation/widgets/bottom_navigation_list.dart'; // Custom widget or list for bottom navigation items

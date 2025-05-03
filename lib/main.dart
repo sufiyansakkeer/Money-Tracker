@@ -1,47 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:money_track/my_app.dart';
-import 'package:money_track/models/categories_model/category_model.dart';
-import 'models/transaction_model/transaction_model.dart';
+import 'package:money_track/app/app.dart';
+import 'package:money_track/app/di/injection_container.dart';
+import 'package:money_track/data/models/category_model.dart';
+import 'package:money_track/data/models/transaction_model.dart';
 
-//here main function became future because the init flutter function is a future method
+/// Main entry point for the application
 Future<void> main() async {
-  //Setting SystemUIOverlay
+  // Set system UI overlay style
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      systemStatusBarContrastEnforced: true,
-      systemNavigationBarColor: Colors.transparent,
-      systemNavigationBarDividerColor: Colors.transparent,
-      systemNavigationBarIconBrightness: Brightness.dark,
-      statusBarIconBrightness: Brightness.light));
-  //here it will ensure that the app will connect with platform channels or not,
-  // all plugins are connected with platform channels or not before app starting
+    systemStatusBarContrastEnforced: true,
+    systemNavigationBarColor: Colors.transparent,
+    systemNavigationBarDividerColor: Colors.transparent,
+    systemNavigationBarIconBrightness: Brightness.dark,
+    statusBarIconBrightness: Brightness.light,
+  ));
+
+  // Ensure Flutter binding is initialized
   WidgetsFlutterBinding.ensureInitialized();
 
-  //here it will initialize the hive database
+  // Initialize Hive database
   await Hive.initFlutter();
-  Hive.openBox<CategoryModel>('categoryDBName');
-  //here it will register the category type adapter if it is not registered ,
-  //without adapter we can't read or write to data base,
-  // it act as a bridge between database and app
-//category type adapter registration
 
+  // Register Hive adapters BEFORE opening boxes
   if (!Hive.isAdapterRegistered(CategoryTypeAdapter().typeId)) {
     Hive.registerAdapter(CategoryTypeAdapter());
   }
 
-  //here we register the category name adapter if it is not registered
-//category model adapter registration
-//transaction model adapter registration
-
-  Hive.registerAdapter(TransactionModelAdapter());
   if (!Hive.isAdapterRegistered(CategoryModelAdapter().typeId)) {
     Hive.registerAdapter(CategoryModelAdapter());
   }
+
+  Hive.registerAdapter(TransactionModelAdapter());
+
   if (!Hive.isAdapterRegistered(TransactionTypeAdapter().typeId)) {
     Hive.registerAdapter(TransactionTypeAdapter());
   }
-  runApp(
-    const MyApp(),
-  );
+
+  // Now open the boxes
+  await Hive.openBox<CategoryModel>('category-database');
+
+  // Initialize dependency injection
+  await sl.init();
+
+  // Run the app
+  runApp(const App());
 }

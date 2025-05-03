@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_track/core/constants/colors.dart';
-import 'package:money_track/helper/sized_box_extension.dart';
-import 'package:money_track/presentation/bloc/category/category_bloc.dart';
+import 'package:money_track/core/utils/sized_box_extension.dart';
+import 'package:money_track/core/widgets/category_card.dart';
+import 'package:money_track/features/categories/presentation/bloc/category_bloc.dart';
 import 'widget/category_bottom_sheet.dart';
-import 'widget/category_card.dart';
 
 class CategoryPage extends StatefulWidget {
   const CategoryPage({super.key});
@@ -16,7 +16,7 @@ class CategoryPage extends StatefulWidget {
 class _CategoryPageState extends State<CategoryPage> {
   @override
   void initState() {
-    context.read<CategoryBloc>().add(GetAllCategoryModels());
+    context.read<CategoryBloc>().add(GetAllCategoriesEvent());
     super.initState();
   }
 

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:money_track/helper/navigation_extension.dart';
 import 'package:money_track/helper/sized_box_extension.dart';
-import 'package:money_track/models/settings/settings_title_model.dart';
+import 'package:money_track/models/profile/profile_title_model.dart';
 import 'package:money_track/presentation/pages/profile/about/about_page.dart';
 import 'package:money_track/presentation/pages/profile/currency/currency_page.dart';
 import 'package:money_track/presentation/pages/profile/theme_page/theme_page.dart';
 import 'package:money_track/presentation/pages/profile/widget/reset_drop_down.dart';
-import 'package:money_track/repository/settings_repository.dart';
+import 'package:money_track/repository/profile_repository.dart';
 
 import 'analyze/analyze_page.dart';
 import 'widget/settings_tile.dart';
@@ -34,7 +34,7 @@ class ProfilePage extends StatelessWidget {
               separatorBuilder: (context, index) => 20.height(),
               primary: false,
               shrinkWrap: true,
-              itemBuilder: (context, index) => SettingsTile(
+              itemBuilder: (context, index) => ProfileTile(
                 title: _tileList[index].title,
                 subtitle: _tileList[index].subtitle,
                 onPressed: () {
@@ -61,44 +61,44 @@ class ProfilePage extends StatelessWidget {
   }
 }
 
-List<SettingsModel> _tileList = [
-  SettingsModel(
+List<ProfileModel> _tileList = [
+  ProfileModel(
     title: "Analyze",
     subtitle: "",
     navigationScreen: const AnalyzePage(),
     tag: "Analyze",
   ),
-  SettingsModel(
+  ProfileModel(
     title: "Currency",
     subtitle: "INR",
     navigationScreen: const CurrencyPage(),
     tag: "Currency",
   ),
-  SettingsModel(
+  ProfileModel(
     title: "Theme",
     subtitle: "Light",
     navigationScreen: const ThemePage(),
     tag: "Theme",
   ),
-  SettingsModel(
+  ProfileModel(
     title: "Reset",
     subtitle: "",
     navigationScreen: null,
   ),
-  SettingsModel(
+  ProfileModel(
     title: "",
     subtitle: "",
     navigationScreen: null,
   ),
-  SettingsModel(
+  ProfileModel(
       title: "About",
       subtitle: "",
       navigationScreen: const AboutPage(),
       tag: "About"),
-  SettingsModel(
+  ProfileModel(
     title: "Help",
     subtitle: "",
     navigationScreen: null,
-    onPressed: () => SettingsRepository().navigateToMail(),
+    onPressed: () => ProfileRepository().navigateToMail(),
   ),
 ];

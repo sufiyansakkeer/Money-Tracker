@@ -3,8 +3,8 @@ import 'package:money_track/core/constants/colors.dart';
 import 'package:money_track/helper/sized_box_extension.dart';
 import 'package:svg_flutter/svg_flutter.dart';
 
-class SettingsTile extends StatelessWidget {
-  const SettingsTile({
+class ProfileTile extends StatelessWidget {
+  const ProfileTile({
     super.key,
     required this.title,
     required this.subtitle,

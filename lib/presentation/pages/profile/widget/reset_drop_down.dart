@@ -5,7 +5,7 @@ import 'package:money_track/core/constants/style_constants.dart';
 import 'package:money_track/helper/navigation_extension.dart';
 import 'package:money_track/helper/sized_box_extension.dart';
 import 'package:money_track/presentation/bloc/bottom_navigation/bottom_navigation_bloc.dart';
-import 'package:money_track/repository/settings_repository.dart';
+import 'package:money_track/repository/profile_repository.dart';
 
 class ResetDropDown extends StatelessWidget {
   const ResetDropDown({
@@ -32,7 +32,7 @@ class ResetDropDown extends StatelessWidget {
             style: StyleConstants.elevatedButtonStyle(
                 backgroundColor: ColorConstants.secondaryColor),
             onPressed: () {
-              SettingsRepository().clearDB(context: context);
+              ProfileRepository().clearDB(context: context);
               context
                   .read<BottomNavigationBloc>()
                   .add(ChangeBottomNavigation(index: 0));

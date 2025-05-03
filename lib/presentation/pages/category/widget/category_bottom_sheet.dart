@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_track/core/constants/colors.dart';
 import 'package:money_track/helper/navigation_extension.dart';
 import 'package:money_track/helper/sized_box_extension.dart';
-import 'package:money_track/presentation/bloc/category/category_bloc.dart';
+import 'package:money_track/features/onboarding/domain/category/category_bloc.dart';
 
 class CategoryBottomSheetWidget extends StatefulWidget {
   const CategoryBottomSheetWidget({
