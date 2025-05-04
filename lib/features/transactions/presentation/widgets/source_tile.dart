@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:money_track/core/utils/currency_formatter.dart';
 import 'package:money_track/core/utils/sized_box_extension.dart';
 import 'package:money_track/core/utils/widget_extension.dart';
 import 'package:svg_flutter/svg.dart';
@@ -49,7 +50,7 @@ class SourceTile extends StatelessWidget {
                 ),
               ),
               Text(
-                "₹$sourceData",
+                CurrencyFormatter.format(context, sourceData),
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 20,

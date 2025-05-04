@@ -12,6 +12,14 @@ import 'package:money_track/domain/usecases/transaction/add_transaction_usecase.
 import 'package:money_track/domain/usecases/transaction/get_all_transactions_usecase.dart';
 import 'package:money_track/features/categories/presentation/bloc/category_bloc.dart';
 import 'package:money_track/features/navigation/presentation/bloc/bottom_navigation_bloc.dart';
+import 'package:money_track/features/profile/data/datasources/currency_local_datasource.dart';
+import 'package:money_track/features/profile/data/repositories/currency_repository_impl.dart';
+import 'package:money_track/features/profile/domain/repositories/currency_repository.dart';
+import 'package:money_track/features/profile/domain/usecases/convert_currency_usecase.dart';
+import 'package:money_track/features/profile/domain/usecases/get_available_currencies_usecase.dart';
+import 'package:money_track/features/profile/domain/usecases/get_selected_currency_usecase.dart';
+import 'package:money_track/features/profile/domain/usecases/set_selected_currency_usecase.dart';
+import 'package:money_track/features/profile/presentation/bloc/currency/currency_cubit.dart';
 import 'package:money_track/features/transactions/presentation/bloc/total_transaction/total_transaction_cubit.dart';
 import 'package:money_track/features/transactions/presentation/bloc/transaction_bloc.dart';
 
@@ -35,6 +43,7 @@ class _ServiceLocator {
   late TransactionBloc transactionBloc;
   late TotalTransactionCubit totalTransactionCubit;
   late BottomNavigationBloc bottomNavigationBloc;
+  late CurrencyCubit currencyCubit;
 
   // Initialize dependencies
   Future<void> init() async {
@@ -45,6 +54,7 @@ class _ServiceLocator {
     final categoryLocalDataSource = CategoryLocalDataSourceImpl(hive: hive);
     final transactionLocalDataSource =
         TransactionLocalDataSourceImpl(hive: hive);
+    final currencyLocalDataSource = CurrencyLocalDataSourceImpl(hive: hive);
 
     // Repositories
     final CategoryRepository categoryRepository = CategoryRepositoryImpl(
@@ -53,6 +63,9 @@ class _ServiceLocator {
     final TransactionRepository transactionRepository =
         TransactionRepositoryImpl(
       localDataSource: transactionLocalDataSource,
+    );
+    final CurrencyRepository currencyRepository = CurrencyRepositoryImpl(
+      localDataSource: currencyLocalDataSource,
     );
 
     // Use cases
@@ -63,6 +76,15 @@ class _ServiceLocator {
     final getAllTransactionsUseCase =
         GetAllTransactionsUseCase(transactionRepository);
     final addTransactionUseCase = AddTransactionUseCase(transactionRepository);
+
+    // Currency use cases
+    final getSelectedCurrencyUseCase =
+        GetSelectedCurrencyUseCase(currencyRepository);
+    final setSelectedCurrencyUseCase =
+        SetSelectedCurrencyUseCase(currencyRepository);
+    final getAvailableCurrenciesUseCase =
+        GetAvailableCurrenciesUseCase(currencyRepository);
+    final convertCurrencyUseCase = ConvertCurrencyUseCase(currencyRepository);
 
     // BLoCs
     categoryBloc = CategoryBloc(
@@ -81,5 +103,12 @@ class _ServiceLocator {
     );
 
     bottomNavigationBloc = BottomNavigationBloc();
+
+    currencyCubit = CurrencyCubit(
+      getSelectedCurrencyUseCase: getSelectedCurrencyUseCase,
+      setSelectedCurrencyUseCase: setSelectedCurrencyUseCase,
+      getAvailableCurrenciesUseCase: getAvailableCurrenciesUseCase,
+      convertCurrencyUseCase: convertCurrencyUseCase,
+    );
   }
 }

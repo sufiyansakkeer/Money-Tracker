@@ -64,7 +64,7 @@ class TransactionTypeAdapter extends TypeAdapter<TransactionType> {
       case 1:
         return TransactionType.expense;
       default:
-        return TransactionType.expense;
+        return TransactionType.income;
     }
   }
 
@@ -111,7 +111,7 @@ class CategoryTypeAdapter extends TypeAdapter<CategoryType> {
       case 5:
         return CategoryType.other;
       default:
-        return CategoryType.other;
+        return CategoryType.salary;
     }
   }
 

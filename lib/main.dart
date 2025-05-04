@@ -5,6 +5,7 @@ import 'package:money_track/app/app.dart';
 import 'package:money_track/app/di/injection_container.dart';
 import 'package:money_track/data/models/category_model.dart';
 import 'package:money_track/data/models/transaction_model.dart';
+import 'package:money_track/features/profile/data/models/currency_model.dart';
 
 /// Main entry point for the application
 Future<void> main() async {
@@ -38,8 +39,13 @@ Future<void> main() async {
     Hive.registerAdapter(TransactionTypeAdapter());
   }
 
+  if (!Hive.isAdapterRegistered(5)) {
+    Hive.registerAdapter(CurrencyModelAdapter());
+  }
+
   // Now open the boxes
   await Hive.openBox<CategoryModel>('category-database');
+  await Hive.openBox<CurrencyModel>('currency-database');
 
   // Initialize dependency injection
   await sl.init();

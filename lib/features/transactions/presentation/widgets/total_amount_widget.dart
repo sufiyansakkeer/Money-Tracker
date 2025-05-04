@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_track/core/constants/colors.dart';
+import 'package:money_track/core/utils/currency_formatter.dart';
 import 'package:money_track/core/utils/sized_box_extension.dart';
 import 'package:money_track/core/utils/widget_extension.dart';
 import 'package:money_track/features/transactions/presentation/bloc/total_transaction/total_transaction_cubit.dart';
@@ -26,16 +27,17 @@ class TotalAmountWidget extends StatelessWidget {
           builder: (context, state) {
             if (state is TotalTransactionSuccess) {
               return Text(
-                "₹${state.totalIncome - state.totalExpense}",
+                CurrencyFormatter.format(
+                    context, state.totalIncome - state.totalExpense),
                 style: const TextStyle(
                   fontWeight: FontWeight.w800,
                   fontSize: 28,
                 ),
               );
             } else {
-              return const Text(
-                "₹0",
-                style: TextStyle(
+              return Text(
+                CurrencyFormatter.format(context, 0),
+                style: const TextStyle(
                   fontWeight: FontWeight.w800,
                   fontSize: 28,
                 ),

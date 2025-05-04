@@ -32,6 +32,9 @@ class App extends StatelessWidget {
         BlocProvider(
           create: (context) => OnBoardingCubit(),
         ),
+        BlocProvider(
+          create: (context) => sl.currencyCubit,
+        ),
       ],
       child: MaterialApp(
         scaffoldMessengerKey: snackBarKey,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
+import 'package:money_track/core/utils/currency_formatter.dart';
 import 'package:money_track/core/utils/sized_box_extension.dart';
 import 'package:money_track/domain/entities/category_entity.dart';
 import 'package:money_track/domain/entities/transaction_entity.dart';
@@ -222,7 +222,6 @@ class _AnalyzePageState extends State<AnalyzePage> {
     }
 
     final balance = totalIncome - totalExpense;
-    final formatter = NumberFormat.currency(symbol: '\$');
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -245,7 +244,7 @@ class _AnalyzePageState extends State<AnalyzePage> {
             children: [
               const Text("Total Income:"),
               Text(
-                formatter.format(totalIncome),
+                CurrencyFormatter.format(context, totalIncome),
                 style: const TextStyle(
                   color: Colors.green,
                   fontWeight: FontWeight.bold,
@@ -259,7 +258,7 @@ class _AnalyzePageState extends State<AnalyzePage> {
             children: [
               const Text("Total Expense:"),
               Text(
-                formatter.format(totalExpense),
+                CurrencyFormatter.format(context, totalExpense),
                 style: const TextStyle(
                   color: Colors.red,
                   fontWeight: FontWeight.bold,
@@ -273,7 +272,7 @@ class _AnalyzePageState extends State<AnalyzePage> {
             children: [
               const Text("Balance:"),
               Text(
-                formatter.format(balance),
+                CurrencyFormatter.format(context, balance),
                 style: TextStyle(
                   color: balance >= 0 ? Colors.green : Colors.red,
                   fontWeight: FontWeight.bold,

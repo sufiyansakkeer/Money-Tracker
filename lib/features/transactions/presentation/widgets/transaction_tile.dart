@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money_track/core/constants/colors.dart';
+import 'package:money_track/core/utils/currency_formatter.dart';
 import 'package:money_track/core/utils/sized_box_extension.dart';
 import 'package:money_track/core/utils/widget_extension.dart';
 import 'package:money_track/domain/entities/category_entity.dart';
@@ -45,7 +46,9 @@ class TransactionTile extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 Text(
-                  "${type == TransactionType.expense ? '-' : '+'} ₹$amount",
+                  CurrencyFormatter.format(context, amount,
+                      showSign: true,
+                      isExpense: type == TransactionType.expense),
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,

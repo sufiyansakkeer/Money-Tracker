@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:money_track/core/constants/colors.dart';
 import 'package:money_track/core/constants/style_constants.dart';
+import 'package:money_track/core/utils/currency_formatter.dart';
 import 'package:money_track/core/utils/navigation_extension.dart';
 import 'package:money_track/core/utils/sized_box_extension.dart';
 import 'package:money_track/core/utils/snack_bar_extension.dart';
@@ -497,17 +498,17 @@ class AmountWidget extends StatelessWidget {
           10.height(),
           TextFormField(
             controller: controller,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               border: InputBorder.none,
               hintText: "0",
-              hintStyle: TextStyle(
+              hintStyle: const TextStyle(
                 color: Color(0xFFE3E2E2),
                 fontSize: 70,
                 fontWeight: FontWeight.bold,
               ),
               prefix: Text(
-                "₹",
-                style: TextStyle(
+                CurrencyFormatter.getCurrencySymbol(context),
+                style: const TextStyle(
                   fontSize: 70,
                   color: Colors.white,
                   fontWeight: FontWeight.bold,

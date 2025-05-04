@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:money_track/core/constants/colors.dart';
+import 'package:money_track/core/utils/currency_formatter.dart';
 import 'package:money_track/domain/entities/category_entity.dart';
 import 'package:money_track/features/profile/domain/entities/chart_data.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -55,7 +56,7 @@ class PieChartWidget extends StatelessWidget {
             ),
           ),
           dataLabelMapper: (PieChartData data, _) =>
-              '${data.category}: ${NumberFormat.currency(symbol: '\$').format(data.amount)}',
+              '${data.category}: ${CurrencyFormatter.format(context, data.amount)}',
           enableTooltip: true,
         ),
       ],
@@ -107,7 +108,8 @@ class LineChartWidget extends StatelessWidget {
         majorGridLines: const MajorGridLines(width: 0),
       ),
       primaryYAxis: NumericAxis(
-        numberFormat: NumberFormat.currency(symbol: '\$'),
+        numberFormat: NumberFormat.currency(
+            symbol: CurrencyFormatter.getCurrencySymbol(context)),
         majorGridLines: const MajorGridLines(width: 0.5),
       ),
       tooltipBehavior: TooltipBehavior(enable: true),

@@ -9,10 +9,12 @@ class ProfileTile extends StatelessWidget {
     required this.title,
     required this.subtitle,
     this.onPressed,
+    this.icon,
   });
   final String title;
   final String subtitle;
   final void Function()? onPressed;
+  final IconData? icon;
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +28,30 @@ class ProfileTile extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
+            Row(
+              children: [
+                if (icon != null)
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: ColorConstants.secondaryColor,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Icon(
+                      icon,
+                      color: ColorConstants.themeColor,
+                      size: 20,
+                    ),
+                  ),
+                if (icon != null) 12.width(),
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
             ),
             Row(
               children: [
