@@ -99,6 +99,6 @@ List<ProfileModel> _tileList = [
     title: "Help",
     subtitle: "",
     navigationScreen: null,
-    onPressed: () => ProfileRepository().navigateToMail(),
+    onPressed: () {},
   ),
 ];

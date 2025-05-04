@@ -1,18 +1,18 @@
-part of 'category_bloc.dart';
+// part of 'category_bloc.dart';
 
-sealed class CategoryEvent extends Equatable {
-  const CategoryEvent();
+// sealed class CategoryEvent extends Equatable {
+//   const CategoryEvent();
 
-  @override
-  List<Object> get props => [];
-}
+//   @override
+//   List<Object> get props => [];
+// }
 
-class GetAllCategoryModels extends CategoryEvent {}
+// class GetAllCategoryModels extends CategoryEvent {}
 
-class SetConstantCategoryModels extends CategoryEvent {}
+// class SetConstantCategoryModels extends CategoryEvent {}
 
-class AddCategoryEvent extends CategoryEvent {
-  final String name;
+// class AddCategoryEvent extends CategoryEvent {
+//   final String name;
 
-  const AddCategoryEvent({required this.name});
-}
+//   const AddCategoryEvent({required this.name});
+// }

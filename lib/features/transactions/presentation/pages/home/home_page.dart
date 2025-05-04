@@ -9,6 +9,7 @@ import 'package:money_track/domain/entities/transaction_entity.dart';
 import 'package:money_track/features/transactions/presentation/bloc/transaction_bloc.dart';
 import 'package:money_track/features/transactions/presentation/bloc/total_transaction/total_transaction_cubit.dart';
 import 'package:money_track/features/transactions/presentation/pages/add_transaction/transaction_page.dart';
+import 'package:money_track/features/transactions/presentation/pages/transaction_list/transaction_list_page.dart';
 import 'package:money_track/features/transactions/presentation/widgets/background.dart';
 import 'package:money_track/features/transactions/presentation/widgets/empty_transaction_list.dart';
 import 'package:money_track/features/transactions/presentation/widgets/floating_action_button_widget.dart';
@@ -138,7 +139,9 @@ class TransactionHeader extends StatelessWidget {
         ),
         ElevatedButton(
           onPressed: () {
-            // Navigate to transaction list page
+            context.pushWithRightToLeftTransition(
+              const TransactionListPage(),
+            );
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: ColorConstants.secondaryColor,

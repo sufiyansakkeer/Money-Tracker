@@ -76,3 +76,12 @@ class DeleteTransactionEvent extends TransactionEvent {
   @override
   List<Object?> get props => [transactionId];
 }
+
+class FilterTransactionEvent extends TransactionEvent {
+  final FilterData filterData;
+
+  const FilterTransactionEvent({required this.filterData});
+
+  @override
+  List<Object?> get props => [filterData];
+}

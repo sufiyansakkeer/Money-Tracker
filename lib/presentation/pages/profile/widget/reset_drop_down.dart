@@ -32,7 +32,7 @@ class ResetDropDown extends StatelessWidget {
             style: StyleConstants.elevatedButtonStyle(
                 backgroundColor: ColorConstants.secondaryColor),
             onPressed: () {
-              ProfileRepository().clearDB(context: context);
+              // ProfileRepository().clearDB(context: context);
               context
                   .read<BottomNavigationBloc>()
                   .add(ChangeBottomNavigation(index: 0));

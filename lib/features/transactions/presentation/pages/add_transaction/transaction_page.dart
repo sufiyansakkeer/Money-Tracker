@@ -114,241 +114,319 @@ class _TransactionPageState extends State<TransactionPage> {
       ),
       body: Column(
         children: [
+          // Amount section at the top
           AmountWidget(controller: amountEditingController),
-          Container(
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(
-                  20,
-                ),
-                topRight: Radius.circular(
-                  20,
+
+          // Main content with form fields and button
+          Expanded(
+            child: Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
                 ),
               ),
-            ),
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-              vertical: 30,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      TextFormField(
-                        controller: categoryController,
-                        readOnly: true,
-                        validator: (value) {
-                          if (value == null || value.trim() == "") {
-                            return "Required";
-                          }
-                          return null;
-                        },
-                        onTap: () {
-                          showModalBottomSheet(
-                            context: context,
-                            builder: (context) => Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 20,
-                              ),
-                              width: 800,
-                              child: Column(
-                                children: [
-                                  const Text(
-                                    "Category",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                  BlocBuilder<CategoryBloc, CategoryState>(
-                                    builder: (context, state) {
-                                      if (state is CategoryLoading) {
-                                        return const Center(
-                                          child: CircularProgressIndicator(),
-                                        );
-                                      } else if (state is CategoryLoaded) {
-                                        return Scrollbar(
-                                          child: ListView.separated(
-                                            separatorBuilder:
-                                                (context, index) => 10.height(),
-                                            itemBuilder: (context, index) =>
-                                                CustomInkWell(
-                                              onTap: () {
-                                                setState(() {
-                                                  categoryType = state
-                                                      .categoryList[index]
-                                                      .categoryType;
-                                                  categoryEntity =
-                                                      state.categoryList[index];
-                                                  categoryController.text =
-                                                      state.categoryList[index]
-                                                          .categoryName;
-                                                });
-                                                context.pop();
-                                              },
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      CategoryIconWidget(
-                                                          categoryType: state
-                                                              .categoryList[
-                                                                  index]
-                                                              .categoryType),
-                                                      10.width(),
-                                                      Text(
-                                                        state
-                                                            .categoryList[index]
-                                                            .categoryName,
-                                                        style: const TextStyle(
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  if (state.categoryList[index]
-                                                          .categoryType ==
-                                                      categoryType)
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              right: 5),
-                                                      child: SvgPicture.asset(
-                                                          "assets/svg/common/success.svg"),
-                                                    ),
-                                                ],
-                                              ),
-                                            ),
-                                            itemCount:
-                                                state.categoryList.length,
-                                          ),
-                                        );
-                                      } else {
-                                        return const Center(
-                                          child: Text("No category found"),
-                                        );
-                                      }
-                                    },
-                                  ).expand()
-                                ],
+              child: Column(
+                children: [
+                  // Form fields in a scrollable area
+                  Expanded(
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.only(
+                        left: 20,
+                        right: 20,
+                        top: 30,
+                        bottom: 10,
+                      ),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Category field
+                            const Text(
+                              "Category",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14,
+                                color: Colors.black54,
                               ),
                             ),
-                          );
-                        },
-                        decoration: InputDecoration(
-                          disabledBorder: StyleConstants.textFormFieldBorder(),
-                          enabledBorder: StyleConstants.textFormFieldBorder(),
-                          border: StyleConstants.textFormFieldBorder(),
-                          hintText: "Category",
-                          suffixIcon: const DropDownIcon(),
-                        ),
-                      ),
-                      20.height(),
-                      TextFormField(
-                        validator: (value) {
-                          if (value == null || value.trim() == "") {
-                            return "Required";
-                          }
-                          return null;
-                        },
-                        readOnly: true,
-                        onTap: () {
-                          _selectDate(context);
-                          setState(() {
-                            dateController.text =
-                                DateFormat('dd-MMMM-yyyy').format(date);
-                          });
-                        },
-                        controller: dateController,
-                        decoration: InputDecoration(
-                          disabledBorder: StyleConstants.textFormFieldBorder(),
-                          enabledBorder: StyleConstants.textFormFieldBorder(),
-                          border: StyleConstants.textFormFieldBorder(),
-                          hintText: "Date",
-                        ),
-                      ),
-                      20.height(),
-                      TextFormField(
-                        validator: (value) {
-                          if (value == null || value.trim() == "") {
-                            return "Required";
-                          }
-                          return null;
-                        },
-                        controller: descriptionController,
-                        decoration: InputDecoration(
-                          disabledBorder: StyleConstants.textFormFieldBorder(),
-                          enabledBorder: StyleConstants.textFormFieldBorder(),
-                          border: StyleConstants.textFormFieldBorder(),
-                          hintText: "Description",
-                        ),
-                      ),
-                      20.height(),
-                    ],
-                  ),
-                ),
-                const Spacer(),
-                ElevatedButton(
-                  onPressed: () {
-                    if (amountEditingController.text.isEmpty) {
-                      "Please Enter the amount".showSnack();
-                    }
-                    if (_formKey.currentState!.validate() &&
-                        amountEditingController.text.trim() != "" &&
-                        categoryType != null &&
-                        categoryEntity != null) {
-                      if (widget.transactionEntity != null) {
-                        context.read<TransactionBloc>().add(
-                              EditTransactionEvent(
-                                id: widget.transactionEntity!.id,
-                                amount: amountEditingController.text,
-                                description: descriptionController.text,
-                                isExpense: widget.isExpense,
-                                categoryType: categoryType!,
-                                categoryModel: categoryEntity!,
-                                date: date,
+                            8.height(),
+                            TextFormField(
+                              controller: categoryController,
+                              readOnly: true,
+                              validator: (value) {
+                                if (value == null || value.trim() == "") {
+                                  return "Required";
+                                }
+                                return null;
+                              },
+                              onTap: () {
+                                showModalBottomSheet(
+                                  context: context,
+                                  builder: (context) => Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 20,
+                                      vertical: 20,
+                                    ),
+                                    width: 800,
+                                    child: Column(
+                                      children: [
+                                        const Text(
+                                          "Category",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                        BlocBuilder<CategoryBloc,
+                                            CategoryState>(
+                                          builder: (context, state) {
+                                            if (state is CategoryLoading) {
+                                              return const Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              );
+                                            } else if (state
+                                                is CategoryLoaded) {
+                                              return Scrollbar(
+                                                child: ListView.separated(
+                                                  separatorBuilder:
+                                                      (context, index) =>
+                                                          10.height(),
+                                                  itemBuilder:
+                                                      (context, index) =>
+                                                          CustomInkWell(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        categoryType = state
+                                                            .categoryList[index]
+                                                            .categoryType;
+                                                        categoryEntity =
+                                                            state.categoryList[
+                                                                index];
+                                                        categoryController
+                                                                .text =
+                                                            state
+                                                                .categoryList[
+                                                                    index]
+                                                                .categoryName;
+                                                      });
+                                                      context.pop();
+                                                    },
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Row(
+                                                          children: [
+                                                            CategoryIconWidget(
+                                                                categoryType: state
+                                                                    .categoryList[
+                                                                        index]
+                                                                    .categoryType),
+                                                            10.width(),
+                                                            Text(
+                                                              state
+                                                                  .categoryList[
+                                                                      index]
+                                                                  .categoryName,
+                                                              style:
+                                                                  const TextStyle(
+                                                                fontSize: 16,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        if (state
+                                                                .categoryList[
+                                                                    index]
+                                                                .categoryType ==
+                                                            categoryType)
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .only(
+                                                                    right: 5),
+                                                            child: SvgPicture.asset(
+                                                                "assets/svg/common/success.svg"),
+                                                          ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  itemCount:
+                                                      state.categoryList.length,
+                                                ),
+                                              );
+                                            } else {
+                                              return const Center(
+                                                child:
+                                                    Text("No category found"),
+                                              );
+                                            }
+                                          },
+                                        ).expand()
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                              decoration: InputDecoration(
+                                disabledBorder:
+                                    StyleConstants.textFormFieldBorder(),
+                                enabledBorder:
+                                    StyleConstants.textFormFieldBorder(),
+                                border: StyleConstants.textFormFieldBorder(),
+                                hintText: "Select a category",
+                                suffixIcon: const DropDownIcon(),
                               ),
-                            );
-                      } else {
-                        context.read<TransactionBloc>().add(
-                              AddTransactionEvent(
-                                amount: amountEditingController.text,
-                                description: descriptionController.text,
-                                isExpense: widget.isExpense,
-                                categoryType: categoryType!,
-                                categoryModel: categoryEntity!,
-                                date: date,
+                            ),
+
+                            24.height(),
+
+                            // Date field
+                            const Text(
+                              "Date",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14,
+                                color: Colors.black54,
                               ),
-                            );
-                      }
-                      context.read<TotalTransactionCubit>().getTotalAmount();
-                      context.pop();
-                    }
-                  },
-                  style: StyleConstants.elevatedButtonStyle(),
-                  child: Text(
-                    widget.transactionEntity == null ? "Continue" : "Save",
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
+                            ),
+                            8.height(),
+                            TextFormField(
+                              validator: (value) {
+                                if (value == null || value.trim() == "") {
+                                  return "Required";
+                                }
+                                return null;
+                              },
+                              readOnly: true,
+                              onTap: () {
+                                _selectDate(context);
+                                setState(() {
+                                  dateController.text =
+                                      DateFormat('dd-MMMM-yyyy').format(date);
+                                });
+                              },
+                              controller: dateController,
+                              decoration: InputDecoration(
+                                disabledBorder:
+                                    StyleConstants.textFormFieldBorder(),
+                                enabledBorder:
+                                    StyleConstants.textFormFieldBorder(),
+                                border: StyleConstants.textFormFieldBorder(),
+                                hintText: "Select date",
+                                suffixIcon: const Icon(
+                                    Icons.calendar_today_outlined,
+                                    size: 20),
+                              ),
+                            ),
+
+                            24.height(),
+
+                            // Description field
+                            const Text(
+                              "Description",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14,
+                                color: Colors.black54,
+                              ),
+                            ),
+                            8.height(),
+                            TextFormField(
+                              validator: (value) {
+                                if (value == null || value.trim() == "") {
+                                  return "Required";
+                                }
+                                return null;
+                              },
+                              controller: descriptionController,
+                              decoration: InputDecoration(
+                                disabledBorder:
+                                    StyleConstants.textFormFieldBorder(),
+                                enabledBorder:
+                                    StyleConstants.textFormFieldBorder(),
+                                border: StyleConstants.textFormFieldBorder(),
+                                hintText: "Enter description",
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ],
+
+                  // Continue/Save button at the bottom
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 16),
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: 55,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (amountEditingController.text.isEmpty) {
+                            "Please Enter the amount".showSnack();
+                          }
+                          if (_formKey.currentState!.validate() &&
+                              amountEditingController.text.trim() != "" &&
+                              categoryType != null &&
+                              categoryEntity != null) {
+                            if (widget.transactionEntity != null) {
+                              context.read<TransactionBloc>().add(
+                                    EditTransactionEvent(
+                                      id: widget.transactionEntity!.id,
+                                      amount: amountEditingController.text,
+                                      description: descriptionController.text,
+                                      isExpense: widget.isExpense,
+                                      categoryType: categoryType!,
+                                      categoryModel: categoryEntity!,
+                                      date: date,
+                                    ),
+                                  );
+                            } else {
+                              context.read<TransactionBloc>().add(
+                                    AddTransactionEvent(
+                                      amount: amountEditingController.text,
+                                      description: descriptionController.text,
+                                      isExpense: widget.isExpense,
+                                      categoryType: categoryType!,
+                                      categoryModel: categoryEntity!,
+                                      date: date,
+                                    ),
+                                  );
+                            }
+                            context
+                                .read<TotalTransactionCubit>()
+                                .getTotalAmount();
+                            context.pop();
+                          }
+                        },
+                        style: StyleConstants.elevatedButtonStyle(),
+                        child: Text(
+                          widget.transactionEntity == null
+                              ? "Continue"
+                              : "Save",
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ).expand(),
+          ),
         ],
       ),
     );
@@ -402,7 +480,7 @@ class AmountWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -416,6 +494,7 @@ class AmountWidget extends StatelessWidget {
               fontWeight: FontWeight.w700,
             ),
           ),
+          10.height(),
           TextFormField(
             controller: controller,
             decoration: const InputDecoration(
@@ -434,6 +513,7 @@ class AmountWidget extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
+              contentPadding: EdgeInsets.zero,
             ),
             style: const TextStyle(
               color: Colors.white,
@@ -441,8 +521,10 @@ class AmountWidget extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
             keyboardType: TextInputType.number,
-            inputFormatters: const [],
+            textAlign: TextAlign.left,
+            autofocus: true,
           ),
+          10.height(), // Add some space at the bottom
         ],
       ),
     );
