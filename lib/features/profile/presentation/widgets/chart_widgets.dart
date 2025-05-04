@@ -132,3 +132,223 @@ class LineChartWidget extends StatelessWidget {
     );
   }
 }
+
+class BarChartWidget extends StatelessWidget {
+  final List<LineChartData> chartData;
+  final String title;
+  final TransactionType? transactionType;
+
+  const BarChartWidget({
+    super.key,
+    required this.chartData,
+    required this.title,
+    this.transactionType,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (chartData.isEmpty) {
+      return const Center(
+        child: Text(
+          "No data available for the selected filters",
+          style: TextStyle(fontSize: 16),
+        ),
+      );
+    }
+
+    // Determine bar color based on transaction type
+    Color barColor = transactionType == TransactionType.income
+        ? Colors.green
+        : transactionType == TransactionType.expense
+            ? Colors.red
+            : ColorConstants.themeColor;
+
+    return SfCartesianChart(
+      title: ChartTitle(
+        text: title,
+        textStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+        ),
+      ),
+      primaryXAxis: DateTimeAxis(
+        dateFormat: DateFormat('MMM dd'),
+        intervalType: DateTimeIntervalType.auto,
+        majorGridLines: const MajorGridLines(width: 0),
+      ),
+      primaryYAxis: NumericAxis(
+        numberFormat: NumberFormat.currency(
+            symbol: CurrencyFormatter.getCurrencySymbol(context)),
+        majorGridLines: const MajorGridLines(width: 0.5),
+      ),
+      tooltipBehavior: TooltipBehavior(enable: true),
+      series: <CartesianSeries<LineChartData, DateTime>>[
+        BarSeries<LineChartData, DateTime>(
+          dataSource: chartData,
+          xValueMapper: (LineChartData data, _) => data.date,
+          yValueMapper: (LineChartData data, _) => data.amount,
+          name: transactionType == null
+              ? 'All Transactions'
+              : transactionType == TransactionType.income
+                  ? 'Income'
+                  : 'Expense',
+          color: barColor,
+          dataLabelSettings: const DataLabelSettings(
+            isVisible: true,
+            labelAlignment: ChartDataLabelAlignment.top,
+          ),
+          enableTooltip: true,
+        ),
+      ],
+    );
+  }
+}
+
+class ColumnChartWidget extends StatelessWidget {
+  final List<LineChartData> chartData;
+  final String title;
+  final TransactionType? transactionType;
+
+  const ColumnChartWidget({
+    super.key,
+    required this.chartData,
+    required this.title,
+    this.transactionType,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (chartData.isEmpty) {
+      return const Center(
+        child: Text(
+          "No data available for the selected filters",
+          style: TextStyle(fontSize: 16),
+        ),
+      );
+    }
+
+    // Determine column color based on transaction type
+    Color columnColor = transactionType == TransactionType.income
+        ? Colors.green
+        : transactionType == TransactionType.expense
+            ? Colors.red
+            : ColorConstants.themeColor;
+
+    return SfCartesianChart(
+      title: ChartTitle(
+        text: title,
+        textStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+        ),
+      ),
+      primaryXAxis: DateTimeAxis(
+        dateFormat: DateFormat('MMM dd'),
+        intervalType: DateTimeIntervalType.auto,
+        majorGridLines: const MajorGridLines(width: 0),
+      ),
+      primaryYAxis: NumericAxis(
+        numberFormat: NumberFormat.currency(
+            symbol: CurrencyFormatter.getCurrencySymbol(context)),
+        majorGridLines: const MajorGridLines(width: 0.5),
+      ),
+      tooltipBehavior: TooltipBehavior(enable: true),
+      series: <CartesianSeries<LineChartData, DateTime>>[
+        ColumnSeries<LineChartData, DateTime>(
+          dataSource: chartData,
+          xValueMapper: (LineChartData data, _) => data.date,
+          yValueMapper: (LineChartData data, _) => data.amount,
+          name: transactionType == null
+              ? 'All Transactions'
+              : transactionType == TransactionType.income
+                  ? 'Income'
+                  : 'Expense',
+          color: columnColor,
+          dataLabelSettings: const DataLabelSettings(
+            isVisible: true,
+            labelAlignment: ChartDataLabelAlignment.top,
+          ),
+          enableTooltip: true,
+          borderRadius: BorderRadius.circular(5),
+        ),
+      ],
+    );
+  }
+}
+
+class AreaChartWidget extends StatelessWidget {
+  final List<LineChartData> chartData;
+  final String title;
+  final TransactionType? transactionType;
+
+  const AreaChartWidget({
+    super.key,
+    required this.chartData,
+    required this.title,
+    this.transactionType,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (chartData.isEmpty) {
+      return const Center(
+        child: Text(
+          "No data available for the selected filters",
+          style: TextStyle(fontSize: 16),
+        ),
+      );
+    }
+
+    // Determine area color based on transaction type
+    Color areaColor = transactionType == TransactionType.income
+        ? Colors.green.withAlpha(128)
+        : transactionType == TransactionType.expense
+            ? Colors.red.withAlpha(128)
+            : ColorConstants.themeColor.withAlpha(128);
+
+    Color borderColor = transactionType == TransactionType.income
+        ? Colors.green
+        : transactionType == TransactionType.expense
+            ? Colors.red
+            : ColorConstants.themeColor;
+
+    return SfCartesianChart(
+      title: ChartTitle(
+        text: title,
+        textStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+        ),
+      ),
+      primaryXAxis: DateTimeAxis(
+        dateFormat: DateFormat('MMM dd'),
+        intervalType: DateTimeIntervalType.auto,
+        majorGridLines: const MajorGridLines(width: 0),
+      ),
+      primaryYAxis: NumericAxis(
+        numberFormat: NumberFormat.currency(
+            symbol: CurrencyFormatter.getCurrencySymbol(context)),
+        majorGridLines: const MajorGridLines(width: 0.5),
+      ),
+      tooltipBehavior: TooltipBehavior(enable: true),
+      series: <CartesianSeries<LineChartData, DateTime>>[
+        AreaSeries<LineChartData, DateTime>(
+          dataSource: chartData,
+          xValueMapper: (LineChartData data, _) => data.date,
+          yValueMapper: (LineChartData data, _) => data.amount,
+          name: transactionType == null
+              ? 'All Transactions'
+              : transactionType == TransactionType.income
+                  ? 'Income'
+                  : 'Expense',
+          color: areaColor,
+          borderColor: borderColor,
+          borderWidth: 2,
+          markerSettings: const MarkerSettings(isVisible: true),
+          dataLabelSettings: const DataLabelSettings(isVisible: false),
+          enableTooltip: true,
+        ),
+      ],
+    );
+  }
+}

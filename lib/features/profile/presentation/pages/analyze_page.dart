@@ -170,24 +170,7 @@ class _AnalyzePageState extends State<AnalyzePage> {
                                 style: TextStyle(fontSize: 16),
                               ),
                             )
-                          : _filterData.chartType == ChartType.pie
-                              ? PieChartWidget(
-                                  chartData: ChartDataTransformer
-                                      .transformToPieChartData(
-                                    filteredTransactions,
-                                    _filterData.transactionType,
-                                  ),
-                                  title: _getChartTitle(),
-                                )
-                              : LineChartWidget(
-                                  chartData: ChartDataTransformer
-                                      .transformToLineChartData(
-                                    filteredTransactions,
-                                    _filterData.transactionType,
-                                  ),
-                                  title: _getChartTitle(),
-                                  transactionType: _filterData.transactionType,
-                                ),
+                          : _buildChart(filteredTransactions),
                     ),
 
                     // Summary
@@ -207,6 +190,56 @@ class _AnalyzePageState extends State<AnalyzePage> {
         ),
       ),
     );
+  }
+
+  Widget _buildChart(List<TransactionEntity> transactions) {
+    // Using if-else instead of switch to avoid the default clause issue
+    if (_filterData.chartType == ChartType.pie) {
+      return PieChartWidget(
+        chartData: ChartDataTransformer.transformToPieChartData(
+          transactions,
+          _filterData.transactionType,
+        ),
+        title: _getChartTitle(),
+      );
+    } else if (_filterData.chartType == ChartType.line) {
+      return LineChartWidget(
+        chartData: ChartDataTransformer.transformToLineChartData(
+          transactions,
+          _filterData.transactionType,
+        ),
+        title: _getChartTitle(),
+        transactionType: _filterData.transactionType,
+      );
+    } else if (_filterData.chartType == ChartType.bar) {
+      return BarChartWidget(
+        chartData: ChartDataTransformer.transformToLineChartData(
+          transactions,
+          _filterData.transactionType,
+        ),
+        title: _getChartTitle(),
+        transactionType: _filterData.transactionType,
+      );
+    } else if (_filterData.chartType == ChartType.column) {
+      return ColumnChartWidget(
+        chartData: ChartDataTransformer.transformToLineChartData(
+          transactions,
+          _filterData.transactionType,
+        ),
+        title: _getChartTitle(),
+        transactionType: _filterData.transactionType,
+      );
+    } else {
+      // ChartType.area
+      return AreaChartWidget(
+        chartData: ChartDataTransformer.transformToLineChartData(
+          transactions,
+          _filterData.transactionType,
+        ),
+        title: _getChartTitle(),
+        transactionType: _filterData.transactionType,
+      );
+    }
   }
 
   Widget _buildSummary(List<TransactionEntity> transactions) {

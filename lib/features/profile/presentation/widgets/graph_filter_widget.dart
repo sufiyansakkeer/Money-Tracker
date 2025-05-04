@@ -160,30 +160,78 @@ class _GraphFilterWidgetState extends State<GraphFilterWidget> {
               ),
             ),
             10.height(),
-            Row(
-              children: [
-                CustomChoiceChip(
-                  name: "Pie Chart",
-                  selected: widget.filterData.chartType == ChartType.pie,
-                  onSelected: (value) {
-                    setState(() {
-                      widget.filterData.chartType = ChartType.pie;
-                      widget.onFilterChanged(widget.filterData);
-                    });
-                  },
-                ),
-                10.width(),
-                CustomChoiceChip(
-                  name: "Line Chart",
-                  selected: widget.filterData.chartType == ChartType.line,
-                  onSelected: (value) {
-                    setState(() {
-                      widget.filterData.chartType = ChartType.line;
-                      widget.onFilterChanged(widget.filterData);
-                    });
-                  },
-                ),
-              ],
+            SizedBox(
+              height: 80,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: CustomChoiceChip(
+                      name: "Pie Chart",
+                      selected: widget.filterData.chartType == ChartType.pie,
+                      onSelected: (value) {
+                        setState(() {
+                          widget.filterData.chartType = ChartType.pie;
+                          widget.onFilterChanged(widget.filterData);
+                        });
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: CustomChoiceChip(
+                      name: "Line Chart",
+                      selected: widget.filterData.chartType == ChartType.line,
+                      onSelected: (value) {
+                        setState(() {
+                          widget.filterData.chartType = ChartType.line;
+                          widget.onFilterChanged(widget.filterData);
+                        });
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: CustomChoiceChip(
+                      name: "Bar Chart",
+                      selected: widget.filterData.chartType == ChartType.bar,
+                      onSelected: (value) {
+                        setState(() {
+                          widget.filterData.chartType = ChartType.bar;
+                          widget.onFilterChanged(widget.filterData);
+                        });
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: CustomChoiceChip(
+                      name: "Column Chart",
+                      selected: widget.filterData.chartType == ChartType.column,
+                      onSelected: (value) {
+                        setState(() {
+                          widget.filterData.chartType = ChartType.column;
+                          widget.onFilterChanged(widget.filterData);
+                        });
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: CustomChoiceChip(
+                      name: "Area Chart",
+                      selected: widget.filterData.chartType == ChartType.area,
+                      onSelected: (value) {
+                        setState(() {
+                          widget.filterData.chartType = ChartType.area;
+                          widget.onFilterChanged(widget.filterData);
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
             20.height(),
             ElevatedButton(

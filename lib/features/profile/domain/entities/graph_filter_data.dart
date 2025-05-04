@@ -13,6 +13,9 @@ enum GraphTimePeriod {
 enum ChartType {
   pie,
   line,
+  bar,
+  column,
+  area,
 }
 
 /// Entity class for graph filter data
@@ -23,7 +26,7 @@ class GraphFilterData {
   DateTime? startDate;
   DateTime? endDate;
   String? categoryId;
-  
+
   GraphFilterData({
     this.transactionType,
     this.timePeriod = GraphTimePeriod.month,
@@ -32,7 +35,7 @@ class GraphFilterData {
     this.endDate,
     this.categoryId,
   });
-  
+
   void reset() {
     transactionType = null;
     timePeriod = GraphTimePeriod.month;
