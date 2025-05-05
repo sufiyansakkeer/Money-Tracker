@@ -8,6 +8,7 @@ import 'package:money_track/features/profile/presentation/bloc/currency/currency
 import 'package:money_track/features/profile/presentation/bloc/currency/currency_state.dart';
 import 'package:money_track/features/profile/presentation/bloc/theme/theme_cubit.dart';
 import 'package:money_track/features/profile/presentation/bloc/theme/theme_state.dart';
+import 'package:money_track/features/budget/presentation/pages/budget_page.dart';
 import 'package:money_track/features/profile/presentation/pages/about_page.dart';
 import 'package:money_track/features/profile/presentation/pages/analyze_page.dart';
 import 'package:money_track/features/profile/presentation/pages/currency_page.dart';
@@ -43,6 +44,13 @@ class _ProfilePageState extends State<ProfilePage> {
         navigationScreen: const AnalyzePage(),
         tag: "Analyze",
         icon: Icons.analytics_outlined,
+      ),
+      ProfileModel(
+        title: "Budget Planning",
+        subtitle: "Track your spending limits",
+        navigationScreen: const BudgetPage(),
+        tag: "Budget",
+        icon: Icons.account_balance_wallet,
       ),
       ProfileModel(
         title: "Currency",
