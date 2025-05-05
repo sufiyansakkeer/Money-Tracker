@@ -1,4 +1,3 @@
-import 'package:money_track/core/error/failures.dart';
 import 'package:money_track/core/error/result.dart'; // Keep this import
 import 'package:money_track/core/use_cases/use_case.dart';
 import 'package:money_track/domain/entities/transaction_entity.dart';
