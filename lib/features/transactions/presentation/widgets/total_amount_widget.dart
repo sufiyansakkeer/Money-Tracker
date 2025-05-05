@@ -16,10 +16,10 @@ class TotalAmountWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Text(
+        Text(
           "Account Balance",
           style: TextStyle(
-            color: Colors.grey,
+            color: ColorConstants.getTextColor(context).withValues(alpha: 0.6),
           ),
         ),
         10.height(),
@@ -29,17 +29,19 @@ class TotalAmountWidget extends StatelessWidget {
               return Text(
                 CurrencyFormatter.format(
                     context, state.totalIncome - state.totalExpense),
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.w800,
                   fontSize: 28,
+                  color: ColorConstants.getTextColor(context),
                 ),
               );
             } else {
               return Text(
                 CurrencyFormatter.format(context, 0),
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.w800,
                   fontSize: 28,
+                  color: ColorConstants.getTextColor(context),
                 ),
               );
             }
@@ -53,7 +55,7 @@ class TotalAmountWidget extends StatelessWidget {
               builder: (context, state) {
                 if (state is TotalTransactionSuccess) {
                   return SourceTile(
-                    color: ColorConstants.incomeColor,
+                    color: ColorConstants.getIncomeColor(context),
                     sourceName: "Income",
                     sourceData: state.totalIncome,
                     sourceIcon: "assets/svg/home/income_icon.svg",
@@ -61,7 +63,7 @@ class TotalAmountWidget extends StatelessWidget {
                   );
                 } else {
                   return SourceTile(
-                    color: ColorConstants.incomeColor,
+                    color: ColorConstants.getIncomeColor(context),
                     sourceName: "Income",
                     sourceData: 0,
                     sourceIcon: "assets/svg/home/income_icon.svg",
@@ -75,14 +77,14 @@ class TotalAmountWidget extends StatelessWidget {
               builder: (context, state) {
                 if (state is TotalTransactionSuccess) {
                   return SourceTile(
-                    color: ColorConstants.expenseColor,
+                    color: ColorConstants.getExpenseColor(context),
                     sourceName: "Expense",
                     sourceData: state.totalExpense,
                     sourceIcon: "assets/svg/home/expense_icon.svg",
                   );
                 } else {
                   return SourceTile(
-                    color: ColorConstants.expenseColor,
+                    color: ColorConstants.getExpenseColor(context),
                     sourceName: "Expense",
                     sourceData: 0,
                     sourceIcon: "assets/svg/home/expense_icon.svg",

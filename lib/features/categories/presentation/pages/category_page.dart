@@ -25,7 +25,7 @@ class _CategoryPageState extends State<CategoryPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 20,
@@ -34,11 +34,12 @@ class _CategoryPageState extends State<CategoryPage> {
             child: Column(
               children: [
                 20.height(),
-                const Text(
+                Text(
                   "Category",
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
+                    color: ColorConstants.getTextColor(context),
                   ),
                 ),
                 20.height(),
@@ -82,8 +83,13 @@ class _CategoryPageState extends State<CategoryPage> {
           ),
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-                backgroundColor: ColorConstants.secondaryColor,
-                padding: const EdgeInsets.all(20)),
+              backgroundColor: ColorConstants.getThemeColor(context),
+              padding: const EdgeInsets.all(20),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50),
+              ),
+              elevation: 4,
+            ),
             onPressed: () {
               showModalBottomSheet(
                 showDragHandle: true,
@@ -91,9 +97,10 @@ class _CategoryPageState extends State<CategoryPage> {
                 builder: (context) => const CategoryBottomSheetWidget(),
               );
             },
-            child: Icon(
+            child: const Icon(
               Icons.add,
-              color: ColorConstants.themeColor,
+              color: Colors.white,
+              size: 28,
             ),
           ),
         ),

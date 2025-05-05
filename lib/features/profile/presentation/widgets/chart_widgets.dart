@@ -89,10 +89,10 @@ class LineChartWidget extends StatelessWidget {
 
     // Determine line color based on transaction type
     Color lineColor = transactionType == TransactionType.income
-        ? Colors.green
+        ? ColorConstants.getIncomeColor(context)
         : transactionType == TransactionType.expense
-            ? Colors.red
-            : ColorConstants.themeColor;
+            ? ColorConstants.getExpenseColor(context)
+            : ColorConstants.getThemeColor(context);
 
     return SfCartesianChart(
       title: ChartTitle(
@@ -158,10 +158,10 @@ class BarChartWidget extends StatelessWidget {
 
     // Determine bar color based on transaction type
     Color barColor = transactionType == TransactionType.income
-        ? Colors.green
+        ? ColorConstants.getIncomeColor(context)
         : transactionType == TransactionType.expense
-            ? Colors.red
-            : ColorConstants.themeColor;
+            ? ColorConstants.getExpenseColor(context)
+            : ColorConstants.getThemeColor(context);
 
     return SfCartesianChart(
       title: ChartTitle(
@@ -229,10 +229,10 @@ class ColumnChartWidget extends StatelessWidget {
 
     // Determine column color based on transaction type
     Color columnColor = transactionType == TransactionType.income
-        ? Colors.green
+        ? ColorConstants.getIncomeColor(context)
         : transactionType == TransactionType.expense
-            ? Colors.red
-            : ColorConstants.themeColor;
+            ? ColorConstants.getExpenseColor(context)
+            : ColorConstants.getThemeColor(context);
 
     return SfCartesianChart(
       title: ChartTitle(
@@ -301,16 +301,16 @@ class AreaChartWidget extends StatelessWidget {
 
     // Determine area color based on transaction type
     Color areaColor = transactionType == TransactionType.income
-        ? Colors.green.withAlpha(128)
+        ? ColorConstants.getIncomeColor(context).withAlpha(128)
         : transactionType == TransactionType.expense
-            ? Colors.red.withAlpha(128)
-            : ColorConstants.themeColor.withAlpha(128);
+            ? ColorConstants.getExpenseColor(context).withAlpha(128)
+            : ColorConstants.getThemeColor(context).withAlpha(128);
 
     Color borderColor = transactionType == TransactionType.income
-        ? Colors.green
+        ? ColorConstants.getIncomeColor(context)
         : transactionType == TransactionType.expense
-            ? Colors.red
-            : ColorConstants.themeColor;
+            ? ColorConstants.getExpenseColor(context)
+            : ColorConstants.getThemeColor(context);
 
     return SfCartesianChart(
       title: ChartTitle(

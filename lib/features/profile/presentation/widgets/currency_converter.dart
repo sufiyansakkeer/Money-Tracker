@@ -189,11 +189,11 @@ class _CurrencyConverterState extends State<CurrencyConverter> {
       symbol: toCurrency.symbol,
       decimalDigits: 2,
     );
-    
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: ColorConstants.secondaryColor,
+        color: ColorConstants.getSecondaryColor(context),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(

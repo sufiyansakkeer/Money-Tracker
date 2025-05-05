@@ -30,7 +30,8 @@ class ResetDropDown extends StatelessWidget {
           30.height(),
           ElevatedButton(
             style: StyleConstants.elevatedButtonStyle(
-                backgroundColor: ColorConstants.secondaryColor),
+                backgroundColor: ColorConstants.getSecondaryColor(context),
+                context: context),
             onPressed: () {
               ProfileRepository().clearDB(context: context);
               context
@@ -40,14 +41,14 @@ class ResetDropDown extends StatelessWidget {
             child: Text(
               "Yes",
               style: TextStyle(
-                color: ColorConstants.themeColor,
+                color: ColorConstants.getThemeColor(context),
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
           10.height(),
           ElevatedButton(
-            style: StyleConstants.elevatedButtonStyle(),
+            style: StyleConstants.elevatedButtonStyle(context: context),
             onPressed: () => context.pop(),
             child: const Text(
               "No",

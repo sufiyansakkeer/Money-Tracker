@@ -7,7 +7,7 @@ class GraphFilterIcon extends StatelessWidget {
     super.key,
     required this.onTap,
   });
-  
+
   final VoidCallback onTap;
 
   @override
@@ -18,7 +18,7 @@ class GraphFilterIcon extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           border: Border.all(
-            color: ColorConstants.borderColor,
+            color: ColorConstants.getBorderColor(context),
           ),
           borderRadius: BorderRadius.circular(
             30,
@@ -27,7 +27,7 @@ class GraphFilterIcon extends StatelessWidget {
         child: SvgPicture.asset(
           "assets/svg/common/sort.svg",
           colorFilter: ColorFilter.mode(
-            ColorConstants.themeColor,
+            ColorConstants.getThemeColor(context),
             BlendMode.srcIn,
           ),
         ),

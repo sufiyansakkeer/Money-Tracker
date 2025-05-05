@@ -34,21 +34,22 @@ class ProfileTile extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: ColorConstants.secondaryColor,
+                      color: ColorConstants.getSecondaryColor(context),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Icon(
                       icon,
-                      color: ColorConstants.themeColor,
+                      color: ColorConstants.getThemeColor(context),
                       size: 20,
                     ),
                   ),
                 if (icon != null) 12.width(),
                 Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
+                    color: ColorConstants.getTextColor(context),
                   ),
                 ),
               ],
@@ -57,17 +58,18 @@ class ProfileTile extends StatelessWidget {
               children: [
                 Text(
                   subtitle,
-                  style: const TextStyle(
+                  style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
-                      color: Colors.grey),
+                      color: ColorConstants.getTextColor(context)
+                          .withValues(alpha: 0.6)),
                 ),
                 10.width(),
                 if (title != "")
                   SvgPicture.asset(
                     "assets/svg/common/arrow_right_rounded.svg",
                     colorFilter: ColorFilter.mode(
-                        ColorConstants.themeColor, BlendMode.srcIn),
+                        ColorConstants.getThemeColor(context), BlendMode.srcIn),
                   ),
               ],
             ),

@@ -16,7 +16,7 @@ class OnboardingButtonWidget extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: ColorConstants.themeColor,
+        backgroundColor: ColorConstants.getThemeColor(context),
         foregroundColor: Colors.white,
         padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
         shape: RoundedRectangleBorder(

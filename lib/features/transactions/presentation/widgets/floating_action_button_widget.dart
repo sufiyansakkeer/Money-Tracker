@@ -69,13 +69,18 @@ class FloatingActionButtonWidget extends StatelessWidget {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: ColorConstants.secondaryColor,
+                backgroundColor: ColorConstants.getThemeColor(context),
                 padding: const EdgeInsets.all(20),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                elevation: 4,
               ),
               onPressed: toggleIcons,
               child: Icon(
                 isExpanded ? Icons.close : Icons.add,
-                color: ColorConstants.themeColor,
+                color: Colors.white,
+                size: 28,
               ),
             ),
           ],

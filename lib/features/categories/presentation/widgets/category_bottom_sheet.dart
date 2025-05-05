@@ -41,11 +41,12 @@ class _CategoryBottomSheetWidgetState extends State<CategoryBottomSheetWidget> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
+            Text(
               "Category",
               style: TextStyle(
                 fontWeight: FontWeight.w700,
                 fontSize: 16,
+                color: ColorConstants.getTextColor(context),
               ),
             ),
             20.height(),
@@ -79,7 +80,7 @@ class _CategoryBottomSheetWidgetState extends State<CategoryBottomSheetWidget> {
             20.height(),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: ColorConstants.themeColor,
+                backgroundColor: ColorConstants.getThemeColor(context),
                 minimumSize: const Size(double.infinity, 55),
                 enableFeedback: true,
                 shape: RoundedRectangleBorder(

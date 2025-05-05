@@ -37,16 +37,17 @@ class _GraphFilterWidgetState extends State<GraphFilterWidget> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
+                Text(
                   "Filter Graph",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
+                    color: ColorConstants.getTextColor(context),
                   ),
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: ColorConstants.secondaryColor,
+                    backgroundColor: ColorConstants.getSecondaryColor(context),
                     elevation: 0,
                   ),
                   onPressed: () {
@@ -59,18 +60,19 @@ class _GraphFilterWidgetState extends State<GraphFilterWidget> {
                     "Reset",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: ColorConstants.themeColor,
+                      color: ColorConstants.getThemeColor(context),
                     ),
                   ),
                 ),
               ],
             ),
             10.height(),
-            const Text(
+            Text(
               "Transaction Type",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
+                color: ColorConstants.getTextColor(context),
               ),
             ),
             10.height(),
@@ -115,11 +117,12 @@ class _GraphFilterWidgetState extends State<GraphFilterWidget> {
               ],
             ),
             10.height(),
-            const Text(
+            Text(
               "Time Period",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
+                color: ColorConstants.getTextColor(context),
               ),
             ),
             10.height(),
@@ -152,11 +155,12 @@ class _GraphFilterWidgetState extends State<GraphFilterWidget> {
               ),
             ),
             10.height(),
-            const Text(
+            Text(
               "Chart Type",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
+                color: ColorConstants.getTextColor(context),
               ),
             ),
             10.height(),
@@ -235,7 +239,7 @@ class _GraphFilterWidgetState extends State<GraphFilterWidget> {
             ),
             20.height(),
             ElevatedButton(
-              style: StyleConstants.elevatedButtonStyle(),
+              style: StyleConstants.elevatedButtonStyle(context: context),
               onPressed: () {
                 Navigator.pop(context);
               },

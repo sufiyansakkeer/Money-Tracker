@@ -130,11 +130,12 @@ class TransactionHeader extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Text(
+        Text(
           "Recent transaction",
           style: TextStyle(
             fontWeight: FontWeight.w700,
             fontSize: 20,
+            color: ColorConstants.getTextColor(context),
           ),
         ),
         ElevatedButton(
@@ -144,13 +145,16 @@ class TransactionHeader extends StatelessWidget {
             );
           },
           style: ElevatedButton.styleFrom(
-            backgroundColor: ColorConstants.secondaryColor,
+            backgroundColor: ColorConstants.getSecondaryColor(context),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
             elevation: 0,
           ),
           child: Text(
             "See All",
             style: TextStyle(
-              color: ColorConstants.themeColor,
+              color: ColorConstants.getThemeColor(context),
               fontWeight: FontWeight.w700,
             ),
           ),
@@ -238,6 +242,9 @@ class EditAndDeleteBottomSheet extends StatelessWidget {
   final TransactionEntity transactionEntity;
   @override
   Widget build(BuildContext context) {
+    final themeColor = ColorConstants.getThemeColor(context);
+    final expenseColor = ColorConstants.getExpenseColor(context);
+
     return SizedBox(
       width: 800,
       child: Padding(
@@ -266,31 +273,29 @@ class EditAndDeleteBottomSheet extends StatelessWidget {
                   vertical: 10,
                 ),
                 decoration: BoxDecoration(
-                  color:
-                      ColorConstants.themeColor.withAlpha(102), // 0.4 opacity
-                  borderRadius: BorderRadius.circular(
-                    5,
-                  ),
+                  color: themeColor.withValues(alpha: 0.2),
+                  borderRadius: BorderRadius.circular(16),
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(
                       Icons.edit,
-                      color: ColorConstants.themeColor,
+                      color: themeColor,
                     ),
                     5.height(),
-                    const Text(
+                    Text(
                       "Edit",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
+                        color: ColorConstants.getTextColor(context),
                       ),
                     ),
                   ],
                 ),
               ),
             ),
-            40.width(),
+            20.width(),
             InkWell(
               onTap: () {
                 context.read<TransactionBloc>().add(
@@ -307,24 +312,22 @@ class EditAndDeleteBottomSheet extends StatelessWidget {
                   vertical: 10,
                 ),
                 decoration: BoxDecoration(
-                  color:
-                      ColorConstants.expenseColor.withAlpha(102), // 0.4 opacity
-                  borderRadius: BorderRadius.circular(
-                    5,
-                  ),
+                  color: expenseColor.withValues(alpha: 0.2),
+                  borderRadius: BorderRadius.circular(16),
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(
                       Icons.delete,
-                      color: ColorConstants.expenseColor,
+                      color: expenseColor,
                     ),
                     5.height(),
-                    const Text(
+                    Text(
                       "Delete",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
+                        color: ColorConstants.getTextColor(context),
                       ),
                     ),
                   ],

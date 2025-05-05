@@ -6,6 +6,8 @@ import 'package:money_track/features/profile/domain/models/profile_model.dart';
 import 'package:money_track/features/profile/domain/repositories/profile_repository.dart';
 import 'package:money_track/features/profile/presentation/bloc/currency/currency_cubit.dart';
 import 'package:money_track/features/profile/presentation/bloc/currency/currency_state.dart';
+import 'package:money_track/features/profile/presentation/bloc/theme/theme_cubit.dart';
+import 'package:money_track/features/profile/presentation/bloc/theme/theme_state.dart';
 import 'package:money_track/features/profile/presentation/pages/about_page.dart';
 import 'package:money_track/features/profile/presentation/pages/analyze_page.dart';
 import 'package:money_track/features/profile/presentation/pages/currency_page.dart';
@@ -28,8 +30,9 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
     _profileItems = _getProfileItems();
 
-    // Load currencies when the page is opened
+    // Load currencies and theme when the page is opened
     context.read<CurrencyCubit>().loadCurrencies();
+    context.read<ThemeCubit>().loadTheme();
   }
 
   List<ProfileModel> _getProfileItems() {
@@ -50,7 +53,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       ProfileModel(
         title: "Theme",
-        subtitle: "Light",
+        subtitle: "Purple",
         navigationScreen: const ThemePage(),
         tag: "Theme",
         icon: Icons.color_lens_outlined,
@@ -87,7 +90,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: Column(
           children: [
             20.height(),
@@ -99,27 +102,52 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             30.height(),
-            BlocListener<CurrencyCubit, CurrencyState>(
-              listener: (context, state) {
-                if (state is CurrenciesLoaded) {
-                  // Update the currency subtitle with the selected currency
-                  setState(() {
-                    final currencyIndex = _profileItems.indexWhere(
-                      (item) => item.tag == "Currency",
-                    );
-                    if (currencyIndex != -1) {
-                      _profileItems[currencyIndex] = ProfileModel(
-                        title: "Currency",
-                        subtitle:
-                            "${state.selectedCurrency.code} (${state.selectedCurrency.symbol})",
-                        navigationScreen: const CurrencyPage(),
-                        tag: "Currency",
-                        icon: Icons.currency_exchange,
-                      );
+            MultiBlocListener(
+              listeners: [
+                BlocListener<CurrencyCubit, CurrencyState>(
+                  listener: (context, state) {
+                    if (state is CurrenciesLoaded) {
+                      // Update the currency subtitle with the selected currency
+                      setState(() {
+                        final currencyIndex = _profileItems.indexWhere(
+                          (item) => item.tag == "Currency",
+                        );
+                        if (currencyIndex != -1) {
+                          _profileItems[currencyIndex] = ProfileModel(
+                            title: "Currency",
+                            subtitle:
+                                "${state.selectedCurrency.code} (${state.selectedCurrency.symbol})",
+                            navigationScreen: const CurrencyPage(),
+                            tag: "Currency",
+                            icon: Icons.currency_exchange,
+                          );
+                        }
+                      });
                     }
-                  });
-                }
-              },
+                  },
+                ),
+                BlocListener<ThemeCubit, ThemeState>(
+                  listener: (context, state) {
+                    if (state is ThemeLoaded) {
+                      // Update the theme subtitle with the selected theme
+                      setState(() {
+                        final themeIndex = _profileItems.indexWhere(
+                          (item) => item.tag == "Theme",
+                        );
+                        if (themeIndex != -1) {
+                          _profileItems[themeIndex] = ProfileModel(
+                            title: "Theme",
+                            subtitle: state.themeName,
+                            navigationScreen: const ThemePage(),
+                            tag: "Theme",
+                            icon: Icons.color_lens_outlined,
+                          );
+                        }
+                      });
+                    }
+                  },
+                ),
+              ],
               child: ListView.separated(
                 separatorBuilder: (context, index) => 20.height(),
                 primary: false,

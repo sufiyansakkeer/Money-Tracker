@@ -31,6 +31,27 @@ class _TransactionListPageState extends State<TransactionListPage> {
   void initState() {
     filterData = FilterData();
     super.initState();
+
+    // Load transactions when page initializes
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<TransactionBloc>().add(GetAllTransactionsEvent());
+    });
+  }
+
+  // Method to apply filters
+  void _applyFilters() {
+    print(
+        'Applying filters: ${filterData.dateFilterType}, Start: ${filterData.startDate}, End: ${filterData.endDate}');
+
+    // If no filter type is set but dates are set, set to custom
+    if (filterData.dateFilterType == null &&
+        (filterData.startDate != null || filterData.endDate != null)) {
+      filterData.dateFilterType = DateFilterType.custom;
+    }
+
+    context.read<TransactionBloc>().add(
+          FilterTransactionEvent(filterData: filterData),
+        );
   }
 
   @override
@@ -51,8 +72,15 @@ class _TransactionListPageState extends State<TransactionListPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const DateFilterIcon(
+                  DateFilterIcon(
                     dateType: 'Month',
+                    filterData: filterData,
+                    onFilterChanged: () {
+                      // Use the _applyFilters method to refresh the UI
+                      _applyFilters();
+                      // Force UI update to reflect the new filter text
+                      setState(() {});
+                    },
                   ),
                   InkWell(
                     onTap: () {
@@ -139,99 +167,101 @@ class EditAndDeleteBottomSheet extends StatelessWidget {
   final TransactionEntity transactionEntity;
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 800,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 10,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            InkWell(
-              onTap: () {
-                context.pop();
-                context.pushWithRightToLeftTransition(
-                  TransactionPage(
-                    isExpense: transactionEntity.transactionType ==
-                        TransactionType.expense,
-                    transactionEntity: transactionEntity,
-                  ),
-                );
-              },
-              child: Container(
-                width: 100,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 10,
-                ),
-                decoration: BoxDecoration(
-                  color:
-                      ColorConstants.themeColor.withAlpha(102), // 0.4 opacity
-                  borderRadius: BorderRadius.circular(
-                    5,
-                  ),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.edit,
-                      color: ColorConstants.themeColor,
+    final themeColor = ColorConstants.getThemeColor(context);
+    final expenseColor = ColorConstants.getExpenseColor(context);
+
+    return SafeArea(
+      child: SizedBox(
+        width: 800,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 10,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              InkWell(
+                onTap: () {
+                  context.pop();
+                  context.pushWithRightToLeftTransition(
+                    TransactionPage(
+                      isExpense: transactionEntity.transactionType ==
+                          TransactionType.expense,
+                      transactionEntity: transactionEntity,
                     ),
-                    5.height(),
-                    const Text(
-                      "Edit",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                  );
+                },
+                child: Container(
+                  width: 100,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 10,
+                  ),
+                  decoration: BoxDecoration(
+                    color: themeColor.withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.edit,
+                        color: themeColor,
                       ),
-                    ),
-                  ],
+                      5.height(),
+                      Text(
+                        "Edit",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: ColorConstants.getTextColor(context),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            20.width(),
-            InkWell(
-              onTap: () {
-                context.pop();
-                context.read<TransactionBloc>().add(
-                      DeleteTransactionEvent(
-                        transactionId: transactionEntity.id,
+              20.width(),
+              InkWell(
+                onTap: () {
+                  context.pop();
+                  context.read<TransactionBloc>().add(
+                        DeleteTransactionEvent(
+                          transactionId: transactionEntity.id,
+                        ),
+                      );
+                },
+                child: Container(
+                  width: 100,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 10,
+                  ),
+                  decoration: BoxDecoration(
+                    color: expenseColor.withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.delete,
+                        color: expenseColor,
                       ),
-                    );
-              },
-              child: Container(
-                width: 100,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 10,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.red.withAlpha(102), // 0.4 opacity
-                  borderRadius: BorderRadius.circular(
-                    5,
+                      5.height(),
+                      Text(
+                        "Delete",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: ColorConstants.getTextColor(context),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(
-                      Icons.delete,
-                      color: Colors.red,
-                    ),
-                    5.height(),
-                    const Text(
-                      "Delete",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

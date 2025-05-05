@@ -38,10 +38,10 @@ class TransactionTile extends StatelessWidget {
               children: [
                 Text(
                   categoryName,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black,
+                    color: ColorConstants.getTextColor(context),
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -53,8 +53,8 @@ class TransactionTile extends StatelessWidget {
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: type == TransactionType.expense
-                        ? ColorConstants.expenseColor
-                        : ColorConstants.incomeColor,
+                        ? ColorConstants.getExpenseColor(context)
+                        : ColorConstants.getIncomeColor(context),
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -65,8 +65,9 @@ class TransactionTile extends StatelessWidget {
               children: [
                 Text(
                   description,
-                  style: const TextStyle(
-                    color: Colors.grey,
+                  style: TextStyle(
+                    color: ColorConstants.getTextColor(context)
+                        .withValues(alpha: 0.6),
                     fontWeight: FontWeight.w400,
                   ),
                   overflow: TextOverflow.ellipsis,
@@ -74,8 +75,9 @@ class TransactionTile extends StatelessWidget {
                 10.width(),
                 Text(
                   time,
-                  style: const TextStyle(
-                    color: Colors.grey,
+                  style: TextStyle(
+                    color: ColorConstants.getTextColor(context)
+                        .withValues(alpha: 0.6),
                     fontWeight: FontWeight.bold,
                   ),
                 ),

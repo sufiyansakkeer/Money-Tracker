@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:money_track/core/constants/colors.dart';
 import 'package:money_track/core/utils/currency_formatter.dart';
 import 'package:money_track/core/utils/sized_box_extension.dart';
 import 'package:money_track/domain/entities/category_entity.dart';
@@ -124,9 +125,10 @@ class _AnalyzePageState extends State<AnalyzePage> {
                       children: [
                         Text(
                           _getChartTitle(),
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
+                            color: ColorConstants.getTextColor(context),
                           ),
                         ),
                         GraphFilterIcon(
@@ -164,10 +166,13 @@ class _AnalyzePageState extends State<AnalyzePage> {
                     // Chart
                     Expanded(
                       child: filteredTransactions.isEmpty
-                          ? const Center(
+                          ? Center(
                               child: Text(
                                 "No transactions found for the selected filters",
-                                style: TextStyle(fontSize: 16),
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: ColorConstants.getTextColor(context),
+                                ),
                               ),
                             )
                           : _buildChart(filteredTransactions),
@@ -182,8 +187,11 @@ class _AnalyzePageState extends State<AnalyzePage> {
                 ),
               );
             } else {
-              return const Center(
-                child: Text("Something went wrong. Please try again"),
+              return Center(
+                child: Text(
+                  "Something went wrong. Please try again",
+                  style: TextStyle(color: ColorConstants.getTextColor(context)),
+                ),
               );
             }
           },
@@ -259,27 +267,33 @@ class _AnalyzePageState extends State<AnalyzePage> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.grey[100],
+        color: Theme.of(context).brightness == Brightness.dark
+            ? ColorConstants.getCardColor(context)
+            : Colors.grey[100],
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
         children: [
-          const Text(
+          Text(
             "Summary",
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 16,
+              color: ColorConstants.getTextColor(context),
             ),
           ),
           10.height(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text("Total Income:"),
+              Text(
+                "Total Income:",
+                style: TextStyle(color: ColorConstants.getTextColor(context)),
+              ),
               Text(
                 CurrencyFormatter.format(context, totalIncome),
-                style: const TextStyle(
-                  color: Colors.green,
+                style: TextStyle(
+                  color: ColorConstants.getIncomeColor(context),
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -289,11 +303,14 @@ class _AnalyzePageState extends State<AnalyzePage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text("Total Expense:"),
+              Text(
+                "Total Expense:",
+                style: TextStyle(color: ColorConstants.getTextColor(context)),
+              ),
               Text(
                 CurrencyFormatter.format(context, totalExpense),
-                style: const TextStyle(
-                  color: Colors.red,
+                style: TextStyle(
+                  color: ColorConstants.getExpenseColor(context),
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -303,11 +320,16 @@ class _AnalyzePageState extends State<AnalyzePage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text("Balance:"),
+              Text(
+                "Balance:",
+                style: TextStyle(color: ColorConstants.getTextColor(context)),
+              ),
               Text(
                 CurrencyFormatter.format(context, balance),
                 style: TextStyle(
-                  color: balance >= 0 ? Colors.green : Colors.red,
+                  color: balance >= 0
+                      ? ColorConstants.getIncomeColor(context)
+                      : ColorConstants.getExpenseColor(context),
                   fontWeight: FontWeight.bold,
                 ),
               ),

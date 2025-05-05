@@ -15,7 +15,7 @@ class CustomChoiceChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChoiceChip(
-      selectedColor: ColorConstants.secondaryColor,
+      selectedColor: ColorConstants.getSecondaryColor(context),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(
           20,
@@ -24,7 +24,9 @@ class CustomChoiceChip extends StatelessWidget {
       label: Text(
         name,
         style: TextStyle(
-          color: selected ? ColorConstants.themeColor : Colors.black,
+          color: selected
+              ? ColorConstants.getThemeColor(context)
+              : ColorConstants.getTextColor(context),
           fontWeight: FontWeight.bold,
         ),
       ),
