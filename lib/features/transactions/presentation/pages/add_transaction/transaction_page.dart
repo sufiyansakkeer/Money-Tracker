@@ -410,7 +410,8 @@ class _TransactionPageState extends State<TransactionPage> {
                             context.pop();
                           }
                         },
-                        style: StyleConstants.elevatedButtonStyle(),
+                        style: StyleConstants.elevatedButtonStyle(
+                            context: context),
                         child: Text(
                           widget.transactionEntity == null
                               ? "Continue"
