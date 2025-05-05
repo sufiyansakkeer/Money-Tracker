@@ -6,5 +6,8 @@
 ///
 abstract class UseCase<Type, Params> {
   /// In the `call()` method we get the data from the repository
-  Future<Type> call({Params params});
+  Future<Type> call({Params? params});
 }
+
+/// For use cases that don't require parameters
+class NoParams {}
