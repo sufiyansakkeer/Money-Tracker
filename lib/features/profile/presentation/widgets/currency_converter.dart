@@ -128,7 +128,7 @@ class _CurrencyConverterState extends State<CurrencyConverter> {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              style: StyleConstants.elevatedButtonStyle(),
+              style: StyleConstants.elevatedButtonStyle(context: context),
               onPressed: isConverting ? null : _convertCurrency,
               child: Text(
                 isConverting ? 'Converting...' : 'Convert',
@@ -203,7 +203,7 @@ class _CurrencyConverterState extends State<CurrencyConverter> {
             'Conversion Result:',
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              color: ColorConstants.themeColor,
+              color: ColorConstants.getThemeColor(context),
             ),
           ),
           const SizedBox(height: 8),

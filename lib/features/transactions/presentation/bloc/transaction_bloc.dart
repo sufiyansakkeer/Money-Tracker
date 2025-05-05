@@ -97,7 +97,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
         if (filter.startDate != null && filter.endDate != null) {
           startDate = filter.startDate;
           endDate = filter.endDate;
-          print('Using dates from filter: $startDate to $endDate');
+          log('Using dates from filter: $startDate to $endDate');
         } else {
           // Otherwise calculate based on the filter type
           switch (filter.dateFilterType!) {
@@ -134,8 +134,8 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
         }
 
         if (startDate != null && endDate != null) {
-          print('Filtering by date range: $startDate to $endDate');
-          print('Before filtering: ${filteredList.length} transactions');
+          log('Filtering by date range: $startDate to $endDate');
+          log('Before filtering: ${filteredList.length} transactions');
 
           filteredList = filteredList.where((transaction) {
             final transactionDate = DateTime(
@@ -156,7 +156,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
             return isInRange;
           }).toList();
 
-          print('After filtering: ${filteredList.length} transactions');
+          log('After filtering: ${filteredList.length} transactions');
         }
       }
 

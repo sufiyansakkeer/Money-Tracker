@@ -1,3 +1,5 @@
+import 'dart:developer' show log;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -300,8 +302,7 @@ class _DateFilterBottomSheetState extends State<DateFilterBottomSheet> {
               widget.filterData.endDate = endDate;
 
               // Debug print
-              print(
-                  'Applied filter: ${widget.filterData.dateFilterType}, Start: ${widget.filterData.startDate}, End: ${widget.filterData.endDate}');
+              log('Applied filter: ${widget.filterData.dateFilterType}, Start: ${widget.filterData.startDate}, End: ${widget.filterData.endDate}');
 
               // Apply the filter
               context.read<TransactionBloc>().add(
@@ -355,7 +356,7 @@ class _DateFilterBottomSheetState extends State<DateFilterBottomSheet> {
               startDate!.year, startDate!.month, startDate!.day, 23, 59, 59);
         }
 
-        print('Selected start date: $startDate');
+        log('Selected start date: $startDate');
       });
     }
   }
@@ -382,7 +383,7 @@ class _DateFilterBottomSheetState extends State<DateFilterBottomSheet> {
       setState(() {
         // Set to end of the day (23:59:59)
         endDate = DateTime(picked.year, picked.month, picked.day, 23, 59, 59);
-        print('Selected end date: $endDate');
+        log('Selected end date: $endDate');
       });
     }
   }

@@ -47,3 +47,15 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 .qodo
+
+
+# Auto-generated native build files
+**/build_file_index.txt
+**/cmake_install.cmake
+**/configure_fingerprint.bin
+**/metadata_generation_command.txt
+**/symbol_folder_index.txt
+
+# Optionally ignore prefab config
+**/prefab_config.json
+/android/app/.cxx

@@ -80,7 +80,8 @@ class _CurrencyPageState extends State<CurrencyPage> {
                 ),
                 subtitle: Text("${currency.symbol} - ${currency.code}"),
                 trailing: isSelected
-                    ? Icon(Icons.check_circle, color: ColorConstants.themeColor)
+                    ? Icon(Icons.check_circle,
+                        color: ColorConstants.getThemeColor(context))
                     : null,
                 onTap: () {
                   context
@@ -95,7 +96,7 @@ class _CurrencyPageState extends State<CurrencyPage> {
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: ElevatedButton(
-            style: StyleConstants.elevatedButtonStyle(),
+            style: StyleConstants.elevatedButtonStyle(context: context),
             onPressed: () {
               _showCurrencyConverter(context, currencies, selectedCurrency);
             },

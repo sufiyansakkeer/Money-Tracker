@@ -1,3 +1,5 @@
+import 'dart:developer' show log;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_track/core/constants/colors.dart';
@@ -40,8 +42,7 @@ class _TransactionListPageState extends State<TransactionListPage> {
 
   // Method to apply filters
   void _applyFilters() {
-    print(
-        'Applying filters: ${filterData.dateFilterType}, Start: ${filterData.startDate}, End: ${filterData.endDate}');
+    log('Applying filters: ${filterData.dateFilterType}, Start: ${filterData.startDate}, End: ${filterData.endDate}');
 
     // If no filter type is set but dates are set, set to custom
     if (filterData.dateFilterType == null &&
