@@ -45,7 +45,7 @@ class EmptyBudgetList extends StatelessWidget {
               backgroundColor: ColorConstants.getThemeColor(context),
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(30),
               ),
             ),
             child: const Text(

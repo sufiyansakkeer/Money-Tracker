@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_track/core/constants/colors.dart';
 import 'package:money_track/domain/entities/transaction_entity.dart';
@@ -7,6 +8,7 @@ import 'package:money_track/features/budget/presentation/bloc/budget_bloc.dart';
 import 'package:money_track/features/budget/presentation/pages/add_edit_budget_page.dart';
 import 'package:money_track/features/budget/presentation/widgets/budget_list_item.dart';
 import 'package:money_track/features/budget/presentation/widgets/empty_budget_list.dart';
+import 'package:svg_flutter/svg.dart';
 
 class BudgetPage extends StatefulWidget {
   const BudgetPage({super.key});
@@ -30,25 +32,78 @@ class _BudgetPageState extends State<BudgetPage>
 
   @override
   void dispose() {
+    // Reset system UI when leaving this page
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.light,
+    ));
     _tabController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    // Set status bar color to match the custom AppBar
+    final themeColor = ColorConstants.getThemeColor(context);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: themeColor,
+      statusBarIconBrightness: Brightness.light,
+    ));
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Budget Planning'),
-        backgroundColor: ColorConstants.getThemeColor(context),
-        foregroundColor: Colors.white,
-        bottom: TabBar(
-          controller: _tabController,
-          indicatorColor: Colors.white,
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.white70,
-          tabs: const [
-            Tab(text: 'Active'),
-            Tab(text: 'All'),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(110),
+        child: Column(
+          children: [
+            Container(
+              color: themeColor,
+              child: Column(
+                children: [
+                  // Custom AppBar
+                  Container(
+                    height: 50,
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    margin: EdgeInsets.only(
+                        top: MediaQuery.of(context)
+                            .padding
+                            .top), // Account for status bar
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        InkWell(
+                          onTap: () => Navigator.pop(context),
+                          child: SvgPicture.asset(
+                            "assets/svg/common/arrow_left_white.svg",
+                            height: 20,
+                          ),
+                        ),
+                        const Spacer(),
+                        const Text(
+                          'Budget Planning',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        const Spacer(),
+                      ],
+                    ),
+                  ),
+                  // Tab Bar
+                  TabBar(
+                    controller: _tabController,
+                    indicatorColor: Colors.white,
+                    labelColor: Colors.white,
+                    unselectedLabelColor: Colors.white70,
+                    tabs: const [
+                      Tab(text: 'Active'),
+                      Tab(text: 'All'),
+                    ],
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -92,6 +147,9 @@ class _BudgetPageState extends State<BudgetPage>
         },
       ),
       floatingActionButton: FloatingActionButton(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(50)),
+        ),
         onPressed: () {
           Navigator.push(
             context,

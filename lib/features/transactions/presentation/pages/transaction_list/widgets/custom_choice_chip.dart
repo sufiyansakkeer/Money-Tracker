@@ -30,6 +30,7 @@ class CustomChoiceChip extends StatelessWidget {
           fontWeight: FontWeight.bold,
         ),
       ),
+      checkmarkColor: ColorConstants.getThemeColor(context),
       selected: selected,
       onSelected: onSelected,
     );
