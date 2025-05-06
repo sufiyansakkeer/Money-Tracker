@@ -59,3 +59,8 @@ class CheckBudgetNotifications extends BudgetEvent {
   @override
   List<Object?> get props => [transactions];
 }
+
+/// Event to refresh budgets when transactions change
+class RefreshBudgetsOnTransactionChange extends BudgetEvent {
+  const RefreshBudgetsOnTransactionChange();
+}

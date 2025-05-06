@@ -44,6 +44,7 @@ class BudgetBloc extends Bloc<BudgetEvent, BudgetState> {
     on<LoadBudgetsByCategory>(_onLoadBudgetsByCategory);
     on<LoadActiveBudgets>(_onLoadActiveBudgets);
     on<CheckBudgetNotifications>(_onCheckBudgetNotifications);
+    on<RefreshBudgetsOnTransactionChange>(_onRefreshBudgetsOnTransactionChange);
   }
 
   Future<void> _onLoadBudgets(
@@ -226,6 +227,62 @@ class BudgetBloc extends Bloc<BudgetEvent, BudgetState> {
     if (state is BudgetsLoaded) {
       final currentState = state as BudgetsLoaded;
       emit(currentState.copyWith(transactions: event.transactions));
+    }
+  }
+
+  /// Handler for refreshing budgets when transactions change
+  Future<void> _onRefreshBudgetsOnTransactionChange(
+    RefreshBudgetsOnTransactionChange event,
+    Emitter<BudgetState> emit,
+  ) async {
+    log('Refreshing budgets due to transaction changes');
+
+    // Only proceed if we're already in a loaded state to avoid unnecessary loading indicators
+    if (state is BudgetsLoaded) {
+      // Get all transactions for budget progress calculation
+      final transactionsResult = await getAllTransactionsUseCase();
+
+      if (transactionsResult is Error<List<TransactionEntity>>) {
+        log('Failed to get transactions for budget refresh: ${(transactionsResult).failure.message}');
+        return;
+      }
+
+      final transactions =
+          (transactionsResult as Success<List<TransactionEntity>>).data;
+
+      log('Loaded ${transactions.length} transactions for budget calculations');
+
+      // Log transaction details for debugging
+      for (var transaction in transactions) {
+        log('Transaction: ID=${transaction.id}, Amount=${transaction.amount}, '
+            'Category=${transaction.category.categoryName}, '
+            'Type=${transaction.transactionType}, '
+            'Date=${transaction.date}');
+      }
+
+      // Update the state with the new transactions
+      final currentState = state as BudgetsLoaded;
+
+      log('Current budgets count: ${currentState.budgets.length}');
+      for (var budget in currentState.budgets) {
+        log('Budget: ID=${budget.id}, Name=${budget.name}, '
+            'Category=${budget.category.categoryName}, '
+            'Amount=${budget.amount}, '
+            'Period=${budget.periodType}, '
+            'StartDate=${budget.startDate}');
+      }
+
+      emit(currentState.copyWith(transactions: transactions));
+
+      // Check for budget notifications with the updated transactions
+      if (currentState.budgets.isNotEmpty) {
+        await notificationService.checkBudgetsAndNotify(
+            currentState.budgets, transactions);
+      }
+    } else {
+      // If we're not in a loaded state, just load everything
+      log('Budget state is not loaded, loading everything');
+      add(const LoadBudgets());
     }
   }
 }

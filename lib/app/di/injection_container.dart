@@ -10,6 +10,7 @@ import 'package:money_track/domain/usecases/category/add_category_usecase.dart';
 import 'package:money_track/domain/usecases/category/get_all_categories_usecase.dart';
 import 'package:money_track/domain/usecases/category/set_default_categories_usecase.dart';
 import 'package:money_track/domain/usecases/transaction/add_transaction_usecase.dart';
+import 'package:money_track/domain/usecases/transaction/delete_transaction_usecase.dart';
 import 'package:money_track/domain/usecases/transaction/edit_transaction_usecase.dart'; // Import EditUseCase
 import 'package:money_track/domain/usecases/transaction/get_all_transactions_usecase.dart';
 import 'package:money_track/features/budget/data/datasources/budget_local_datasource.dart';
@@ -109,6 +110,8 @@ class _ServiceLocator {
     final getAllTransactionsUseCase =
         GetAllTransactionsUseCase(transactionRepository);
     final addTransactionUseCase = AddTransactionUseCase(transactionRepository);
+    final deleteTransactionUseCase =
+        DeleteTransactionUseCase(transactionRepository);
 
     final editTransactionUseCase = EditTransactionUseCase(
         repository: transactionRepository); // Instantiate EditUseCase
@@ -159,7 +162,8 @@ class _ServiceLocator {
     transactionBloc = TransactionBloc(
       getAllTransactionsUseCase: getAllTransactionsUseCase,
       addTransactionUseCase: addTransactionUseCase,
-      editTransactionUseCase: editTransactionUseCase, // Provide EditUseCase
+      editTransactionUseCase: editTransactionUseCase,
+      deleteTransactionUseCase: deleteTransactionUseCase,
     );
 
     totalTransactionCubit = TotalTransactionCubit(

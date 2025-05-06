@@ -11,13 +11,13 @@ A personal finance management application built with Flutter that helps you trac
 
 ## 📱 Project Overview
 
-Money Track is a comprehensive personal finance management application designed to help users track their income and expenses, categorize transactions, and visualize their financial data through interactive charts. The app provides a clean and intuitive interface for managing personal finances on the go.
+Money Track is a comprehensive personal finance management application designed to help users track their income and expenses, categorize transactions, set and monitor budgets, and visualize their financial data through interactive charts. The app provides a clean and intuitive interface for managing personal finances on the go, with full support for both light and dark themes.
 
 ## ✨ Features
 
 ### 💰 Transaction Management
 
-Easily record your income and expenses with detailed information including category, date, and notes. View your transaction history and filter by date, category, or transaction type.
+Easily record your income and expenses with detailed information including category, date, and notes. View your transaction history and filter by date, category, or transaction type. The transaction UI is fully compatible with both light and dark modes.
 
 <table>
   <tr>
@@ -36,6 +36,18 @@ Visualize your financial data with interactive charts including pie charts, line
     <td><img src="https://github.com/user-attachments/assets/0863583b-d627-456f-b8c2-5903884630c4" width="250"/></td>
     <td><img src="https://github.com/user-attachments/assets/2c1851b0-043f-470c-8a53-2321a9d4427c" width="250"/></td>
     <td><img src="https://github.com/user-attachments/assets/ae555fca-cd88-4a62-908e-170143c37606" width="250"/></td>
+  </tr>
+</table>
+
+### 📝 Budget Planning
+
+Set up monthly or weekly budgets for different expense categories. Track your spending against budget limits with visual progress indicators. Get notified when you're approaching your budget limits to help maintain financial discipline.
+
+<table>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/0c52efdd-4acc-47eb-bf25-7ada4d10ac47" width="250"/></td>
+    <td><img src="https://github.com/user-attachments/assets/d613ec0d-e408-4382-8351-70dadab6bbf8" width="250"/></td>
+    <td><img src="https://github.com/user-attachments/assets/ff107f0c-56b4-47b3-b1e4-7180b93d30a6" width="250"/></td>
   </tr>
 </table>
 
@@ -64,7 +76,7 @@ Convert between different currencies with real-time exchange rates. Set your pre
 
 ### 🎨 Customizable Themes
 
-Personalize your app experience with different color themes. Choose between light and dark modes for comfortable usage in any environment.
+Personalize your app experience with different color themes. Choose between light and dark modes for comfortable usage in any environment. All UI components, including transaction and budget pages, are fully compatible with dark mode, ensuring a consistent experience across the app.
 
 <table>
   <tr>
@@ -72,9 +84,6 @@ Personalize your app experience with different color themes. Choose between ligh
     <td><img src="https://github.com/user-attachments/assets/a6c6f903-68a2-438c-b0b6-d9f4627eeb36" width="250"/></td>
   </tr>
 </table>
-
-
-
 
 ## 🏗️ Architecture
 
@@ -101,6 +110,7 @@ lib/
 ├── features/                  # Feature modules
 │   ├── transactions/          # Transaction feature
 │   ├── categories/            # Category feature
+│   ├── budget/                # Budget planning feature
 │   ├── profile/               # Profile feature
 │   ├── navigation/            # Navigation feature
 │   └── onboarding/            # Onboarding feature
@@ -131,7 +141,10 @@ The dependency flow follows the clean architecture principles:
 - **UI Components**: Material Design
 - **Charts**: Syncfusion Flutter Charts
 - **Animations**: Lottie, Rive
+- **SVG Rendering**: SVG Flutter
+- **Theme Management**: Custom theme system with light/dark mode support
 - **Utilities**: Intl, UUID, Equatable
+- **Architecture**: Feature-based Clean Architecture
 
 ## 🚀 Installation
 

@@ -12,6 +12,7 @@ import 'package:money_track/core/utils/snack_bar_extension.dart';
 import 'package:money_track/core/utils/widget_extension.dart';
 import 'package:money_track/domain/entities/category_entity.dart';
 import 'package:money_track/domain/entities/transaction_entity.dart';
+import 'package:money_track/features/budget/presentation/bloc/budget_bloc.dart';
 import 'package:money_track/features/categories/presentation/bloc/category_bloc.dart';
 import 'package:money_track/features/transactions/presentation/bloc/transaction_bloc.dart';
 import 'package:money_track/features/transactions/presentation/bloc/total_transaction/total_transaction_cubit.dart';
@@ -417,9 +418,16 @@ class _TransactionPageState extends State<TransactionPage> {
                                     ),
                                   );
                             }
+                            // Update total amounts
                             context
                                 .read<TotalTransactionCubit>()
                                 .getTotalAmount();
+
+                            // Refresh budgets when transaction is added/edited
+                            context
+                                .read<BudgetBloc>()
+                                .add(const RefreshBudgetsOnTransactionChange());
+
                             context.pop();
                           }
                         },

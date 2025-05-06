@@ -6,6 +6,7 @@ import 'package:money_track/core/utils/navigation_extension.dart';
 import 'package:money_track/core/utils/sized_box_extension.dart';
 import 'package:money_track/domain/entities/category_entity.dart';
 import 'package:money_track/domain/entities/transaction_entity.dart';
+import 'package:money_track/features/budget/presentation/bloc/budget_bloc.dart';
 import 'package:money_track/features/transactions/presentation/bloc/transaction_bloc.dart';
 import 'package:money_track/features/transactions/presentation/bloc/total_transaction/total_transaction_cubit.dart';
 import 'package:money_track/features/transactions/presentation/pages/add_transaction/transaction_page.dart';
@@ -172,7 +173,13 @@ class TransactionList extends StatelessWidget {
     return BlocConsumer<TransactionBloc, TransactionState>(
       listener: (context, state) {
         if (state is TransactionLoaded) {
+          // Update total amounts
           context.read<TotalTransactionCubit>().getTotalAmount();
+
+          // Refresh budgets when transactions change
+          context
+              .read<BudgetBloc>()
+              .add(const RefreshBudgetsOnTransactionChange());
         }
       },
       builder: (context, state) {
@@ -298,11 +305,18 @@ class EditAndDeleteBottomSheet extends StatelessWidget {
             20.width(),
             InkWell(
               onTap: () {
+                // Delete the transaction
                 context.read<TransactionBloc>().add(
                       DeleteTransactionEvent(
                         transactionId: transactionEntity.id,
                       ),
                     );
+
+                // Refresh budgets when transaction is deleted
+                context.read<BudgetBloc>().add(
+                      const RefreshBudgetsOnTransactionChange(),
+                    );
+
                 context.pop();
               },
               child: Container(
