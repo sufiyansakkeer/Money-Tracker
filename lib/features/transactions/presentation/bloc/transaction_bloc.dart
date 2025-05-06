@@ -5,7 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_track/domain/entities/category_entity.dart';
 import 'package:money_track/domain/entities/transaction_entity.dart';
 import 'package:money_track/domain/usecases/transaction/add_transaction_usecase.dart';
-import 'package:money_track/domain/usecases/transaction/edit_transaction_usecase.dart'; // Assuming this exists
+import 'package:money_track/domain/usecases/transaction/delete_transaction_usecase.dart';
+import 'package:money_track/domain/usecases/transaction/edit_transaction_usecase.dart';
 import 'package:money_track/domain/usecases/transaction/get_all_transactions_usecase.dart';
 import 'package:money_track/features/transactions/domain/entities/filter_data.dart';
 
@@ -15,13 +16,15 @@ part 'transaction_state.dart';
 class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
   final GetAllTransactionsUseCase getAllTransactionsUseCase;
   final AddTransactionUseCase addTransactionUseCase;
-  final EditTransactionUseCase editTransactionUseCase; // Add this
+  final EditTransactionUseCase editTransactionUseCase;
+  final DeleteTransactionUseCase deleteTransactionUseCase;
   List<TransactionEntity> _allTransactions = [];
 
   TransactionBloc({
     required this.getAllTransactionsUseCase,
     required this.addTransactionUseCase,
-    required this.editTransactionUseCase, // Add this
+    required this.editTransactionUseCase,
+    required this.deleteTransactionUseCase,
   }) : super(TransactionInitial()) {
     on<GetAllTransactionsEvent>((event, emit) async {
       emit(TransactionLoading());
@@ -205,6 +208,22 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
       }
     });
 
-    // Add DeleteTransactionEvent handler if needed
+    on<DeleteTransactionEvent>((event, emit) async {
+      try {
+        emit(TransactionLoading());
+
+        final result =
+            await deleteTransactionUseCase(params: event.transactionId);
+
+        result.fold(
+          (success) =>
+              add(GetAllTransactionsEvent()), // Refresh list on success
+          (error) => emit(TransactionError(message: error.message)),
+        );
+      } catch (e) {
+        log(e.toString(), name: "Delete transaction event Exception");
+        emit(TransactionError(message: e.toString()));
+      }
+    });
   }
 }

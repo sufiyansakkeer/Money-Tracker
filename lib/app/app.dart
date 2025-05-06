@@ -39,6 +39,9 @@ class App extends StatelessWidget {
         BlocProvider(
           create: (context) => sl.themeCubit..loadTheme(),
         ),
+        BlocProvider(
+          create: (context) => sl.budgetBloc,
+        ),
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(
         builder: (context, state) {

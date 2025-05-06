@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:money_track/core/constants/colors.dart';
 import 'package:money_track/core/utils/sized_box_extension.dart';
 import 'package:money_track/core/utils/widget_extension.dart';
+import 'package:money_track/features/budget/presentation/bloc/budget_bloc.dart';
 import 'package:money_track/features/categories/presentation/bloc/category_bloc.dart';
 import 'package:money_track/features/navigation/presentation/bloc/bottom_navigation_bloc.dart';
 import 'package:money_track/features/navigation/presentation/widgets/bottom_navigation_list.dart';
@@ -39,10 +40,21 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
     return Scaffold(
       body: Stack(
         children: [
-          BlocBuilder<BottomNavigationBloc, BottomNavigationState>(
-            builder: (context, state) {
-              return state.pages[state.index];
+          // Listen for transaction changes and update budgets
+          BlocListener<TransactionBloc, TransactionState>(
+            listener: (context, state) {
+              if (state is TransactionLoaded) {
+                // When transactions are loaded, refresh budgets
+                context
+                    .read<BudgetBloc>()
+                    .add(const RefreshBudgetsOnTransactionChange());
+              }
             },
+            child: BlocBuilder<BottomNavigationBloc, BottomNavigationState>(
+              builder: (context, state) {
+                return state.pages[state.index];
+              },
+            ),
           ),
           Align(
             alignment: Alignment.bottomCenter,

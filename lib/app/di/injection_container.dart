@@ -1,3 +1,4 @@
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hive/hive.dart';
 import 'package:money_track/data/datasources/local/category_local_datasource.dart';
 import 'package:money_track/data/datasources/local/transaction_local_datasource.dart';
@@ -9,8 +10,20 @@ import 'package:money_track/domain/usecases/category/add_category_usecase.dart';
 import 'package:money_track/domain/usecases/category/get_all_categories_usecase.dart';
 import 'package:money_track/domain/usecases/category/set_default_categories_usecase.dart';
 import 'package:money_track/domain/usecases/transaction/add_transaction_usecase.dart';
+import 'package:money_track/domain/usecases/transaction/delete_transaction_usecase.dart';
 import 'package:money_track/domain/usecases/transaction/edit_transaction_usecase.dart'; // Import EditUseCase
 import 'package:money_track/domain/usecases/transaction/get_all_transactions_usecase.dart';
+import 'package:money_track/features/budget/data/datasources/budget_local_datasource.dart';
+import 'package:money_track/features/budget/data/repositories/budget_repository_impl.dart';
+import 'package:money_track/features/budget/domain/repositories/budget_repository.dart';
+import 'package:money_track/features/budget/domain/services/budget_notification_service.dart';
+import 'package:money_track/features/budget/domain/usecases/add_budget_usecase.dart';
+import 'package:money_track/features/budget/domain/usecases/delete_budget_usecase.dart';
+import 'package:money_track/features/budget/domain/usecases/edit_budget_usecase.dart';
+import 'package:money_track/features/budget/domain/usecases/get_active_budgets_usecase.dart';
+import 'package:money_track/features/budget/domain/usecases/get_all_budgets_usecase.dart';
+import 'package:money_track/features/budget/domain/usecases/get_budgets_by_category_usecase.dart';
+import 'package:money_track/features/budget/presentation/bloc/budget_bloc.dart';
 import 'package:money_track/features/categories/presentation/bloc/category_bloc.dart';
 import 'package:money_track/features/navigation/presentation/bloc/bottom_navigation_bloc.dart';
 import 'package:money_track/features/profile/data/datasources/currency_local_datasource.dart';
@@ -56,6 +69,7 @@ class _ServiceLocator {
   late BottomNavigationBloc bottomNavigationBloc;
   late CurrencyCubit currencyCubit;
   late ThemeCubit themeCubit;
+  late BudgetBloc budgetBloc;
 
   // Initialize dependencies
   Future<void> init() async {
@@ -68,6 +82,7 @@ class _ServiceLocator {
         TransactionLocalDataSourceImpl(hive: hive);
     final currencyLocalDataSource = CurrencyLocalDataSourceImpl(hive: hive);
     final themeLocalDataSource = ThemeLocalDataSourceImpl();
+    final budgetLocalDataSource = BudgetLocalDataSourceImpl(hive: hive);
 
     // Repositories
     final CategoryRepository categoryRepository = CategoryRepositoryImpl(
@@ -83,6 +98,9 @@ class _ServiceLocator {
     final ThemeRepository themeRepository = ThemeRepositoryImpl(
       localDataSource: themeLocalDataSource,
     );
+    final BudgetRepository budgetRepository = BudgetRepositoryImpl(
+      localDataSource: budgetLocalDataSource,
+    );
 
     // Use cases
     final getAllCategoriesUseCase = GetAllCategoriesUseCase(categoryRepository);
@@ -92,6 +110,8 @@ class _ServiceLocator {
     final getAllTransactionsUseCase =
         GetAllTransactionsUseCase(transactionRepository);
     final addTransactionUseCase = AddTransactionUseCase(transactionRepository);
+    final deleteTransactionUseCase =
+        DeleteTransactionUseCase(transactionRepository);
 
     final editTransactionUseCase = EditTransactionUseCase(
         repository: transactionRepository); // Instantiate EditUseCase
@@ -115,6 +135,23 @@ class _ServiceLocator {
     final getThemeSettingsUseCase = GetThemeSettingsUseCase(themeRepository);
     final setThemeSettingsUseCase = SetThemeSettingsUseCase(themeRepository);
 
+    // Budget use cases
+    final getAllBudgetsUseCase = GetAllBudgetsUseCase(budgetRepository);
+    final addBudgetUseCase = AddBudgetUseCase(budgetRepository);
+    final editBudgetUseCase = EditBudgetUseCase(budgetRepository);
+    final deleteBudgetUseCase = DeleteBudgetUseCase(budgetRepository);
+    final getBudgetsByCategoryUseCase =
+        GetBudgetsByCategoryUseCase(budgetRepository);
+    final getActiveBudgetsUseCase = GetActiveBudgetsUseCase(budgetRepository);
+
+    // Notification service
+    final notificationPlugin = FlutterLocalNotificationsPlugin();
+    final budgetNotificationService =
+        BudgetNotificationService(notificationPlugin);
+
+    // Initialize notifications
+    await budgetNotificationService.initialize();
+
     // BLoCs
     categoryBloc = CategoryBloc(
       getAllCategoriesUseCase: getAllCategoriesUseCase,
@@ -125,7 +162,8 @@ class _ServiceLocator {
     transactionBloc = TransactionBloc(
       getAllTransactionsUseCase: getAllTransactionsUseCase,
       addTransactionUseCase: addTransactionUseCase,
-      editTransactionUseCase: editTransactionUseCase, // Provide EditUseCase
+      editTransactionUseCase: editTransactionUseCase,
+      deleteTransactionUseCase: deleteTransactionUseCase,
     );
 
     totalTransactionCubit = TotalTransactionCubit(
@@ -148,6 +186,17 @@ class _ServiceLocator {
       setSelectedThemeModeUseCase: setSelectedThemeModeUseCase,
       getThemeSettingsUseCase: getThemeSettingsUseCase,
       setThemeSettingsUseCase: setThemeSettingsUseCase,
+    );
+
+    budgetBloc = BudgetBloc(
+      getAllBudgetsUseCase: getAllBudgetsUseCase,
+      addBudgetUseCase: addBudgetUseCase,
+      editBudgetUseCase: editBudgetUseCase,
+      deleteBudgetUseCase: deleteBudgetUseCase,
+      getBudgetsByCategoryUseCase: getBudgetsByCategoryUseCase,
+      getActiveBudgetsUseCase: getActiveBudgetsUseCase,
+      getAllTransactionsUseCase: getAllTransactionsUseCase,
+      notificationService: budgetNotificationService,
     );
   }
 }

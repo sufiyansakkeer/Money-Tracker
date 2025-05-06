@@ -12,6 +12,7 @@ import 'package:money_track/core/utils/snack_bar_extension.dart';
 import 'package:money_track/core/utils/widget_extension.dart';
 import 'package:money_track/domain/entities/category_entity.dart';
 import 'package:money_track/domain/entities/transaction_entity.dart';
+import 'package:money_track/features/budget/presentation/bloc/budget_bloc.dart';
 import 'package:money_track/features/categories/presentation/bloc/category_bloc.dart';
 import 'package:money_track/features/transactions/presentation/bloc/transaction_bloc.dart';
 import 'package:money_track/features/transactions/presentation/bloc/total_transaction/total_transaction_cubit.dart';
@@ -121,9 +122,9 @@ class _TransactionPageState extends State<TransactionPage> {
           // Main content with form fields and button
           Expanded(
             child: Container(
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
+              decoration: BoxDecoration(
+                color: ColorConstants.getCardColor(context),
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(20),
                   topRight: Radius.circular(20),
                 ),
@@ -145,12 +146,13 @@ class _TransactionPageState extends State<TransactionPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             // Category field
-                            const Text(
+                            Text(
                               "Category",
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 14,
-                                color: Colors.black54,
+                                color: ColorConstants.getTextColor(context)
+                                    .withValues(alpha: 153), // 0.6 opacity
                               ),
                             ),
                             8.height(),
@@ -174,11 +176,13 @@ class _TransactionPageState extends State<TransactionPage> {
                                     width: 800,
                                     child: Column(
                                       children: [
-                                        const Text(
+                                        Text(
                                           "Category",
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 18,
+                                            color: ColorConstants.getTextColor(
+                                                context),
                                           ),
                                         ),
                                         BlocBuilder<CategoryBloc,
@@ -234,12 +238,14 @@ class _TransactionPageState extends State<TransactionPage> {
                                                                   .categoryList[
                                                                       index]
                                                                   .categoryName,
-                                                              style:
-                                                                  const TextStyle(
+                                                              style: TextStyle(
                                                                 fontSize: 16,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w400,
+                                                                color: ColorConstants
+                                                                    .getTextColor(
+                                                                        context),
                                                               ),
                                                             ),
                                                           ],
@@ -265,9 +271,14 @@ class _TransactionPageState extends State<TransactionPage> {
                                                 ),
                                               );
                                             } else {
-                                              return const Center(
-                                                child:
-                                                    Text("No category found"),
+                                              return Center(
+                                                child: Text(
+                                                  "No category found",
+                                                  style: TextStyle(
+                                                    color: ColorConstants
+                                                        .getTextColor(context),
+                                                  ),
+                                                ),
                                               );
                                             }
                                           },
@@ -291,12 +302,13 @@ class _TransactionPageState extends State<TransactionPage> {
                             24.height(),
 
                             // Date field
-                            const Text(
+                            Text(
                               "Date",
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 14,
-                                color: Colors.black54,
+                                color: ColorConstants.getTextColor(context)
+                                    .withValues(alpha: 153), // 0.6 opacity
                               ),
                             ),
                             8.height(),
@@ -323,21 +335,23 @@ class _TransactionPageState extends State<TransactionPage> {
                                     StyleConstants.textFormFieldBorder(),
                                 border: StyleConstants.textFormFieldBorder(),
                                 hintText: "Select date",
-                                suffixIcon: const Icon(
-                                    Icons.calendar_today_outlined,
-                                    size: 20),
+                                suffixIcon: Icon(Icons.calendar_today_outlined,
+                                    size: 20,
+                                    color: ColorConstants.getTextColor(context)
+                                        .withValues(alpha: 153)),
                               ),
                             ),
 
                             24.height(),
 
                             // Description field
-                            const Text(
+                            Text(
                               "Description",
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 14,
-                                color: Colors.black54,
+                                color: ColorConstants.getTextColor(context)
+                                    .withValues(alpha: 153), // 0.6 opacity
                               ),
                             ),
                             8.height(),
@@ -404,9 +418,16 @@ class _TransactionPageState extends State<TransactionPage> {
                                     ),
                                   );
                             }
+                            // Update total amounts
                             context
                                 .read<TotalTransactionCubit>()
                                 .getTotalAmount();
+
+                            // Refresh budgets when transaction is added/edited
+                            context
+                                .read<BudgetBloc>()
+                                .add(const RefreshBudgetsOnTransactionChange());
+
                             context.pop();
                           }
                         },
@@ -464,7 +485,7 @@ class DropDownIcon extends StatelessWidget {
       child: SvgPicture.asset(
         "assets/svg/common/arrow_down_rounded.svg",
         colorFilter: ColorFilter.mode(
-          ColorConstants.borderColor,
+          ColorConstants.getBorderColor(context),
           BlendMode.srcIn,
         ),
       ),
@@ -488,10 +509,10 @@ class AmountWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           30.height(),
-          const Text(
+          Text(
             "How much?",
             style: TextStyle(
-              color: Color(0xFFDAD9D9),
+              color: Colors.white.withValues(alpha: 0.9), // 0.8 opacity
               fontSize: 20,
               fontWeight: FontWeight.w700,
             ),
@@ -502,8 +523,8 @@ class AmountWidget extends StatelessWidget {
             decoration: InputDecoration(
               border: InputBorder.none,
               hintText: "0",
-              hintStyle: const TextStyle(
-                color: Color(0xFFE3E2E2),
+              hintStyle: TextStyle(
+                color: Colors.white.withValues(alpha: 179), // 0.7 opacity
                 fontSize: 70,
                 fontWeight: FontWeight.bold,
               ),
