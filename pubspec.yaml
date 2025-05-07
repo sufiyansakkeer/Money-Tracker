@@ -41,6 +41,9 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   hive_generator: 2.0.1
+  mockito: ^5.4.4
+  integration_test:
+    sdk: flutter
 
 flutter_icons:
   android: "launcher_icon"
