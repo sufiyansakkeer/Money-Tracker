@@ -522,6 +522,10 @@ class AmountWidget extends StatelessWidget {
             controller: controller,
             decoration: InputDecoration(
               border: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              filled: true,
+              fillColor: Colors.white.withValues(alpha: 0.01), // 0.1 opacity
               hintText: "0",
               hintStyle: TextStyle(
                 color: Colors.white.withValues(alpha: 179), // 0.7 opacity

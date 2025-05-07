@@ -10,14 +10,22 @@ import 'package:money_track/features/profile/data/models/currency_model.dart';
 
 /// Main entry point for the application
 Future<void> main() async {
-  // Set system UI overlay style
+  // Set system UI overlay style for a modern immersive look
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    systemStatusBarContrastEnforced: true,
+    systemStatusBarContrastEnforced: false,
+    statusBarColor: Colors.transparent,
     systemNavigationBarColor: Colors.transparent,
     systemNavigationBarDividerColor: Colors.transparent,
     systemNavigationBarIconBrightness: Brightness.dark,
-    statusBarIconBrightness: Brightness.light,
+    statusBarIconBrightness: Brightness.dark,
+    statusBarBrightness: Brightness.light,
   ));
+
+  // Enable edge-to-edge display
+  SystemChrome.setEnabledSystemUIMode(
+    SystemUiMode.edgeToEdge,
+    overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom],
+  );
 
   // Ensure Flutter binding is initialized
   WidgetsFlutterBinding.ensureInitialized();

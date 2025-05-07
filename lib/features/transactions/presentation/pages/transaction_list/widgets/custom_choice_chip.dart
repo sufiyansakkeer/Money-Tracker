@@ -14,23 +14,29 @@ class CustomChoiceChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeColor = ColorConstants.getThemeColor(context);
+    final secondaryColor = ColorConstants.getSecondaryColor(context);
+    final textColor = ColorConstants.getTextColor(context);
+
     return ChoiceChip(
-      selectedColor: ColorConstants.getSecondaryColor(context),
+      selectedColor: secondaryColor,
+      backgroundColor: Colors.transparent,
+      side: BorderSide(
+        color:
+            selected ? Colors.transparent : themeColor.withValues(alpha: 0.5),
+        width: 1.5,
+      ),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(
-          20,
-        ),
+        borderRadius: BorderRadius.circular(20),
       ),
       label: Text(
         name,
         style: TextStyle(
-          color: selected
-              ? ColorConstants.getThemeColor(context)
-              : ColorConstants.getTextColor(context),
+          color: selected ? themeColor : textColor,
           fontWeight: FontWeight.bold,
         ),
       ),
-      checkmarkColor: ColorConstants.getThemeColor(context),
+      checkmarkColor: themeColor,
       selected: selected,
       onSelected: onSelected,
     );
