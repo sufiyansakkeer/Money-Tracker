@@ -26,8 +26,6 @@ class TotalTransactionCubit extends Cubit<TotalTransactionState> {
       final transactionList = result.data;
 
       for (var transaction in transactionList) {
-        log('Transaction: \\${transaction.id}, type: \\${transaction.transactionType} (runtimeType: \\${transaction.transactionType.runtimeType}), amount: \\${transaction.amount}',
-            name: 'transaction_debug');
         if (transaction.transactionType == TransactionType.expense) {
           expense = expense + transaction.amount;
         } else {
