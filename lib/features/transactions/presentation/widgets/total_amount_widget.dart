@@ -59,6 +59,11 @@ class _TotalAmountWidgetState extends State<TotalAmountWidget>
 
     // Start the animation when the widget is first built
     _animationController.forward();
+
+    // Ensure total amounts are loaded when the widget is shown
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<TotalTransactionCubit>().getTotalAmount();
+    });
   }
 
   @override
@@ -68,12 +73,18 @@ class _TotalAmountWidgetState extends State<TotalAmountWidget>
   }
 
   void _updateAmount(double newAmount) {
+    if (!mounted) return;
     if (_previousAmount != newAmount) {
       _previousAmount = _currentAmount;
       _currentAmount = newAmount;
       // Reset and restart the animation when the amount changes
-      _animationController.reset();
-      _animationController.forward();
+      // Use addPostFrameCallback to avoid calling setState during build
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          _animationController.reset();
+          _animationController.forward();
+        }
+      });
     }
   }
 
@@ -279,8 +290,13 @@ class _AnimatedSourceTileState extends State<AnimatedSourceTile>
       _previousAmount = _currentAmount;
       _currentAmount = widget.sourceData;
       // Reset and restart the animation when the amount changes
-      _animationController.reset();
-      _animationController.forward();
+      // Use addPostFrameCallback to avoid calling setState during build
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          _animationController.reset();
+          _animationController.forward();
+        }
+      });
     }
   }
 

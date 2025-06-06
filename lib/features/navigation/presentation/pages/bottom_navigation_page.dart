@@ -70,6 +70,8 @@ class _BottomNavigationPageState extends State<BottomNavigationPage>
   @override
   void dispose() {
     _animationController.dispose();
+    controllers.clear();
+    riveIconInputs.clear(); // Clear the Rive inputs list
     super.dispose();
   }
 

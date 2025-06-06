@@ -16,6 +16,7 @@ class TotalTransactionCubit extends Cubit<TotalTransactionState> {
       : super(TotalTransactionInitial());
 
   getTotalAmount() async {
+    emit(TotalTransactionLoading()); // Emit loading state
     double income = 0;
     double expense = 0;
 
@@ -25,6 +26,8 @@ class TotalTransactionCubit extends Cubit<TotalTransactionState> {
       final transactionList = result.data;
 
       for (var transaction in transactionList) {
+        log('Transaction: \\${transaction.id}, type: \\${transaction.transactionType} (runtimeType: \\${transaction.transactionType.runtimeType}), amount: \\${transaction.amount}',
+            name: 'transaction_debug');
         if (transaction.transactionType == TransactionType.expense) {
           expense = expense + transaction.amount;
         } else {
@@ -33,7 +36,10 @@ class TotalTransactionCubit extends Cubit<TotalTransactionState> {
       }
 
       log(income.toString(), name: "total income");
+      log(expense.toString(), name: "total expense");
       emit(TotalTransactionSuccess(totalIncome: income, totalExpense: expense));
+    } else if (result is Error<List<TransactionEntity>>) {
+      emit(TotalTransactionError(message: result.failure.message));
     }
   }
 }
