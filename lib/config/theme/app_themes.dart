@@ -216,7 +216,7 @@ class AppThemes {
         surface: Colors.white,
         error: redColor,
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         elevation: 2,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
@@ -444,7 +444,7 @@ class AppThemes {
         surface: const Color(0xFF1E1E1E),
         error: redColorDark,
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         elevation: 4,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),

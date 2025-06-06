@@ -21,14 +21,14 @@ Future<void> main() async {
     statusBarBrightness: Brightness.light,
   ));
 
+  // Ensure Flutter binding is initialized
+  WidgetsFlutterBinding.ensureInitialized();
+
   // Enable edge-to-edge display
-  SystemChrome.setEnabledSystemUIMode(
+  await SystemChrome.setEnabledSystemUIMode(
     SystemUiMode.edgeToEdge,
     overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom],
   );
-
-  // Ensure Flutter binding is initialized
-  WidgetsFlutterBinding.ensureInitialized();
 
   // Initialize Hive database
   await Hive.initFlutter();
