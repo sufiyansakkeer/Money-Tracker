@@ -64,7 +64,7 @@ class _BottomNavigationPageState extends State<BottomNavigationPage>
     // Initialize data
     context.read<TransactionBloc>().add(GetAllTransactionsEvent());
     context.read<CategoryBloc>().add(SetDefaultCategoriesEvent());
-    context.read<TotalTransactionCubit>().getTotalAmount();
+    context.read<TotalTransactionCubit>().calculateTotalAmounts();
   }
 
   @override

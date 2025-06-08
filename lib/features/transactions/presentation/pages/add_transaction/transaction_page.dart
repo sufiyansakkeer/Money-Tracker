@@ -16,6 +16,7 @@ import 'package:money_track/features/budget/presentation/bloc/budget_bloc.dart';
 import 'package:money_track/features/categories/presentation/bloc/category_bloc.dart';
 import 'package:money_track/features/transactions/presentation/bloc/transaction_bloc.dart';
 import 'package:money_track/features/transactions/presentation/bloc/total_transaction/total_transaction_cubit.dart';
+import 'package:money_track/core/widgets/accessible_widgets.dart';
 import 'package:money_track/core/widgets/category_icon_widget.dart';
 import 'package:money_track/core/widgets/custom_inkwell.dart';
 import 'package:svg_flutter/svg.dart';
@@ -345,32 +346,16 @@ class _TransactionPageState extends State<TransactionPage> {
                             24.height(),
 
                             // Description field
-                            Text(
-                              "Description",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 14,
-                                color: ColorConstants.getTextColor(context)
-                                    .withValues(alpha: 153), // 0.6 opacity
-                              ),
-                            ),
-                            8.height(),
-                            TextFormField(
+                            AccessibleFormField(
+                              label: "Description",
+                              hint: "Enter description",
+                              controller: descriptionController,
                               validator: (value) {
                                 if (value == null || value.trim() == "") {
                                   return "Required";
                                 }
                                 return null;
                               },
-                              controller: descriptionController,
-                              decoration: InputDecoration(
-                                disabledBorder:
-                                    StyleConstants.textFormFieldBorder(),
-                                enabledBorder:
-                                    StyleConstants.textFormFieldBorder(),
-                                border: StyleConstants.textFormFieldBorder(),
-                                hintText: "Enter description",
-                              ),
                             ),
                           ],
                         ),
@@ -385,7 +370,7 @@ class _TransactionPageState extends State<TransactionPage> {
                     child: SizedBox(
                       width: double.infinity,
                       height: 55,
-                      child: ElevatedButton(
+                      child: AccessibleButton(
                         onPressed: () {
                           if (amountEditingController.text.isEmpty) {
                             "Please Enter the amount".showSnack();
@@ -421,7 +406,7 @@ class _TransactionPageState extends State<TransactionPage> {
                             // Update total amounts
                             context
                                 .read<TotalTransactionCubit>()
-                                .getTotalAmount();
+                                .calculateTotalAmounts();
 
                             // Refresh budgets when transaction is added/edited
                             context
@@ -431,8 +416,12 @@ class _TransactionPageState extends State<TransactionPage> {
                             context.pop();
                           }
                         },
-                        style: StyleConstants.elevatedButtonStyle(
-                            context: context),
+                        semanticLabel: widget.transactionEntity == null
+                            ? "Save new ${widget.isExpense ? 'expense' : 'income'} transaction"
+                            : "Update ${widget.isExpense ? 'expense' : 'income'} transaction",
+                        tooltip: widget.transactionEntity == null
+                            ? "Tap to save the new transaction"
+                            : "Tap to save changes to the transaction",
                         child: Text(
                           widget.transactionEntity == null
                               ? "Continue"

@@ -9,9 +9,9 @@ abstract class Result<T> extends Equatable {
   List<Object?> get props => [];
 
   /// Fold method to handle both success and failure cases
-  void fold(
-    Function(T) success,
-    Function(Failure) error,
+  R fold<R>(
+    R Function(T) success,
+    R Function(Failure) error,
   );
 }
 
@@ -25,11 +25,11 @@ class Success<T> extends Result<T> {
   List<Object?> get props => [data];
 
   @override
-  void fold(
-    Function(T) success,
-    Function(Failure) error,
+  R fold<R>(
+    R Function(T) success,
+    R Function(Failure) error,
   ) {
-    success(data);
+    return success(data);
   }
 }
 
@@ -43,10 +43,10 @@ class Error<T> extends Result<T> {
   List<Object?> get props => [failure];
 
   @override
-  void fold(
-    Function(T) success,
-    Function(Failure) error,
+  R fold<R>(
+    R Function(T) success,
+    R Function(Failure) error,
   ) {
-    error(failure);
+    return error(failure);
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:money_track/app/app.dart';
 import 'package:money_track/app/di/injection_container.dart';
+import 'package:money_track/core/logging/app_logger.dart';
 import 'package:money_track/data/models/category_model.dart';
 import 'package:money_track/data/models/transaction_model.dart';
 import 'package:money_track/features/budget/data/models/budget_model.dart';
@@ -24,6 +25,10 @@ Future<void> main() async {
   // Ensure Flutter binding is initialized
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Initialize AppLogger first
+  AppLogger().initialize(enableFileLogging: false);
+  AppLogger().info('Application starting up', tag: 'MAIN');
+
   // Enable edge-to-edge display
   await SystemChrome.setEnabledSystemUIMode(
     SystemUiMode.edgeToEdge,
@@ -31,9 +36,11 @@ Future<void> main() async {
   );
 
   // Initialize Hive database
+  AppLogger().info('Initializing Hive database', tag: 'MAIN');
   await Hive.initFlutter();
 
   // Register Hive adapters BEFORE opening boxes
+  AppLogger().debug('Registering Hive adapters', tag: 'MAIN');
   if (!Hive.isAdapterRegistered(CategoryTypeAdapter().typeId)) {
     Hive.registerAdapter(CategoryTypeAdapter());
   }
@@ -61,13 +68,16 @@ Future<void> main() async {
   }
 
   // Now open the boxes
+  AppLogger().debug('Opening Hive boxes', tag: 'MAIN');
   await Hive.openBox<CategoryModel>('category-database');
   await Hive.openBox<CurrencyModel>('currency-database');
   await Hive.openBox<BudgetModel>('budget-database');
 
   // Initialize dependency injection
-  await sl.init();
+  AppLogger().info('Initializing dependency injection', tag: 'MAIN');
+  await initializeDependencies();
 
   // Run the app
+  AppLogger().info('Starting MoneyTrack application', tag: 'MAIN');
   runApp(const App());
 }

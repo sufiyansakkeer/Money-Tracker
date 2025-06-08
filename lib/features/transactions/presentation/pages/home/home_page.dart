@@ -109,23 +109,33 @@ class _HomePageState extends State<HomePage>
   }
 }
 
-class BodyContent extends StatelessWidget {
+class BodyContent extends StatefulWidget {
   const BodyContent({super.key});
 
   @override
+  State<BodyContent> createState() => _BodyContentState();
+}
+
+class _BodyContentState extends State<BodyContent> {
+  @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          20.height(),
-          const TotalAmountWidget(),
-          20.height(),
-          const TransactionHeader(),
-          20.height(),
-          const TransactionList(),
-        ],
+    return BlocListener<TransactionBloc, TransactionState>(
+      listener: (context, state) {
+        // No need for key-based rebuilds; state is managed via Bloc
+      },
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            20.height(),
+            TotalAmountWidget(),
+            20.height(),
+            const TransactionHeader(),
+            20.height(),
+            const TransactionList(),
+          ],
+        ),
       ),
     );
   }
@@ -182,7 +192,7 @@ class TransactionList extends StatelessWidget {
       listener: (context, state) {
         if (state is TransactionLoaded) {
           // Update total amounts
-          context.read<TotalTransactionCubit>().getTotalAmount();
+          context.read<TotalTransactionCubit>().calculateTotalAmounts();
 
           // Refresh budgets when transactions change
           context

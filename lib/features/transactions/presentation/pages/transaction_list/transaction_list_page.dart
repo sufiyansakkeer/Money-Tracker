@@ -102,7 +102,7 @@ class _TransactionListPageState extends State<TransactionListPage> {
                 listener: (context, state) {
                   if (state is TransactionLoaded) {
                     // Update total amounts
-                    context.read<TotalTransactionCubit>().getTotalAmount();
+                    context.read<TotalTransactionCubit>().calculateTotalAmounts();
 
                     // Refresh budgets when transactions change
                     context
