@@ -204,35 +204,34 @@ class _IncomeExpenseRow extends StatelessWidget {
               _SourceTilePlaceholder(label: 'Expense'),
             ],
           );
+        } else {
+          // Only build when data is available
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                child: AnimatedSourceTile(
+                  color: ColorConstants.getIncomeColor(context),
+                  sourceName: 'Income',
+                  sourceData: state.totalIncome,
+                  sourceIcon: 'assets/svg/home/income_icon.svg',
+                  padding: const EdgeInsets.fromLTRB(8, 16, 8, 8),
+                  delay: const Duration(milliseconds: 100),
+                ),
+              ),
+              10.width(),
+              Expanded(
+                child: AnimatedSourceTile(
+                  color: ColorConstants.getExpenseColor(context),
+                  sourceName: 'Expense',
+                  sourceData: state.totalExpense,
+                  sourceIcon: 'assets/svg/home/expense_icon.svg',
+                  delay: const Duration(milliseconds: 200),
+                ),
+              ),
+            ],
+          );
         }
-        // Only build when data is available
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              child: AnimatedSourceTile(
-                key: ValueKey(state.totalIncome),
-                color: ColorConstants.getIncomeColor(context),
-                sourceName: 'Income',
-                sourceData: state.totalIncome,
-                sourceIcon: 'assets/svg/home/income_icon.svg',
-                padding: const EdgeInsets.fromLTRB(8, 16, 8, 8),
-                delay: const Duration(milliseconds: 100),
-              ),
-            ),
-            10.width(),
-            Expanded(
-              child: AnimatedSourceTile(
-                key: ValueKey(state.totalExpense),
-                color: ColorConstants.getExpenseColor(context),
-                sourceName: 'Expense',
-                sourceData: state.totalExpense,
-                sourceIcon: 'assets/svg/home/expense_icon.svg',
-                delay: const Duration(milliseconds: 200),
-              ),
-            ),
-          ],
-        );
       },
     );
   }
@@ -266,9 +265,7 @@ class _AnimatedSourceTileState extends State<AnimatedSourceTile>
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
   late Animation<double> _scaleAnimation;
-  double _previousAmount = 0;
   double _currentAmount = 0;
-  late Animation<double> _countAnimation;
 
   @override
   void initState() {
@@ -302,13 +299,6 @@ class _AnimatedSourceTileState extends State<AnimatedSourceTile>
       ),
     );
 
-    _countAnimation = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(
-        parent: _animationController,
-        curve: const Interval(0.3, 0.9, curve: Curves.easeOutCubic),
-      ),
-    );
-
     _currentAmount = widget.sourceData;
 
     // Delay the animation start based on the provided delay
@@ -317,23 +307,6 @@ class _AnimatedSourceTileState extends State<AnimatedSourceTile>
         _animationController.forward();
       }
     });
-  }
-
-  @override
-  void didUpdateWidget(AnimatedSourceTile oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.sourceData != widget.sourceData) {
-      _previousAmount = _currentAmount;
-      _currentAmount = widget.sourceData;
-      // Reset and restart the animation when the amount changes
-      // Use addPostFrameCallback to avoid calling setState during build
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) {
-          _animationController.reset();
-          _animationController.forward();
-        }
-      });
-    }
   }
 
   @override
@@ -361,8 +334,7 @@ class _AnimatedSourceTileState extends State<AnimatedSourceTile>
       child: SourceTile(
         color: widget.color,
         sourceName: widget.sourceName,
-        sourceData: _previousAmount +
-            (_currentAmount - _previousAmount) * _countAnimation.value,
+        sourceData: _currentAmount,
         sourceIcon: widget.sourceIcon,
         padding: widget.padding,
       ),
@@ -391,6 +363,7 @@ class _SourceTilePlaceholder extends StatelessWidget {
         ],
       ),
       child: Row(
+        mainAxisSize: MainAxisSize.min, // Fix: shrink-wrap row
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // Placeholder for icon
@@ -401,7 +374,8 @@ class _SourceTilePlaceholder extends StatelessWidget {
           ),
           const SizedBox(width: 16),
           // Placeholder for label
-          Expanded(
+          Flexible(
+            fit: FlexFit.loose,
             child: Container(
               height: 16,
               color: Colors.grey.shade300,

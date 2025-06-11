@@ -227,7 +227,7 @@ class FilledTransactionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      separatorBuilder: (context, index) => const SizedBox(height: 10),
+      separatorBuilder: (context, index) => 10.height(),
       primary: false,
       shrinkWrap: true,
       itemCount: transactionList.length,

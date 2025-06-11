@@ -7,7 +7,6 @@ import 'package:money_track/domain/usecases/transaction/get_all_transactions_use
 
 part 'total_transaction_state.dart';
 
-/// Enhanced TotalTransactionCubit with better error handling and state management
 class TotalTransactionCubit extends Cubit<TotalTransactionState> {
   final GetAllTransactionsUseCase _getAllTransactionsUseCase;
 
@@ -43,7 +42,7 @@ class TotalTransactionCubit extends Cubit<TotalTransactionState> {
       );
     } catch (e) {
       emit(TotalTransactionError(
-        failure: DatabaseFailure(message: 'Unexpected error: \\$e'),
+        failure: DatabaseFailure(message: 'Unexpected error: $e'),
       ));
     }
   }
