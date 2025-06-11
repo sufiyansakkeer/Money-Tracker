@@ -1,7 +1,6 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
-import 'package:money_track/core/logging/app_logger.dart';
 import 'package:money_track/data/datasources/local/category_local_datasource.dart';
 import 'package:money_track/data/datasources/local/transaction_local_datasource.dart';
 import 'package:money_track/data/repositories/category_repository_impl.dart';
@@ -54,20 +53,16 @@ final GetIt sl = GetIt.instance;
 
 /// Initialize all dependencies
 Future<void> initializeDependencies() async {
-  AppLogger().info('Starting dependency initialization', tag: 'DI');
   await _initExternalDependencies();
   _initDataSources();
   _initRepositories();
   _initUseCases();
   _initServices();
   _initBlocs();
-  AppLogger().info('Dependency initialization completed', tag: 'DI');
 }
 
 /// Initialize external dependencies
 Future<void> _initExternalDependencies() async {
-  AppLogger().debug('Initializing external dependencies', tag: 'DI');
-  
   // Register Hive
   sl.registerLazySingleton<HiveInterface>(() => Hive);
 
@@ -75,14 +70,10 @@ Future<void> _initExternalDependencies() async {
   sl.registerLazySingleton<FlutterLocalNotificationsPlugin>(
     () => FlutterLocalNotificationsPlugin(),
   );
-  
-  AppLogger().debug('External dependencies initialized', tag: 'DI');
 }
 
 /// Initialize data sources
 void _initDataSources() {
-  AppLogger().debug('Initializing data sources', tag: 'DI');
-  
   // Category data source
   sl.registerLazySingleton<CategoryLocalDataSource>(
     () => CategoryLocalDataSourceImpl(hive: sl()),
@@ -107,14 +98,10 @@ void _initDataSources() {
   sl.registerLazySingleton<BudgetLocalDataSource>(
     () => BudgetLocalDataSourceImpl(hive: sl()),
   );
-  
-  AppLogger().debug('Data sources initialized', tag: 'DI');
 }
 
 /// Initialize repositories
 void _initRepositories() {
-  AppLogger().debug('Initializing repositories', tag: 'DI');
-  
   // Category repository
   sl.registerLazySingleton<CategoryRepository>(
     () => CategoryRepositoryImpl(localDataSource: sl()),
@@ -139,14 +126,10 @@ void _initRepositories() {
   sl.registerLazySingleton<BudgetRepository>(
     () => BudgetRepositoryImpl(localDataSource: sl()),
   );
-  
-  AppLogger().debug('Repositories initialized', tag: 'DI');
 }
 
 /// Initialize use cases
 void _initUseCases() {
-  AppLogger().debug('Initializing use cases', tag: 'DI');
-  
   // Category use cases
   sl.registerLazySingleton(() => GetAllCategoriesUseCase(sl()));
   sl.registerLazySingleton(() => AddCategoryUseCase(sl()));
@@ -179,26 +162,18 @@ void _initUseCases() {
   sl.registerLazySingleton(() => DeleteBudgetUseCase(sl()));
   sl.registerLazySingleton(() => GetBudgetsByCategoryUseCase(sl()));
   sl.registerLazySingleton(() => GetActiveBudgetsUseCase(sl()));
-  
-  AppLogger().debug('Use cases initialized', tag: 'DI');
 }
 
 /// Initialize services
 void _initServices() {
-  AppLogger().debug('Initializing services', tag: 'DI');
-  
   // Budget notification service
   sl.registerLazySingleton<BudgetNotificationService>(
     () => BudgetNotificationService(sl()),
   );
-  
-  AppLogger().debug('Services initialized', tag: 'DI');
 }
 
 /// Initialize BLoCs (as factories for fresh instances)
 void _initBlocs() {
-  AppLogger().debug('Initializing BLoCs', tag: 'DI');
-  
   // Category BLoC
   sl.registerFactory(
     () => CategoryBloc(
@@ -263,13 +238,10 @@ void _initBlocs() {
       notificationService: sl(),
     ),
   );
-  
-  AppLogger().debug('BLoCs initialized', tag: 'DI');
 }
 
 /// Reset all dependencies (useful for testing)
 Future<void> resetDependencies() async {
-  AppLogger().info('Resetting dependencies', tag: 'DI');
   await sl.reset();
 }
 
