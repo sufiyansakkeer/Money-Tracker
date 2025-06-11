@@ -18,7 +18,7 @@ extension CategoryTypeExtension on CategoryType {
       case CategoryType.food:
         return SvgEnumModel(
             svgAsset: 'assets/svg/category/restaurant.svg',
-            backgroundColor: Colors.red);
+            backgroundColor: const Color(0xFFFD3C4A));
       case CategoryType.salary:
         return SvgEnumModel(
             svgAsset: 'assets/svg/category/salary.svg',
@@ -26,48 +26,57 @@ extension CategoryTypeExtension on CategoryType {
       case CategoryType.shopping:
         return SvgEnumModel(
             svgAsset: 'assets/svg/category/shopping_bag.svg',
-            backgroundColor: const Color(0xFFFCAC12));
+            backgroundColor: const Color(0xFFFF8A00));
       case CategoryType.transportation:
         return SvgEnumModel(
             svgAsset: 'assets/svg/category/car.svg',
-            backgroundColor: const Color(0xFF2196F3));
+            backgroundColor: const Color(0xFF246BFD));
       case CategoryType.subscription:
         return SvgEnumModel(
             svgAsset: 'assets/svg/category/recurring_bill.svg',
-            backgroundColor: const Color(0xFF732EFF));
+            backgroundColor: const Color(0xFF7F3DFF));
       default:
         return SvgEnumModel(
             svgAsset: 'assets/svg/category/Transaction.svg',
-            backgroundColor: const Color(0xFFE728E7));
+            backgroundColor: const Color(0xFF00C2CB));
     }
   }
 }
 
 class CategoryIconWidget extends StatelessWidget {
-  const CategoryIconWidget({super.key, required this.categoryType});
+  const CategoryIconWidget({
+    super.key,
+    required this.categoryType,
+    this.size = 30,
+    this.color,
+    this.padding = const EdgeInsets.all(16),
+    this.borderRadius = 10,
+  });
+
   final CategoryType categoryType;
+  final double size;
+  final Color? color;
+  final EdgeInsetsGeometry padding;
+  final double borderRadius;
+
   @override
   Widget build(BuildContext context) {
+    final iconColor = color ?? categoryType.svgEnumModel.backgroundColor;
+
     return Container(
-      padding: const EdgeInsets.all(
-        16,
-      ),
+      padding: padding,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(
-          10,
-        ),
-        color: categoryType.svgEnumModel.backgroundColor
-            .withAlpha(102), // 0.4 opacity
+        borderRadius: BorderRadius.circular(borderRadius),
+        color: iconColor.withValues(alpha: 0.2),
       ),
       child: SizedBox(
-        height: 30,
-        width: 30,
+        height: size,
+        width: size,
         child: SvgPicture.asset(
           categoryType.svgEnumModel.svgAsset,
           colorFilter: categoryType == CategoryType.other
               ? null
-              : ColorFilter.mode(
-                  categoryType.svgEnumModel.backgroundColor, BlendMode.srcIn),
+              : ColorFilter.mode(iconColor, BlendMode.srcIn),
         ),
       ),
     );

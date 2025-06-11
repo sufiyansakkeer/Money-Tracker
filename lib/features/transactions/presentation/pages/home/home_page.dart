@@ -37,27 +37,27 @@ class _HomePageState extends State<HomePage>
   void initState() {
     super.initState();
     _animationController = AnimationController(
-      duration: const Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 300),
       vsync: this,
     );
 
     _firstIconAnimation = Tween<Offset>(
-      begin: const Offset(0, 1.4),
-      end: const Offset(0, -0.3),
+      begin: const Offset(0, 2.0),
+      end: const Offset(0, 0),
     ).animate(
       CurvedAnimation(
         parent: _animationController,
-        curve: Curves.easeOut,
+        curve: Curves.easeOutBack,
       ),
     );
 
     _secondIconAnimation = Tween<Offset>(
-      begin: const Offset(0, 2.5),
-      end: const Offset(0, -0.5),
+      begin: const Offset(0, 3.0),
+      end: const Offset(0, 0),
     ).animate(
       CurvedAnimation(
         parent: _animationController,
-        curve: Curves.easeOut,
+        curve: Curves.easeOutBack,
       ),
     );
   }
@@ -87,37 +87,55 @@ class _HomePageState extends State<HomePage>
           children: [
             const Background(),
             const BodyContent(),
-            if (_isExpanded) const OverlayWidget(),
+            if (_isExpanded)
+              GestureDetector(
+                onTap: _toggleIcons, // Close menu when tapping outside
+                child: const OverlayWidget(),
+              ),
           ],
         ),
-        floatingActionButton: FloatingActionButtonWidget(
-          isExpanded: _isExpanded,
-          firstIconAnimation: _firstIconAnimation,
-          secondIconAnimation: _secondIconAnimation,
-          toggleIcons: _toggleIcons,
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.only(
+              bottom: 100), // Adjusted padding to better align with nav bar
+          child: FloatingActionButtonWidget(
+            isExpanded: _isExpanded,
+            firstIconAnimation: _firstIconAnimation,
+            secondIconAnimation: _secondIconAnimation,
+            toggleIcons: _toggleIcons,
+          ),
         ),
       ),
     );
   }
 }
 
-class BodyContent extends StatelessWidget {
+class BodyContent extends StatefulWidget {
   const BodyContent({super.key});
 
   @override
+  State<BodyContent> createState() => _BodyContentState();
+}
+
+class _BodyContentState extends State<BodyContent> {
+  @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          20.height(),
-          const TotalAmountWidget(),
-          20.height(),
-          const TransactionHeader(),
-          20.height(),
-          const TransactionList(),
-        ],
+    return BlocListener<TransactionBloc, TransactionState>(
+      listener: (context, state) {
+        // No need for key-based rebuilds; state is managed via Bloc
+      },
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            20.height(),
+            TotalAmountWidget(),
+            20.height(),
+            const TransactionHeader(),
+            20.height(),
+            const TransactionList(),
+          ],
+        ),
       ),
     );
   }
@@ -174,7 +192,7 @@ class TransactionList extends StatelessWidget {
       listener: (context, state) {
         if (state is TransactionLoaded) {
           // Update total amounts
-          context.read<TotalTransactionCubit>().getTotalAmount();
+          context.read<TotalTransactionCubit>().calculateTotalAmounts();
 
           // Refresh budgets when transactions change
           context
@@ -241,114 +259,227 @@ class FilledTransactionList extends StatelessWidget {
   }
 }
 
-class EditAndDeleteBottomSheet extends StatelessWidget {
+class EditAndDeleteBottomSheet extends StatefulWidget {
   const EditAndDeleteBottomSheet({
     super.key,
     required this.transactionEntity,
   });
+
   final TransactionEntity transactionEntity;
+
+  @override
+  State<EditAndDeleteBottomSheet> createState() =>
+      _EditAndDeleteBottomSheetState();
+}
+
+class _EditAndDeleteBottomSheetState extends State<EditAndDeleteBottomSheet>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _scaleAnimation;
+
+  int? _hoveredIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+
+    _scaleAnimation = Tween<double>(begin: 0.9, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.easeOutBack,
+      ),
+    );
+
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final themeColor = ColorConstants.getThemeColor(context);
     final expenseColor = ColorConstants.getExpenseColor(context);
+    final textColor = ColorConstants.getTextColor(context);
 
-    return SizedBox(
-      width: 800,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 10,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            InkWell(
-              onTap: () {
-                context.pop();
-                context.pushWithRightToLeftTransition(
-                  TransactionPage(
-                    isExpense: transactionEntity.transactionType ==
-                        TransactionType.expense,
-                    transactionEntity: transactionEntity,
+    return SafeArea(
+      child: AnimatedBuilder(
+        animation: _animationController,
+        builder: (context, child) {
+          return Transform.scale(
+            scale: _scaleAnimation.value,
+            child: child,
+          );
+        },
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Transaction Options",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: textColor,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                widget.transactionEntity.category.categoryName,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: textColor.withValues(alpha: 0.7),
+                ),
+              ),
+              const SizedBox(height: 24),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _buildActionButton(
+                    index: 0,
+                    icon: Icons.edit_outlined,
+                    label: "Edit",
+                    color: themeColor,
+                    onTap: () {
+                      context.pop();
+                      context.pushWithRightToLeftTransition(
+                        TransactionPage(
+                          isExpense: widget.transactionEntity.transactionType ==
+                              TransactionType.expense,
+                          transactionEntity: widget.transactionEntity,
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
-              child: Container(
-                width: 100,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 10,
-                ),
-                decoration: BoxDecoration(
-                  color: themeColor.withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.edit,
-                      color: themeColor,
+                  _buildActionButton(
+                    index: 1,
+                    icon: Icons.delete_outline,
+                    label: "Delete",
+                    color: expenseColor,
+                    onTap: () {
+                      // Show confirmation dialog
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text("Delete Transaction"),
+                          content: const Text(
+                            "Are you sure you want to delete this transaction? This action cannot be undone.",
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: Text(
+                                "Cancel",
+                                style: TextStyle(color: textColor),
+                              ),
+                            ),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: expenseColor,
+                                foregroundColor: Colors.white,
+                              ),
+                              onPressed: () {
+                                Navigator.pop(context); // Close dialog
+                                context.pop(); // Close bottom sheet
+
+                                // Delete the transaction
+                                context.read<TransactionBloc>().add(
+                                      DeleteTransactionEvent(
+                                        transactionId:
+                                            widget.transactionEntity.id,
+                                      ),
+                                    );
+
+                                // Refresh budgets when transaction is deleted
+                                context.read<BudgetBloc>().add(
+                                      const RefreshBudgetsOnTransactionChange(),
+                                    );
+                              },
+                              child: const Text("Delete"),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildActionButton({
+    required int index,
+    required IconData icon,
+    required String label,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    final isHovered = _hoveredIndex == index;
+
+    return MouseRegion(
+      onEnter: (_) => setState(() => _hoveredIndex = index),
+      onExit: (_) => setState(() => _hoveredIndex = null),
+      child: GestureDetector(
+        onTap: onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          width: 130,
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+          decoration: BoxDecoration(
+            color: isHovered
+                ? color.withValues(alpha: 0.15)
+                : color.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: isHovered
+                  ? color.withValues(alpha: 0.5)
+                  : color.withValues(alpha: 0.2),
+              width: 1,
+            ),
+            boxShadow: isHovered
+                ? [
+                    BoxShadow(
+                      color: color.withValues(alpha: 0.2),
+                      blurRadius: 8,
+                      offset: const Offset(0, 4),
                     ),
-                    5.height(),
-                    Text(
-                      "Edit",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: ColorConstants.getTextColor(context),
-                      ),
-                    ),
-                  ],
+                  ]
+                : null,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                icon,
+                color: color,
+                size: 28,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color:
+                      isHovered ? color : ColorConstants.getTextColor(context),
                 ),
               ),
-            ),
-            20.width(),
-            InkWell(
-              onTap: () {
-                // Delete the transaction
-                context.read<TransactionBloc>().add(
-                      DeleteTransactionEvent(
-                        transactionId: transactionEntity.id,
-                      ),
-                    );
-
-                // Refresh budgets when transaction is deleted
-                context.read<BudgetBloc>().add(
-                      const RefreshBudgetsOnTransactionChange(),
-                    );
-
-                context.pop();
-              },
-              child: Container(
-                width: 100,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 10,
-                ),
-                decoration: BoxDecoration(
-                  color: expenseColor.withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.delete,
-                      color: expenseColor,
-                    ),
-                    5.height(),
-                    Text(
-                      "Delete",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: ColorConstants.getTextColor(context),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

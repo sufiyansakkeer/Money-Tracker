@@ -6,6 +6,12 @@ import 'package:money_track/app/routes/app_routes.dart';
 import 'package:money_track/features/onboarding/presentation/bloc/on_boarding_cubit.dart';
 import 'package:money_track/features/profile/presentation/bloc/theme/theme_cubit.dart';
 import 'package:money_track/features/profile/presentation/bloc/theme/theme_state.dart';
+import 'package:money_track/features/navigation/presentation/bloc/bottom_navigation_bloc.dart';
+import 'package:money_track/features/categories/presentation/bloc/category_bloc.dart';
+import 'package:money_track/features/transactions/presentation/bloc/transaction_bloc.dart';
+import 'package:money_track/features/transactions/presentation/bloc/total_transaction/total_transaction_cubit.dart';
+import 'package:money_track/features/profile/presentation/bloc/currency/currency_cubit.dart';
+import 'package:money_track/features/budget/presentation/bloc/budget_bloc.dart';
 
 /// Global key for SnackBar
 GlobalKey<ScaffoldMessengerState> snackBarKey = GlobalKey();
@@ -19,28 +25,28 @@ class App extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => sl.bottomNavigationBloc,
+          create: (_) => sl<BottomNavigationBloc>(),
         ),
         BlocProvider(
-          create: (context) => sl.categoryBloc,
+          create: (_) => sl<CategoryBloc>(),
         ),
         BlocProvider(
-          create: (context) => sl.transactionBloc,
+          create: (_) => sl<TransactionBloc>(),
         ),
         BlocProvider(
-          create: (context) => sl.totalTransactionCubit,
+          create: (_) => sl<TotalTransactionCubit>(),
         ),
         BlocProvider(
-          create: (context) => OnBoardingCubit(),
+          create: (_) => OnBoardingCubit(),
         ),
         BlocProvider(
-          create: (context) => sl.currencyCubit,
+          create: (_) => sl<CurrencyCubit>(),
         ),
         BlocProvider(
-          create: (context) => sl.themeCubit..loadTheme(),
+          create: (_) => sl<ThemeCubit>()..loadTheme(),
         ),
         BlocProvider(
-          create: (context) => sl.budgetBloc,
+          create: (_) => sl<BudgetBloc>(),
         ),
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(
