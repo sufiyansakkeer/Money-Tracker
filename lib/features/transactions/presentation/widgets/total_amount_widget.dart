@@ -85,7 +85,6 @@ class _TotalAmountWidgetState extends State<TotalAmountWidget>
 
   @override
   Widget build(BuildContext context) {
-    print('[DEBUG] TotalAmountWidget build called');
     return AnimatedBuilder(
       animation: _animationController,
       builder: (context, child) {
@@ -195,8 +194,6 @@ class _IncomeExpenseRow extends StatelessWidget {
       buildWhen: (previous, current) =>
           previous.runtimeType != current.runtimeType,
       builder: (context, state) {
-        print(
-            '[DEBUG] _IncomeExpenseRow BlocBuilder state: \\${state.toString()}');
         if (state is! TotalTransactionSuccess) {
           // Show loading or placeholder until data is available
           return Row(
@@ -376,7 +373,7 @@ class _AnimatedSourceTileState extends State<AnimatedSourceTile>
 class _SourceTilePlaceholder extends StatelessWidget {
   final String label;
 
-  const _SourceTilePlaceholder({super.key, required this.label});
+  const _SourceTilePlaceholder({required this.label});
 
   @override
   Widget build(BuildContext context) {
@@ -387,7 +384,7 @@ class _SourceTilePlaceholder extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 8,
             offset: const Offset(0, 4),
           ),

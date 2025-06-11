@@ -41,8 +41,6 @@ class TotalTransactionCubit extends Cubit<TotalTransactionState> {
           AppLogger().info(
               'Total calculation completed - Income: \\${totals.income}, Expense: \\${totals.expense}, Balance: \\${totals.balance}, Count: \\${transactions.length}',
               tag: 'TOTAL_TRANSACTION_CUBIT');
-          print(
-              '[DEBUG] TotalTransactionCubit emits: income=\\${totals.income}, expense=\\${totals.expense}, balance=\\${totals.balance}, count=\\${transactions.length}');
           emit(TotalTransactionSuccess(
             totalIncome: totals.income,
             totalExpense: totals.expense,
@@ -53,15 +51,12 @@ class TotalTransactionCubit extends Cubit<TotalTransactionState> {
         (failure) {
           AppLogger().error('Failed to calculate totals: \\${failure.message}',
               tag: 'TOTAL_TRANSACTION_CUBIT');
-          print(
-              '[DEBUG] TotalTransactionCubit emits error: \\${failure.message}');
           emit(TotalTransactionError(failure: failure));
         },
       );
     } catch (e) {
       AppLogger().error('Unexpected error in calculateTotalAmounts: \\$e',
           tag: 'TOTAL_TRANSACTION_CUBIT', error: e);
-      print('[DEBUG] TotalTransactionCubit emits unexpected error: \\$e');
       emit(TotalTransactionError(
         failure: DatabaseFailure(message: 'Unexpected error: \\$e'),
       ));
