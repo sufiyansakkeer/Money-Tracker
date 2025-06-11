@@ -1,0 +1,135 @@
+name: Flutter CI/CD
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build_and_test_android:
+    name: Build & Test Android
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '11' # Adjust to your project's required Java version
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.32.1' # Specify your Flutter version (e.g., '3.16.0') or use a .flutter-version file
+          channel: 'stable'
+          cache: true # Enable caching for Flutter dependencies
+
+      - name: Get Flutter dependencies
+        run: flutter pub get
+
+      - name: Analyze project
+        run: flutter analyze
+
+      - name: Run tests
+        run: flutter test
+
+      - name: Build APK (Release)
+        run: |
+          # For a signed APK, you'll need to set up keystore and key.properties
+          # See GitHub secrets for managing your keystore file and passwords
+          # Example: echo "storeFile=keystore.jks" > android/key.properties
+          #          echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" >> android/key.properties
+          #          echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
+          #          echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> android/key.properties
+          #          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/keystore.jks
+          flutter build apk --release
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+      - name: Build App Bundle (Release)
+        run: |
+          # Similar signing setup as APK for App Bundle
+          flutter build appbundle --release
+
+      - name: Upload App Bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-appbundle
+          path: build/app/outputs/bundle/release/app-release.aab
+
+  build_and_test_ios:
+    name: Build & Test iOS
+    runs-on: macos-latest # iOS builds require a macOS runner
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.32.1' # Specify your Flutter version
+          channel: 'stable'
+          cache: true
+
+      - name: Get Flutter dependencies
+        run: flutter pub get
+
+      - name: Analyze project
+        run: flutter analyze
+
+      - name: Run tests
+        run: flutter test
+
+      # To build a signed IPA for TestFlight or App Store, you need to:
+      # 1. Set up Apple Developer certificates and provisioning profiles as GitHub secrets.
+      # 2. Use an action like `apple-actions/import-codesign-certs` to install them.
+      # 3. Create an `ExportOptions.plist` file in your `ios/` directory.
+      # Example for a signed build (requires secrets and ExportOptions.plist):
+      # - name: Install Apple Certificate and Provisioning Profile
+      #   uses: apple-actions/import-codesign-certs@v2
+      #   with:
+      #     p12-file-base64: ${{ secrets.APPLE_CERT_P12_BASE64 }}
+      #     p12-password: ${{ secrets.APPLE_CERT_P12_PASSWORD }}
+      #     mobileprovision-base64: ${{ secrets.IOS_PROVISIONING_PROFILE_BASE64 }}
+      #     keychain-password: ${{ github.run_id }} # A temporary password
+
+      # - name: Build IPA
+      #   run: flutter build ipa --release --export-options-plist=ios/ExportOptions.plist
+
+      # - name: Upload IPA
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: release-ipa
+      #     path: build/ios/ipa/*.ipa
+
+  
+
+# You can add a similar job for iOS deployment, e.g., to TestFlight using Fastlane.
+# This typically involves more complex setup with Fastlane Match for certificates
+# and sigh for provisioning, then pilot to upload.
+#
+# deploy_ios_testflight:
+#   name: Deploy iOS to TestFlight
+#   needs: build_and_test_ios
+#   runs-on: macos-latest
+#   if: github.ref == 'refs/heads/main'
+#   steps:
+#     # ... steps to download IPA ...
+#     # ... steps to set up Ruby, Bundler, Fastlane ...
+#     # - name: Deploy to TestFlight via Fastlane
+#     #   env:
+#     #     FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_APPLE_APP_SPECIFIC_PASSWORD }}
+#     #     FASTLANE_USER: ${{ secrets.APPLE_ID_EMAIL }}
+#     #   run: |
+#     #     cd ios
+#     #     bundle exec fastlane beta # Assuming you have a 'beta' lane in your Fastfile
