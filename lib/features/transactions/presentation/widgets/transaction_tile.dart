@@ -122,7 +122,7 @@ class _TransactionTileState extends State<TransactionTile>
                 child: CategoryIconWidget(
                   categoryType: widget.categoryType,
                   size: 28,
-                  color: transactionColor,
+                  color: widget.categoryType.svgEnumModel.backgroundColor,
                 ),
               ),
               16.width(),

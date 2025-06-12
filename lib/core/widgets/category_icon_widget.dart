@@ -64,19 +64,22 @@ class CategoryIconWidget extends StatelessWidget {
     final iconColor = color ?? categoryType.svgEnumModel.backgroundColor;
 
     return Container(
-      padding: padding,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(borderRadius),
-        color: iconColor.withValues(alpha: 0.2),
-      ),
-      child: SizedBox(
-        height: size,
-        width: size,
-        child: SvgPicture.asset(
-          categoryType.svgEnumModel.svgAsset,
-          colorFilter: categoryType == CategoryType.other
-              ? null
-              : ColorFilter.mode(iconColor, BlendMode.srcIn),
+      color: Colors.white,
+      child: Container(
+        padding: padding,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(borderRadius),
+          color: iconColor.withValues(alpha: 0.2),
+        ),
+        child: SizedBox(
+          height: size,
+          width: size,
+          child: SvgPicture.asset(
+            categoryType.svgEnumModel.svgAsset,
+            colorFilter: categoryType == CategoryType.other
+                ? null
+                : ColorFilter.mode(iconColor, BlendMode.srcIn),
+          ),
         ),
       ),
     );
