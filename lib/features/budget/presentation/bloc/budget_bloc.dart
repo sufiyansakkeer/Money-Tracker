@@ -4,7 +4,6 @@ import 'package:money_track/core/error/result.dart';
 import 'package:money_track/domain/entities/transaction_entity.dart';
 import 'package:money_track/domain/usecases/transaction/get_all_transactions_usecase.dart';
 import 'package:money_track/features/budget/domain/entities/budget_entity.dart';
-import 'package:money_track/features/budget/domain/services/budget_notification_service.dart';
 import 'package:money_track/features/budget/domain/usecases/add_budget_usecase.dart';
 import 'package:money_track/features/budget/domain/usecases/delete_budget_usecase.dart';
 import 'package:money_track/features/budget/domain/usecases/edit_budget_usecase.dart';
@@ -23,7 +22,6 @@ class BudgetBloc extends Bloc<BudgetEvent, BudgetState> {
   final GetBudgetsByCategoryUseCase getBudgetsByCategoryUseCase;
   final GetActiveBudgetsUseCase getActiveBudgetsUseCase;
   final GetAllTransactionsUseCase getAllTransactionsUseCase;
-  final BudgetNotificationService notificationService;
 
   BudgetBloc({
     required this.getAllBudgetsUseCase,
@@ -33,7 +31,6 @@ class BudgetBloc extends Bloc<BudgetEvent, BudgetState> {
     required this.getBudgetsByCategoryUseCase,
     required this.getActiveBudgetsUseCase,
     required this.getAllTransactionsUseCase,
-    required this.notificationService,
   }) : super(const BudgetInitial()) {
     on<LoadBudgets>(_onLoadBudgets);
     on<AddBudget>(_onAddBudget);
@@ -76,9 +73,6 @@ class BudgetBloc extends Bloc<BudgetEvent, BudgetState> {
       budgets: budgets,
       transactions: transactions,
     ));
-
-    // Check for budget notifications
-    await notificationService.checkBudgetsAndNotify(budgets, transactions);
   }
 
   Future<void> _onAddBudget(
@@ -214,11 +208,7 @@ class BudgetBloc extends Bloc<BudgetEvent, BudgetState> {
       return;
     }
 
-    final budgets = (budgetsResult as Success<List<BudgetEntity>>).data;
-
-    // Check for budget notifications
-    await notificationService.checkBudgetsAndNotify(
-        budgets, event.transactions);
+    // final budgets = (budgetsResult as Success<List<BudgetEntity>>).data;
 
     // Update state if we're already in a loaded state
     if (state is BudgetsLoaded) {
@@ -248,12 +238,6 @@ class BudgetBloc extends Bloc<BudgetEvent, BudgetState> {
       final currentState = state as BudgetsLoaded;
 
       emit(currentState.copyWith(transactions: transactions));
-
-      // Check for budget notifications with the updated transactions
-      if (currentState.budgets.isNotEmpty) {
-        await notificationService.checkBudgetsAndNotify(
-            currentState.budgets, transactions);
-      }
     } else {
       // If we're not in a loaded state, just load everything
       add(const LoadBudgets());

@@ -1,4 +1,3 @@
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:money_track/data/datasources/local/category_local_datasource.dart';
@@ -17,7 +16,6 @@ import 'package:money_track/domain/usecases/transaction/get_all_transactions_use
 import 'package:money_track/features/budget/data/datasources/budget_local_datasource.dart';
 import 'package:money_track/features/budget/data/repositories/budget_repository_impl.dart';
 import 'package:money_track/features/budget/domain/repositories/budget_repository.dart';
-import 'package:money_track/features/budget/domain/services/budget_notification_service.dart';
 import 'package:money_track/features/budget/domain/usecases/add_budget_usecase.dart';
 import 'package:money_track/features/budget/domain/usecases/delete_budget_usecase.dart';
 import 'package:money_track/features/budget/domain/usecases/edit_budget_usecase.dart';
@@ -67,9 +65,9 @@ Future<void> _initExternalDependencies() async {
   sl.registerLazySingleton<HiveInterface>(() => Hive);
 
   // Register Flutter Local Notifications
-  sl.registerLazySingleton<FlutterLocalNotificationsPlugin>(
-    () => FlutterLocalNotificationsPlugin(),
-  );
+  // sl.registerLazySingleton<FlutterLocalNotificationsPlugin>(
+  //   () => FlutterLocalNotificationsPlugin(),
+  // );
 }
 
 /// Initialize data sources
@@ -166,10 +164,10 @@ void _initUseCases() {
 
 /// Initialize services
 void _initServices() {
-  // Budget notification service
-  sl.registerLazySingleton<BudgetNotificationService>(
-    () => BudgetNotificationService(sl()),
-  );
+  // // Budget notification service
+  // sl.registerLazySingleton<BudgetNotificationService>(
+  //   () => BudgetNotificationService(sl()),
+  // );
 }
 
 /// Initialize BLoCs (as factories for fresh instances)
@@ -235,7 +233,6 @@ void _initBlocs() {
       getBudgetsByCategoryUseCase: sl(),
       getActiveBudgetsUseCase: sl(),
       getAllTransactionsUseCase: sl(),
-      notificationService: sl(),
     ),
   );
 }

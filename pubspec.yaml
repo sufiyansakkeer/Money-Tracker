@@ -17,7 +17,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^9.1.0
-  flutter_local_notifications: ^16.3.2
+  # flutter_local_notifications: ^16.3.2
   get_it: ^8.0.3
   google_fonts: ^6.2.1
   hive: ^2.2.3
