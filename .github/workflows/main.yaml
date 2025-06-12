@@ -21,7 +21,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '11' # Adjust to your project's required Java version
+          java-version: '17' # Adjust to your project's required Java version
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
