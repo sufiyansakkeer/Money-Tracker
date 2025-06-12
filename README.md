@@ -172,6 +172,19 @@ The dependency flow follows the clean architecture principles:
    flutter run
    ```
 
+## 🔄 CI/CD
+
+This project uses GitHub Actions for Continuous Integration and Continuous Deployment (CI/CD). The workflow automates the following processes:
+
+- **Build & Test**: On every push to `main` or `develop` branches, and on every pull request to `main`, the workflow:
+  - Sets up the Flutter environment.
+  - Gets dependencies (`flutter pub get`).
+  - Analyzes the project (`flutter analyze`).
+  - Runs tests (`flutter test`).
+  - Builds Android APK and App Bundle.
+  - Builds iOS (with provisions for IPA generation).
+- **Deployment (Optional)**: The workflow includes an optional step to deploy Android App Bundles to Firebase App Distribution upon pushes to the `main` branch.
+
 ## 🤝 Contributing
 
 Contributions are welcome! If you'd like to contribute to Money Track, please follow these steps:

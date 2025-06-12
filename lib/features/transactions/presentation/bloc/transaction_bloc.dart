@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:money_track/core/logging/app_logger.dart';
 import 'package:money_track/domain/entities/category_entity.dart';
 import 'package:money_track/domain/entities/transaction_entity.dart';
 import 'package:money_track/domain/usecases/transaction/add_transaction_usecase.dart';
@@ -25,32 +24,22 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     required this.editTransactionUseCase,
     required this.deleteTransactionUseCase,
   }) : super(TransactionInitial()) {
-    AppLogger().info('TransactionBloc initialized', tag: 'TRANSACTION_BLOC');
-    
     on<GetAllTransactionsEvent>((event, emit) async {
-      AppLogger().blocEvent('TransactionBloc', 'GetAllTransactionsEvent');
       emit(TransactionLoading());
       final result = await getAllTransactionsUseCase();
 
       result.fold(
         (success) {
           _allTransactions = success;
-          AppLogger().blocState('TransactionBloc', 'TransactionLoaded', 
-            data: {'transactionCount': success.length});
           emit(TransactionLoaded(transactionList: success));
         },
         (error) {
-          AppLogger().error('Failed to get all transactions: ${error.message}', 
-            tag: 'TRANSACTION_BLOC');
           emit(TransactionError(message: error.message));
         },
       );
     });
 
     on<AddTransactionEvent>((event, emit) async {
-      AppLogger().blocEvent('TransactionBloc', 'AddTransactionEvent', 
-        data: {'amount': event.amount, 'isExpense': event.isExpense});
-      
       try {
         double amount = double.tryParse(event.amount) ?? 0;
 
@@ -66,25 +55,17 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
           notes: event.description,
         );
 
-        AppLogger().debug('Creating transaction with ID: ${transaction.id}', 
-          tag: 'TRANSACTION_BLOC');
-
         final result = await addTransactionUseCase(params: transaction);
 
         result.fold(
           (success) {
-            AppLogger().info('Transaction added successfully', tag: 'TRANSACTION_BLOC');
             add(GetAllTransactionsEvent());
           },
           (error) {
-            AppLogger().error('Failed to add transaction: ${error.message}', 
-              tag: 'TRANSACTION_BLOC');
             emit(TransactionError(message: error.message));
           },
         );
       } catch (e) {
-        AppLogger().error('Exception in AddTransactionEvent: $e', 
-          tag: 'TRANSACTION_BLOC', error: e);
         emit(TransactionError(message: e.toString()));
       }
     });
@@ -92,25 +73,14 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     on<FilterTransactionEvent>((event, emit) async {
       var filter = event.filterData;
 
-      AppLogger().blocEvent('TransactionBloc', 'FilterTransactionEvent', 
-        data: {
-          'dateFilterType': filter.dateFilterType?.toString(),
-          'transactionType': filter.transactionType?.toString(),
-          'sortType': filter.transactionSortEnum?.toString()
-        });
-
       if (filter.transactionSortEnum == null &&
           filter.transactionType == null &&
           filter.dateFilterType == null) {
-        AppLogger().debug('No filters applied, getting all transactions', 
-          tag: 'TRANSACTION_BLOC');
         add(GetAllTransactionsEvent());
         return;
       }
 
       List<TransactionEntity> filteredList = List.from(_allTransactions);
-      AppLogger().debug('Starting with ${filteredList.length} transactions', 
-        tag: 'TRANSACTION_BLOC');
 
       // Filter by transaction type
       if (filter.transactionType != null) {
@@ -118,8 +88,6 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
             .where(
                 (element) => element.transactionType == filter.transactionType)
             .toList();
-        AppLogger().debug('After type filter: ${filteredList.length} transactions', 
-          tag: 'TRANSACTION_BLOC');
       }
 
       // Filter by date
@@ -132,8 +100,6 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
         if (filter.startDate != null && filter.endDate != null) {
           startDate = filter.startDate;
           endDate = filter.endDate;
-          AppLogger().debug('Using custom date range: $startDate to $endDate', 
-            tag: 'TRANSACTION_BLOC');
         } else {
           // Otherwise calculate based on the filter type
           switch (filter.dateFilterType!) {
@@ -170,9 +136,6 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
         }
 
         if (startDate != null && endDate != null) {
-          AppLogger().debug('Filtering by date range: $startDate to $endDate', 
-            tag: 'TRANSACTION_BLOC');
-
           filteredList = filteredList.where((transaction) {
             final transactionDate = DateTime(
               transaction.date.year,
@@ -188,9 +151,6 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
 
             return isInRange;
           }).toList();
-
-          AppLogger().debug('After date filter: ${filteredList.length} transactions', 
-            tag: 'TRANSACTION_BLOC');
         }
       }
 
@@ -198,26 +158,18 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
       if (filter.transactionSortEnum != null) {
         if (filter.transactionSortEnum == TransactionSortEnum.newest) {
           filteredList.sort((a, b) => b.date.compareTo(a.date));
-          AppLogger().debug('Sorted by newest first', tag: 'TRANSACTION_BLOC');
         } else {
           filteredList.sort((a, b) => a.date.compareTo(b.date));
-          AppLogger().debug('Sorted by oldest first', tag: 'TRANSACTION_BLOC');
         }
       } else {
         // Default sort by newest
         filteredList.sort((a, b) => b.date.compareTo(a.date));
-        AppLogger().debug('Applied default sort (newest first)', tag: 'TRANSACTION_BLOC');
       }
 
-      AppLogger().blocState('TransactionBloc', 'TransactionLoaded (Filtered)', 
-        data: {'filteredCount': filteredList.length});
       emit(TransactionLoaded(transactionList: filteredList));
     });
 
     on<EditTransactionEvent>((event, emit) async {
-      AppLogger().blocEvent('TransactionBloc', 'EditTransactionEvent', 
-        data: {'transactionId': event.id, 'amount': event.amount});
-      
       try {
         double amount = double.tryParse(event.amount) ?? 0;
 
@@ -233,34 +185,23 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
           notes: event.description,
         );
 
-        AppLogger().debug('Editing transaction with ID: ${transaction.id}', 
-          tag: 'TRANSACTION_BLOC');
-
         final result = await editTransactionUseCase(
             params: transaction); // Use edit use case
 
         result.fold(
           (success) {
-            AppLogger().info('Transaction edited successfully', tag: 'TRANSACTION_BLOC');
             add(GetAllTransactionsEvent()); // Refresh list on success
           },
           (error) {
-            AppLogger().error('Failed to edit transaction: ${error.message}', 
-              tag: 'TRANSACTION_BLOC');
             emit(TransactionError(message: error.message));
           },
         );
       } catch (e) {
-        AppLogger().error('Exception in EditTransactionEvent: $e', 
-          tag: 'TRANSACTION_BLOC', error: e);
         emit(TransactionError(message: e.toString()));
       }
     });
 
     on<DeleteTransactionEvent>((event, emit) async {
-      AppLogger().blocEvent('TransactionBloc', 'DeleteTransactionEvent', 
-        data: {'transactionId': event.transactionId});
-      
       try {
         emit(TransactionLoading());
 
@@ -269,18 +210,13 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
 
         result.fold(
           (success) {
-            AppLogger().info('Transaction deleted successfully', tag: 'TRANSACTION_BLOC');
             add(GetAllTransactionsEvent()); // Refresh list on success
           },
           (error) {
-            AppLogger().error('Failed to delete transaction: ${error.message}', 
-              tag: 'TRANSACTION_BLOC');
             emit(TransactionError(message: error.message));
           },
         );
       } catch (e) {
-        AppLogger().error('Exception in DeleteTransactionEvent: $e', 
-          tag: 'TRANSACTION_BLOC', error: e);
         emit(TransactionError(message: e.toString()));
       }
     });
