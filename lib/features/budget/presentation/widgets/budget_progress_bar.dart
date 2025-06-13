@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:money_track/core/utils/currency_formatter.dart';
 import 'package:money_track/domain/entities/transaction_entity.dart';
 import 'package:money_track/features/budget/domain/entities/budget_entity.dart';
 import 'package:money_track/features/budget/domain/utils/budget_progress_calculator.dart';
@@ -42,12 +42,6 @@ class BudgetProgressBar extends StatelessWidget {
       progressColor = Colors.red;
     }
 
-    // Format currency
-    final formatter = NumberFormat.currency(
-      symbol: '₹',
-      decimalDigits: 2,
-    );
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -85,14 +79,14 @@ class BudgetProgressBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Spent: ${formatter.format(spent)}',
+              'Spent: ${CurrencyFormatter.format(context, spent)}',
               style: const TextStyle(
                 color: Colors.grey,
                 fontSize: 12,
               ),
             ),
             Text(
-              'Remaining: ${formatter.format(remaining)}',
+              'Remaining: ${CurrencyFormatter.format(context, remaining)}',
               style: TextStyle(
                 color: progressColor,
                 fontWeight: FontWeight.bold,
@@ -103,7 +97,7 @@ class BudgetProgressBar extends StatelessWidget {
         ),
         const SizedBox(height: 4),
         Text(
-          'Budget: ${formatter.format(budget.amount)} · ${budget.periodType.name.toUpperCase()}',
+          'Budget: ${CurrencyFormatter.format(context, budget.amount)} · ${budget.periodType.name.toUpperCase()}',
           style: const TextStyle(
             color: Colors.grey,
             fontSize: 12,
