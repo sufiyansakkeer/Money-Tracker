@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:money_track/data/datasources/local/category_local_datasource.dart';
@@ -8,6 +9,16 @@ import 'package:money_track/domain/repositories/category_repository.dart';
 import 'package:money_track/domain/repositories/transaction_repository.dart';
 import 'package:money_track/domain/usecases/category/add_category_usecase.dart';
 import 'package:money_track/domain/usecases/category/get_all_categories_usecase.dart';
+import 'package:money_track/features/auth/data/datasources/auth_remote_datasource.dart';
+import 'package:money_track/features/auth/data/repositories/auth_repository_impl.dart';
+import 'package:money_track/features/auth/domain/repositories/auth_repository.dart';
+import 'package:money_track/features/auth/domain/usecases/get_current_user_usecase.dart';
+import 'package:money_track/features/auth/domain/usecases/is_signed_in_usecase.dart';
+import 'package:money_track/features/auth/domain/usecases/send_password_reset_usecase.dart';
+import 'package:money_track/features/auth/domain/usecases/sign_in_usecase.dart';
+import 'package:money_track/features/auth/domain/usecases/sign_out_usecase.dart';
+import 'package:money_track/features/auth/domain/usecases/sign_up_usecase.dart';
+import 'package:money_track/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:money_track/domain/usecases/category/set_default_categories_usecase.dart';
 import 'package:money_track/domain/usecases/transaction/add_transaction_usecase.dart';
 import 'package:money_track/domain/usecases/transaction/delete_transaction_usecase.dart';
@@ -64,6 +75,9 @@ Future<void> _initExternalDependencies() async {
   // Register Hive
   sl.registerLazySingleton<HiveInterface>(() => Hive);
 
+  // Register Firebase Auth
+  sl.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
+
   // Register Flutter Local Notifications
   // sl.registerLazySingleton<FlutterLocalNotificationsPlugin>(
   //   () => FlutterLocalNotificationsPlugin(),
@@ -96,6 +110,11 @@ void _initDataSources() {
   sl.registerLazySingleton<BudgetLocalDataSource>(
     () => BudgetLocalDataSourceImpl(hive: sl()),
   );
+
+  // Auth remote data source
+  sl.registerLazySingleton<AuthRemoteDataSource>(
+    () => AuthRemoteDataSourceImpl(firebaseAuth: sl()),
+  );
 }
 
 /// Initialize repositories
@@ -123,6 +142,11 @@ void _initRepositories() {
   // Budget repository
   sl.registerLazySingleton<BudgetRepository>(
     () => BudgetRepositoryImpl(localDataSource: sl()),
+  );
+
+  // Auth repository
+  sl.registerLazySingleton<AuthRepository>(
+    () => AuthRepositoryImpl(remoteDataSource: sl()),
   );
 }
 
@@ -160,6 +184,14 @@ void _initUseCases() {
   sl.registerLazySingleton(() => DeleteBudgetUseCase(sl()));
   sl.registerLazySingleton(() => GetBudgetsByCategoryUseCase(sl()));
   sl.registerLazySingleton(() => GetActiveBudgetsUseCase(sl()));
+
+  // Auth use cases
+  sl.registerLazySingleton(() => SignInUseCase(sl()));
+  sl.registerLazySingleton(() => SignUpUseCase(sl()));
+  sl.registerLazySingleton(() => SignOutUseCase(sl()));
+  sl.registerLazySingleton(() => GetCurrentUserUseCase(sl()));
+  sl.registerLazySingleton(() => IsSignedInUseCase(sl()));
+  sl.registerLazySingleton(() => SendPasswordResetUseCase(sl()));
 }
 
 /// Initialize services
@@ -233,6 +265,19 @@ void _initBlocs() {
       getBudgetsByCategoryUseCase: sl(),
       getActiveBudgetsUseCase: sl(),
       getAllTransactionsUseCase: sl(),
+    ),
+  );
+
+  // Auth BLoC
+  sl.registerFactory(
+    () => AuthBloc(
+      signInUseCase: sl(),
+      signUpUseCase: sl(),
+      signOutUseCase: sl(),
+      getCurrentUserUseCase: sl(),
+      isSignedInUseCase: sl(),
+      sendPasswordResetUseCase: sl(),
+      authRepository: sl(),
     ),
   );
 }

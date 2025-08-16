@@ -61,3 +61,8 @@ app.*.map.json
 # Optionally ignore prefab config
 **/prefab_config.json
 /android/app/.cxx
+
+# Firebase configuration files (contain sensitive data)
+**/google-services.json
+**/GoogleService-Info.plist
+lib/firebase_options.dart

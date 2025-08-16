@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:money_track/core/constants/colors.dart';
 import 'package:money_track/core/utils/navigation_extension.dart';
 import 'package:money_track/core/utils/sized_box_extension.dart';
+import 'package:money_track/core/utils/snack_bar_extension.dart';
+import 'package:money_track/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:money_track/features/auth/presentation/pages/login_page.dart';
 import 'package:money_track/features/profile/domain/models/profile_model.dart';
 import 'package:money_track/features/profile/domain/repositories/profile_repository.dart';
 import 'package:money_track/features/profile/presentation/bloc/currency/currency_cubit.dart';
@@ -34,6 +38,42 @@ class _ProfilePageState extends State<ProfilePage> {
     // Load currencies and theme when the page is opened
     context.read<CurrencyCubit>().loadCurrencies();
     context.read<ThemeCubit>().loadTheme();
+  }
+
+  void _showLogoutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Logout'),
+          content: const Text('Are you sure you want to logout?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                context.read<AuthBloc>().add(SignOutEvent());
+                // Navigate to login page
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                  (route) => false,
+                );
+              },
+              child: Text(
+                'Logout',
+                style: TextStyle(
+                  color: ColorConstants.getThemeColor(context),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   List<ProfileModel> _getProfileItems() {
@@ -94,6 +134,13 @@ class _ProfilePageState extends State<ProfilePage> {
         onPressed: () => ProfileRepository().navigateToMail(),
         icon: Icons.help_outline,
       ),
+      ProfileModel(
+        title: "Logout",
+        subtitle: "",
+        navigationScreen: null,
+        tag: "Logout",
+        icon: Icons.logout,
+      ),
     ];
   }
 
@@ -113,7 +160,104 @@ class _ProfilePageState extends State<ProfilePage> {
                 fontWeight: FontWeight.w700,
               ),
             ),
-            30.height(),
+            20.height(),
+
+            // User profile section
+            BlocBuilder<AuthBloc, AuthState>(
+              builder: (context, state) {
+                if (state is AuthAuthenticated) {
+                  return Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: ColorConstants.getThemeColor(context)
+                          .withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: ColorConstants.getThemeColor(context)
+                            .withValues(alpha: 0.2),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 30,
+                          backgroundColor:
+                              ColorConstants.getThemeColor(context),
+                          child: state.user.photoUrl != null
+                              ? ClipOval(
+                                  child: Image.network(
+                                    state.user.photoUrl!,
+                                    width: 60,
+                                    height: 60,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Icon(
+                                        Icons.person,
+                                        size: 30,
+                                        color: Colors.white,
+                                      );
+                                    },
+                                  ),
+                                )
+                              : const Icon(
+                                  Icons.person,
+                                  size: 30,
+                                  color: Colors.white,
+                                ),
+                        ),
+                        16.width(),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                state.user.displayName ?? 'User',
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              4.height(),
+                              Text(
+                                state.user.email,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: ColorConstants.getTextColor(context)
+                                      .withValues(alpha: 0.7),
+                                ),
+                              ),
+                              if (!state.user.isEmailVerified) ...[
+                                4.height(),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 2,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.orange.withValues(alpha: 0.2),
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                  child: const Text(
+                                    'Email not verified',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.orange,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+                return const SizedBox.shrink();
+              },
+            ),
+            20.height(),
             Expanded(
               child: MultiBlocListener(
                 listeners: [
@@ -203,6 +347,9 @@ class _ProfilePageState extends State<ProfilePage> {
                               context: context,
                               builder: (context) => const ResetDropDown(),
                             );
+                          }
+                          if (_profileItems[index].title == "Logout") {
+                            _showLogoutDialog(context);
                           }
                         },
                       );

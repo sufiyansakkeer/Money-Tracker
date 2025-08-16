@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:money_track/app/app.dart';
 import 'package:money_track/app/di/injection_container.dart';
@@ -7,6 +8,7 @@ import 'package:money_track/data/models/category_model.dart';
 import 'package:money_track/data/models/transaction_model.dart';
 import 'package:money_track/features/budget/data/models/budget_model.dart';
 import 'package:money_track/features/profile/data/models/currency_model.dart';
+import 'package:money_track/firebase_options.dart';
 
 /// Main entry point for the application
 Future<void> main() async {
@@ -23,6 +25,18 @@ Future<void> main() async {
 
   // Ensure Flutter binding is initialized
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Firebase with error handling
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    debugPrint('Firebase initialized successfully');
+  } catch (e) {
+    debugPrint('Firebase initialization error: $e');
+    // Re-throw the error to prevent the app from continuing with broken Firebase
+    rethrow;
+  }
 
   // Enable edge-to-edge display
   await SystemChrome.setEnabledSystemUIMode(
