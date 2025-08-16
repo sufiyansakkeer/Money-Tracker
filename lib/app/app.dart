@@ -13,6 +13,7 @@ import 'package:money_track/features/transactions/presentation/bloc/total_transa
 import 'package:money_track/features/profile/presentation/bloc/currency/currency_cubit.dart';
 import 'package:money_track/features/budget/presentation/bloc/budget_bloc.dart';
 import 'package:money_track/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:money_track/core/presentation/bloc/sync_cubit.dart';
 
 /// Global key for SnackBar
 GlobalKey<ScaffoldMessengerState> snackBarKey = GlobalKey();
@@ -51,6 +52,9 @@ class App extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => sl<AuthBloc>(),
+        ),
+        BlocProvider(
+          create: (_) => sl<SyncCubit>(),
         ),
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(

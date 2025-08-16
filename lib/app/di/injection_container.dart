@@ -1,16 +1,22 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
+import 'package:money_track/core/services/connectivity_service.dart';
+import 'package:money_track/core/services/sync_service.dart';
 import 'package:money_track/data/datasources/local/category_local_datasource.dart';
 import 'package:money_track/data/datasources/local/transaction_local_datasource.dart';
-import 'package:money_track/data/repositories/category_repository_impl.dart';
-import 'package:money_track/data/repositories/transaction_repository_impl.dart';
+import 'package:money_track/data/datasources/remote/category_remote_datasource.dart';
+import 'package:money_track/data/datasources/remote/transaction_remote_datasource.dart';
+import 'package:money_track/data/repositories/sync_category_repository_impl.dart';
+import 'package:money_track/data/repositories/sync_transaction_repository_impl.dart';
 import 'package:money_track/domain/repositories/category_repository.dart';
 import 'package:money_track/domain/repositories/transaction_repository.dart';
 import 'package:money_track/domain/usecases/category/add_category_usecase.dart';
 import 'package:money_track/domain/usecases/category/get_all_categories_usecase.dart';
 import 'package:money_track/features/auth/data/datasources/auth_remote_datasource.dart';
-import 'package:money_track/features/auth/data/repositories/auth_repository_impl.dart';
+import 'package:money_track/features/auth/data/repositories/sync_auth_repository_impl.dart';
 import 'package:money_track/features/auth/domain/repositories/auth_repository.dart';
 import 'package:money_track/features/auth/domain/usecases/get_current_user_usecase.dart';
 import 'package:money_track/features/auth/domain/usecases/is_signed_in_usecase.dart';
@@ -52,6 +58,7 @@ import 'package:money_track/features/profile/domain/usecases/set_selected_curren
 import 'package:money_track/features/profile/domain/usecases/set_selected_theme_mode_usecase.dart';
 import 'package:money_track/features/profile/domain/usecases/set_selected_theme_usecase.dart';
 import 'package:money_track/features/profile/domain/usecases/set_theme_settings_usecase.dart';
+import 'package:money_track/core/presentation/bloc/sync_cubit.dart';
 import 'package:money_track/features/profile/presentation/bloc/currency/currency_cubit.dart';
 import 'package:money_track/features/profile/presentation/bloc/theme/theme_cubit.dart';
 import 'package:money_track/features/transactions/presentation/bloc/total_transaction/total_transaction_cubit.dart';
@@ -77,6 +84,12 @@ Future<void> _initExternalDependencies() async {
 
   // Register Firebase Auth
   sl.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
+
+  // Register Firebase Firestore
+  sl.registerLazySingleton<FirebaseFirestore>(() => FirebaseFirestore.instance);
+
+  // Register Connectivity
+  sl.registerLazySingleton<Connectivity>(() => Connectivity());
 
   // Register Flutter Local Notifications
   // sl.registerLazySingleton<FlutterLocalNotificationsPlugin>(
@@ -111,6 +124,14 @@ void _initDataSources() {
     () => BudgetLocalDataSourceImpl(hive: sl()),
   );
 
+  // Remote data sources
+  sl.registerLazySingleton<TransactionRemoteDataSource>(
+    () => TransactionRemoteDataSourceImpl(firestore: sl()),
+  );
+  sl.registerLazySingleton<CategoryRemoteDataSource>(
+    () => CategoryRemoteDataSourceImpl(firestore: sl()),
+  );
+
   // Auth remote data source
   sl.registerLazySingleton<AuthRemoteDataSource>(
     () => AuthRemoteDataSourceImpl(firebaseAuth: sl()),
@@ -119,14 +140,20 @@ void _initDataSources() {
 
 /// Initialize repositories
 void _initRepositories() {
-  // Category repository
+  // Category repository (sync-enabled)
   sl.registerLazySingleton<CategoryRepository>(
-    () => CategoryRepositoryImpl(localDataSource: sl()),
+    () => SyncCategoryRepositoryImpl(
+      localDataSource: sl(),
+      syncService: sl(),
+    ),
   );
 
-  // Transaction repository
+  // Transaction repository (sync-enabled)
   sl.registerLazySingleton<TransactionRepository>(
-    () => TransactionRepositoryImpl(localDataSource: sl()),
+    () => SyncTransactionRepositoryImpl(
+      localDataSource: sl(),
+      syncService: sl(),
+    ),
   );
 
   // Currency repository
@@ -144,9 +171,13 @@ void _initRepositories() {
     () => BudgetRepositoryImpl(localDataSource: sl()),
   );
 
-  // Auth repository
+  // Auth repository (enhanced with sync)
   sl.registerLazySingleton<AuthRepository>(
-    () => AuthRepositoryImpl(remoteDataSource: sl()),
+    () => SyncAuthRepositoryImpl(
+      remoteDataSource: sl(),
+      syncService: sl(),
+      connectivityService: sl(),
+    ),
   );
 }
 
@@ -196,6 +227,23 @@ void _initUseCases() {
 
 /// Initialize services
 void _initServices() {
+  // Connectivity service
+  sl.registerLazySingleton<ConnectivityService>(
+    () => ConnectivityService(connectivity: sl()),
+  );
+
+  // Sync service
+  sl.registerLazySingleton<SyncService>(
+    () => SyncService(
+      transactionLocalDataSource: sl(),
+      categoryLocalDataSource: sl(),
+      transactionRemoteDataSource: sl(),
+      categoryRemoteDataSource: sl(),
+      connectivityService: sl(),
+      hive: sl(),
+    ),
+  );
+
   // // Budget notification service
   // sl.registerLazySingleton<BudgetNotificationService>(
   //   () => BudgetNotificationService(sl()),
@@ -278,6 +326,14 @@ void _initBlocs() {
       isSignedInUseCase: sl(),
       sendPasswordResetUseCase: sl(),
       authRepository: sl(),
+    ),
+  );
+
+  // Sync Cubit
+  sl.registerFactory(
+    () => SyncCubit(
+      syncService: sl(),
+      connectivityService: sl(),
     ),
   );
 }

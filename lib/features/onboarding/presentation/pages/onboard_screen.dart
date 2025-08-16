@@ -87,7 +87,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
                       if (mounted) {
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
-                            builder: (context) => const LoginPage(),
+                            builder: (_) => const LoginPage(),
                           ),
                         );
                       }

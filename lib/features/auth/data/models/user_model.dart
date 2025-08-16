@@ -60,11 +60,10 @@ class UserModel extends UserEntity {
       displayName: json['displayName'],
       photoUrl: json['photoUrl'],
       isEmailVerified: json['isEmailVerified'] ?? false,
-      createdAt: json['createdAt'] != null 
-          ? DateTime.parse(json['createdAt']) 
-          : null,
-      lastSignInAt: json['lastSignInAt'] != null 
-          ? DateTime.parse(json['lastSignInAt']) 
+      createdAt:
+          json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
+      lastSignInAt: json['lastSignInAt'] != null
+          ? DateTime.parse(json['lastSignInAt'])
           : null,
     );
   }
@@ -83,6 +82,7 @@ class UserModel extends UserEntity {
   }
 
   /// Create a copy of UserModel with updated fields
+  @override
   UserModel copyWith({
     String? uid,
     String? email,

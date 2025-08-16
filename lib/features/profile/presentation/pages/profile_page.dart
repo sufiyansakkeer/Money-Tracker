@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_track/core/constants/colors.dart';
 import 'package:money_track/core/utils/navigation_extension.dart';
 import 'package:money_track/core/utils/sized_box_extension.dart';
-import 'package:money_track/core/utils/snack_bar_extension.dart';
 import 'package:money_track/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:money_track/features/auth/presentation/pages/login_page.dart';
 import 'package:money_track/features/profile/domain/models/profile_model.dart';
@@ -19,6 +18,7 @@ import 'package:money_track/features/profile/presentation/pages/currency_page.da
 import 'package:money_track/features/profile/presentation/pages/theme_page.dart';
 import 'package:money_track/features/profile/presentation/widgets/reset_drop_down.dart';
 import 'package:money_track/features/profile/presentation/widgets/profile_tile.dart';
+import 'package:money_track/core/presentation/pages/sync_settings_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -105,6 +105,13 @@ class _ProfilePageState extends State<ProfilePage> {
         navigationScreen: const ThemePage(),
         tag: "Theme",
         icon: Icons.color_lens_outlined,
+      ),
+      ProfileModel(
+        title: "Sync Settings",
+        subtitle: "Manage data synchronization",
+        navigationScreen: const SyncSettingsPage(),
+        tag: "Sync",
+        icon: Icons.sync,
       ),
       ProfileModel(
         title: "Reset",
@@ -305,58 +312,62 @@ class _ProfilePageState extends State<ProfilePage> {
                     },
                   ),
                 ],
-                child: LayoutBuilder(builder: (context, constraints) {
-                  return ListView.separated(
-                    separatorBuilder: (context, index) {
-                      // Don't add separator before or after divider
-                      if (index > 0 &&
-                          (_profileItems[index].tag == "divider" ||
-                              _profileItems[index - 1].tag == "divider")) {
-                        return const SizedBox.shrink();
-                      }
-                      return 20.height();
-                    },
-                    primary: false,
-                    padding: const EdgeInsets.only(bottom: 20),
-                    itemBuilder: (context, index) {
-                      // Handle divider item
-                      if (_profileItems[index].tag == "divider") {
-                        return Container(
-                          margin: const EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 20),
-                          height: 1,
-                          width: constraints.maxWidth,
-                          color: Colors.grey.withValues(alpha: 0.3),
-                        );
-                      }
+                child: Scrollbar(
+                  child: LayoutBuilder(builder: (context, constraints) {
+                    return ListView.separated(
+                      separatorBuilder: (context, index) {
+                        // Don't add separator before or after divider
+                        if (index > 0 &&
+                            (_profileItems[index].tag == "divider" ||
+                                _profileItems[index - 1].tag == "divider")) {
+                          return const SizedBox.shrink();
+                        }
+                        return 20.height();
+                      },
+                      primary: false,
+                      padding: const EdgeInsets.only(
+                          bottom:
+                              120), // Increased padding to account for bottom navigation bar (80px height + 16px bottom padding + extra space)
+                      itemBuilder: (context, index) {
+                        // Handle divider item
+                        if (_profileItems[index].tag == "divider") {
+                          return Container(
+                            margin: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 20),
+                            height: 1,
+                            width: constraints.maxWidth,
+                            color: Colors.grey.withValues(alpha: 0.3),
+                          );
+                        }
 
-                      // Regular profile tile
-                      return ProfileTile(
-                        title: _profileItems[index].title,
-                        subtitle: _profileItems[index].subtitle,
-                        icon: _profileItems[index].icon,
-                        onPressed: () {
-                          if (_profileItems[index].navigationScreen != null) {
-                            context.pushWithRightToLeftTransition(
-                                _profileItems[index].navigationScreen!);
-                          } else if (_profileItems[index].onPressed != null) {
-                            _profileItems[index].onPressed!();
-                          }
-                          if (_profileItems[index].title == "Reset") {
-                            showModalBottomSheet(
-                              context: context,
-                              builder: (context) => const ResetDropDown(),
-                            );
-                          }
-                          if (_profileItems[index].title == "Logout") {
-                            _showLogoutDialog(context);
-                          }
-                        },
-                      );
-                    },
-                    itemCount: _profileItems.length,
-                  );
-                }),
+                        // Regular profile tile
+                        return ProfileTile(
+                          title: _profileItems[index].title,
+                          subtitle: _profileItems[index].subtitle,
+                          icon: _profileItems[index].icon,
+                          onPressed: () {
+                            if (_profileItems[index].navigationScreen != null) {
+                              context.pushWithRightToLeftTransition(
+                                  _profileItems[index].navigationScreen!);
+                            } else if (_profileItems[index].onPressed != null) {
+                              _profileItems[index].onPressed!();
+                            }
+                            if (_profileItems[index].title == "Reset") {
+                              showModalBottomSheet(
+                                context: context,
+                                builder: (context) => const ResetDropDown(),
+                              );
+                            }
+                            if (_profileItems[index].title == "Logout") {
+                              _showLogoutDialog(context);
+                            }
+                          },
+                        );
+                      },
+                      itemCount: _profileItems.length,
+                    );
+                  }),
+                ),
               ),
             ),
           ],

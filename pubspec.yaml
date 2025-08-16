@@ -12,6 +12,8 @@ environment:
 
 
 dependencies:
+  cloud_firestore: ^6.0.0
+  connectivity_plus: ^6.1.5
   cupertino_icons: ^1.0.8
   equatable: ^2.0.5
   firebase_auth: ^6.0.1
