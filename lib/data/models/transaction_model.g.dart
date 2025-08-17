@@ -8,7 +8,7 @@ part of 'transaction_model.dart';
 
 class TransactionModelAdapter extends TypeAdapter<TransactionModel> {
   @override
-  final int typeId = 4;
+  final typeId = 4;
 
   @override
   TransactionModel read(BinaryReader reader) {
@@ -17,7 +17,7 @@ class TransactionModelAdapter extends TypeAdapter<TransactionModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return TransactionModel(
-      amount: fields[0] as double,
+      amount: (fields[0] as num).toDouble(),
       date: fields[2] as DateTime,
       categoryType: fields[3] as CategoryType,
       transactionType: fields[4] as TransactionType,

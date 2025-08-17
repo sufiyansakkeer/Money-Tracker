@@ -1,4 +1,4 @@
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:money_track/data/models/category_model.dart';
 import 'package:money_track/domain/entities/transaction_entity.dart' as domain;
 import 'package:money_track/domain/entities/category_entity.dart'

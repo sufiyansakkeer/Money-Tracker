@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get_it/get_it.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:money_track/core/services/connectivity_service.dart';
 import 'package:money_track/core/services/sync_service.dart';
 import 'package:money_track/data/datasources/local/category_local_datasource.dart';

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:hive_flutter/adapters.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:money_track/app/app.dart';
 import 'package:money_track/app/di/injection_container.dart';
 import 'package:money_track/data/models/category_model.dart';
-import 'package:money_track/data/models/transaction_model.dart';
 import 'package:money_track/data/models/sync/sync_operation_model.dart';
 import 'package:money_track/data/adapters/timestamp_adapter.dart';
 import 'package:money_track/features/budget/data/models/budget_model.dart';
 import 'package:money_track/features/profile/data/models/currency_model.dart';
 import 'package:money_track/firebase_options.dart';
+import 'package:money_track/hive_registrar.g.dart';
 
 /// Main entry point for the application
 Future<void> main() async {
@@ -49,45 +49,8 @@ Future<void> main() async {
   // Initialize Hive database
   await Hive.initFlutter();
 
-  // Register Hive adapters BEFORE opening boxes
-  if (!Hive.isAdapterRegistered(CategoryTypeAdapter().typeId)) {
-    Hive.registerAdapter(CategoryTypeAdapter());
-  }
-
-  if (!Hive.isAdapterRegistered(CategoryModelAdapter().typeId)) {
-    Hive.registerAdapter(CategoryModelAdapter());
-  }
-
-  Hive.registerAdapter(TransactionModelAdapter());
-
-  if (!Hive.isAdapterRegistered(TransactionTypeAdapter().typeId)) {
-    Hive.registerAdapter(TransactionTypeAdapter());
-  }
-
-  if (!Hive.isAdapterRegistered(5)) {
-    Hive.registerAdapter(CurrencyModelAdapter());
-  }
-
-  if (!Hive.isAdapterRegistered(6)) {
-    Hive.registerAdapter(BudgetModelAdapter());
-  }
-
-  if (!Hive.isAdapterRegistered(7)) {
-    Hive.registerAdapter(BudgetPeriodTypeAdapter());
-  }
-
-  // Register sync operation adapters
-  if (!Hive.isAdapterRegistered(10)) {
-    Hive.registerAdapter(SyncOperationTypeAdapter());
-  }
-
-  if (!Hive.isAdapterRegistered(11)) {
-    Hive.registerAdapter(SyncDataTypeAdapter());
-  }
-
-  if (!Hive.isAdapterRegistered(12)) {
-    Hive.registerAdapter(SyncOperationModelAdapter());
-  }
+  // Register all Hive adapters using the generated registrar
+  Hive.registerAdapters();
 
   // Register Timestamp adapter for Firestore compatibility
   if (!Hive.isAdapterRegistered(20)) {

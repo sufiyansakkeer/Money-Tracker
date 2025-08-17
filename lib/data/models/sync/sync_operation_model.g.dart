@@ -8,7 +8,7 @@ part of 'sync_operation_model.dart';
 
 class SyncOperationModelAdapter extends TypeAdapter<SyncOperationModel> {
   @override
-  final int typeId = 12;
+  final typeId = 12;
 
   @override
   SyncOperationModel read(BinaryReader reader) {
@@ -24,7 +24,7 @@ class SyncOperationModelAdapter extends TypeAdapter<SyncOperationModel> {
       data: (fields[4] as Map).cast<String, dynamic>(),
       createdAt: fields[5] as DateTime,
       userId: fields[8] as String,
-      retryCount: fields[6] as int,
+      retryCount: fields[6] == null ? 0 : (fields[6] as num).toInt(),
       error: fields[7] as String?,
     );
   }
@@ -66,7 +66,7 @@ class SyncOperationModelAdapter extends TypeAdapter<SyncOperationModel> {
 
 class SyncOperationTypeAdapter extends TypeAdapter<SyncOperationType> {
   @override
-  final int typeId = 10;
+  final typeId = 10;
 
   @override
   SyncOperationType read(BinaryReader reader) {
@@ -87,13 +87,10 @@ class SyncOperationTypeAdapter extends TypeAdapter<SyncOperationType> {
     switch (obj) {
       case SyncOperationType.create:
         writer.writeByte(0);
-        break;
       case SyncOperationType.update:
         writer.writeByte(1);
-        break;
       case SyncOperationType.delete:
         writer.writeByte(2);
-        break;
     }
   }
 
@@ -110,7 +107,7 @@ class SyncOperationTypeAdapter extends TypeAdapter<SyncOperationType> {
 
 class SyncDataTypeAdapter extends TypeAdapter<SyncDataType> {
   @override
-  final int typeId = 11;
+  final typeId = 11;
 
   @override
   SyncDataType read(BinaryReader reader) {
@@ -129,10 +126,8 @@ class SyncDataTypeAdapter extends TypeAdapter<SyncDataType> {
     switch (obj) {
       case SyncDataType.transaction:
         writer.writeByte(0);
-        break;
       case SyncDataType.category:
         writer.writeByte(1);
-        break;
     }
   }
 

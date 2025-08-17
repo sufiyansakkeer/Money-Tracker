@@ -1,17 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 
 /// Hive TypeAdapter for Firestore Timestamp objects
 /// This adapter handles serialization/deserialization of Timestamp objects to/from Hive storage
 class TimestampAdapter extends TypeAdapter<Timestamp> {
   @override
-  final int typeId = 20; // Use a unique typeId that doesn't conflict with existing adapters
+  final int typeId =
+      20; // Use a unique typeId that doesn't conflict with existing adapters
 
   @override
   Timestamp read(BinaryReader reader) {
     // Read the stored milliseconds since epoch
     final millisecondsSinceEpoch = reader.readInt();
-    
+
     // Convert back to Timestamp
     return Timestamp.fromMillisecondsSinceEpoch(millisecondsSinceEpoch);
   }
@@ -27,21 +28,23 @@ class TimestampAdapter extends TypeAdapter<Timestamp> {
 extension TimestampSyncExtensions on Timestamp {
   /// Convert Timestamp to a Hive-serializable format (DateTime)
   DateTime toDateTime() => toDate();
-  
+
   /// Create Timestamp from DateTime
-  static Timestamp fromDateTime(DateTime dateTime) => Timestamp.fromDate(dateTime);
+  static Timestamp fromDateTime(DateTime dateTime) =>
+      Timestamp.fromDate(dateTime);
 }
 
 /// Utility class for handling Timestamp conversion in sync operations
 class TimestampConverter {
   /// Convert a Map containing Timestamp objects to DateTime objects for Hive storage
-  static Map<String, dynamic> convertTimestampsToDateTime(Map<String, dynamic> data) {
+  static Map<String, dynamic> convertTimestampsToDateTime(
+      Map<String, dynamic> data) {
     final convertedData = <String, dynamic>{};
-    
+
     for (final entry in data.entries) {
       final key = entry.key;
       final value = entry.value;
-      
+
       if (value is Timestamp) {
         // Convert Timestamp to DateTime
         convertedData[key] = value.toDate();
@@ -56,18 +59,19 @@ class TimestampConverter {
         convertedData[key] = value;
       }
     }
-    
+
     return convertedData;
   }
-  
+
   /// Convert a Map containing DateTime objects back to Timestamp objects for Firestore
-  static Map<String, dynamic> convertDateTimeToTimestamps(Map<String, dynamic> data) {
+  static Map<String, dynamic> convertDateTimeToTimestamps(
+      Map<String, dynamic> data) {
     final convertedData = <String, dynamic>{};
-    
+
     for (final entry in data.entries) {
       final key = entry.key;
       final value = entry.value;
-      
+
       if (value is DateTime) {
         // Convert DateTime back to Timestamp
         convertedData[key] = Timestamp.fromDate(value);
@@ -82,10 +86,10 @@ class TimestampConverter {
         convertedData[key] = value;
       }
     }
-    
+
     return convertedData;
   }
-  
+
   /// Helper method to convert Timestamps in lists
   static List<dynamic> _convertListTimestamps(List<dynamic> list) {
     return list.map((item) {
@@ -100,7 +104,7 @@ class TimestampConverter {
       }
     }).toList();
   }
-  
+
   /// Helper method to convert DateTimes back to Timestamps in lists
   static List<dynamic> _convertListDateTimes(List<dynamic> list) {
     return list.map((item) {
@@ -115,7 +119,7 @@ class TimestampConverter {
       }
     }).toList();
   }
-  
+
   /// Check if a Map contains any Timestamp objects
   static bool containsTimestamps(Map<String, dynamic> data) {
     for (final value in data.values) {
@@ -133,7 +137,7 @@ class TimestampConverter {
     }
     return false;
   }
-  
+
   /// Helper method to check if a list contains Timestamps
   static bool _listContainsTimestamps(List<dynamic> list) {
     for (final item in list) {

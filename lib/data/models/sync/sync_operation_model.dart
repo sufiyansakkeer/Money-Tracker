@@ -1,4 +1,4 @@
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:money_track/data/adapters/timestamp_adapter.dart';
 
 part 'sync_operation_model.g.dart';

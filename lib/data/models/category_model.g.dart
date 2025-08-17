@@ -8,7 +8,7 @@ part of 'category_model.dart';
 
 class CategoryModelAdapter extends TypeAdapter<CategoryModel> {
   @override
-  final int typeId = 1;
+  final typeId = 1;
 
   @override
   CategoryModel read(BinaryReader reader) {
@@ -20,8 +20,9 @@ class CategoryModelAdapter extends TypeAdapter<CategoryModel> {
       id: fields[0] as String,
       categoryName: fields[1] as String,
       type: fields[3] as TransactionType,
-      categoryType: fields[2] as CategoryType,
-      isDeleted: fields[4] as bool,
+      categoryType:
+          fields[2] == null ? CategoryType.other : fields[2] as CategoryType,
+      isDeleted: fields[4] == null ? false : fields[4] as bool,
     );
   }
 
@@ -54,7 +55,7 @@ class CategoryModelAdapter extends TypeAdapter<CategoryModel> {
 
 class TransactionTypeAdapter extends TypeAdapter<TransactionType> {
   @override
-  final int typeId = 2;
+  final typeId = 2;
 
   @override
   TransactionType read(BinaryReader reader) {
@@ -73,10 +74,8 @@ class TransactionTypeAdapter extends TypeAdapter<TransactionType> {
     switch (obj) {
       case TransactionType.income:
         writer.writeByte(0);
-        break;
       case TransactionType.expense:
         writer.writeByte(1);
-        break;
     }
   }
 
@@ -93,7 +92,7 @@ class TransactionTypeAdapter extends TypeAdapter<TransactionType> {
 
 class CategoryTypeAdapter extends TypeAdapter<CategoryType> {
   @override
-  final int typeId = 3;
+  final typeId = 3;
 
   @override
   CategoryType read(BinaryReader reader) {
@@ -120,22 +119,16 @@ class CategoryTypeAdapter extends TypeAdapter<CategoryType> {
     switch (obj) {
       case CategoryType.salary:
         writer.writeByte(0);
-        break;
       case CategoryType.shopping:
         writer.writeByte(1);
-        break;
       case CategoryType.food:
         writer.writeByte(2);
-        break;
       case CategoryType.transportation:
         writer.writeByte(3);
-        break;
       case CategoryType.subscription:
         writer.writeByte(4);
-        break;
       case CategoryType.other:
         writer.writeByte(5);
-        break;
     }
   }
 

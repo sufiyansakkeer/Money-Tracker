@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:money_track/core/constants/db_constants.dart';
 import 'package:money_track/core/error/failures.dart';
 import 'package:money_track/core/services/connectivity_service.dart';

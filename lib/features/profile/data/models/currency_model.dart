@@ -1,4 +1,4 @@
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:money_track/features/profile/domain/entities/currency_entity.dart';
 
 part 'currency_model.g.dart';
@@ -7,13 +7,13 @@ part 'currency_model.g.dart';
 class CurrencyModel {
   @HiveField(0)
   final String code;
-  
+
   @HiveField(1)
   final String name;
-  
+
   @HiveField(2)
   final String symbol;
-  
+
   @HiveField(3)
   final double conversionRate;
 
