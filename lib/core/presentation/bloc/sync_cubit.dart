@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:money_track/core/services/connectivity_service.dart';
 import 'package:money_track/core/services/sync_service.dart';
+import 'package:money_track/core/services/sync/sync_models.dart';
 
 /// Sync state
 abstract class SyncState extends Equatable {

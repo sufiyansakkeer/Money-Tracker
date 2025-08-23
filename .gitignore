@@ -37,7 +37,6 @@ migrate_working_dir/
 /macos/
 /windows/
 
-
 # Symbolication related
 app.*.symbols
 
@@ -49,7 +48,6 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 .qodo
-
 
 # Auto-generated native build files
 **/build_file_index.txt
@@ -66,3 +64,6 @@ app.*.map.json
 **/google-services.json
 **/GoogleService-Info.plist
 lib/firebase_options.dart
+
+# FVM Version Cache
+.fvm/

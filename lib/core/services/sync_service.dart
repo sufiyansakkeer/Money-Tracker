@@ -11,31 +11,12 @@ import 'package:money_track/data/datasources/remote/transaction_remote_datasourc
 import 'package:money_track/data/models/firestore/category_firestore_model.dart';
 import 'package:money_track/data/models/firestore/transaction_firestore_model.dart';
 import 'package:money_track/data/models/sync/sync_operation_model.dart';
-
-/// Enum for sync status
-enum SyncStatus {
-  idle,
-  syncing,
-  error,
-  success,
-}
-
-/// Sync result information
-class SyncResult {
-  final bool success;
-  final String? error;
-  final int syncedTransactions;
-  final int syncedCategories;
-  final int pendingOperations;
-
-  const SyncResult({
-    required this.success,
-    this.error,
-    this.syncedTransactions = 0,
-    this.syncedCategories = 0,
-    this.pendingOperations = 0,
-  });
-}
+import 'sync/sync_models.dart';
+import 'sync/object_pool_manager.dart';
+import 'sync/sync_progress_manager.dart';
+import 'sync/sync_error_handler.dart';
+import 'sync/conflict_resolution_service.dart';
+import 'sync/bidirectional_sync_manager.dart';
 
 /// Service for handling data synchronization between local and remote storage
 class SyncService {
@@ -45,6 +26,13 @@ class SyncService {
   final CategoryRemoteDataSource _categoryRemoteDataSource;
   final ConnectivityService _connectivityService;
   final HiveInterface _hive;
+
+  // Extracted services
+  late final ObjectPoolManager _objectPoolManager;
+  late final SyncProgressManager _syncProgressManager;
+  late final SyncErrorHandler _syncErrorHandler;
+  late final ConflictResolutionService _conflictResolutionService;
+  late final BidirectionalSyncManager _bidirectionalSyncManager;
 
   // Stream controllers for sync status
   final StreamController<SyncStatus> _syncStatusController =
@@ -62,6 +50,19 @@ class SyncService {
   String? _currentUserId;
   Timer? _periodicSyncTimer;
 
+  // Sync tracking fields
+  DateTime? _lastSyncTime;
+  int _totalSyncedTransactions = 0;
+  int _totalSyncedCategories = 0;
+  int _totalFailedOperations = 0;
+
+  // Offline/Online state management
+  bool _wasOffline = false;
+  DateTime? _lastOnlineTime;
+  DateTime? _lastOfflineTime;
+  final StreamController<bool> _connectivityStatusController =
+      StreamController<bool>.broadcast();
+
   SyncService({
     required TransactionLocalDataSource transactionLocalDataSource,
     required CategoryLocalDataSource categoryLocalDataSource,
@@ -74,7 +75,27 @@ class SyncService {
         _transactionRemoteDataSource = transactionRemoteDataSource,
         _categoryRemoteDataSource = categoryRemoteDataSource,
         _connectivityService = connectivityService,
-        _hive = hive;
+        _hive = hive {
+    // Initialize extracted services
+    _objectPoolManager = ObjectPoolManager();
+    _syncProgressManager = SyncProgressManager();
+    _syncErrorHandler = SyncErrorHandler();
+    _conflictResolutionService = ConflictResolutionService(
+      transactionLocalDataSource: _transactionLocalDataSource,
+      categoryLocalDataSource: _categoryLocalDataSource,
+      transactionRemoteDataSource: _transactionRemoteDataSource,
+      categoryRemoteDataSource: _categoryRemoteDataSource,
+    );
+    _bidirectionalSyncManager = BidirectionalSyncManager(
+      transactionLocalDataSource: _transactionLocalDataSource,
+      categoryLocalDataSource: _categoryLocalDataSource,
+      transactionRemoteDataSource: _transactionRemoteDataSource,
+      categoryRemoteDataSource: _categoryRemoteDataSource,
+      conflictResolutionService: _conflictResolutionService,
+      objectPoolManager: _objectPoolManager,
+      syncProgressManager: _syncProgressManager,
+    );
+  }
 
   /// Current sync status
   SyncStatus get currentStatus => _currentStatus;
@@ -84,6 +105,66 @@ class SyncService {
 
   /// Stream of sync results
   Stream<SyncResult> get syncResultStream => _syncResultController.stream;
+
+  /// Stream of pending conflicts (for manual resolution)
+  Stream<List<ConflictInfo>> get conflictStream =>
+      _conflictResolutionService.conflictStream;
+
+  /// Current conflict resolution strategy
+  ConflictResolutionStrategy get conflictResolutionStrategy =>
+      _conflictResolutionService.conflictResolutionStrategy;
+
+  /// Set conflict resolution strategy
+  void setConflictResolutionStrategy(ConflictResolutionStrategy strategy) {
+    _conflictResolutionService.setConflictResolutionStrategy(strategy);
+  }
+
+  /// Get pending conflicts
+  List<ConflictInfo> get pendingConflicts =>
+      _conflictResolutionService.pendingConflicts;
+
+  /// Resolve a conflict manually by choosing local or remote version
+  Future<void> resolveConflictManually(String conflictId, bool useLocal) async {
+    await _conflictResolutionService.resolveConflictManually(
+        conflictId, useLocal);
+  }
+
+  /// Clear all pending conflicts
+  void clearPendingConflicts() {
+    _conflictResolutionService.clearPendingConflicts();
+  }
+
+  /// Stream of connectivity status changes
+  Stream<bool> get connectivityStatusStream =>
+      _connectivityStatusController.stream;
+
+  /// Get offline/online statistics
+  Map<String, dynamic> get connectivityStats => {
+        'isOnline': _connectivityService.isConnected,
+        'wasOffline': _wasOffline,
+        'lastOnlineTime': _lastOnlineTime?.toIso8601String(),
+        'lastOfflineTime': _lastOfflineTime?.toIso8601String(),
+        'consecutiveFailures': _syncErrorHandler.consecutiveFailures,
+        'maxRetryAttempts': _syncErrorHandler.maxRetryAttempts,
+      };
+
+  /// Stream of sync progress updates
+  Stream<SyncProgress> get progressStream =>
+      _syncProgressManager.progressStream;
+
+  /// Current sync progress
+  SyncProgress? get currentProgress => _syncProgressManager.currentProgress;
+
+  /// Stream of sync errors
+  Stream<SyncError> get errorStream => _syncErrorHandler.errorStream;
+
+  /// Get recent sync errors
+  List<SyncError> get recentErrors => _syncErrorHandler.recentErrors;
+
+  /// Clear error history
+  void clearErrorHistory() {
+    _syncErrorHandler.clearErrorHistory();
+  }
 
   /// Initialize sync service for a user
   Future<void> initializeForUser(String userId) async {
@@ -128,6 +209,9 @@ class SyncService {
         name: 'SyncService');
     _updateSyncStatus(SyncStatus.syncing);
 
+    final syncStartTime = DateTime.now();
+    _resetSyncSessionStats();
+
     try {
       // First, sync from remote to local (download user's data)
       await _syncFromRemoteToLocal();
@@ -135,25 +219,57 @@ class SyncService {
       // Then, sync any pending local changes to remote
       await _syncPendingOperations();
 
+      final syncEndTime = DateTime.now();
+      final syncDuration = syncEndTime.difference(syncStartTime);
+      _lastSyncTime = syncEndTime;
+
+      _syncProgressManager.clearProgress();
+
+      final syncStats = _bidirectionalSyncManager.syncSessionStats;
       final result = SyncResult(
         success: true,
-        syncedTransactions: 0, // TODO: Track actual counts
-        syncedCategories: 0,
+        syncedTransactions: syncStats['transactions']!,
+        syncedCategories: syncStats['categories']!,
+        failedOperations: syncStats['failed']!,
         pendingOperations: await _getPendingOperationsCount(),
+        lastSyncTime: _lastSyncTime,
+        syncDuration: syncDuration,
+        additionalInfo: {
+          'syncType': 'initial',
+          'totalItems': syncStats['transactions']! + syncStats['categories']!,
+          'offlineRecovery': _wasOffline,
+        },
       );
+
+      // Update total counters
+      _totalSyncedTransactions += syncStats['transactions']!;
+      _totalSyncedCategories += syncStats['categories']!;
+      _totalFailedOperations += syncStats['failed']!;
 
       _updateSyncStatus(SyncStatus.success);
       _syncResultController.add(result);
+
+      log('Initial sync completed: ${syncStats['transactions']} transactions, ${syncStats['categories']} categories in ${syncDuration.inMilliseconds}ms',
+          name: 'SyncService');
 
       return result;
     } catch (e) {
       log('Initial sync failed: $e', name: 'SyncService');
       _updateSyncStatus(SyncStatus.error);
 
+      final syncEndTime = DateTime.now();
+      final syncDuration = syncEndTime.difference(syncStartTime);
+
+      final syncStats = _bidirectionalSyncManager.syncSessionStats;
       final result = SyncResult(
         success: false,
         error: e.toString(),
+        syncedTransactions: syncStats['transactions']!,
+        syncedCategories: syncStats['categories']!,
+        failedOperations: syncStats['failed']! + 1,
         pendingOperations: await _getPendingOperationsCount(),
+        lastSyncTime: _lastSyncTime,
+        syncDuration: syncDuration,
       );
 
       _syncResultController.add(result);
@@ -161,31 +277,23 @@ class SyncService {
     }
   }
 
-  /// Sync data from remote to local storage
+  /// Sync data from remote to local storage with enhanced bidirectional logic
   Future<void> _syncFromRemoteToLocal() async {
     if (_currentUserId == null) return;
 
     try {
-      // Sync categories
-      final remoteCategories =
-          await _categoryRemoteDataSource.getAllCategories(_currentUserId!);
-      for (final remoteCategory in remoteCategories) {
-        await _categoryLocalDataSource
-            .addCategory(remoteCategory.toHiveModel());
-      }
+      // Perform bidirectional sync for categories and transactions
+      await _bidirectionalSyncManager
+          .performFullBidirectionalSync(_currentUserId!);
 
-      // Sync transactions
-      final remoteTransactions = await _transactionRemoteDataSource
-          .getAllTransactions(_currentUserId!);
-      for (final remoteTransaction in remoteTransactions) {
-        await _transactionLocalDataSource
-            .addTransaction(remoteTransaction.toHiveModel());
-      }
-
-      log('Synced ${remoteCategories.length} categories and ${remoteTransactions.length} transactions from remote',
-          name: 'SyncService');
+      // Update local session stats from the bidirectional sync manager
+      final syncStats = _bidirectionalSyncManager.syncSessionStats;
+      _totalSyncedTransactions += syncStats['transactions']!;
+      _totalSyncedCategories += syncStats['categories']!;
+      _totalFailedOperations += syncStats['failed']!;
     } catch (e) {
       log('Failed to sync from remote to local: $e', name: 'SyncService');
+      _totalFailedOperations++;
       rethrow;
     }
   }
@@ -220,70 +328,170 @@ class SyncService {
     }
   }
 
-  /// Handle remote transaction changes
+  /// Optimized handler for remote transaction changes with batch processing
   void _onRemoteTransactionsChanged(
       List<TransactionFirestoreModel> remoteTransactions) async {
-    try {
-      for (final remoteTransaction in remoteTransactions) {
-        // Check if local version exists and compare versions
-        final localTransactions =
-            await _transactionLocalDataSource.getAllTransactions();
-        final localTransaction = localTransactions
-            .where((t) => t.id == remoteTransaction.id)
-            .firstOrNull;
+    if (remoteTransactions.isEmpty) return;
 
-        if (localTransaction == null) {
-          // New transaction from remote
-          await _transactionLocalDataSource
-              .addTransaction(remoteTransaction.toHiveModel());
-        } else {
-          // Check for conflicts and resolve
-          await _resolveTransactionConflict(
-              localTransaction, remoteTransaction);
+    try {
+      // Get all local transactions once to avoid repeated database queries
+      final localTransactions =
+          await _transactionLocalDataSource.getAllTransactions();
+
+      // Use pooled map for efficient lookups
+      final localTransactionMap = _objectPoolManager.getPooledMap();
+
+      try {
+        // Build lookup map once
+        for (final trans in localTransactions) {
+          if (trans.id != null) {
+            localTransactionMap[trans.id!] = trans;
+          }
         }
+
+        // Process remote changes in batches with UI yielding
+        await _syncProgressManager.processBatch(
+          remoteTransactions,
+          'Processing remote transaction changes',
+          (remoteTransaction, index) async {
+            final localTransaction = localTransactionMap[remoteTransaction.id];
+
+            if (localTransaction == null) {
+              // New transaction from remote
+              await _transactionLocalDataSource
+                  .addTransaction(remoteTransaction.toHiveModel());
+            } else {
+              // Check for conflicts and resolve
+              final syncResult =
+                  await _conflictResolutionService.resolveTransactionConflict(
+                      localTransaction, remoteTransaction);
+              if (syncResult.error != null) {
+                log('Transaction conflict resolution error: ${syncResult.error}',
+                    name: 'SyncService');
+              }
+            }
+          },
+        );
+      } finally {
+        // Always return pooled object
+        _objectPoolManager.returnMapToPool(localTransactionMap);
       }
     } catch (e) {
       log('Error handling remote transaction changes: $e', name: 'SyncService');
     }
   }
 
-  /// Handle remote category changes
+  /// Optimized handler for remote category changes with batch processing
   void _onRemoteCategoriesChanged(
       List<CategoryFirestoreModel> remoteCategories) async {
-    try {
-      for (final remoteCategory in remoteCategories) {
-        // Check if local version exists and compare versions
-        final localCategories =
-            await _categoryLocalDataSource.getAllCategories();
-        final localCategory =
-            localCategories.where((c) => c.id == remoteCategory.id).firstOrNull;
+    if (remoteCategories.isEmpty) return;
 
-        if (localCategory == null) {
-          // New category from remote
-          await _categoryLocalDataSource
-              .addCategory(remoteCategory.toHiveModel());
-        } else {
-          // Check for conflicts and resolve
-          await _resolveCategoryConflict(localCategory, remoteCategory);
+    try {
+      // Get all local categories once to avoid repeated database queries
+      final localCategories = await _categoryLocalDataSource.getAllCategories();
+
+      // Use pooled map for efficient lookups
+      final localCategoryMap = _objectPoolManager.getPooledMap();
+
+      try {
+        // Build lookup map once
+        for (final cat in localCategories) {
+          localCategoryMap[cat.id] = cat;
         }
+
+        // Process remote changes in batches with UI yielding
+        await _syncProgressManager.processBatch(
+          remoteCategories,
+          'Processing remote category changes',
+          (remoteCategory, index) async {
+            final localCategory = localCategoryMap[remoteCategory.id];
+
+            if (localCategory == null) {
+              // New category from remote
+              await _categoryLocalDataSource
+                  .addCategory(remoteCategory.toHiveModel());
+            } else {
+              // Check for conflicts and resolve
+              final syncResult = await _conflictResolutionService
+                  .resolveCategoryConflict(localCategory, remoteCategory);
+              if (syncResult.error != null) {
+                log('Category conflict resolution error: ${syncResult.error}',
+                    name: 'SyncService');
+              }
+            }
+          },
+        );
+      } finally {
+        // Always return pooled object
+        _objectPoolManager.returnMapToPool(localCategoryMap);
       }
     } catch (e) {
       log('Error handling remote category changes: $e', name: 'SyncService');
     }
   }
 
-  /// Handle connectivity changes
+  /// Handle connectivity changes with enhanced offline/online state management
   void _onConnectivityChanged(bool isConnected) async {
+    final now = DateTime.now();
+
     log('Connectivity changed: ${isConnected ? "Connected" : "Disconnected"}',
         name: 'SyncService');
 
-    if (isConnected && _currentUserId != null) {
-      // When back online, start listeners and sync pending operations
-      await _startRealTimeListeners();
-      await _syncPendingOperations();
+    // Update connectivity status stream
+    _connectivityStatusController.add(isConnected);
+
+    if (isConnected) {
+      // Coming back online
+      if (_wasOffline) {
+        final offlineDuration = _lastOfflineTime != null
+            ? now.difference(_lastOfflineTime!)
+            : Duration.zero;
+        log('Back online after ${offlineDuration.inMinutes} minutes offline',
+            name: 'SyncService');
+      }
+
+      _lastOnlineTime = now;
+      _wasOffline = false;
+
+      if (_currentUserId != null) {
+        // Cancel any pending retry
+        _syncErrorHandler.cancelRetry();
+
+        try {
+          // Start real-time listeners
+          await _startRealTimeListeners();
+
+          // Perform comprehensive sync when coming back online
+          await _performOnlineRecoverySync();
+
+          // Reset consecutive failures on successful reconnection
+          _syncErrorHandler.resetConsecutiveFailures();
+        } catch (e) {
+          log('Error during online recovery: $e', name: 'SyncService');
+
+          // Categorize and handle the error
+          final syncError = _syncErrorHandler.categorizeError(e);
+          _syncErrorHandler.handleSyncError(syncError);
+          _syncErrorHandler.incrementConsecutiveFailures();
+
+          // Schedule retry if error is retryable
+          if (_syncErrorHandler.shouldRetry(syncError)) {
+            _syncErrorHandler.scheduleRetry(() => _performOnlineRecoverySync());
+          } else {
+            log('Non-retryable error encountered, stopping retry attempts',
+                name: 'SyncService');
+          }
+        }
+      }
     } else {
-      // When offline, stop listeners
+      // Going offline
+      _lastOfflineTime = now;
+      _wasOffline = true;
+
+      // Stop real-time listeners to conserve resources
       await _stopRealTimeListeners();
+
+      log('Went offline - sync operations will be queued', name: 'SyncService');
     }
   }
 
@@ -296,10 +504,43 @@ class SyncService {
     log('Stopped real-time listeners', name: 'SyncService');
   }
 
+  /// Perform comprehensive sync when coming back online
+  Future<void> _performOnlineRecoverySync() async {
+    if (_currentUserId == null) return;
+
+    log('Performing online recovery sync', name: 'SyncService');
+    _updateSyncStatus(SyncStatus.syncing);
+
+    try {
+      // First, sync any pending local operations to remote
+      await _syncPendingOperations();
+
+      // Then, perform full bidirectional sync to catch up on remote changes
+      await _syncFromRemoteToLocal();
+
+      // Get final counts for reporting
+      final pendingCount = await _getPendingOperationsCount();
+
+      log('Online recovery sync completed. Pending operations: $pendingCount',
+          name: 'SyncService');
+
+      _updateSyncStatus(SyncStatus.success);
+    } catch (e) {
+      log('Online recovery sync failed: $e', name: 'SyncService');
+      _updateSyncStatus(SyncStatus.error);
+      rethrow;
+    }
+  }
+
   /// Update sync status and notify listeners
   void _updateSyncStatus(SyncStatus status) {
     _currentStatus = status;
     _syncStatusController.add(status);
+  }
+
+  /// Reset sync session statistics
+  void _resetSyncSessionStats() {
+    _bidirectionalSyncManager.resetSyncSessionStats();
   }
 
   /// Get count of pending sync operations
@@ -336,32 +577,55 @@ class SyncService {
       log('Syncing ${pendingOperations.length} pending operations',
           name: 'SyncService');
 
-      for (final operation in pendingOperations) {
-        try {
-          await _executeSyncOperation(operation);
-          await syncBox.delete(operation.id);
-        } catch (e) {
-          log('Failed to sync operation ${operation.id}: $e',
-              name: 'SyncService');
+      int successfulOperations = 0;
+      int failedOperations = 0;
 
-          // Update retry count
-          final updatedOperation = operation.copyWith(
-            retryCount: operation.retryCount + 1,
-            error: e.toString(),
-          );
-
-          // Remove operation if max retries exceeded
-          if (updatedOperation.retryCount >= 3) {
+      // Process pending operations in batches with UI thread yielding
+      await _syncProgressManager.processBatch(
+        pendingOperations,
+        'Syncing pending operations',
+        (operation, index) async {
+          try {
+            await _executeSyncOperation(operation);
             await syncBox.delete(operation.id);
-            log('Removed operation ${operation.id} after max retries',
-                name: 'SyncService');
-          } else {
-            await syncBox.put(operation.id, updatedOperation);
+            successfulOperations++;
+
+            // Update session stats based on operation type
+            if (operation.dataType == SyncDataType.transaction) {
+              _totalSyncedTransactions++;
+            } else if (operation.dataType == SyncDataType.category) {
+              _totalSyncedCategories++;
+            }
+          } catch (e) {
+            failedOperations++;
+
+            // Categorize and handle the error
+            final syncError = _syncErrorHandler.categorizeError(e,
+                operationId: operation.id, retryCount: operation.retryCount);
+            _syncErrorHandler.handleSyncError(syncError);
+
+            // Update retry count
+            final updatedOperation = operation.copyWith(
+              retryCount: operation.retryCount + 1,
+              error: e.toString(),
+            );
+
+            // Check if error is retryable and hasn't exceeded max retries
+            if (!syncError.isRetryable || updatedOperation.retryCount >= 3) {
+              await syncBox.delete(operation.id);
+              _totalFailedOperations++;
+            } else {
+              await syncBox.put(operation.id, updatedOperation);
+            }
           }
-        }
-      }
+        },
+      );
+
+      log('Completed pending operations sync: $successfulOperations successful, $failedOperations failed',
+          name: 'SyncService');
     } catch (e) {
       log('Error syncing pending operations: $e', name: 'SyncService');
+      _totalFailedOperations++;
     }
   }
 
@@ -420,65 +684,6 @@ class SyncService {
     }
   }
 
-  /// Resolve transaction conflict (last-write-wins with version check)
-  Future<void> _resolveTransactionConflict(dynamic localTransaction,
-      TransactionFirestoreModel remoteTransaction) async {
-    try {
-      // For now, implement last-write-wins strategy
-      // In a more sophisticated system, you might want to present conflicts to the user
-
-      // Convert local transaction to Firestore model for comparison
-      final localFirestoreTransaction = TransactionFirestoreModel.fromHiveModel(
-          localTransaction, _currentUserId!);
-
-      // Compare versions - higher version wins
-      if (remoteTransaction.version > localFirestoreTransaction.version) {
-        // Remote version is newer, update local
-        await _transactionLocalDataSource
-            .editTransaction(remoteTransaction.toHiveModel());
-        log('Updated local transaction ${remoteTransaction.id} with remote version',
-            name: 'SyncService');
-      } else if (localFirestoreTransaction.version >
-          remoteTransaction.version) {
-        // Local version is newer, update remote
-        await _transactionRemoteDataSource
-            .updateTransaction(localFirestoreTransaction);
-        log('Updated remote transaction ${localFirestoreTransaction.id} with local version',
-            name: 'SyncService');
-      }
-      // If versions are equal, no action needed
-    } catch (e) {
-      log('Error resolving transaction conflict: $e', name: 'SyncService');
-    }
-  }
-
-  /// Resolve category conflict (last-write-wins with version check)
-  Future<void> _resolveCategoryConflict(
-      dynamic localCategory, CategoryFirestoreModel remoteCategory) async {
-    try {
-      // Convert local category to Firestore model for comparison
-      final localFirestoreCategory =
-          CategoryFirestoreModel.fromHiveModel(localCategory, _currentUserId!);
-
-      // Compare versions - higher version wins
-      if (remoteCategory.version > localFirestoreCategory.version) {
-        // Remote version is newer, update local
-        await _categoryLocalDataSource
-            .addCategory(remoteCategory.toHiveModel());
-        log('Updated local category ${remoteCategory.id} with remote version',
-            name: 'SyncService');
-      } else if (localFirestoreCategory.version > remoteCategory.version) {
-        // Local version is newer, update remote
-        await _categoryRemoteDataSource.updateCategory(localFirestoreCategory);
-        log('Updated remote category ${localFirestoreCategory.id} with local version',
-            name: 'SyncService');
-      }
-      // If versions are equal, no action needed
-    } catch (e) {
-      log('Error resolving category conflict: $e', name: 'SyncService');
-    }
-  }
-
   /// Clear all local data (called on logout)
   Future<void> clearLocalData() async {
     try {
@@ -501,6 +706,23 @@ class SyncService {
 
       _currentUserId = null;
       _updateSyncStatus(SyncStatus.idle);
+
+      // Reset sync tracking counters
+      _lastSyncTime = null;
+      _totalSyncedTransactions = 0;
+      _totalSyncedCategories = 0;
+      _totalFailedOperations = 0;
+      _resetSyncSessionStats();
+
+      // Reset offline/online state
+      _wasOffline = false;
+      _lastOnlineTime = null;
+      _lastOfflineTime = null;
+
+      // Clear extracted services state
+      _syncErrorHandler.resetConsecutiveFailures();
+      _syncErrorHandler.cancelRetry();
+      _conflictResolutionService.clearPendingConflicts();
 
       log('Local data cleared successfully', name: 'SyncService');
     } catch (e) {
@@ -544,27 +766,57 @@ class SyncService {
     log('Force sync triggered', name: 'SyncService');
     _updateSyncStatus(SyncStatus.syncing);
 
+    final syncStartTime = DateTime.now();
+    _resetSyncSessionStats();
+
     try {
       await _syncPendingOperations();
       await _syncFromRemoteToLocal();
 
+      final syncEndTime = DateTime.now();
+      final syncDuration = syncEndTime.difference(syncStartTime);
+      _lastSyncTime = syncEndTime;
+
+      final syncStats = _bidirectionalSyncManager.syncSessionStats;
       final result = SyncResult(
         success: true,
+        syncedTransactions: syncStats['transactions']!,
+        syncedCategories: syncStats['categories']!,
+        failedOperations: syncStats['failed']!,
         pendingOperations: await _getPendingOperationsCount(),
+        lastSyncTime: _lastSyncTime,
+        syncDuration: syncDuration,
       );
+
+      // Update total counters
+      _totalSyncedTransactions += syncStats['transactions']!;
+      _totalSyncedCategories += syncStats['categories']!;
+      _totalFailedOperations += syncStats['failed']!;
 
       _updateSyncStatus(SyncStatus.success);
       _syncResultController.add(result);
+
+      log('Force sync completed: ${syncStats['transactions']} transactions, ${syncStats['categories']} categories in ${syncDuration.inMilliseconds}ms',
+          name: 'SyncService');
 
       return result;
     } catch (e) {
       log('Force sync failed: $e', name: 'SyncService');
       _updateSyncStatus(SyncStatus.error);
 
+      final syncEndTime = DateTime.now();
+      final syncDuration = syncEndTime.difference(syncStartTime);
+
+      final syncStats = _bidirectionalSyncManager.syncSessionStats;
       final result = SyncResult(
         success: false,
         error: e.toString(),
+        syncedTransactions: syncStats['transactions']!,
+        syncedCategories: syncStats['categories']!,
+        failedOperations: syncStats['failed']! + 1,
         pendingOperations: await _getPendingOperationsCount(),
+        lastSyncTime: _lastSyncTime,
+        syncDuration: syncDuration,
       );
 
       _syncResultController.add(result);
@@ -590,8 +842,16 @@ class SyncService {
         'pendingCategories': pendingOps
             .where((op) => op.dataType == SyncDataType.category)
             .length,
-        'lastSyncTime': DateTime.now()
-            .toIso8601String(), // TODO: Track actual last sync time
+        'lastSyncTime': _lastSyncTime?.toIso8601String(),
+        'totalSyncedTransactions': _totalSyncedTransactions,
+        'totalSyncedCategories': _totalSyncedCategories,
+        'totalFailedOperations': _totalFailedOperations,
+        'currentSessionTransactions':
+            _bidirectionalSyncManager.syncSessionStats['transactions'],
+        'currentSessionCategories':
+            _bidirectionalSyncManager.syncSessionStats['categories'],
+        'currentSessionFailed':
+            _bidirectionalSyncManager.syncSessionStats['failed'],
       };
     } catch (e) {
       log('Error getting sync stats: $e', name: 'SyncService');
@@ -599,8 +859,39 @@ class SyncService {
         'isOnline': _connectivityService.isConnected,
         'currentStatus': _currentStatus.name,
         'pendingOperations': 0,
+        'totalSyncedTransactions': _totalSyncedTransactions,
+        'totalSyncedCategories': _totalSyncedCategories,
+        'totalFailedOperations': _totalFailedOperations,
         'error': e.toString(),
       };
+    }
+  }
+
+  /// Get error statistics
+  Map<String, dynamic> get errorStats {
+    return _syncErrorHandler.getErrorStats();
+  }
+
+  /// Force retry failed operations (manual recovery)
+  Future<void> forceRetryFailedOperations() async {
+    if (!_connectivityService.isConnected) {
+      throw Exception('Cannot retry operations while offline');
+    }
+
+    log('Force retrying failed operations', name: 'SyncService');
+
+    try {
+      // Reset consecutive failures for fresh start
+      _syncErrorHandler.resetConsecutiveFailures();
+
+      // Attempt to sync pending operations
+      await _syncPendingOperations();
+
+      log('Force retry completed successfully', name: 'SyncService');
+    } catch (e) {
+      final syncError = _syncErrorHandler.categorizeError(e);
+      _syncErrorHandler.handleSyncError(syncError);
+      rethrow;
     }
   }
 
@@ -611,5 +902,12 @@ class SyncService {
     _periodicSyncTimer?.cancel();
     _syncStatusController.close();
     _syncResultController.close();
+    _connectivityStatusController.close();
+
+    // Dispose extracted services
+    _syncProgressManager.dispose();
+    _syncErrorHandler.dispose();
+    _conflictResolutionService.dispose();
+    _objectPoolManager.clearPools();
   }
 }

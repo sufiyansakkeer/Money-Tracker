@@ -173,7 +173,7 @@ class _CurrencyConverterState extends State<CurrencyConverter> {
         labelText: label,
         border: StyleConstants.textFormFieldBorder(),
       ),
-      value: value,
+      initialValue: value,
       items: widget.currencies.map((currency) {
         return DropdownMenuItem<CurrencyEntity>(
           value: currency,

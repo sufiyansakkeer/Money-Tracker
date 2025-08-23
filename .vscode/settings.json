@@ -17,5 +17,6 @@
     "usecases"
   ],
   "liveServer.settings.port": 5501,
-  "CodeGPT.apiKey": "CodeGPT Plus Beta"
+  "CodeGPT.apiKey": "CodeGPT Plus Beta",
+  "dart.flutterSdkPath": ".fvm/versions/3.35.1"
 }

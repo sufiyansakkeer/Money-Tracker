@@ -462,7 +462,7 @@ class _AddEditBudgetPageState extends State<AddEditBudgetPage> {
                                     _isActive = value;
                                   });
                                 },
-                                activeColor: themeColor,
+                                activeThumbColor: themeColor,
                                 contentPadding: EdgeInsets.zero,
                               ),
                             ],
