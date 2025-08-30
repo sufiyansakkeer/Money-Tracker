@@ -145,6 +145,7 @@ void _initRepositories() {
     () => SyncCategoryRepositoryImpl(
       localDataSource: sl(),
       syncService: sl(),
+      authBloc: sl(),
     ),
   );
 
@@ -153,6 +154,7 @@ void _initRepositories() {
     () => SyncTransactionRepositoryImpl(
       localDataSource: sl(),
       syncService: sl(),
+      authBloc: sl(),
     ),
   );
 

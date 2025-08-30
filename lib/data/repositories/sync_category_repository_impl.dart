@@ -8,15 +8,18 @@ import 'package:money_track/data/models/firestore/category_firestore_model.dart'
 import 'package:money_track/data/models/sync/sync_operation_model.dart';
 import 'package:money_track/domain/entities/category_entity.dart';
 import 'package:money_track/domain/repositories/category_repository.dart';
+import 'package:money_track/features/auth/presentation/bloc/auth_bloc.dart';
 
 /// Enhanced category repository with sync capabilities
 class SyncCategoryRepositoryImpl implements CategoryRepository {
   final CategoryLocalDataSource localDataSource;
   final SyncService syncService;
+  final AuthBloc authBloc;
 
   SyncCategoryRepositoryImpl({
     required this.localDataSource,
     required this.syncService,
+    required this.authBloc,
   });
 
   @override
@@ -190,11 +193,12 @@ class SyncCategoryRepositoryImpl implements CategoryRepository {
   }
 
   /// Get current user ID from auth service
-  /// TODO: This should be injected or obtained from a proper auth service
   Future<String?> _getCurrentUserId() async {
-    // For now, return a placeholder
-    // In a real implementation, this would come from the auth service
-    return 'current_user_id'; // TODO: Replace with actual user ID
+    final state = authBloc.state;
+    if (state is AuthAuthenticated) {
+      return state.user.uid;
+    }
+    return null;
   }
 
   /// Batch add categories (useful for initial sync)
