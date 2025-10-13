@@ -37,7 +37,6 @@ migrate_working_dir/
 /macos/
 /windows/
 
-
 # Symbolication related
 app.*.symbols
 
@@ -50,7 +49,6 @@ app.*.map.json
 /android/app/release
 .qodo
 
-
 # Auto-generated native build files
 **/build_file_index.txt
 **/cmake_install.cmake
@@ -61,3 +59,11 @@ app.*.map.json
 # Optionally ignore prefab config
 **/prefab_config.json
 /android/app/.cxx
+
+# Firebase configuration files (contain sensitive data)
+**/google-services.json
+**/GoogleService-Info.plist
+
+
+# FVM Version Cache
+.fvm/

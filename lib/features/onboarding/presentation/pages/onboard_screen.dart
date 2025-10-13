@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_track/core/constants/colors.dart';
-import 'package:money_track/features/navigation/presentation/pages/bottom_navigation_page.dart';
+import 'package:money_track/features/auth/presentation/pages/login_page.dart';
 import 'package:money_track/features/onboarding/presentation/bloc/on_boarding_cubit.dart';
 import 'package:money_track/features/onboarding/presentation/widgets/lottie_onboarding_widget.dart';
 import 'package:money_track/features/onboarding/presentation/widgets/onboarding_button_widget.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OnboardScreen extends StatefulWidget {
   const OnboardScreen({super.key});
@@ -77,13 +78,19 @@ class _OnboardScreenState extends State<OnboardScreen> {
             child: BlocBuilder<OnBoardingCubit, OnBoardingState>(
               builder: (context, state) {
                 return OnboardingButtonWidget(
-                  onPressed: () {
+                  onPressed: () async {
                     if (state.currentPage == 2) {
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (context) => const BottomNavigationPage(),
-                        ),
-                      );
+                      // Mark onboarding as seen
+                      final prefs = await SharedPreferences.getInstance();
+                      await prefs.setBool('seen', true);
+
+                      if (mounted) {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (_) => const LoginPage(),
+                          ),
+                        );
+                      }
                     } else {
                       _pageController.nextPage(
                         duration: const Duration(milliseconds: 300),

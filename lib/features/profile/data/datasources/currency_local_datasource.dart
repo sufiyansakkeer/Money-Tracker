@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:money_track/core/constants/db_constants.dart';
 import 'package:money_track/core/error/failures.dart';
 import 'package:money_track/features/profile/data/models/currency_model.dart';
@@ -29,20 +29,23 @@ class CurrencyLocalDataSourceImpl implements CurrencyLocalDataSource {
   Future<CurrencyModel> getSelectedCurrency() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final selectedCurrencyCode = prefs.getString('selected_currency') ?? 'USD';
-      
-      final currencyBox = await hive.openBox<CurrencyModel>(DBConstants.currencyDbName);
+      final selectedCurrencyCode =
+          prefs.getString('selected_currency') ?? 'USD';
+
+      final currencyBox =
+          await hive.openBox<CurrencyModel>(DBConstants.currencyDbName);
       final currencies = currencyBox.values.toList();
-      
+
       final selectedCurrency = currencies.firstWhere(
         (currency) => currency.code == selectedCurrencyCode,
         orElse: () => _defaultCurrencies.first,
       );
-      
+
       return selectedCurrency;
     } catch (e) {
       log(e.toString(), name: "Get selected currency exception");
-      throw DatabaseFailure(message: "Failed to get selected currency: ${e.toString()}");
+      throw DatabaseFailure(
+          message: "Failed to get selected currency: ${e.toString()}");
     }
   }
 
@@ -53,33 +56,37 @@ class CurrencyLocalDataSourceImpl implements CurrencyLocalDataSource {
       await prefs.setString('selected_currency', currencyCode);
     } catch (e) {
       log(e.toString(), name: "Set selected currency exception");
-      throw DatabaseFailure(message: "Failed to set selected currency: ${e.toString()}");
+      throw DatabaseFailure(
+          message: "Failed to set selected currency: ${e.toString()}");
     }
   }
 
   @override
   Future<List<CurrencyModel>> getAvailableCurrencies() async {
     try {
-      final currencyBox = await hive.openBox<CurrencyModel>(DBConstants.currencyDbName);
+      final currencyBox =
+          await hive.openBox<CurrencyModel>(DBConstants.currencyDbName);
       final currencies = currencyBox.values.toList();
-      
+
       if (currencies.isEmpty) {
         await setDefaultCurrencies();
         return currencyBox.values.toList();
       }
-      
+
       return currencies;
     } catch (e) {
       log(e.toString(), name: "Get available currencies exception");
-      throw DatabaseFailure(message: "Failed to get available currencies: ${e.toString()}");
+      throw DatabaseFailure(
+          message: "Failed to get available currencies: ${e.toString()}");
     }
   }
 
   @override
   Future<void> setDefaultCurrencies() async {
     try {
-      final currencyBox = await hive.openBox<CurrencyModel>(DBConstants.currencyDbName);
-      
+      final currencyBox =
+          await hive.openBox<CurrencyModel>(DBConstants.currencyDbName);
+
       if (currencyBox.values.isEmpty) {
         for (var currency in _defaultCurrencies) {
           await currencyBox.put(currency.code, currency);
@@ -87,7 +94,8 @@ class CurrencyLocalDataSourceImpl implements CurrencyLocalDataSource {
       }
     } catch (e) {
       log(e.toString(), name: "Set default currencies exception");
-      throw DatabaseFailure(message: "Failed to set default currencies: ${e.toString()}");
+      throw DatabaseFailure(
+          message: "Failed to set default currencies: ${e.toString()}");
     }
   }
 }

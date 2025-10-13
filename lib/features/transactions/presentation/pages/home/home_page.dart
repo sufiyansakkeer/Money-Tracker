@@ -86,7 +86,11 @@ class _HomePageState extends State<HomePage>
         body: Stack(
           children: [
             const Background(),
-            const BodyContent(),
+            const Column(
+              children: [
+                Expanded(child: BodyContent()),
+              ],
+            ),
             if (_isExpanded)
               GestureDetector(
                 onTap: _toggleIcons, // Close menu when tapping outside
@@ -149,13 +153,18 @@ class TransactionHeader extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          "Recent transaction",
-          style: TextStyle(
-            fontWeight: FontWeight.w700,
-            fontSize: 20,
-            color: ColorConstants.getTextColor(context),
-          ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Recent transaction",
+              style: TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 20,
+                color: ColorConstants.getTextColor(context),
+              ),
+            ),
+          ],
         ),
         ElevatedButton(
           onPressed: () {

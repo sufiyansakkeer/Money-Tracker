@@ -243,4 +243,10 @@ class BudgetBloc extends Bloc<BudgetEvent, BudgetState> {
       add(const LoadBudgets());
     }
   }
+
+  @override
+  Future<void> close() {
+    // Cancel any ongoing operations if needed
+    return super.close();
+  }
 }

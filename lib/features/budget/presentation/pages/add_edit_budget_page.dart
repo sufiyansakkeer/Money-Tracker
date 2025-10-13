@@ -463,6 +463,7 @@ class _AddEditBudgetPageState extends State<AddEditBudgetPage> {
                                   });
                                 },
                                 activeColor: themeColor,
+                                // activeThumbColor: themeColor,
                                 contentPadding: EdgeInsets.zero,
                               ),
                             ],

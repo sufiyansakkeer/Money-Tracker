@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:money_track/core/constants/db_constants.dart';
 import 'package:money_track/core/error/failures.dart';
 import 'package:money_track/data/models/category_model.dart';

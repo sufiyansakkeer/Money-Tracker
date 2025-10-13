@@ -4,9 +4,9 @@
 /// automatically call. Here we have `Type` that is gonna return Data,  and `Params` which
 /// we gonna pass through the function we should add in the generic form(<>),
 ///
-abstract class UseCase<Type, Params> {
+abstract class UseCase<ReturnType, Params> {
   /// In the `call()` method we get the data from the repository
-  Future<Type> call({Params? params});
+  Future<ReturnType> call({Params? params});
 }
 
 /// For use cases that don't require parameters

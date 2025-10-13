@@ -221,4 +221,10 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
       }
     });
   }
+
+  @override
+  Future<void> close() {
+    // Cancel any ongoing operations if needed
+    return super.close();
+  }
 }

@@ -1,0 +1,30 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "money-track-73be3",
+          "appId": "1:743638960286:android:693bceea0e29136a1d538f",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "money-track-73be3",
+          "appId": "1:743638960286:ios:3c2d681742cf644b1d538f",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "money-track-73be3",
+          "configurations": {
+            "ios": "1:743638960286:ios:3c2d681742cf644b1d538f",
+            "web": "1:743638960286:web:d55e45e7efe2cd471d538f"
+          }
+        }
+      }
+    }
+  }
+}
