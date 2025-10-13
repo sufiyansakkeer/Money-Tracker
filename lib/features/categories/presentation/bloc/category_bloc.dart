@@ -74,4 +74,10 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       }
     });
   }
+
+  @override
+  Future<void> close() {
+    // Cancel any ongoing operations if needed
+    return super.close();
+  }
 }

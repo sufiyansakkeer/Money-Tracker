@@ -15,7 +15,6 @@ import 'package:money_track/features/transactions/presentation/widgets/backgroun
 import 'package:money_track/features/transactions/presentation/widgets/empty_transaction_list.dart';
 import 'package:money_track/features/transactions/presentation/widgets/floating_action_button_widget.dart';
 import 'package:money_track/features/transactions/presentation/widgets/overlay_widget.dart';
-import 'package:money_track/core/presentation/widgets/sync_indicator.dart';
 import 'package:money_track/features/transactions/presentation/widgets/total_amount_widget.dart';
 import 'package:money_track/features/transactions/presentation/widgets/transaction_tile.dart';
 import 'package:money_track/core/widgets/custom_inkwell.dart';
@@ -87,10 +86,9 @@ class _HomePageState extends State<HomePage>
         body: Stack(
           children: [
             const Background(),
-            Column(
+            const Column(
               children: [
-                const OfflineBanner(),
-                const Expanded(child: BodyContent()),
+                Expanded(child: BodyContent()),
               ],
             ),
             if (_isExpanded)
@@ -166,8 +164,6 @@ class TransactionHeader extends StatelessWidget {
                 color: ColorConstants.getTextColor(context),
               ),
             ),
-            const SizedBox(height: 4),
-            const SyncIndicator(showText: true, compact: true),
           ],
         ),
         ElevatedButton(

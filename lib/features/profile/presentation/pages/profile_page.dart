@@ -18,7 +18,6 @@ import 'package:money_track/features/profile/presentation/pages/currency_page.da
 import 'package:money_track/features/profile/presentation/pages/theme_page.dart';
 import 'package:money_track/features/profile/presentation/widgets/reset_drop_down.dart';
 import 'package:money_track/features/profile/presentation/widgets/profile_tile.dart';
-import 'package:money_track/core/presentation/pages/sync_settings_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -106,13 +105,7 @@ class _ProfilePageState extends State<ProfilePage> {
         tag: "Theme",
         icon: Icons.color_lens_outlined,
       ),
-      ProfileModel(
-        title: "Sync Settings",
-        subtitle: "Manage data synchronization",
-        navigationScreen: const SyncSettingsPage(),
-        tag: "Sync",
-        icon: Icons.sync,
-      ),
+
       ProfileModel(
         title: "Reset",
         subtitle: "",

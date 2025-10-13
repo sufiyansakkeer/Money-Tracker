@@ -67,11 +67,11 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         email: email,
         password: password,
       );
-      
+
       if (credential.user == null) {
         throw const AuthFailure(message: 'Sign in failed: No user returned');
       }
-      
+
       return UserModel.fromFirebaseUser(credential.user!);
     } on FirebaseAuthException catch (e) {
       log(e.toString(), name: "Sign in with email and password exception");
@@ -93,7 +93,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         email: email,
         password: password,
       );
-      
+
       if (credential.user == null) {
         throw const AuthFailure(message: 'Sign up failed: No user returned');
       }
@@ -103,7 +103,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         await credential.user!.updateDisplayName(displayName);
         await credential.user!.reload();
       }
-      
+
       return UserModel.fromFirebaseUser(credential.user!);
     } on FirebaseAuthException catch (e) {
       log(e.toString(), name: "Sign up with email and password exception");
@@ -128,13 +128,21 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<UserModel?> getCurrentUser() async {
     try {
       final user = firebaseAuth.currentUser;
+      log('Current Firebase user: ${user?.uid ?? 'null'}',
+          name: "AuthRemoteDataSource");
+
       if (user == null) return null;
-      
+
       // Reload to get the latest user data
       await user.reload();
       final refreshedUser = firebaseAuth.currentUser;
-      
-      return refreshedUser != null ? UserModel.fromFirebaseUser(refreshedUser) : null;
+
+      log('Refreshed Firebase user: ${refreshedUser?.uid ?? 'null'}',
+          name: "AuthRemoteDataSource");
+
+      return refreshedUser != null
+          ? UserModel.fromFirebaseUser(refreshedUser)
+          : null;
     } catch (e) {
       log(e.toString(), name: "Get current user exception");
       throw AuthFailure(message: "Failed to get current user: ${e.toString()}");
@@ -160,7 +168,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       throw AuthFailure(message: _getAuthErrorMessage(e.code));
     } catch (e) {
       log(e.toString(), name: "Send password reset email exception");
-      throw AuthFailure(message: "Failed to send password reset email: ${e.toString()}");
+      throw AuthFailure(
+          message: "Failed to send password reset email: ${e.toString()}");
     }
   }
 
@@ -177,7 +186,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       throw AuthFailure(message: _getAuthErrorMessage(e.code));
     } catch (e) {
       log(e.toString(), name: "Send email verification exception");
-      throw AuthFailure(message: "Failed to send email verification: ${e.toString()}");
+      throw AuthFailure(
+          message: "Failed to send email verification: ${e.toString()}");
     }
   }
 
@@ -188,14 +198,14 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       if (user == null) {
         throw const AuthFailure(message: 'No user is currently signed in');
       }
-      
+
       await user.reload();
       final refreshedUser = firebaseAuth.currentUser;
-      
+
       if (refreshedUser == null) {
         throw const AuthFailure(message: 'Failed to reload user data');
       }
-      
+
       return UserModel.fromFirebaseUser(refreshedUser);
     } catch (e) {
       log(e.toString(), name: "Reload user exception");
@@ -230,22 +240,22 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       if (user == null) {
         throw const AuthFailure(message: 'No user is currently signed in');
       }
-      
+
       if (displayName != null) {
         await user.updateDisplayName(displayName);
       }
-      
+
       if (photoUrl != null) {
         await user.updatePhotoURL(photoUrl);
       }
-      
+
       await user.reload();
       final refreshedUser = firebaseAuth.currentUser;
-      
+
       if (refreshedUser == null) {
         throw const AuthFailure(message: 'Failed to update user profile');
       }
-      
+
       return UserModel.fromFirebaseUser(refreshedUser);
     } on FirebaseAuthException catch (e) {
       log(e.toString(), name: "Update profile exception");

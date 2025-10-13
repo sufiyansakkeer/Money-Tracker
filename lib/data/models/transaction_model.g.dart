@@ -22,7 +22,7 @@ class TransactionModelAdapter extends TypeAdapter<TransactionModel> {
       categoryType: fields[3] as CategoryType,
       transactionType: fields[4] as TransactionType,
       categoryModel: fields[5] as CategoryModel,
-      id: fields[6] as String?,
+      id: fields[6] as String,
       notes: fields[1] as String?,
     );
   }

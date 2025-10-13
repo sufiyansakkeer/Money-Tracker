@@ -5,8 +5,6 @@ import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:money_track/app/app.dart';
 import 'package:money_track/app/di/injection_container.dart';
 import 'package:money_track/data/models/category_model.dart';
-import 'package:money_track/data/models/sync/sync_operation_model.dart';
-import 'package:money_track/data/adapters/timestamp_adapter.dart';
 import 'package:money_track/features/budget/data/models/budget_model.dart';
 import 'package:money_track/features/profile/data/models/currency_model.dart';
 import 'package:money_track/firebase_options.dart';
@@ -52,16 +50,10 @@ Future<void> main() async {
   // Register all Hive adapters using the generated registrar
   Hive.registerAdapters();
 
-  // Register Timestamp adapter for Firestore compatibility
-  if (!Hive.isAdapterRegistered(20)) {
-    Hive.registerAdapter(TimestampAdapter());
-  }
-
   // Now open the boxes
   await Hive.openBox<CategoryModel>('category-database');
   await Hive.openBox<CurrencyModel>('currency-database');
   await Hive.openBox<BudgetModel>('budget-database');
-  await Hive.openBox<SyncOperationModel>('sync-operations');
 
   // Initialize dependency injection
   await initializeDependencies();

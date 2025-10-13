@@ -39,3 +39,8 @@ class AuthFailure extends Failure {
 class NetworkFailure extends Failure {
   const NetworkFailure({required super.message});
 }
+
+/// Failure for Firestore index building errors
+class FirestoreIndexBuildingFailure extends Failure {
+  const FirestoreIndexBuildingFailure({required super.message});
+}

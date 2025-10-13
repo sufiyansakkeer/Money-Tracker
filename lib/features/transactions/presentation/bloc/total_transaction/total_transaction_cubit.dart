@@ -9,6 +9,7 @@ part 'total_transaction_state.dart';
 
 class TotalTransactionCubit extends Cubit<TotalTransactionState> {
   final GetAllTransactionsUseCase _getAllTransactionsUseCase;
+  CancelToken? _currentCalculation;
 
   TotalTransactionCubit({
     required GetAllTransactionsUseCase getAllTransactionsUseCase,
@@ -17,6 +18,10 @@ class TotalTransactionCubit extends Cubit<TotalTransactionState> {
 
   /// Calculate total amounts with enhanced error handling
   Future<void> calculateTotalAmounts() async {
+    // Cancel any ongoing calculation
+    _currentCalculation?.cancel();
+    _currentCalculation = CancelToken();
+
     if (state is TotalTransactionLoading) {
       return; // Prevent multiple calls
     }
@@ -26,24 +31,37 @@ class TotalTransactionCubit extends Cubit<TotalTransactionState> {
     try {
       final result = await _getAllTransactionsUseCase();
 
+      // Check if calculation was cancelled
+      if (_currentCalculation?.isCancelled == true) {
+        return;
+      }
+
       result.fold(
         (transactions) {
           final totals = _calculateTotals(transactions);
-          emit(TotalTransactionSuccess(
-            totalIncome: totals.income,
-            totalExpense: totals.expense,
-            balance: totals.balance,
-            transactionCount: transactions.length,
-          ));
+          if (_currentCalculation?.isCancelled != true) {
+            emit(TotalTransactionSuccess(
+              totalIncome: totals.income,
+              totalExpense: totals.expense,
+              balance: totals.balance,
+              transactionCount: transactions.length,
+            ));
+          }
         },
         (failure) {
-          emit(TotalTransactionError(failure: failure));
+          if (_currentCalculation?.isCancelled != true) {
+            emit(TotalTransactionError(failure: failure));
+          }
         },
       );
     } catch (e) {
-      emit(TotalTransactionError(
-        failure: DatabaseFailure(message: 'Unexpected error: $e'),
-      ));
+      if (_currentCalculation?.isCancelled != true) {
+        emit(TotalTransactionError(
+          failure: DatabaseFailure(message: 'Unexpected error: $e'),
+        ));
+      }
+    } finally {
+      _currentCalculation = null;
     }
   }
 
@@ -84,5 +102,22 @@ class TotalTransactionCubit extends Cubit<TotalTransactionState> {
   /// Legacy method for backward compatibility
   Future<void> getTotalAmount() async {
     await calculateTotalAmounts();
+  }
+
+  @override
+  Future<void> close() {
+    _currentCalculation?.cancel();
+    return super.close();
+  }
+}
+
+/// Simple cancellation token for async operations
+class CancelToken {
+  bool _isCancelled = false;
+
+  bool get isCancelled => _isCancelled;
+
+  void cancel() {
+    _isCancelled = true;
   }
 }

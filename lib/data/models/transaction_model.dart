@@ -21,7 +21,7 @@ class TransactionModel {
   @HiveField(5)
   final CategoryModel categoryModel;
   @HiveField(6)
-  String? id;
+  final String id;
 
   TransactionModel({
     required this.amount,
@@ -36,7 +36,9 @@ class TransactionModel {
   /// Convert from domain entity to data model
   factory TransactionModel.fromEntity(domain.TransactionEntity entity) {
     return TransactionModel(
-      id: entity.id,
+      id: entity.id.isEmpty
+          ? DateTime.now().microsecondsSinceEpoch.toString()
+          : entity.id,
       amount: entity.amount,
       date: entity.date,
       categoryType: _mapDomainCategoryType(entity.categoryType),
@@ -49,7 +51,7 @@ class TransactionModel {
   /// Convert from data model to domain entity
   domain.TransactionEntity toEntity() {
     return domain.TransactionEntity(
-      id: id ?? DateTime.now().microsecondsSinceEpoch.toString(),
+      id: id,
       amount: amount,
       date: date,
       categoryType: _mapModelCategoryTypeToDomain(categoryType),
