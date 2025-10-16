@@ -14,6 +14,10 @@ import 'package:money_track/domain/entities/category_entity.dart';
 import 'package:money_track/domain/entities/transaction_entity.dart';
 import 'package:money_track/features/budget/presentation/bloc/budget_bloc.dart';
 import 'package:money_track/features/categories/presentation/bloc/category_bloc.dart';
+import 'package:money_track/features/groups/domain/entities/group_entity.dart';
+import 'package:money_track/features/groups/domain/entities/split_details.dart';
+import 'package:money_track/features/groups/presentation/bloc/group_bloc.dart';
+import 'package:money_track/features/transactions/presentation/pages/split_expense_page.dart';
 import 'package:money_track/features/transactions/presentation/bloc/transaction_bloc.dart';
 import 'package:money_track/features/transactions/presentation/bloc/total_transaction/total_transaction_cubit.dart';
 import 'package:money_track/core/widgets/accessible_widgets.dart';
@@ -41,6 +45,9 @@ class _TransactionPageState extends State<TransactionPage> {
   CategoryEntity? categoryEntity;
   DateTime date = DateTime.now();
   final _formKey = GlobalKey<FormState>();
+  bool _isSplitExpense = false;
+  GroupEntity? _selectedGroup;
+  SplitDetails? _splitDetails;
 
   @override
   void initState() {
@@ -61,6 +68,11 @@ class _TransactionPageState extends State<TransactionPage> {
     }
 
     super.initState();
+
+    // Load groups for split expense functionality after the widget is built
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<GroupBloc>().add(LoadGroups());
+    });
   }
 
   @override
@@ -302,6 +314,97 @@ class _TransactionPageState extends State<TransactionPage> {
 
                             24.height(),
 
+                            // Split Expense Switch
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Split Expense",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14,
+                                    color: ColorConstants.getTextColor(context)
+                                        .withValues(alpha: 153), // 0.6 opacity
+                                  ),
+                                ),
+                                Switch(
+                                  value: _isSplitExpense,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _isSplitExpense = value;
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+
+                            if (_isSplitExpense)
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  24.height(),
+                                  Text(
+                                    "Group",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14,
+                                      color:
+                                          ColorConstants.getTextColor(context)
+                                              .withValues(
+                                                  alpha: 153), // 0.6 opacity
+                                    ),
+                                  ),
+                                  8.height(),
+                                  BlocBuilder<GroupBloc, GroupState>(
+                                    builder: (context, state) {
+                                      if (state is GroupsLoaded) {
+                                        return DropdownButtonFormField<
+                                            GroupEntity>(
+                                          value: _selectedGroup,
+                                          items: state.groups.map((group) {
+                                            return DropdownMenuItem<
+                                                GroupEntity>(
+                                              value: group,
+                                              child: Text(group.name),
+                                            );
+                                          }).toList(),
+                                          onChanged: (group) async {
+                                            if (group != null) {
+                                              final result =
+                                                  await Navigator.of(context)
+                                                      .push(
+                                                MaterialPageRoute(
+                                                  builder: (_) =>
+                                                      const SplitExpensePage(),
+                                                ),
+                                              );
+                                              if (result is SplitDetails) {
+                                                setState(() {
+                                                  _splitDetails = result;
+                                                  _selectedGroup = group;
+                                                });
+                                              }
+                                            }
+                                          },
+                                          decoration: InputDecoration(
+                                            disabledBorder: StyleConstants
+                                                .textFormFieldBorder(),
+                                            enabledBorder: StyleConstants
+                                                .textFormFieldBorder(),
+                                            border: StyleConstants
+                                                .textFormFieldBorder(),
+                                            hintText: "Select a group",
+                                          ),
+                                        );
+                                      }
+                                      return const SizedBox.shrink();
+                                    },
+                                  ),
+                                ],
+                              ),
+
+                            24.height(),
+
                             // Date field
                             Text(
                               "Date",
@@ -389,6 +492,8 @@ class _TransactionPageState extends State<TransactionPage> {
                                       categoryType: categoryType!,
                                       categoryModel: categoryEntity!,
                                       date: date,
+                                      groupId: _selectedGroup?.id,
+                                      splitDetails: _splitDetails,
                                     ),
                                   );
                             } else {
@@ -400,6 +505,8 @@ class _TransactionPageState extends State<TransactionPage> {
                                       categoryType: categoryType!,
                                       categoryModel: categoryEntity!,
                                       date: date,
+                                      groupId: _selectedGroup?.id,
+                                      splitDetails: _splitDetails,
                                     ),
                                   );
                             }

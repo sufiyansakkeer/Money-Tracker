@@ -46,9 +46,7 @@ class AppRoutes {
           builder: (_) => const OnboardScreen(),
         );
       default:
-        return MaterialPageRoute(
-          builder: (_) => const SplashScreen(),
-        );
+        return MaterialPageRoute(builder: (_) => const Scaffold());
     }
   }
 }

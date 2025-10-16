@@ -28,3 +28,9 @@ class TransactionError extends TransactionState {
   @override
   List<Object?> get props => [message];
 }
+
+class TransactionAdded extends TransactionState {}
+
+class TransactionUpdated extends TransactionState {}
+
+class TransactionDeleted extends TransactionState {}

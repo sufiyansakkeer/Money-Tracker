@@ -1,6 +1,7 @@
-import 'dart:developer';
 import 'package:money_track/core/error/failures.dart';
 import 'package:money_track/core/error/result.dart';
+import 'package:money_track/core/widgets/logger_service.dart'
+    show LoggerService;
 import 'package:money_track/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:money_track/features/auth/domain/entities/user_entity.dart';
 import 'package:money_track/features/auth/domain/repositories/auth_repository.dart';
@@ -8,6 +9,7 @@ import 'package:money_track/features/auth/domain/repositories/auth_repository.da
 /// Implementation of AuthRepository
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource remoteDataSource;
+  final LoggerService logger = LoggerService();
 
   AuthRepositoryImpl({required this.remoteDataSource});
 
@@ -23,7 +25,8 @@ class AuthRepositoryImpl implements AuthRepository {
       );
       return Success(userModel.toEntity());
     } catch (e) {
-      log(e.toString(), name: "AuthRepository signInWithEmailAndPassword");
+      logger.en(e.toString(),
+          name: "AuthRepository signInWithEmailAndPassword");
       if (e is AuthFailure) {
         return Error(e);
       }
@@ -45,7 +48,8 @@ class AuthRepositoryImpl implements AuthRepository {
       );
       return Success(userModel.toEntity());
     } catch (e) {
-      log(e.toString(), name: "AuthRepository signUpWithEmailAndPassword");
+      logger.en(e.toString(),
+          name: "AuthRepository signUpWithEmailAndPassword");
       if (e is AuthFailure) {
         return Error(e);
       }
@@ -59,7 +63,7 @@ class AuthRepositoryImpl implements AuthRepository {
       await remoteDataSource.signOut();
       return const Success(null);
     } catch (e) {
-      log(e.toString(), name: "AuthRepository signOut");
+      logger.en(e.toString(), name: "AuthRepository signOut");
       if (e is AuthFailure) {
         return Error(e);
       }
@@ -73,7 +77,7 @@ class AuthRepositoryImpl implements AuthRepository {
       final userModel = await remoteDataSource.getCurrentUser();
       return Success(userModel?.toEntity());
     } catch (e) {
-      log(e.toString(), name: "AuthRepository getCurrentUser");
+      logger.en(e.toString(), name: "AuthRepository getCurrentUser");
       if (e is AuthFailure) {
         return Error(e);
       }
@@ -87,7 +91,7 @@ class AuthRepositoryImpl implements AuthRepository {
       final isSignedIn = await remoteDataSource.isSignedIn();
       return Success(isSignedIn);
     } catch (e) {
-      log(e.toString(), name: "AuthRepository isSignedIn");
+      logger.en(e.toString(), name: "AuthRepository isSignedIn");
       return const Success(false);
     }
   }
@@ -100,7 +104,7 @@ class AuthRepositoryImpl implements AuthRepository {
       await remoteDataSource.sendPasswordResetEmail(email: email);
       return const Success(null);
     } catch (e) {
-      log(e.toString(), name: "AuthRepository sendPasswordResetEmail");
+      logger.en(e.toString(), name: "AuthRepository sendPasswordResetEmail");
       if (e is AuthFailure) {
         return Error(e);
       }
@@ -114,7 +118,7 @@ class AuthRepositoryImpl implements AuthRepository {
       await remoteDataSource.sendEmailVerification();
       return const Success(null);
     } catch (e) {
-      log(e.toString(), name: "AuthRepository sendEmailVerification");
+      logger.en(e.toString(), name: "AuthRepository sendEmailVerification");
       if (e is AuthFailure) {
         return Error(e);
       }
@@ -128,7 +132,7 @@ class AuthRepositoryImpl implements AuthRepository {
       final userModel = await remoteDataSource.reloadUser();
       return Success(userModel.toEntity());
     } catch (e) {
-      log(e.toString(), name: "AuthRepository reloadUser");
+      logger.en(e.toString(), name: "AuthRepository reloadUser");
       if (e is AuthFailure) {
         return Error(e);
       }
@@ -142,7 +146,7 @@ class AuthRepositoryImpl implements AuthRepository {
       await remoteDataSource.deleteAccount();
       return const Success(null);
     } catch (e) {
-      log(e.toString(), name: "AuthRepository deleteAccount");
+      logger.en(e.toString(), name: "AuthRepository deleteAccount");
       if (e is AuthFailure) {
         return Error(e);
       }
@@ -162,7 +166,7 @@ class AuthRepositoryImpl implements AuthRepository {
       );
       return Success(userModel.toEntity());
     } catch (e) {
-      log(e.toString(), name: "AuthRepository updateProfile");
+      logger.en(e.toString(), name: "AuthRepository updateProfile");
       if (e is AuthFailure) {
         return Error(e);
       }

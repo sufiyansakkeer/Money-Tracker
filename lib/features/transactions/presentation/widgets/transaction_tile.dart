@@ -1,31 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:money_track/core/constants/colors.dart';
 import 'package:money_track/core/utils/currency_formatter.dart';
+import 'package:money_track/core/utils/date_time_extension.dart';
 import 'package:money_track/core/utils/sized_box_extension.dart';
 import 'package:money_track/core/utils/widget_extension.dart';
 import 'package:money_track/domain/entities/category_entity.dart';
+import 'package:money_track/domain/entities/transaction_entity.dart';
 import 'package:money_track/core/widgets/category_icon_widget.dart';
+import 'package:money_track/features/transactions/presentation/pages/transaction_details_screen.dart';
 
 class TransactionTile extends StatefulWidget {
   const TransactionTile({
     super.key,
-    required this.categoryType,
-    required this.categoryName,
-    required this.time,
-    required this.description,
-    required this.amount,
-    required this.type,
-    this.onTap,
+    required this.transaction,
     this.onLongPress,
   });
 
-  final CategoryType categoryType;
-  final String categoryName;
-  final String time;
-  final String description;
-  final double amount;
-  final TransactionType type;
-  final VoidCallback? onTap;
+  final TransactionEntity transaction;
   final VoidCallback? onLongPress;
 
   @override
@@ -74,12 +65,18 @@ class _TransactionTileState extends State<TransactionTile>
   @override
   Widget build(BuildContext context) {
     final themeColor = ColorConstants.getThemeColor(context);
-    final transactionColor = widget.type == TransactionType.expense
-        ? ColorConstants.getExpenseColor(context)
-        : ColorConstants.getIncomeColor(context);
+    final transactionColor =
+        widget.transaction.transactionType == TransactionType.expense
+            ? ColorConstants.getExpenseColor(context)
+            : ColorConstants.getIncomeColor(context);
 
     return GestureDetector(
-      onTap: widget.onTap,
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (_) =>
+              TransactionDetailsScreen(transaction: widget.transaction),
+        ));
+      },
       onLongPress: widget.onLongPress,
       onTapDown: (_) => _onPressedChanged(true),
       onTapUp: (_) => _onPressedChanged(false),
@@ -120,9 +117,10 @@ class _TransactionTileState extends State<TransactionTile>
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: CategoryIconWidget(
-                  categoryType: widget.categoryType,
+                  categoryType: widget.transaction.categoryType,
                   size: 28,
-                  color: widget.categoryType.svgEnumModel.backgroundColor,
+                  color: widget
+                      .transaction.categoryType.svgEnumModel.backgroundColor,
                 ),
               ),
               16.width(),
@@ -133,7 +131,7 @@ class _TransactionTileState extends State<TransactionTile>
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        widget.categoryName,
+                        widget.transaction.category.categoryName,
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -142,9 +140,11 @@ class _TransactionTileState extends State<TransactionTile>
                         overflow: TextOverflow.ellipsis,
                       ),
                       Text(
-                        CurrencyFormatter.format(context, widget.amount,
+                        CurrencyFormatter.format(
+                            context, widget.transaction.amount,
                             showSign: true,
-                            isExpense: widget.type == TransactionType.expense),
+                            isExpense: widget.transaction.transactionType ==
+                                TransactionType.expense),
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w700,
@@ -157,9 +157,17 @@ class _TransactionTileState extends State<TransactionTile>
                   8.height(),
                   Row(
                     children: [
-                      if (widget.description.isNotEmpty) ...[
+                      if (widget.transaction.groupId != null)
+                        Icon(
+                          Icons.people_alt_outlined,
+                          size: 16,
+                          color: ColorConstants.getTextColor(context)
+                              .withValues(alpha: 0.6),
+                        ),
+                      if (widget.transaction.groupId != null) 4.width(),
+                      if (widget.transaction.notes?.isNotEmpty ?? false) ...[
                         Text(
-                          widget.description,
+                          widget.transaction.notes!,
                           style: TextStyle(
                             fontSize: 13,
                             color: ColorConstants.getTextColor(context)
@@ -178,7 +186,7 @@ class _TransactionTileState extends State<TransactionTile>
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
-                          widget.time,
+                          widget.transaction.date.to12HourFormat(),
                           style: TextStyle(
                             fontSize: 12,
                             color: ColorConstants.getTextColor(context)

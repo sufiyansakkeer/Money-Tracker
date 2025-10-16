@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_track/core/constants/colors.dart';
-import 'package:money_track/core/utils/date_time_extension.dart';
 import 'package:money_track/core/utils/navigation_extension.dart';
 import 'package:money_track/core/utils/sized_box_extension.dart';
 import 'package:money_track/domain/entities/category_entity.dart';
@@ -33,6 +32,8 @@ class _HomePageState extends State<HomePage>
   late Animation<Offset> _firstIconAnimation;
   late Animation<Offset> _secondIconAnimation;
 
+  late Animation<Offset> _thirdIconAnimation;
+
   @override
   void initState() {
     super.initState();
@@ -53,6 +54,16 @@ class _HomePageState extends State<HomePage>
 
     _secondIconAnimation = Tween<Offset>(
       begin: const Offset(0, 3.0),
+      end: const Offset(0, 0),
+    ).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.easeOutBack,
+      ),
+    );
+
+    _thirdIconAnimation = Tween<Offset>(
+      begin: const Offset(0, 4.0),
       end: const Offset(0, 0),
     ).animate(
       CurvedAnimation(
@@ -105,6 +116,7 @@ class _HomePageState extends State<HomePage>
             isExpanded: _isExpanded,
             firstIconAnimation: _firstIconAnimation,
             secondIconAnimation: _secondIconAnimation,
+            thirdIconAnimation: _thirdIconAnimation,
             toggleIcons: _toggleIcons,
           ),
         ),
@@ -253,14 +265,7 @@ class FilledTransactionList extends StatelessWidget {
             );
           },
           child: TransactionTile(
-            categoryType: item.categoryType,
-            categoryName: item.category.categoryName,
-            time: item.date.isToday()
-                ? item.date.to12HourFormat()
-                : item.date.toDayMonthYearFormat(),
-            description: item.notes ?? "",
-            amount: item.amount,
-            type: item.transactionType,
+            transaction: item,
           ),
         );
       },

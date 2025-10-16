@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_ce/hive.dart';
+import 'package:money_track/core/widgets/logger_service.dart';
 import 'package:money_track/data/datasources/local/category_local_datasource.dart';
 import 'package:money_track/data/datasources/local/transaction_local_datasource.dart';
 import 'package:money_track/data/repositories/category_repository_impl.dart';
@@ -35,6 +36,21 @@ import 'package:money_track/features/budget/domain/usecases/get_all_budgets_usec
 import 'package:money_track/features/budget/domain/usecases/get_budgets_by_category_usecase.dart';
 import 'package:money_track/features/budget/presentation/bloc/budget_bloc.dart';
 import 'package:money_track/features/categories/presentation/bloc/category_bloc.dart';
+import 'package:money_track/features/groups/data/datasources/group_local_data_source.dart';
+import 'package:money_track/features/groups/data/datasources/split_details_local_data_source.dart';
+import 'package:money_track/features/groups/data/repositories/group_repository_impl.dart';
+import 'package:money_track/features/groups/data/repositories/split_details_repository_impl.dart';
+import 'package:money_track/features/groups/domain/repositories/group_repository.dart';
+import 'package:money_track/features/groups/domain/repositories/split_details_repository.dart';
+import 'package:money_track/features/groups/domain/usecases/add_split_details.dart';
+import 'package:money_track/features/groups/domain/usecases/create_group.dart';
+import 'package:money_track/features/groups/domain/usecases/delete_group.dart'
+    as delete_group_usecase;
+import 'package:money_track/features/groups/domain/usecases/get_groups.dart';
+import 'package:money_track/features/groups/domain/usecases/get_group_by_id.dart';
+import 'package:money_track/features/groups/domain/usecases/update_group.dart'
+    as update_group_usecase;
+import 'package:money_track/features/groups/presentation/bloc/group_bloc.dart';
 import 'package:money_track/features/navigation/presentation/bloc/bottom_navigation_bloc.dart';
 import 'package:money_track/features/profile/data/datasources/currency_local_datasource.dart';
 import 'package:money_track/features/profile/data/datasources/theme_local_datasource.dart';
@@ -56,6 +72,12 @@ import 'package:money_track/features/profile/presentation/bloc/currency/currency
 import 'package:money_track/features/profile/presentation/bloc/theme/theme_cubit.dart';
 import 'package:money_track/features/transactions/presentation/bloc/total_transaction/total_transaction_cubit.dart';
 import 'package:money_track/features/transactions/presentation/bloc/transaction_bloc.dart';
+import 'package:money_track/features/contact/bloc/contact_bloc.dart';
+import 'package:money_track/features/groups/bloc/groups_bloc.dart';
+import 'package:money_track/features/groups/data/models/group_model.dart';
+import 'package:money_track/features/groups/data/models/split_details_model.dart';
+import 'package:money_track/core/constants/db_constants.dart';
+import 'package:money_track/core/services/contact_service.dart';
 
 /// Enhanced Dependency Injection using get_it for better testability and maintainability
 final GetIt sl = GetIt.instance;
@@ -75,6 +97,14 @@ Future<void> _initExternalDependencies() async {
   // Register Hive
   sl.registerLazySingleton<HiveInterface>(() => Hive);
 
+  // Register Hive boxes
+  sl.registerLazySingleton<Box<GroupModel>>(
+    () => Hive.box<GroupModel>(DBConstants.groupDbName),
+  );
+  sl.registerLazySingleton<Box<SplitDetailsModel>>(
+    () => Hive.box<SplitDetailsModel>(DBConstants.splitDetailsDbName),
+  );
+
   // Register Firebase Auth
   sl.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
 
@@ -86,6 +116,14 @@ Future<void> _initExternalDependencies() async {
 
 /// Initialize data sources
 void _initDataSources() {
+  // Group data source
+  sl.registerLazySingleton<GroupLocalDataSource>(
+    () => GroupLocalDataSourceImpl(sl()),
+  );
+  sl.registerLazySingleton<SplitDetailsLocalDataSource>(
+    () => SplitDetailsLocalDataSourceImpl(sl(), sl<HiveInterface>()),
+  );
+
   // Category data source
   sl.registerLazySingleton<CategoryLocalDataSource>(
     () => CategoryLocalDataSourceImpl(hive: sl()),
@@ -119,6 +157,14 @@ void _initDataSources() {
 
 /// Initialize repositories
 void _initRepositories() {
+  // Group repository
+  sl.registerLazySingleton<GroupRepository>(
+    () => GroupRepositoryImpl(localDataSource: sl()),
+  );
+  sl.registerLazySingleton<SplitDetailsRepository>(
+    () => SplitDetailsRepositoryImpl(localDataSource: sl()),
+  );
+
   // Category repository
   sl.registerLazySingleton<CategoryRepository>(
     () => CategoryRepositoryImpl(localDataSource: sl()),
@@ -152,6 +198,14 @@ void _initRepositories() {
 
 /// Initialize use cases
 void _initUseCases() {
+  // Group use cases
+  sl.registerLazySingleton(() => GetGroups(sl()));
+  sl.registerLazySingleton(() => CreateGroup(sl()));
+  sl.registerLazySingleton(() => delete_group_usecase.DeleteGroup(sl()));
+  sl.registerLazySingleton(() => GetGroupById(sl()));
+  sl.registerLazySingleton(() => update_group_usecase.UpdateGroup(sl()));
+  sl.registerLazySingleton(() => AddSplitDetails(sl()));
+
   // Category use cases
   sl.registerLazySingleton(() => GetAllCategoriesUseCase(sl()));
   sl.registerLazySingleton(() => AddCategoryUseCase(sl()));
@@ -196,6 +250,11 @@ void _initUseCases() {
 
 /// Initialize services
 void _initServices() {
+  // Contact service
+  sl.registerLazySingleton<LoggerService>(() => LoggerService());
+
+  // Contact service
+  sl.registerLazySingleton<ContactService>(() => ContactService());
   // // Budget notification service
   // sl.registerLazySingleton<BudgetNotificationService>(
   //   () => BudgetNotificationService(sl()),
@@ -204,6 +263,17 @@ void _initServices() {
 
 /// Initialize BLoCs (as factories for fresh instances)
 void _initBlocs() {
+  // Group BLoC
+  sl.registerFactory(
+    () => GroupBloc(
+      createGroup: sl(),
+      getGroups: sl(),
+      deleteGroup: sl(),
+      getGroupById: sl(),
+      updateGroup: sl(),
+    ),
+  );
+
   // Category BLoC
   sl.registerFactory(
     () => CategoryBloc(
@@ -220,6 +290,7 @@ void _initBlocs() {
       addTransactionUseCase: sl(),
       editTransactionUseCase: sl(),
       deleteTransactionUseCase: sl(),
+      addSplitDetails: sl(),
     ),
   );
 
@@ -279,6 +350,16 @@ void _initBlocs() {
       sendPasswordResetUseCase: sl(),
       authRepository: sl(),
     ),
+  );
+
+  // Contact BLoC
+  sl.registerFactory(
+    () => ContactBloc(sl()),
+  );
+
+  // Groups BLoC
+  sl.registerFactory(
+    () => GroupsBloc(sl()),
   );
 }
 

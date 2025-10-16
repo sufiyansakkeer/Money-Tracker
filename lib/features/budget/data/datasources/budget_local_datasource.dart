@@ -1,8 +1,7 @@
-import 'dart:developer';
-
 import 'package:hive_ce/hive.dart';
 import 'package:money_track/core/constants/db_constants.dart';
 import 'package:money_track/core/error/failures.dart';
+import 'package:money_track/core/widgets/logger_service.dart';
 import 'package:money_track/features/budget/data/models/budget_model.dart';
 
 abstract class BudgetLocalDataSource {
@@ -27,6 +26,7 @@ abstract class BudgetLocalDataSource {
 
 class BudgetLocalDataSourceImpl implements BudgetLocalDataSource {
   final HiveInterface hive;
+  final LoggerService logger = LoggerService();
 
   BudgetLocalDataSourceImpl({required this.hive});
 
@@ -37,7 +37,7 @@ class BudgetLocalDataSourceImpl implements BudgetLocalDataSource {
           await hive.openBox<BudgetModel>(DBConstants.budgetDbName);
       return budgetDb.values.toList();
     } catch (e) {
-      log(e.toString(), name: "Get all budgets Exception");
+      logger.en(e.toString(), name: "Get all budgets Exception");
       throw DatabaseFailure(message: "Failed to get budgets: ${e.toString()}");
     }
   }
@@ -50,7 +50,7 @@ class BudgetLocalDataSourceImpl implements BudgetLocalDataSource {
       await budgetDb.put(budget.id, budget);
       return "success";
     } catch (e) {
-      log(e.toString(), name: "Add budget Exception");
+      logger.en(e.toString(), name: "Add budget Exception");
       throw DatabaseFailure(message: "Failed to add budget: ${e.toString()}");
     }
   }
@@ -63,7 +63,7 @@ class BudgetLocalDataSourceImpl implements BudgetLocalDataSource {
       await budgetDb.put(budget.id, budget);
       return "success";
     } catch (e) {
-      log(e.toString(), name: "Edit budget Exception");
+      logger.en(e.toString(), name: "Edit budget Exception");
       throw DatabaseFailure(message: "Failed to edit budget: ${e.toString()}");
     }
   }
@@ -75,7 +75,7 @@ class BudgetLocalDataSourceImpl implements BudgetLocalDataSource {
           await hive.openBox<BudgetModel>(DBConstants.budgetDbName);
       await budgetDb.delete(budgetId);
     } catch (e) {
-      log(e.toString(), name: "Delete budget Exception");
+      logger.en(e.toString(), name: "Delete budget Exception");
       throw DatabaseFailure(
           message: "Failed to delete budget: ${e.toString()}");
     }
@@ -90,7 +90,7 @@ class BudgetLocalDataSourceImpl implements BudgetLocalDataSource {
           .where((budget) => budget.category.id == categoryId)
           .toList();
     } catch (e) {
-      log(e.toString(), name: "Get budgets by category Exception");
+      logger.en(e.toString(), name: "Get budgets by category Exception");
       throw DatabaseFailure(
           message: "Failed to get budgets by category: ${e.toString()}");
     }
@@ -103,7 +103,7 @@ class BudgetLocalDataSourceImpl implements BudgetLocalDataSource {
           await hive.openBox<BudgetModel>(DBConstants.budgetDbName);
       return budgetDb.values.where((budget) => budget.isActive).toList();
     } catch (e) {
-      log(e.toString(), name: "Get active budgets Exception");
+      logger.en(e.toString(), name: "Get active budgets Exception");
       throw DatabaseFailure(
           message: "Failed to get active budgets: ${e.toString()}");
     }

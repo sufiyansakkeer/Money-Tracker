@@ -5,7 +5,7 @@ class BottomNavigationState {
 
   final pages = [
     const HomePage(),
-    const CategoryPage(),
+    const CategoriesGroupsPage(),
     const ProfilePage(),
   ];
   

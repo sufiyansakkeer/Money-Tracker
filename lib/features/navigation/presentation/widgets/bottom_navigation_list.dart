@@ -20,7 +20,7 @@ List<NavItemModel> bottomNavItems = [
     ),
   ),
   NavItemModel(
-    text: "Category",
+    text: "Categories",
     rive: RiveEntity(
       src: "assets/rive/animated_icon_rive.riv",
       artBoard: "LIKE/STAR",

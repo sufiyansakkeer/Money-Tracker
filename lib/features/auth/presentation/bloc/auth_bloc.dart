@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'dart:developer';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:money_track/core/widgets/logger_service.dart';
 import 'package:money_track/features/auth/domain/entities/user_entity.dart';
 import 'package:money_track/features/auth/domain/repositories/auth_repository.dart';
 import 'package:money_track/features/auth/domain/usecases/get_current_user_usecase.dart';
@@ -24,7 +24,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository authRepository;
 
   late StreamSubscription<UserEntity?> _authStateSubscription;
-
+  final LoggerService logger = LoggerService();
   AuthBloc({
     required this.signInUseCase,
     required this.signUpUseCase,
@@ -54,12 +54,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             }
           },
           (failure) {
-            log(failure.message, name: "CheckAuthStatusEvent");
+            logger.en(failure.message, name: "CheckAuthStatusEvent");
             emit(AuthUnauthenticated());
           },
         );
       } catch (e) {
-        log(e.toString(), name: "CheckAuthStatusEvent");
+        logger.en(e.toString(), name: "CheckAuthStatusEvent");
         emit(AuthUnauthenticated());
       }
     });
@@ -85,7 +85,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           },
         );
       } catch (e) {
-        log(e.toString(), name: "SignInEvent");
+        logger.en(e.toString(), name: "SignInEvent");
         emit(AuthError(message: "Sign in failed: ${e.toString()}"));
       }
     });
@@ -112,7 +112,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           },
         );
       } catch (e) {
-        log(e.toString(), name: "SignUpEvent");
+        logger.en(e.toString(), name: "SignUpEvent");
         emit(AuthError(message: "Sign up failed: ${e.toString()}"));
       }
     });
@@ -133,7 +133,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           },
         );
       } catch (e) {
-        log(e.toString(), name: "SignOutEvent");
+        logger.en(e.toString(), name: "SignOutEvent");
         emit(AuthError(message: "Sign out failed: ${e.toString()}"));
       }
     });
@@ -153,7 +153,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           },
         );
       } catch (e) {
-        log(e.toString(), name: "SendPasswordResetEvent");
+        logger.en(e.toString(), name: "SendPasswordResetEvent");
         emit(AuthError(
             message: "Failed to send password reset email: ${e.toString()}"));
       }
@@ -174,7 +174,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           },
         );
       } catch (e) {
-        log(e.toString(), name: "SendEmailVerificationEvent");
+        logger.en(e.toString(), name: "SendEmailVerificationEvent");
         emit(AuthError(
             message: "Failed to send email verification: ${e.toString()}"));
       }
@@ -193,7 +193,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           },
         );
       } catch (e) {
-        log(e.toString(), name: "ReloadUserEvent");
+        logger.en(e.toString(), name: "ReloadUserEvent");
         emit(AuthError(message: "Failed to reload user: ${e.toString()}"));
       }
     });
@@ -213,7 +213,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           },
         );
       } catch (e) {
-        log(e.toString(), name: "DeleteAccountEvent");
+        logger.en(e.toString(), name: "DeleteAccountEvent");
         emit(AuthError(message: "Failed to delete account: ${e.toString()}"));
       }
     });
@@ -236,7 +236,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           },
         );
       } catch (e) {
-        log(e.toString(), name: "UpdateProfileEvent");
+        logger.en(e.toString(), name: "UpdateProfileEvent");
         emit(AuthError(message: "Failed to update profile: ${e.toString()}"));
       }
     });

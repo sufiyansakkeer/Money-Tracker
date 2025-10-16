@@ -6,6 +6,9 @@ import 'package:hive_ce/hive.dart';
 import 'package:money_track/data/models/category_model.dart';
 import 'package:money_track/data/models/transaction_model.dart';
 import 'package:money_track/features/budget/data/models/budget_model.dart';
+import 'package:money_track/features/groups/data/models/group_member_model.dart';
+import 'package:money_track/features/groups/data/models/group_model.dart';
+import 'package:money_track/features/groups/data/models/split_details_model.dart';
 import 'package:money_track/features/profile/data/models/currency_model.dart';
 
 extension HiveRegistrar on HiveInterface {
@@ -15,6 +18,9 @@ extension HiveRegistrar on HiveInterface {
     registerAdapter(CategoryModelAdapter());
     registerAdapter(CategoryTypeAdapter());
     registerAdapter(CurrencyModelAdapter());
+    registerAdapter(GroupMemberModelAdapter());
+    registerAdapter(GroupModelAdapter());
+    registerAdapter(SplitDetailsModelAdapter());
     registerAdapter(TransactionModelAdapter());
     registerAdapter(TransactionTypeAdapter());
   }
@@ -27,6 +33,9 @@ extension IsolatedHiveRegistrar on IsolatedHiveInterface {
     registerAdapter(CategoryModelAdapter());
     registerAdapter(CategoryTypeAdapter());
     registerAdapter(CurrencyModelAdapter());
+    registerAdapter(GroupMemberModelAdapter());
+    registerAdapter(GroupModelAdapter());
+    registerAdapter(SplitDetailsModelAdapter());
     registerAdapter(TransactionModelAdapter());
     registerAdapter(TransactionTypeAdapter());
   }

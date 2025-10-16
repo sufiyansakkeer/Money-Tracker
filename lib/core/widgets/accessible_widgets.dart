@@ -240,6 +240,7 @@ class AccessibleFormField extends StatelessWidget {
           border: const OutlineInputBorder(),
           // Ensure proper contrast ratios
           focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(16)),
             borderSide: BorderSide(
               color: Theme.of(context).colorScheme.primary,
               width: 2,
@@ -340,8 +341,7 @@ class AccessibleNavigationItem extends StatelessWidget {
                     color: isSelected
                         ? Theme.of(context).colorScheme.primary
                         : Theme.of(context).colorScheme.onSurface.withAlpha(
-                            ((Theme.of(context).colorScheme.onSurface.a *
-                                        255.0)
+                            ((Theme.of(context).colorScheme.onSurface.a * 255.0)
                                     .round() &
                                 0xff)),
                   ),

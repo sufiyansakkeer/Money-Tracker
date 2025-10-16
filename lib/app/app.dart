@@ -3,6 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:money_track/app/di/injection_container.dart';
 import 'package:money_track/app/routes/app_routes.dart';
+import 'package:money_track/features/contact/bloc/contact_bloc.dart';
+import 'package:money_track/features/groups/bloc/groups_bloc.dart';
+import 'package:money_track/features/groups/presentation/bloc/group_bloc.dart';
 import 'package:money_track/features/onboarding/presentation/bloc/on_boarding_cubit.dart';
 import 'package:money_track/features/profile/presentation/bloc/theme/theme_cubit.dart';
 import 'package:money_track/features/profile/presentation/bloc/theme/theme_state.dart';
@@ -51,6 +54,15 @@ class App extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => sl<AuthBloc>(),
+        ),
+        BlocProvider(
+          create: (_) => sl<ContactBloc>(),
+        ),
+        BlocProvider(
+          create: (_) => sl<GroupsBloc>(),
+        ),
+        BlocProvider(
+          create: (_) => sl<GroupBloc>(),
         ),
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(

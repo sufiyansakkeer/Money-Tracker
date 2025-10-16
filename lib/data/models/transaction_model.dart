@@ -22,6 +22,8 @@ class TransactionModel {
   final CategoryModel categoryModel;
   @HiveField(6)
   final String id;
+  @HiveField(7)
+  final String? groupId;
 
   TransactionModel({
     required this.amount,
@@ -31,6 +33,7 @@ class TransactionModel {
     required this.categoryModel,
     required this.id,
     this.notes,
+    this.groupId,
   });
 
   /// Convert from domain entity to data model
@@ -45,6 +48,7 @@ class TransactionModel {
       transactionType: _mapDomainTransactionType(entity.transactionType),
       categoryModel: CategoryModel.fromEntity(entity.category),
       notes: entity.notes,
+      groupId: entity.groupId,
     );
   }
 
@@ -58,6 +62,7 @@ class TransactionModel {
       transactionType: _mapModelTransactionTypeToDomain(transactionType),
       category: categoryModel.toEntity(),
       notes: notes,
+      groupId: groupId,
     );
   }
 }

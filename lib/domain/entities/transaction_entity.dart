@@ -10,6 +10,7 @@ class TransactionEntity extends Equatable {
   final CategoryType categoryType;
   final TransactionType transactionType;
   final CategoryEntity category;
+  final String? groupId;
 
   const TransactionEntity({
     required this.id,
@@ -19,6 +20,7 @@ class TransactionEntity extends Equatable {
     required this.transactionType,
     required this.category,
     this.notes,
+    this.groupId,
   });
 
   @override
@@ -30,6 +32,7 @@ class TransactionEntity extends Equatable {
         categoryType,
         transactionType,
         category,
+        groupId,
       ];
 
   // Convert from domain entity to data model string representation
@@ -42,6 +45,7 @@ class TransactionEntity extends Equatable {
       'categoryType': categoryType.index,
       'transactionType': transactionType.index,
       'category': category.toModelString(),
+      'groupId': groupId,
     };
   }
 
@@ -55,6 +59,7 @@ class TransactionEntity extends Equatable {
       categoryType: CategoryType.values[map['categoryType']],
       transactionType: TransactionType.values[map['transactionType']],
       category: CategoryEntity.fromModelString(map['category']),
+      groupId: map['groupId'],
     );
   }
 }

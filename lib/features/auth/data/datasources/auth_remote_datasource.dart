@@ -1,6 +1,6 @@
-import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:money_track/core/error/failures.dart';
+import 'package:money_track/core/widgets/logger_service.dart';
 import 'package:money_track/features/auth/data/models/user_model.dart';
 
 /// Abstract class for authentication remote data source
@@ -54,6 +54,7 @@ abstract class AuthRemoteDataSource {
 /// Implementation of authentication remote data source using Firebase
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final FirebaseAuth firebaseAuth;
+  final LoggerService logger = LoggerService();
 
   AuthRemoteDataSourceImpl({required this.firebaseAuth});
 
@@ -69,15 +70,21 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       );
 
       if (credential.user == null) {
+        logger.e('Sign in failed: No user returned',
+            error: "Sign in with email and password exception");
         throw const AuthFailure(message: 'Sign in failed: No user returned');
       }
+      logger.t('User signed in: ${credential.user?.uid ?? 'null'}',
+          error: "Sign in successful");
 
       return UserModel.fromFirebaseUser(credential.user!);
     } on FirebaseAuthException catch (e) {
-      log(e.toString(), name: "Sign in with email and password exception");
+      logger.e(e.toString(),
+          error: "Sign in with email and password exception");
       throw AuthFailure(message: _getAuthErrorMessage(e.code));
     } catch (e) {
-      log(e.toString(), name: "Sign in with email and password exception");
+      logger.e(e.toString(),
+          error: "Sign in with email and password exception");
       throw AuthFailure(message: "Sign in failed: ${e.toString()}");
     }
   }
@@ -95,6 +102,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       );
 
       if (credential.user == null) {
+        logger.e('Sign up failed: No user returned',
+            error: "Sign up with email and password exception");
         throw const AuthFailure(message: 'Sign up failed: No user returned');
       }
 
@@ -103,13 +112,17 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         await credential.user!.updateDisplayName(displayName);
         await credential.user!.reload();
       }
+      logger.t('User signed up: ${credential.user?.uid ?? 'null'}',
+          error: "Sign up successful");
 
       return UserModel.fromFirebaseUser(credential.user!);
     } on FirebaseAuthException catch (e) {
-      log(e.toString(), name: "Sign up with email and password exception");
+      logger.e(e.toString(),
+          error: "Sign up with email and password exception");
       throw AuthFailure(message: _getAuthErrorMessage(e.code));
     } catch (e) {
-      log(e.toString(), name: "Sign up with email and password exception");
+      logger.e(e.toString(),
+          error: "Sign up with email and password exception");
       throw AuthFailure(message: "Sign up failed: ${e.toString()}");
     }
   }
@@ -118,8 +131,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<void> signOut() async {
     try {
       await firebaseAuth.signOut();
+      logger.t('User signed out', error: "Sign out successful");
     } catch (e) {
-      log(e.toString(), name: "Sign out exception");
+      logger.e(e.toString(), error: "Sign out exception");
       throw AuthFailure(message: "Sign out failed: ${e.toString()}");
     }
   }
@@ -128,23 +142,22 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<UserModel?> getCurrentUser() async {
     try {
       final user = firebaseAuth.currentUser;
-      log('Current Firebase user: ${user?.uid ?? 'null'}',
-          name: "AuthRemoteDataSource");
+      logger.t('Current user: ${user?.uid ?? 'null'}',
+          error: "Get current user successful");
 
       if (user == null) return null;
 
       // Reload to get the latest user data
       await user.reload();
       final refreshedUser = firebaseAuth.currentUser;
-
-      log('Refreshed Firebase user: ${refreshedUser?.uid ?? 'null'}',
-          name: "AuthRemoteDataSource");
+      logger.t('Refreshed user: ${refreshedUser?.uid ?? 'null'}',
+          error: "Get current user successful");
 
       return refreshedUser != null
           ? UserModel.fromFirebaseUser(refreshedUser)
           : null;
     } catch (e) {
-      log(e.toString(), name: "Get current user exception");
+      logger.e(e.toString(), error: "Get current user exception");
       throw AuthFailure(message: "Failed to get current user: ${e.toString()}");
     }
   }
@@ -152,9 +165,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<bool> isSignedIn() async {
     try {
+      logger.t('Checking if user is signed in',
+          error: "Is signed in successful");
+
       return firebaseAuth.currentUser != null;
     } catch (e) {
-      log(e.toString(), name: "Is signed in exception");
+      logger.en(e.toString(), name: "Is signed in exception");
+
       return false;
     }
   }
@@ -163,11 +180,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<void> sendPasswordResetEmail({required String email}) async {
     try {
       await firebaseAuth.sendPasswordResetEmail(email: email);
+      logger.t('Password reset email sent',
+          error: "Send password reset email successful");
     } on FirebaseAuthException catch (e) {
-      log(e.toString(), name: "Send password reset email exception");
+      logger.e(e.toString(), error: "Send password reset email exception");
       throw AuthFailure(message: _getAuthErrorMessage(e.code));
     } catch (e) {
-      log(e.toString(), name: "Send password reset email exception");
+      logger.e(e.toString(), error: "Send password reset email exception");
       throw AuthFailure(
           message: "Failed to send password reset email: ${e.toString()}");
     }
@@ -182,10 +201,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       }
       await user.sendEmailVerification();
     } on FirebaseAuthException catch (e) {
-      log(e.toString(), name: "Send email verification exception");
+      logger.en(e.toString(), name: "Send email verification exception");
       throw AuthFailure(message: _getAuthErrorMessage(e.code));
     } catch (e) {
-      log(e.toString(), name: "Send email verification exception");
+      logger.en(e.toString(), name: "Send email verification exception");
       throw AuthFailure(
           message: "Failed to send email verification: ${e.toString()}");
     }
@@ -196,6 +215,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     try {
       final user = firebaseAuth.currentUser;
       if (user == null) {
+        logger.e('No user is currently signed in',
+            error: "Reload user exception");
         throw const AuthFailure(message: 'No user is currently signed in');
       }
 
@@ -203,12 +224,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       final refreshedUser = firebaseAuth.currentUser;
 
       if (refreshedUser == null) {
+        logger.e('Failed to reload user data', error: "Reload user exception");
         throw const AuthFailure(message: 'Failed to reload user data');
       }
 
       return UserModel.fromFirebaseUser(refreshedUser);
     } catch (e) {
-      log(e.toString(), name: "Reload user exception");
+      logger.e(e.toString(), error: "Reload user exception");
       throw AuthFailure(message: "Failed to reload user: ${e.toString()}");
     }
   }
@@ -222,10 +244,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       }
       await user.delete();
     } on FirebaseAuthException catch (e) {
-      log(e.toString(), name: "Delete account exception");
+      logger.e(e.toString(), error: "Delete account exception");
       throw AuthFailure(message: _getAuthErrorMessage(e.code));
     } catch (e) {
-      log(e.toString(), name: "Delete account exception");
+      logger.e(e.toString(), error: "Delete account exception");
       throw AuthFailure(message: "Failed to delete account: ${e.toString()}");
     }
   }
@@ -258,10 +280,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
       return UserModel.fromFirebaseUser(refreshedUser);
     } on FirebaseAuthException catch (e) {
-      log(e.toString(), name: "Update profile exception");
+      logger.e(e.toString(), error: "Update profile exception");
       throw AuthFailure(message: _getAuthErrorMessage(e.code));
     } catch (e) {
-      log(e.toString(), name: "Update profile exception");
+      logger.e(e.toString(), error: "Update profile exception");
       throw AuthFailure(message: "Failed to update profile: ${e.toString()}");
     }
   }

@@ -4,11 +4,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:money_track/app/app.dart';
 import 'package:money_track/app/di/injection_container.dart';
+import 'package:money_track/core/constants/db_constants.dart';
 import 'package:money_track/data/models/category_model.dart';
 import 'package:money_track/features/budget/data/models/budget_model.dart';
+import 'package:money_track/features/groups/data/models/group_model.dart';
+import 'package:money_track/features/groups/data/models/split_details_model.dart';
 import 'package:money_track/features/profile/data/models/currency_model.dart';
 import 'package:money_track/firebase_options.dart';
 import 'package:money_track/hive_registrar.g.dart';
+import 'package:money_track/features/groups/data/models/split_type_adapter.dart';
 
 /// Main entry point for the application
 Future<void> main() async {
@@ -47,13 +51,18 @@ Future<void> main() async {
   // Initialize Hive database
   await Hive.initFlutter();
 
+  // Register custom adapters first
+  Hive.registerAdapter(SplitTypeAdapter());
+
   // Register all Hive adapters using the generated registrar
   Hive.registerAdapters();
 
   // Now open the boxes
-  await Hive.openBox<CategoryModel>('category-database');
-  await Hive.openBox<CurrencyModel>('currency-database');
-  await Hive.openBox<BudgetModel>('budget-database');
+  await Hive.openBox<CategoryModel>(DBConstants.categoryDbName);
+  await Hive.openBox<CurrencyModel>(DBConstants.currencyDbName);
+  await Hive.openBox<BudgetModel>(DBConstants.budgetDbName);
+  await Hive.openBox<GroupModel>(DBConstants.groupDbName);
+  await Hive.openBox<SplitDetailsModel>(DBConstants.splitDetailsDbName);
 
   // Initialize dependency injection
   await initializeDependencies();

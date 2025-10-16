@@ -16,6 +16,8 @@ class AddTransactionEvent extends TransactionEvent {
   final bool isExpense;
   final CategoryEntity categoryModel;
   final String? description;
+  final String? groupId;
+  final SplitDetails? splitDetails;
 
   const AddTransactionEvent({
     required this.amount,
@@ -24,6 +26,8 @@ class AddTransactionEvent extends TransactionEvent {
     required this.isExpense,
     required this.categoryModel,
     this.description,
+    this.groupId,
+    this.splitDetails,
   });
 
   @override
@@ -34,6 +38,8 @@ class AddTransactionEvent extends TransactionEvent {
         isExpense,
         categoryModel,
         description,
+        groupId,
+        splitDetails,
       ];
 }
 
@@ -45,6 +51,8 @@ class EditTransactionEvent extends TransactionEvent {
   final bool isExpense;
   final CategoryEntity categoryModel;
   final String? description;
+  final String? groupId;
+  final SplitDetails? splitDetails;
 
   const EditTransactionEvent({
     required this.id,
@@ -54,6 +62,8 @@ class EditTransactionEvent extends TransactionEvent {
     required this.isExpense,
     required this.categoryModel,
     this.description,
+    this.groupId,
+    this.splitDetails,
   });
 
   @override
@@ -65,6 +75,8 @@ class EditTransactionEvent extends TransactionEvent {
         isExpense,
         categoryModel,
         description,
+        groupId,
+        splitDetails,
       ];
 }
 

@@ -60,9 +60,6 @@ app.*.map.json
 **/prefab_config.json
 /android/app/.cxx
 
-# Firebase configuration files (contain sensitive data)
-**/google-services.json
-**/GoogleService-Info.plist
 
 
 # FVM Version Cache

@@ -1,8 +1,7 @@
-import 'dart:developer';
-
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:money_track/core/constants/db_constants.dart';
 import 'package:money_track/core/error/failures.dart';
+import 'package:money_track/core/widgets/logger_service.dart';
 import 'package:money_track/data/models/category_model.dart';
 
 abstract class CategoryLocalDataSource {
@@ -21,6 +20,7 @@ abstract class CategoryLocalDataSource {
 
 class CategoryLocalDataSourceImpl implements CategoryLocalDataSource {
   final HiveInterface hive;
+  final LoggerService logger = LoggerService();
 
   CategoryLocalDataSourceImpl({required this.hive});
 
@@ -31,7 +31,7 @@ class CategoryLocalDataSourceImpl implements CategoryLocalDataSource {
           await hive.openBox<CategoryModel>(DBConstants.categoryDbName);
       return categoryDB.values.toList().reversed.toList();
     } catch (e) {
-      log(e.toString(), name: "Get all category Model Exception");
+      logger.en(e.toString(), name: "Get all category Model Exception");
       throw DatabaseFailure(
           message: "Failed to get categories: ${e.toString()}");
     }
@@ -45,7 +45,7 @@ class CategoryLocalDataSourceImpl implements CategoryLocalDataSource {
       await categoryDB.add(category);
       return "success";
     } catch (e) {
-      log(e.toString(), name: "Add Category Exception");
+      logger.en(e.toString(), name: "Add Category Exception");
       throw DatabaseFailure(message: "Failed to add category: ${e.toString()}");
     }
   }
@@ -57,7 +57,7 @@ class CategoryLocalDataSourceImpl implements CategoryLocalDataSource {
           await hive.openBox<CategoryModel>(DBConstants.categoryDbName);
       await categoryDB.delete(categoryId);
     } catch (e) {
-      log(e.toString(), name: "Category delete Exception");
+      logger.en(e.toString(), name: "Category delete Exception");
       throw DatabaseFailure(
           message: "Failed to delete category: ${e.toString()}");
     }
@@ -70,13 +70,14 @@ class CategoryLocalDataSourceImpl implements CategoryLocalDataSource {
           await hive.openBox<CategoryModel>(DBConstants.categoryDbName);
       if (categoryDB.values.toList().isEmpty) {
         for (var category in _categoryConstants) {
-          log("category type $category adding",
-              name: "Inside for loop of set Constants");
+          logger.t("category type $category adding",
+              error: "Inside for loop of set Constants");
           await categoryDB.put(category.id, category);
         }
       }
     } catch (e) {
-      log(e.toString(), name: "Exception while registering the categories");
+      logger.en(e.toString(),
+          name: "Exception while registering the categories");
       throw DatabaseFailure(
           message: "Failed to set default categories: ${e.toString()}");
     }

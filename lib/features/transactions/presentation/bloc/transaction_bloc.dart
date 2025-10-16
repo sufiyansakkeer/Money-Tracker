@@ -6,6 +6,8 @@ import 'package:money_track/domain/usecases/transaction/add_transaction_usecase.
 import 'package:money_track/domain/usecases/transaction/delete_transaction_usecase.dart';
 import 'package:money_track/domain/usecases/transaction/edit_transaction_usecase.dart';
 import 'package:money_track/domain/usecases/transaction/get_all_transactions_usecase.dart';
+import 'package:money_track/features/groups/domain/entities/split_details.dart';
+import 'package:money_track/features/groups/domain/usecases/add_split_details.dart';
 import 'package:money_track/features/transactions/domain/entities/filter_data.dart';
 
 part 'transaction_event.dart';
@@ -16,6 +18,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
   final AddTransactionUseCase addTransactionUseCase;
   final EditTransactionUseCase editTransactionUseCase;
   final DeleteTransactionUseCase deleteTransactionUseCase;
+  final AddSplitDetails addSplitDetails;
   List<TransactionEntity> _allTransactions = [];
 
   TransactionBloc({
@@ -23,6 +26,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     required this.addTransactionUseCase,
     required this.editTransactionUseCase,
     required this.deleteTransactionUseCase,
+    required this.addSplitDetails,
   }) : super(TransactionInitial()) {
     on<GetAllTransactionsEvent>((event, emit) async {
       emit(TransactionLoading());
@@ -42,9 +46,10 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     on<AddTransactionEvent>((event, emit) async {
       try {
         double amount = double.tryParse(event.amount) ?? 0;
+        final transactionId = DateTime.now().microsecondsSinceEpoch.toString();
 
         final transaction = TransactionEntity(
-          id: DateTime.now().microsecondsSinceEpoch.toString(),
+          id: transactionId,
           amount: amount,
           date: event.date,
           categoryType: event.categoryType,
@@ -53,12 +58,29 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
               : TransactionType.income,
           category: event.categoryModel,
           notes: event.description,
+          groupId: event.groupId,
         );
 
         final result = await addTransactionUseCase(params: transaction);
 
         result.fold(
-          (success) {
+          (success) async {
+            // Add split details after successful transaction creation
+            if (event.splitDetails != null) {
+              final splitDetailsWithTransactionId =
+                  event.splitDetails!.copyWith(
+                transactionId: transactionId,
+              );
+              try {
+                await addSplitDetails.call(
+                    params: splitDetailsWithTransactionId);
+              } catch (e) {
+                emit(TransactionError(
+                    message:
+                        "Transaction created but split details failed: ${e.toString()}"));
+                return;
+              }
+            }
             add(GetAllTransactionsEvent());
           },
           (error) {
@@ -183,13 +205,30 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
               : TransactionType.income,
           category: event.categoryModel,
           notes: event.description,
+          groupId: event.groupId,
         );
 
         final result = await editTransactionUseCase(
             params: transaction); // Use edit use case
 
         result.fold(
-          (success) {
+          (success) async {
+            // Update split details after successful transaction edit
+            if (event.splitDetails != null) {
+              final splitDetailsWithTransactionId =
+                  event.splitDetails!.copyWith(
+                transactionId: event.id,
+              );
+              try {
+                await addSplitDetails.call(
+                    params: splitDetailsWithTransactionId);
+              } catch (e) {
+                emit(TransactionError(
+                    message:
+                        "Transaction updated but split details failed: ${e.toString()}"));
+                return;
+              }
+            }
             add(GetAllTransactionsEvent()); // Refresh list on success
           },
           (error) {

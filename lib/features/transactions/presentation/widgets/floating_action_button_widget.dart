@@ -2,18 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:money_track/core/constants/colors.dart';
 import 'package:money_track/core/utils/navigation_extension.dart';
 import 'package:money_track/features/transactions/presentation/pages/add_transaction/transaction_page.dart';
+import 'package:money_track/features/transactions/presentation/pages/split_expense_page.dart';
 import 'package:svg_flutter/svg.dart';
 
 class FloatingActionButtonWidget extends StatelessWidget {
   final bool isExpanded;
   final Animation<Offset> firstIconAnimation;
   final Animation<Offset> secondIconAnimation;
+  final Animation<Offset> thirdIconAnimation;
   final VoidCallback toggleIcons;
 
   const FloatingActionButtonWidget({
     required this.isExpanded,
     required this.firstIconAnimation,
     required this.secondIconAnimation,
+    required this.thirdIconAnimation,
     required this.toggleIcons,
     super.key,
   });
@@ -136,6 +139,60 @@ class FloatingActionButtonWidget extends StatelessWidget {
                             const SizedBox(width: 8),
                             const Text(
                               "Income",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
+            // Split Expense button
+            Positioned(
+              bottom: 290, // Increased to position above the income button
+              right: 5,
+              child: SlideTransition(
+                position: thirdIconAnimation,
+                child: Visibility(
+                  visible: isExpanded,
+                  maintainState: true,
+                  maintainAnimation: true,
+                  maintainSize: false,
+                  child: Material(
+                    color: themeColor,
+                    elevation: 4,
+                    shadowColor: themeColor.withValues(alpha: 0.3),
+                    borderRadius: BorderRadius.circular(50),
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(50),
+                      splashColor: Colors.white.withValues(alpha: 0.2),
+                      highlightColor: Colors.white.withValues(alpha: 0.1),
+                      onTap: () {
+                        toggleIcons();
+                        context.pushWithDownToUpTransition(
+                          const SplitExpensePage(),
+                        );
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 10),
+                        child: const Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.splitscreen,
+                              color: Colors.white,
+                            ),
+                            SizedBox(width: 8),
+                            Text(
+                              "Split Expense",
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,

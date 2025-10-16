@@ -3,7 +3,7 @@ import 'dart:developer' show log;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_track/core/constants/colors.dart';
-import 'package:money_track/core/utils/date_time_extension.dart';
+
 import 'package:money_track/core/utils/navigation_extension.dart';
 import 'package:money_track/core/utils/sized_box_extension.dart';
 import 'package:money_track/core/widgets/custom_app_bar.dart';
@@ -127,14 +127,7 @@ class _TransactionListPageState extends State<TransactionListPage> {
                               itemBuilder: (_, index) {
                                 var item = state.transactionList[index];
                                 return TransactionTile(
-                                  categoryType: item.categoryType,
-                                  categoryName: item.category.categoryName,
-                                  time: item.date.isToday()
-                                      ? item.date.to12HourFormat()
-                                      : item.date.toDayMonthYearFormat(),
-                                  description: item.notes ?? "",
-                                  amount: item.amount,
-                                  type: item.transactionType,
+                                  transaction: item,
                                   onLongPress: () {
                                     showModalBottomSheet(
                                       showDragHandle: true,
