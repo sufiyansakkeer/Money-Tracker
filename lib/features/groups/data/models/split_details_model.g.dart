@@ -21,13 +21,19 @@ class SplitDetailsModelAdapter extends TypeAdapter<SplitDetailsModel> {
       payerMemberId: fields[1] as String,
       splitType: fields[2] as domain.SplitType,
       splitData: (fields[3] as Map).cast<String, double>(),
+      sharesData: (fields[4] as Map?)?.cast<String, double>(),
+      notes: fields[5] as String?,
+      createdAt: fields[6] as DateTime?,
+      updatedAt: fields[7] as DateTime?,
+      createdBy: fields[8] as String?,
+      metadata: (fields[9] as Map?)?.cast<String, dynamic>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, SplitDetailsModel obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.transactionId)
       ..writeByte(1)
@@ -35,7 +41,19 @@ class SplitDetailsModelAdapter extends TypeAdapter<SplitDetailsModel> {
       ..writeByte(2)
       ..write(obj.splitType)
       ..writeByte(3)
-      ..write(obj.splitData);
+      ..write(obj.splitData)
+      ..writeByte(4)
+      ..write(obj.sharesData)
+      ..writeByte(5)
+      ..write(obj.notes)
+      ..writeByte(6)
+      ..write(obj.createdAt)
+      ..writeByte(7)
+      ..write(obj.updatedAt)
+      ..writeByte(8)
+      ..write(obj.createdBy)
+      ..writeByte(9)
+      ..write(obj.metadata);
   }
 
   @override

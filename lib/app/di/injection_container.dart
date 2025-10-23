@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_ce/hive.dart';
@@ -36,12 +37,25 @@ import 'package:money_track/features/budget/domain/usecases/get_all_budgets_usec
 import 'package:money_track/features/budget/domain/usecases/get_budgets_by_category_usecase.dart';
 import 'package:money_track/features/budget/presentation/bloc/budget_bloc.dart';
 import 'package:money_track/features/categories/presentation/bloc/category_bloc.dart';
+import 'package:money_track/features/contact/bloc/contact_bloc.dart';
+import 'package:money_track/features/contact/data/datasources/contact_remote_datasource.dart';
+import 'package:money_track/features/contact/data/repositories/contact_repository_impl.dart';
+import 'package:money_track/features/contact/domain/repositories/contact_repository.dart';
 import 'package:money_track/features/groups/data/datasources/group_local_data_source.dart';
 import 'package:money_track/features/groups/data/datasources/split_details_local_data_source.dart';
+import 'package:money_track/features/groups/data/datasources/shared_expense_local_data_source.dart';
+import 'package:money_track/features/groups/data/datasources/settlement_local_data_source.dart';
+import 'package:money_track/features/groups/data/datasources/group_activity_local_data_source.dart';
 import 'package:money_track/features/groups/data/repositories/group_repository_impl.dart';
 import 'package:money_track/features/groups/data/repositories/split_details_repository_impl.dart';
+import 'package:money_track/features/groups/data/repositories/shared_expense_repository_impl.dart';
+import 'package:money_track/features/groups/data/repositories/settlement_repository_impl.dart';
+import 'package:money_track/features/groups/data/repositories/group_activity_repository_impl.dart';
 import 'package:money_track/features/groups/domain/repositories/group_repository.dart';
 import 'package:money_track/features/groups/domain/repositories/split_details_repository.dart';
+import 'package:money_track/features/groups/domain/repositories/shared_expense_repository.dart';
+import 'package:money_track/features/groups/domain/repositories/settlement_repository.dart';
+import 'package:money_track/features/groups/domain/repositories/group_activity_repository.dart';
 import 'package:money_track/features/groups/domain/usecases/add_split_details.dart';
 import 'package:money_track/features/groups/domain/usecases/create_group.dart';
 import 'package:money_track/features/groups/domain/usecases/delete_group.dart'
@@ -50,7 +64,21 @@ import 'package:money_track/features/groups/domain/usecases/get_groups.dart';
 import 'package:money_track/features/groups/domain/usecases/get_group_by_id.dart';
 import 'package:money_track/features/groups/domain/usecases/update_group.dart'
     as update_group_usecase;
+import 'package:money_track/features/groups/domain/usecases/shared_expense/add_shared_expense_usecase.dart';
+import 'package:money_track/features/groups/domain/usecases/shared_expense/get_group_shared_expenses_usecase.dart';
+import 'package:money_track/features/groups/domain/usecases/shared_expense/delete_shared_expense_usecase.dart';
+import 'package:money_track/features/groups/domain/usecases/shared_expense/get_shared_expense_by_id_usecase.dart';
+import 'package:money_track/features/groups/domain/usecases/settlement/delete_settlement_usecase.dart';
+import 'package:money_track/features/groups/domain/usecases/settlement/update_settlement_usecase.dart';
+import 'package:money_track/features/groups/domain/usecases/settlement/add_settlement_usecase.dart';
+import 'package:money_track/features/groups/domain/usecases/balance/calculate_group_balance_usecase.dart';
+import 'package:money_track/features/groups/domain/usecases/activity/get_group_activities_usecase.dart';
+import 'package:money_track/features/groups/domain/usecases/settlement/get_group_settlements_usecase.dart'
+    as settlement_usecase;
+import 'package:money_track/features/groups/domain/services/balance_service.dart';
+import 'package:money_track/features/groups/domain/services/balance_update_service.dart';
 import 'package:money_track/features/groups/presentation/bloc/group_bloc.dart';
+import 'package:money_track/features/groups/presentation/cubit/group_details_cubit.dart';
 import 'package:money_track/features/navigation/presentation/bloc/bottom_navigation_bloc.dart';
 import 'package:money_track/features/profile/data/datasources/currency_local_datasource.dart';
 import 'package:money_track/features/profile/data/datasources/theme_local_datasource.dart';
@@ -72,10 +100,12 @@ import 'package:money_track/features/profile/presentation/bloc/currency/currency
 import 'package:money_track/features/profile/presentation/bloc/theme/theme_cubit.dart';
 import 'package:money_track/features/transactions/presentation/bloc/total_transaction/total_transaction_cubit.dart';
 import 'package:money_track/features/transactions/presentation/bloc/transaction_bloc.dart';
-import 'package:money_track/features/contact/bloc/contact_bloc.dart';
 import 'package:money_track/features/groups/bloc/groups_bloc.dart';
 import 'package:money_track/features/groups/data/models/group_model.dart';
 import 'package:money_track/features/groups/data/models/split_details_model.dart';
+import 'package:money_track/features/groups/data/models/shared_expense_model.dart';
+import 'package:money_track/features/groups/data/models/settlement_model.dart';
+import 'package:money_track/features/groups/data/models/group_activity_model.dart';
 import 'package:money_track/core/constants/db_constants.dart';
 import 'package:money_track/core/services/contact_service.dart';
 
@@ -104,9 +134,21 @@ Future<void> _initExternalDependencies() async {
   sl.registerLazySingleton<Box<SplitDetailsModel>>(
     () => Hive.box<SplitDetailsModel>(DBConstants.splitDetailsDbName),
   );
+  sl.registerLazySingleton<Box<SharedExpenseModel>>(
+    () => Hive.box<SharedExpenseModel>(DBConstants.sharedExpenseDbName),
+  );
+  sl.registerLazySingleton<Box<SettlementModel>>(
+    () => Hive.box<SettlementModel>(DBConstants.settlementDbName),
+  );
+  sl.registerLazySingleton<Box<GroupActivityModel>>(
+    () => Hive.box<GroupActivityModel>(DBConstants.groupActivityDbName),
+  );
 
   // Register Firebase Auth
   sl.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
+
+  // Register Firestore
+  sl.registerLazySingleton<FirebaseFirestore>(() => FirebaseFirestore.instance);
 
   // Register Flutter Local Notifications
   // sl.registerLazySingleton<FlutterLocalNotificationsPlugin>(
@@ -122,6 +164,15 @@ void _initDataSources() {
   );
   sl.registerLazySingleton<SplitDetailsLocalDataSource>(
     () => SplitDetailsLocalDataSourceImpl(sl(), sl<HiveInterface>()),
+  );
+  sl.registerLazySingleton<SharedExpenseLocalDataSource>(
+    () => SharedExpenseLocalDataSourceImpl(sl()),
+  );
+  sl.registerLazySingleton<SettlementLocalDataSource>(
+    () => SettlementLocalDataSourceImpl(sl()),
+  );
+  sl.registerLazySingleton<GroupActivityLocalDataSource>(
+    () => GroupActivityLocalDataSourceImpl(sl()),
   );
 
   // Category data source
@@ -153,6 +204,11 @@ void _initDataSources() {
   sl.registerLazySingleton<AuthRemoteDataSource>(
     () => AuthRemoteDataSourceImpl(firebaseAuth: sl()),
   );
+
+  // Contact remote data source
+  sl.registerLazySingleton<ContactRemoteDataSource>(
+    () => ContactRemoteDataSourceImpl(firestore: sl()),
+  );
 }
 
 /// Initialize repositories
@@ -163,6 +219,15 @@ void _initRepositories() {
   );
   sl.registerLazySingleton<SplitDetailsRepository>(
     () => SplitDetailsRepositoryImpl(localDataSource: sl()),
+  );
+  sl.registerLazySingleton<SharedExpenseRepository>(
+    () => SharedExpenseRepositoryImpl(localDataSource: sl()),
+  );
+  sl.registerLazySingleton<SettlementRepository>(
+    () => SettlementRepositoryImpl(localDataSource: sl()),
+  );
+  sl.registerLazySingleton<GroupActivityRepository>(
+    () => GroupActivityRepositoryImpl(localDataSource: sl()),
   );
 
   // Category repository
@@ -194,6 +259,14 @@ void _initRepositories() {
   sl.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(remoteDataSource: sl()),
   );
+
+  // Contact repository
+  sl.registerLazySingleton<ContactRepository>(
+    () => ContactRepositoryImpl(
+      contactService: sl(),
+      remoteDataSource: sl(),
+    ),
+  );
 }
 
 /// Initialize use cases
@@ -205,6 +278,45 @@ void _initUseCases() {
   sl.registerLazySingleton(() => GetGroupById(sl()));
   sl.registerLazySingleton(() => update_group_usecase.UpdateGroup(sl()));
   sl.registerLazySingleton(() => AddSplitDetails(sl()));
+
+  // Shared expense use cases
+  sl.registerLazySingleton(() => AddSharedExpenseUseCase(
+        sharedExpenseRepository: sl(),
+        activityRepository: sl(),
+      ));
+  sl.registerLazySingleton(
+      () => GetGroupSharedExpensesUseCase(repository: sl()));
+  sl.registerLazySingleton(() => DeleteSharedExpenseUseCase(
+        sharedExpenseRepository: sl(),
+        activityRepository: sl(),
+      ));
+  sl.registerLazySingleton(() => GetSharedExpenseByIdUseCase(repository: sl()));
+
+  // Settlement use cases
+  sl.registerLazySingleton(() => AddSettlementUseCase(
+        settlementRepository: sl(),
+        activityRepository: sl(),
+      ));
+  sl.registerLazySingleton(
+      () => settlement_usecase.GetGroupSettlementsUseCase(repository: sl()));
+  sl.registerLazySingleton(() => DeleteSettlementUseCase(
+        settlementRepository: sl(),
+        activityRepository: sl(),
+      ));
+  sl.registerLazySingleton(() => UpdateSettlementUseCase(
+        settlementRepository: sl(),
+        activityRepository: sl(),
+      ));
+
+  // Balance use cases
+  sl.registerLazySingleton(() => CalculateGroupBalanceUseCase(
+        sharedExpenseRepository: sl(),
+        settlementRepository: sl(),
+        groupRepository: sl(),
+      ));
+
+  // Activity use cases
+  sl.registerLazySingleton(() => GetGroupActivitiesUseCase(repository: sl()));
 
   // Category use cases
   sl.registerLazySingleton(() => GetAllCategoriesUseCase(sl()));
@@ -255,6 +367,17 @@ void _initServices() {
 
   // Contact service
   sl.registerLazySingleton<ContactService>(() => ContactService());
+
+  // Balance services
+  sl.registerLazySingleton<BalanceService>(() => BalanceService(
+        calculateGroupBalanceUseCase: sl(),
+        addSettlementUseCase: sl(),
+        settlementRepository: sl(),
+      ));
+  sl.registerLazySingleton<BalanceUpdateService>(() => BalanceUpdateService(
+        balanceService: sl(),
+      ));
+
   // // Budget notification service
   // sl.registerLazySingleton<BudgetNotificationService>(
   //   () => BudgetNotificationService(sl()),
@@ -271,6 +394,19 @@ void _initBlocs() {
       deleteGroup: sl(),
       getGroupById: sl(),
       updateGroup: sl(),
+    ),
+  );
+
+  // Group Details Cubit
+  sl.registerFactory(
+    () => GroupDetailsCubit(
+      getGroupSharedExpensesUseCase: sl(),
+      getGroupActivitiesUseCase: sl(),
+      calculateGroupBalanceUseCase: sl(),
+      getGroupSettlementsUseCase: sl(),
+      deleteSharedExpenseUseCase: sl(),
+      deleteSettlementUseCase: sl(),
+      getCurrentUserUseCase: sl(),
     ),
   );
 
@@ -354,7 +490,7 @@ void _initBlocs() {
 
   // Contact BLoC
   sl.registerFactory(
-    () => ContactBloc(sl()),
+    () => ContactBloc(sl(), sl()),
   );
 
   // Groups BLoC

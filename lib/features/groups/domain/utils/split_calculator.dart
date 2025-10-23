@@ -86,6 +86,30 @@ class SplitCalculator {
     return (totalPercentage - 100.0).abs() < 0.01;
   }
 
+  /// Calculate share-based split
+  static Map<String, double> calculateSharesSplit(
+    double totalAmount,
+    Map<String, double> shares,
+  ) {
+    if (shares.isEmpty) {
+      throw ArgumentError('Cannot split expense with no shares');
+    }
+    if (totalAmount <= 0) {
+      throw ArgumentError('Total amount must be greater than zero');
+    }
+
+    final double totalShares =
+        shares.values.fold(0.0, (sum, share) => sum + share);
+    if (totalShares <= 0) {
+      throw ArgumentError('Total shares must be greater than zero');
+    }
+
+    return shares.map((memberId, share) {
+      final amount = (totalAmount * share) / totalShares;
+      return MapEntry(memberId, amount);
+    });
+  }
+
   /// Create SplitDetails from calculation
   static SplitDetails createSplitDetails({
     required String transactionId,
@@ -95,6 +119,7 @@ class SplitCalculator {
     required List<String> memberIds,
     Map<String, double>? customAmounts,
     Map<String, double>? percentages,
+    Map<String, double>? shares,
   }) {
     Map<String, double> splitData;
 
@@ -120,6 +145,18 @@ class SplitCalculator {
         }
         splitData = calculatePercentageSplit(totalAmount, percentages);
         break;
+      case SplitType.shares:
+        if (shares == null) {
+          throw ArgumentError('Shares required for share-based split');
+        }
+        splitData = calculateSharesSplit(totalAmount, shares);
+        break;
+      case SplitType.adjustment:
+        if (customAmounts == null) {
+          throw ArgumentError('Custom amounts required for adjustment split');
+        }
+        splitData = calculateCustomSplit(customAmounts);
+        break;
     }
 
     return SplitDetails(
@@ -127,6 +164,8 @@ class SplitCalculator {
       payerMemberId: payerMemberId,
       splitType: splitType,
       splitData: splitData,
+      sharesData: shares,
+      createdAt: DateTime.now(),
     );
   }
 }

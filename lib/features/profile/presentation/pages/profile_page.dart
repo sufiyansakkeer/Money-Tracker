@@ -15,6 +15,7 @@ import 'package:money_track/features/budget/presentation/pages/budget_page.dart'
 import 'package:money_track/features/profile/presentation/pages/about_page.dart';
 import 'package:money_track/features/profile/presentation/pages/analyze_page.dart';
 import 'package:money_track/features/profile/presentation/pages/currency_page.dart';
+import 'package:money_track/features/profile/presentation/pages/profile_settings_page.dart';
 import 'package:money_track/features/profile/presentation/pages/theme_page.dart';
 import 'package:money_track/features/profile/presentation/widgets/reset_drop_down.dart';
 import 'package:money_track/features/profile/presentation/widgets/profile_tile.dart';
@@ -77,6 +78,13 @@ class _ProfilePageState extends State<ProfilePage> {
 
   List<ProfileModel> _getProfileItems() {
     return [
+      // ProfileModel(
+      //   title: "Profile Settings",
+      //   subtitle: "Edit your profile information",
+      //   navigationScreen: const ProfileSettingsPage(),
+      //   tag: "ProfileSettings",
+      //   icon: Icons.person_outline,
+      // ),
       ProfileModel(
         title: "Analyze",
         subtitle: "",
@@ -166,91 +174,114 @@ class _ProfilePageState extends State<ProfilePage> {
             BlocBuilder<AuthBloc, AuthState>(
               builder: (context, state) {
                 if (state is AuthAuthenticated) {
-                  return Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 16),
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: ColorConstants.getThemeColor(context)
-                          .withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
+                  return InkWell(
+                    onTap: () {
+                      context.pushWithLeftToRightWithFadeTransition(
+                          ProfileSettingsPage());
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 16),
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
                         color: ColorConstants.getThemeColor(context)
-                            .withValues(alpha: 0.2),
-                      ),
-                    ),
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 30,
-                          backgroundColor:
-                              ColorConstants.getThemeColor(context),
-                          child: state.user.photoUrl != null
-                              ? ClipOval(
-                                  child: Image.network(
-                                    state.user.photoUrl!,
-                                    width: 60,
-                                    height: 60,
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return Icon(
-                                        Icons.person,
-                                        size: 30,
-                                        color: Colors.white,
-                                      );
-                                    },
-                                  ),
-                                )
-                              : const Icon(
-                                  Icons.person,
-                                  size: 30,
-                                  color: Colors.white,
-                                ),
+                            .withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: ColorConstants.getThemeColor(context)
+                              .withValues(alpha: 0.2),
                         ),
-                        16.width(),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                state.user.displayName ?? 'User',
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
+                      ),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 30,
+                            backgroundColor:
+                                ColorConstants.getThemeColor(context),
+                            child: state.user.photoUrl != null
+                                ? ClipOval(
+                                    child: Image.network(
+                                      state.user.photoUrl!,
+                                      width: 60,
+                                      height: 60,
+                                      fit: BoxFit.cover,
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                        return Icon(
+                                          Icons.person,
+                                          size: 30,
+                                          color: Colors.white,
+                                        );
+                                      },
+                                    ),
+                                  )
+                                : const Icon(
+                                    Icons.person,
+                                    size: 30,
+                                    color: Colors.white,
+                                  ),
+                          ),
+                          16.width(),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  state.user.username ??
+                                      state.user.displayName ??
+                                      'User',
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                              4.height(),
-                              Text(
-                                state.user.email,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: ColorConstants.getTextColor(context)
-                                      .withValues(alpha: 0.7),
-                                ),
-                              ),
-                              if (!state.user.isEmailVerified) ...[
                                 4.height(),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                    vertical: 2,
+                                Text(
+                                  state.user.email,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: ColorConstants.getTextColor(context)
+                                        .withValues(alpha: 0.7),
                                   ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.orange.withValues(alpha: 0.2),
-                                    borderRadius: BorderRadius.circular(4),
-                                  ),
-                                  child: const Text(
-                                    'Email not verified',
+                                ),
+                                if (state.user.username != null &&
+                                    state.user.displayName != null) ...[
+                                  4.height(),
+                                  Text(
+                                    state.user.displayName!,
                                     style: TextStyle(
                                       fontSize: 12,
-                                      color: Colors.orange,
+                                      color:
+                                          ColorConstants.getTextColor(context)
+                                              .withValues(alpha: 0.5),
                                     ),
                                   ),
-                                ),
+                                ],
+                                if (!state.user.isEmailVerified) ...[
+                                  4.height(),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 2,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color:
+                                          Colors.orange.withValues(alpha: 0.2),
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                    child: const Text(
+                                      'Email not verified',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.orange,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ],
-                            ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   );
                 }

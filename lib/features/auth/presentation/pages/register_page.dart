@@ -19,18 +19,22 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
+  final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  final _phoneController = TextEditingController();
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
 
   @override
   void dispose() {
     _nameController.dispose();
+    _usernameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
+    _phoneController.dispose();
     super.dispose();
   }
 
@@ -46,6 +50,10 @@ class _RegisterPageState extends State<RegisterPage> {
               displayName: _nameController.text.trim().isNotEmpty
                   ? _nameController.text.trim()
                   : null,
+              username: _usernameController.text.trim().isNotEmpty
+                  ? _usernameController.text.trim()
+                  : null,
+              phone: _phoneController.text.trim(),
             ),
           );
     }
@@ -137,6 +145,53 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       16.height(),
 
+                      // Username field
+                      Text(
+                        "Username",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                          color: ColorConstants.getTextColor(context)
+                              .withValues(alpha: 0.6),
+                        ),
+                      ),
+                      8.height(),
+                      TextFormField(
+                        controller: _usernameController,
+                        keyboardType: TextInputType.text,
+                        autofillHints: const [AutofillHints.username],
+                        decoration: InputDecoration(
+                          hintText: "Enter your username",
+                          prefixIcon: const Icon(Icons.alternate_email),
+                          border: StyleConstants.textFormFieldBorder(),
+                          enabledBorder: StyleConstants.textFormFieldBorder(),
+                          focusedBorder:
+                              StyleConstants.textFormFieldBorder().copyWith(
+                            borderSide: BorderSide(
+                              color: ColorConstants.getThemeColor(context),
+                              width: 2,
+                            ),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a username';
+                          }
+                          if (value.length < 3) {
+                            return 'Username must be at least 3 characters';
+                          }
+                          if (value.length > 20) {
+                            return 'Username must be less than 20 characters';
+                          }
+                          // Allow letters, numbers, underscores, and dots
+                          if (!RegExp(r'^[a-zA-Z0-9._]+$').hasMatch(value)) {
+                            return 'Username can only contain letters, numbers, dots, and underscores';
+                          }
+                          return null;
+                        },
+                      ),
+                      16.height(),
+
                       // Email field
                       Text(
                         "Email",
@@ -172,6 +227,48 @@ class _RegisterPageState extends State<RegisterPage> {
                           if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
                               .hasMatch(value)) {
                             return 'Please enter a valid email';
+                          }
+                          return null;
+                        },
+                      ),
+                      16.height(),
+
+                      // Phone field
+                      Text(
+                        "Phone Number",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                          color: ColorConstants.getTextColor(context)
+                              .withValues(alpha: 0.6),
+                        ),
+                      ),
+                      8.height(),
+                      TextFormField(
+                        controller: _phoneController,
+                        keyboardType: TextInputType.phone,
+                        autofillHints: const [AutofillHints.telephoneNumber],
+                        decoration: InputDecoration(
+                          hintText: "Enter your phone number",
+                          prefixIcon: const Icon(Icons.phone_outlined),
+                          border: StyleConstants.textFormFieldBorder(),
+                          enabledBorder: StyleConstants.textFormFieldBorder(),
+                          focusedBorder:
+                              StyleConstants.textFormFieldBorder().copyWith(
+                            borderSide: BorderSide(
+                              color: ColorConstants.getThemeColor(context),
+                              width: 2,
+                            ),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your phone number';
+                          }
+                          // Basic phone validation - adjust regex as needed
+                          if (!RegExp(r'^\+?[\d\s\-\(\)]{10,}$')
+                              .hasMatch(value)) {
+                            return 'Please enter a valid phone number';
                           }
                           return null;
                         },

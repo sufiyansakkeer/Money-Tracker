@@ -60,6 +60,12 @@ app.*.map.json
 **/prefab_config.json
 /android/app/.cxx
 
+# Firebase native configuration files (contain sensitive data)
+# Keep native Firebase config files ignored, but do NOT ignore the
+# generated Dart `lib/firebase_options.dart` which is required at
+# compile time by CI and fresh clones.
+/android/**/google-services.json
+/ios/**/GoogleService-Info.plist
 
 
 # FVM Version Cache

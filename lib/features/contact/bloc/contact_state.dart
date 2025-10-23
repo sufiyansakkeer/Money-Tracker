@@ -4,7 +4,7 @@ abstract class ContactState extends Equatable {
   const ContactState();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class ContactInitial extends ContactState {}
@@ -17,7 +17,16 @@ class ContactLoaded extends ContactState {
   const ContactLoaded(this.contacts);
 
   @override
-  List<Object> get props => [contacts];
+  List<Object?> get props => [contacts];
+}
+
+class ContactWithMatchingLoaded extends ContactState {
+  final List<dynamic> contactMatches;
+
+  const ContactWithMatchingLoaded(this.contactMatches);
+
+  @override
+  List<Object?> get props => [contactMatches];
 }
 
 class ContactError extends ContactState {
@@ -26,5 +35,5 @@ class ContactError extends ContactState {
   const ContactError(this.message);
 
   @override
-  List<Object> get props => [message];
+  List<Object?> get props => [message];
 }

@@ -8,11 +8,15 @@ class SignUpParams {
   final String email;
   final String password;
   final String? displayName;
+  final String? username;
+  final String? phone;
 
   const SignUpParams({
     required this.email,
     required this.password,
     this.displayName,
+    this.username,
+    this.phone,
   });
 }
 
@@ -31,6 +35,8 @@ class SignUpUseCase implements UseCase<Result<UserEntity>, SignUpParams> {
       email: params.email,
       password: params.password,
       displayName: params.displayName,
+      username: params.username,
+      phone: params.phone,
     );
   }
 }

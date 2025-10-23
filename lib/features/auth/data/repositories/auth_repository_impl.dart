@@ -39,12 +39,16 @@ class AuthRepositoryImpl implements AuthRepository {
     required String email,
     required String password,
     String? displayName,
+    String? username,
+    String? phone,
   }) async {
     try {
       final userModel = await remoteDataSource.signUpWithEmailAndPassword(
         email: email,
         password: password,
         displayName: displayName,
+        username: username,
+        phone: phone,
       );
       return Success(userModel.toEntity());
     } catch (e) {
@@ -157,11 +161,13 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Result<UserEntity>> updateProfile({
     String? displayName,
+    String? username,
     String? photoUrl,
   }) async {
     try {
       final userModel = await remoteDataSource.updateProfile(
         displayName: displayName,
+        username: username,
         photoUrl: photoUrl,
       );
       return Success(userModel.toEntity());

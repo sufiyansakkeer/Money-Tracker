@@ -7,10 +7,12 @@ class UserModel extends UserEntity {
     required super.uid,
     required super.email,
     super.displayName,
+    super.username,
     super.photoUrl,
     super.isEmailVerified,
     super.createdAt,
     super.lastSignInAt,
+    super.phone,
   });
 
   /// Create UserModel from Firebase User
@@ -32,10 +34,12 @@ class UserModel extends UserEntity {
       uid: entity.uid,
       email: entity.email,
       displayName: entity.displayName,
+      username: entity.username,
       photoUrl: entity.photoUrl,
       isEmailVerified: entity.isEmailVerified,
       createdAt: entity.createdAt,
       lastSignInAt: entity.lastSignInAt,
+      phone: entity.phone,
     );
   }
 
@@ -45,10 +49,12 @@ class UserModel extends UserEntity {
       uid: uid,
       email: email,
       displayName: displayName,
+      username: username,
       photoUrl: photoUrl,
       isEmailVerified: isEmailVerified,
       createdAt: createdAt,
       lastSignInAt: lastSignInAt,
+      phone: phone,
     );
   }
 
@@ -58,6 +64,7 @@ class UserModel extends UserEntity {
       uid: json['uid'] ?? '',
       email: json['email'] ?? '',
       displayName: json['displayName'],
+      username: json['username'],
       photoUrl: json['photoUrl'],
       isEmailVerified: json['isEmailVerified'] ?? false,
       createdAt:
@@ -65,6 +72,7 @@ class UserModel extends UserEntity {
       lastSignInAt: json['lastSignInAt'] != null
           ? DateTime.parse(json['lastSignInAt'])
           : null,
+      phone: json['phone'],
     );
   }
 
@@ -74,10 +82,12 @@ class UserModel extends UserEntity {
       'uid': uid,
       'email': email,
       'displayName': displayName,
+      'username': username,
       'photoUrl': photoUrl,
       'isEmailVerified': isEmailVerified,
       'createdAt': createdAt?.toIso8601String(),
       'lastSignInAt': lastSignInAt?.toIso8601String(),
+      'phone': phone,
     };
   }
 
@@ -87,19 +97,23 @@ class UserModel extends UserEntity {
     String? uid,
     String? email,
     String? displayName,
+    String? username,
     String? photoUrl,
     bool? isEmailVerified,
     DateTime? createdAt,
     DateTime? lastSignInAt,
+    String? phone,
   }) {
     return UserModel(
       uid: uid ?? this.uid,
       email: email ?? this.email,
       displayName: displayName ?? this.displayName,
+      username: username ?? this.username,
       photoUrl: photoUrl ?? this.photoUrl,
       isEmailVerified: isEmailVerified ?? this.isEmailVerified,
       createdAt: createdAt ?? this.createdAt,
       lastSignInAt: lastSignInAt ?? this.lastSignInAt,
+      phone: phone ?? this.phone,
     );
   }
 }

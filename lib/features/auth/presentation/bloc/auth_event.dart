@@ -29,15 +29,19 @@ class SignUpEvent extends AuthEvent {
   final String email;
   final String password;
   final String? displayName;
+  final String? username;
+  final String? phone;
 
   const SignUpEvent({
     required this.email,
     required this.password,
     this.displayName,
+    this.username,
+    this.phone,
   });
 
   @override
-  List<Object?> get props => [email, password, displayName];
+  List<Object?> get props => [email, password, displayName, username, phone];
 }
 
 /// Event to sign out
@@ -65,15 +69,27 @@ class DeleteAccountEvent extends AuthEvent {}
 /// Event to update user profile
 class UpdateProfileEvent extends AuthEvent {
   final String? displayName;
+  final String? username;
   final String? photoUrl;
 
   const UpdateProfileEvent({
     this.displayName,
+    this.username,
     this.photoUrl,
   });
 
   @override
-  List<Object?> get props => [displayName, photoUrl];
+  List<Object?> get props => [displayName, username, photoUrl];
+}
+
+/// Event to update username specifically
+class UpdateUsernameEvent extends AuthEvent {
+  final String username;
+
+  const UpdateUsernameEvent({required this.username});
+
+  @override
+  List<Object?> get props => [username];
 }
 
 /// Event triggered by auth state changes

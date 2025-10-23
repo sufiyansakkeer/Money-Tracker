@@ -16,6 +16,8 @@ abstract class AuthRemoteDataSource {
     required String email,
     required String password,
     String? displayName,
+    String? username,
+    String? phone,
   });
 
   /// Sign out the current user
@@ -44,6 +46,7 @@ abstract class AuthRemoteDataSource {
   /// Update user profile
   Future<UserModel> updateProfile({
     String? displayName,
+    String? username,
     String? photoUrl,
   });
 
@@ -94,6 +97,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String email,
     required String password,
     String? displayName,
+    String? username,
+    String? phone,
   }) async {
     try {
       final credential = await firebaseAuth.createUserWithEmailAndPassword(
@@ -112,10 +117,16 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         await credential.user!.updateDisplayName(displayName);
         await credential.user!.reload();
       }
-      logger.t('User signed up: ${credential.user?.uid ?? 'null'}',
+
+      // Store phone number and username in user model (you may need to store this in Firestore)
+      // For now, we'll just log it and include it in the UserModel
+      logger.t(
+          'User signed up: ${credential.user?.uid ?? 'null'} with phone: $phone, username: $username',
           error: "Sign up successful");
 
-      return UserModel.fromFirebaseUser(credential.user!);
+      // Create UserModel with phone number and username
+      final userModel = UserModel.fromFirebaseUser(credential.user!);
+      return userModel.copyWith(phone: phone, username: username);
     } on FirebaseAuthException catch (e) {
       logger.e(e.toString(),
           error: "Sign up with email and password exception");
@@ -255,6 +266,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<UserModel> updateProfile({
     String? displayName,
+    String? username,
     String? photoUrl,
   }) async {
     try {
@@ -278,7 +290,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         throw const AuthFailure(message: 'Failed to update user profile');
       }
 
-      return UserModel.fromFirebaseUser(refreshedUser);
+      // Create UserModel with updated username (you may need to store this in Firestore for persistence)
+      final userModel = UserModel.fromFirebaseUser(refreshedUser);
+      return userModel.copyWith(username: username);
     } on FirebaseAuthException catch (e) {
       logger.e(e.toString(), error: "Update profile exception");
       throw AuthFailure(message: _getAuthErrorMessage(e.code));

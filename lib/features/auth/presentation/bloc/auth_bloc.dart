@@ -98,6 +98,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           email: event.email,
           password: event.password,
           displayName: event.displayName,
+          username: event.username,
+          phone: event.phone,
         );
 
         final result = await signUpUseCase(params: params);
@@ -224,6 +226,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       try {
         final result = await authRepository.updateProfile(
           displayName: event.displayName,
+          username: event.username,
           photoUrl: event.photoUrl,
         );
 
@@ -238,6 +241,28 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       } catch (e) {
         logger.en(e.toString(), name: "UpdateProfileEvent");
         emit(AuthError(message: "Failed to update profile: ${e.toString()}"));
+      }
+    });
+
+    on<UpdateUsernameEvent>((event, emit) async {
+      emit(AuthLoading());
+
+      try {
+        final result = await authRepository.updateProfile(
+          username: event.username,
+        );
+
+        result.fold(
+          (user) {
+            emit(AuthAuthenticated(user: user));
+          },
+          (failure) {
+            emit(AuthError(message: failure.message));
+          },
+        );
+      } catch (e) {
+        logger.en(e.toString(), name: "UpdateUsernameEvent");
+        emit(AuthError(message: "Failed to update username: ${e.toString()}"));
       }
     });
 

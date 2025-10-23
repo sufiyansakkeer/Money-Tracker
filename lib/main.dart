@@ -9,6 +9,9 @@ import 'package:money_track/data/models/category_model.dart';
 import 'package:money_track/features/budget/data/models/budget_model.dart';
 import 'package:money_track/features/groups/data/models/group_model.dart';
 import 'package:money_track/features/groups/data/models/split_details_model.dart';
+import 'package:money_track/features/groups/data/models/shared_expense_model.dart';
+import 'package:money_track/features/groups/data/models/settlement_model.dart';
+import 'package:money_track/features/groups/data/models/group_activity_model.dart';
 import 'package:money_track/features/profile/data/models/currency_model.dart';
 import 'package:money_track/firebase_options.dart';
 import 'package:money_track/hive_registrar.g.dart';
@@ -63,6 +66,9 @@ Future<void> main() async {
   await Hive.openBox<BudgetModel>(DBConstants.budgetDbName);
   await Hive.openBox<GroupModel>(DBConstants.groupDbName);
   await Hive.openBox<SplitDetailsModel>(DBConstants.splitDetailsDbName);
+  await Hive.openBox<SharedExpenseModel>(DBConstants.sharedExpenseDbName);
+  await Hive.openBox<SettlementModel>(DBConstants.settlementDbName);
+  await Hive.openBox<GroupActivityModel>(DBConstants.groupActivityDbName);
 
   // Initialize dependency injection
   await initializeDependencies();

@@ -14,6 +14,8 @@ abstract class AuthRepository {
     required String email,
     required String password,
     String? displayName,
+    String? username,
+    String? phone,
   });
 
   /// Sign out the current user
@@ -42,6 +44,7 @@ abstract class AuthRepository {
   /// Update user profile
   Future<Result<UserEntity>> updateProfile({
     String? displayName,
+    String? username,
     String? photoUrl,
   });
 

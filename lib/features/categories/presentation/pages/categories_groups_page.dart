@@ -7,6 +7,7 @@ import 'package:money_track/features/categories/presentation/widgets/category_bo
 import 'package:money_track/features/categories/presentation/widgets/category_card.dart';
 import 'package:money_track/features/groups/presentation/bloc/group_bloc.dart';
 import 'package:money_track/features/groups/presentation/widgets/group_bottom_sheet.dart';
+import 'package:money_track/features/groups/presentation/pages/group_details_page.dart';
 
 class CategoriesGroupsPage extends StatefulWidget {
   const CategoriesGroupsPage({super.key});
@@ -61,8 +62,10 @@ class _CategoriesGroupsPageState extends State<CategoriesGroupsPage>
                 ),
                 child: TabBar(
                   controller: _tabController,
+                  indicatorColor: ColorConstants.getThemeColor(context),
+                  indicatorSize: TabBarIndicatorSize.tab,
                   indicator: BoxDecoration(
-                    // borderRadius: BorderRadius.circular(25),
+                    borderRadius: BorderRadius.circular(25),
                     color: ColorConstants.getThemeColor(context),
                   ),
                   labelColor: Colors.white,
@@ -234,6 +237,14 @@ class _CategoriesGroupsPageState extends State<CategoriesGroupsPage>
                       _showDeleteConfirmation(context, group.id, group.name);
                     },
                   ),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            GroupDetailsPage(groupId: group.id),
+                      ),
+                    );
+                  },
                 ),
               );
             },

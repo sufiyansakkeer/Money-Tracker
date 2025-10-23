@@ -17,7 +17,7 @@ class DatabaseFailure extends Failure {
 
 /// Failure for general server errors
 class ServerFailure extends Failure {
-  const ServerFailure({required super.message});
+  const ServerFailure(param0, {required super.message});
 }
 
 /// Failure for cache operations

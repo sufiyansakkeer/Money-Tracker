@@ -14,6 +14,10 @@ class SplitTypeAdapter extends TypeAdapter<SplitType> {
         return SplitType.custom;
       case 2:
         return SplitType.percentage;
+      case 3:
+        return SplitType.shares;
+      case 4:
+        return SplitType.adjustment;
       default:
         return SplitType.equal;
     }
@@ -30,6 +34,12 @@ class SplitTypeAdapter extends TypeAdapter<SplitType> {
         break;
       case SplitType.percentage:
         writer.writeByte(2);
+        break;
+      case SplitType.shares:
+        writer.writeByte(3);
+        break;
+      case SplitType.adjustment:
+        writer.writeByte(4);
         break;
     }
   }
