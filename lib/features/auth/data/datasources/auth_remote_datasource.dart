@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:money_track/core/error/failures.dart';
-import 'package:money_track/core/widgets/logger_service.dart';
+import 'package:money_track/core/services/logger_service.dart';
 import 'package:money_track/features/auth/data/models/user_model.dart';
 
 /// Abstract class for authentication remote data source
@@ -57,7 +57,7 @@ abstract class AuthRemoteDataSource {
 /// Implementation of authentication remote data source using Firebase
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final FirebaseAuth firebaseAuth;
-  final LoggerService logger = LoggerService();
+  final LoggerService logger = LoggerService.instance;
 
   AuthRemoteDataSourceImpl({required this.firebaseAuth});
 

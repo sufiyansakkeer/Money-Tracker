@@ -1,7 +1,7 @@
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:money_track/core/constants/db_constants.dart';
 import 'package:money_track/core/error/failures.dart';
-import 'package:money_track/core/widgets/logger_service.dart';
+import 'package:money_track/core/services/logger_service.dart';
 import 'package:money_track/data/models/category_model.dart';
 
 abstract class CategoryLocalDataSource {
@@ -20,7 +20,7 @@ abstract class CategoryLocalDataSource {
 
 class CategoryLocalDataSourceImpl implements CategoryLocalDataSource {
   final HiveInterface hive;
-  final LoggerService logger = LoggerService();
+  final LoggerService logger = LoggerService.instance;
 
   CategoryLocalDataSourceImpl({required this.hive});
 

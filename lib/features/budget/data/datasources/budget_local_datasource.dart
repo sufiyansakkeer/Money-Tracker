@@ -1,7 +1,7 @@
 import 'package:hive_ce/hive.dart';
 import 'package:money_track/core/constants/db_constants.dart';
 import 'package:money_track/core/error/failures.dart';
-import 'package:money_track/core/widgets/logger_service.dart';
+import 'package:money_track/core/services/logger_service.dart';
 import 'package:money_track/features/budget/data/models/budget_model.dart';
 
 abstract class BudgetLocalDataSource {
@@ -26,7 +26,7 @@ abstract class BudgetLocalDataSource {
 
 class BudgetLocalDataSourceImpl implements BudgetLocalDataSource {
   final HiveInterface hive;
-  final LoggerService logger = LoggerService();
+  final LoggerService logger = LoggerService.instance;
 
   BudgetLocalDataSourceImpl({required this.hive});
 

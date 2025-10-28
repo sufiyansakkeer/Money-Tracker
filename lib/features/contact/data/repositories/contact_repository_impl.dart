@@ -1,7 +1,7 @@
 import 'package:money_track/core/error/failures.dart';
 import 'package:money_track/core/error/result.dart';
 import 'package:money_track/core/services/contact_service.dart';
-import 'package:money_track/core/widgets/logger_service.dart';
+import 'package:money_track/core/services/logger_service.dart';
 import 'package:money_track/features/contact/data/datasources/contact_remote_datasource.dart';
 import 'package:money_track/features/contact/domain/entities/contact_match.dart';
 import 'package:money_track/features/contact/domain/repositories/contact_repository.dart';
@@ -10,7 +10,7 @@ import 'package:flutter_contacts/flutter_contacts.dart';
 class ContactRepositoryImpl implements ContactRepository {
   final ContactService _contactService;
   final ContactRemoteDataSource _remoteDataSource;
-  final LoggerService logger = LoggerService();
+  final LoggerService logger = LoggerService.instance;
 
   ContactRepositoryImpl({
     required ContactService contactService,

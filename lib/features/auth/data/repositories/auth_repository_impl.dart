@@ -1,6 +1,6 @@
 import 'package:money_track/core/error/failures.dart';
 import 'package:money_track/core/error/result.dart';
-import 'package:money_track/core/widgets/logger_service.dart'
+import 'package:money_track/core/services/logger_service.dart'
     show LoggerService;
 import 'package:money_track/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:money_track/features/auth/domain/entities/user_entity.dart';
@@ -9,7 +9,7 @@ import 'package:money_track/features/auth/domain/repositories/auth_repository.da
 /// Implementation of AuthRepository
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource remoteDataSource;
-  final LoggerService logger = LoggerService();
+  final LoggerService logger = LoggerService.instance;
 
   AuthRepositoryImpl({required this.remoteDataSource});
 

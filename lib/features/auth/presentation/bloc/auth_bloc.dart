@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:money_track/core/widgets/logger_service.dart';
+import 'package:money_track/core/services/logger_service.dart';
 import 'package:money_track/features/auth/domain/entities/user_entity.dart';
 import 'package:money_track/features/auth/domain/repositories/auth_repository.dart';
 import 'package:money_track/features/auth/domain/usecases/get_current_user_usecase.dart';
@@ -24,7 +24,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository authRepository;
 
   late StreamSubscription<UserEntity?> _authStateSubscription;
-  final LoggerService logger = LoggerService();
+  final LoggerService logger = LoggerService.instance;
   AuthBloc({
     required this.signInUseCase,
     required this.signUpUseCase,

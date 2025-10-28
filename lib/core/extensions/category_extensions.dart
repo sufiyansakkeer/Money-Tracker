@@ -17,7 +17,7 @@ extension CategoryEntityExtensions on CategoryEntity {
       case CategoryType.subscription:
         return Icons.subscriptions;
       case CategoryType.other:
-      default:
+        // default:
         return Icons.category;
     }
   }
@@ -36,7 +36,7 @@ extension CategoryEntityExtensions on CategoryEntity {
       case CategoryType.subscription:
         return const Color(0xFF7F3DFF);
       case CategoryType.other:
-      default:
+        // default:
         return const Color(0xFF00C2CB);
     }
   }
@@ -80,7 +80,7 @@ extension CategoryEntityExtensions on CategoryEntity {
       case CategoryType.subscription:
         return 'Subscriptions';
       case CategoryType.other:
-      default:
+        // default:
         return 'Other';
     }
   }

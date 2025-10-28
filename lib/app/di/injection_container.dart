@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_ce/hive.dart';
-import 'package:money_track/core/widgets/logger_service.dart';
+// import 'package:money_track/core/services/logger_service.dart';
 import 'package:money_track/data/datasources/local/category_local_datasource.dart';
 import 'package:money_track/data/datasources/local/transaction_local_datasource.dart';
 import 'package:money_track/data/repositories/category_repository_impl.dart';
@@ -363,7 +363,7 @@ void _initUseCases() {
 /// Initialize services
 void _initServices() {
   // Contact service
-  sl.registerLazySingleton<LoggerService>(() => LoggerService());
+  // sl.registerLazySingleton<LoggerService>(() => LoggerService.instance);
 
   // Contact service
   sl.registerLazySingleton<ContactService>(() => ContactService());

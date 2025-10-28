@@ -211,9 +211,9 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   String _calculateMonthlyExpenses(GroupsLoaded state) {
-    final now = DateTime.now();
-    final currentMonth = DateTime(now.year, now.month);
-    final nextMonth = DateTime(now.year, now.month + 1);
+    // final now = DateTime.now();
+    // final currentMonth = DateTime(now.year, now.month);
+    // final nextMonth = DateTime(now.year, now.month + 1);
 
     double monthlyTotal = 0;
 
